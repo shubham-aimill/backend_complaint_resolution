@@ -1,0 +1,372 @@
+{
+  "complaintId": "CMP-ING-1772919035607-66ffade",
+  "ingestedComplaintId": "ING-1772919035607-66ffade",
+  "sourceEmailFrom": "Shubham Sahu <shubhh2003@gmail.com>",
+  "warrantyStatus": "WITHIN_WARRANTY",
+  "productCategory": "Smart Watch",
+  "autoDecision": "REQUEST_DOCUMENTS",
+  "decisionConfidence": 0.9,
+  "recommendedNextStep": "Send REQUEST_DOCUMENTS email to customer listing missing items.",
+  "decisionPack": {
+    "id": "DP-1772919319025",
+    "complaintDraft": {
+      "id": "DRAFT-1772919319025",
+      "complaintRef": "CUST10004",
+      "customerName": "James Wilson",
+      "customerEmail": "sh***@gmail.com",
+      "customerPhone": "Not found",
+      "complaintDate": "2026-03-08",
+      "complaintType": "Battery / Charging",
+      "productOrService": "WristTech FitPulse GT Watch",
+      "description": "My watch battery drains completely within 3 hours of normal use.",
+      "desiredResolution": "free battery replacement or repair under warranty",
+      "estimatedAmount": 0.0,
+      "attachments": [],
+      "customerVerified": true,
+      "createdAt": "2026-03-07T21:35:19.025Z",
+      "source": "information_extraction",
+      "confidence": 0.99
+    },
+    "evidence": [
+      {
+        "field": "customerName",
+        "fieldName": "Customer Name",
+        "value": "James Wilson",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "customerEmail",
+        "fieldName": "Customer Email",
+        "value": "shubhh2003@gmail.com",
+        "confidence": 0.9,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "complaintRef",
+        "fieldName": "Complaint Reference",
+        "value": "CUST10004",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "complaintDate",
+        "fieldName": "Complaint Date",
+        "value": "2026-03-08",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "purchaseDate",
+        "fieldName": "Purchase Date",
+        "value": "2022-03-01",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "complaintType",
+        "fieldName": "Complaint Type",
+        "value": "Battery / Charging",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "productOrService",
+        "fieldName": "Product / Service",
+        "value": "WristTech FitPulse GT Watch",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "productModel",
+        "fieldName": "Product Model Number",
+        "value": "WT-FPGT-450",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "serialNumber",
+        "fieldName": "Serial / IMEI Number",
+        "value": "WT2022SW-00341",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "description",
+        "fieldName": "Description",
+        "value": "My watch battery drains completely within 3 hours of normal use.",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      }
+    ],
+    "documents": [],
+    "customerGrounding": [
+      {
+        "recordId": "CMP-20251118-005",
+        "title": "WARRANTY_CLAIM \u2014 FitPulse GT Watch",
+        "snippet": "WARRANTY_CLAIM \u2014 Warranty Expired",
+        "content": "Customer: James Wilson (CUST10004) | Account status: ACTIVE | Loyalty tier: PLATINUM | Complaint ID: CMP-20251118-005 | Type: WARRANTY_CLAIM | Category: Hardware Issue | Sub-category: Warranty Expired | Current status: CLOSED | Priority: LOW | Severity: MINOR | Escalated: No | SLA: 72h | Refund issued: $0.00 | Compensation: $0.00 | Product: FitPulse GT Watch (WristTech) | Warranty: 12 months | Price: $349.99 | Latest action: Complaint rejected \u2014 product outside 12-month warranty period. Customer informed of paid repair options at authorised service centre.",
+        "section": "Hardware Issue",
+        "score": 1.0,
+        "confidence_score": 1.0,
+        "recommendation": "AUTO_APPROVE",
+        "action": "Customer and product verified \u2014 proceed with resolution per SLA",
+        "sourceDocument": "complaints.json + product_service.json (Consumer Electronics)",
+        "customer_verified": true,
+        "customer_name": "James Wilson",
+        "customer_status": "ACTIVE",
+        "loyalty_tier": "PLATINUM",
+        "open_complaints": 0,
+        "total_complaints": 3,
+        "complaint_id": "CMP-20251118-005",
+        "complaint_type": "WARRANTY_CLAIM",
+        "complaint_category": "Hardware Issue",
+        "current_status": "CLOSED",
+        "priority_level": "LOW",
+        "severity_level": "MINOR",
+        "is_escalated": false,
+        "assigned_team": "CUSTOMER_CARE",
+        "sla_hours": 72,
+        "refund_total": 0.0,
+        "compensation_total": 0.0,
+        "product_id": "PROD-SW-001",
+        "product_name": "FitPulse GT Watch",
+        "product_category": "Smart Watch",
+        "warranty_months": 12,
+        "actions_count": 2,
+        "latest_action": "Complaint rejected \u2014 product outside 12-month warranty period. Customer informed of paid repair options at authorised service centre."
+      },
+      {
+        "recordId": "CMP-20251120-006",
+        "title": "PRODUCT_DEFECT \u2014 SwiftBook Air 13 Laptop",
+        "snippet": "PRODUCT_DEFECT \u2014 Physical Damage",
+        "content": "Customer: James Wilson (CUST10004) | Account status: ACTIVE | Loyalty tier: PLATINUM | Complaint ID: CMP-20251120-006 | Type: PRODUCT_DEFECT | Category: Hardware Issue | Sub-category: Physical Damage | Current status: CLOSED | Priority: HIGH | Severity: SEVERE | Escalated: No | SLA: 24h | Refund issued: $0.00 | Compensation: $0.00 | Product: SwiftBook Air 13 Laptop (CoreMax) | Warranty: 12 months | Price: $899.99 | Latest action: Complaint rejected \u2014 warranty expired and liquid damage clause applies. Quoted paid repair: $350 at CoreMax authorised centre.",
+        "section": "Hardware Issue",
+        "score": 1.0,
+        "confidence_score": 1.0,
+        "recommendation": "AUTO_APPROVE",
+        "action": "Customer and product verified \u2014 proceed with resolution per SLA",
+        "sourceDocument": "complaints.json + product_service.json (Consumer Electronics)",
+        "customer_verified": true,
+        "customer_name": "James Wilson",
+        "customer_status": "ACTIVE",
+        "loyalty_tier": "PLATINUM",
+        "open_complaints": 0,
+        "total_complaints": 3,
+        "complaint_id": "CMP-20251120-006",
+        "complaint_type": "PRODUCT_DEFECT",
+        "complaint_category": "Hardware Issue",
+        "current_status": "CLOSED",
+        "priority_level": "HIGH",
+        "severity_level": "SEVERE",
+        "is_escalated": false,
+        "assigned_team": "QUALITY",
+        "sla_hours": 24,
+        "refund_total": 0.0,
+        "compensation_total": 0.0,
+        "product_id": "PROD-LT-002",
+        "product_name": "SwiftBook Air 13 Laptop",
+        "product_category": "Laptop",
+        "warranty_months": 12,
+        "actions_count": 2,
+        "latest_action": "Complaint rejected \u2014 warranty expired and liquid damage clause applies. Quoted paid repair: $350 at CoreMax authorised centre."
+      }
+    ],
+    "customerInfo": {
+      "customer_id": "CUST10004",
+      "first_name": "James",
+      "last_name": "Wilson",
+      "full_name": "James Wilson",
+      "email_id": "james.wilson@email.com",
+      "phone_number": "+1-555-310-4412",
+      "address_line1": "88 Riverside Drive",
+      "address_line2": "Suite 12",
+      "city": "Houston",
+      "state": "TX",
+      "postal_code": "77001",
+      "country": "USA",
+      "customer_since": "2020-05-20",
+      "customer_status": "ACTIVE",
+      "loyalty_tier": "PLATINUM",
+      "total_complaints": 3,
+      "open_complaints": 0,
+      "preferred_contact": "EMAIL",
+      "complaint_ref": "CUST10004",
+      "complaint_id": "CMP-20251120-006",
+      "product_id": "PROD-LT-002",
+      "complaint_type": "PRODUCT_DEFECT",
+      "current_status": "CLOSED",
+      "priority_level": "HIGH",
+      "severity_level": "SEVERE",
+      "is_escalated": false,
+      "assigned_team": "QUALITY",
+      "sla_hours": 24
+    },
+    "validationResults": [
+      {
+        "check": "warranty_validation",
+        "passed": true,
+        "status": "WITHIN_WARRANTY",
+        "warrantyMonths": 12,
+        "purchaseDate": "2026-03-08",
+        "purchaseDateSource": "email_body",
+        "expiryDate": "2027-03-08",
+        "autoDecision": null,
+        "notes": "Product purchased on 2026-03-08. Warranty of 12 months expires on 2027-03-08. Product is within warranty period."
+      },
+      {
+        "check": "document_validation",
+        "passed": false,
+        "presentDocuments": [
+          "product_model"
+        ],
+        "missingDocuments": [
+          "purchase_invoice"
+        ],
+        "serialNumber": null,
+        "autoDecision": "REQUEST_DOCUMENTS",
+        "notes": "Documents present: product_model. Missing: purchase_invoice. Purchase invoice is REQUIRED \u2014 requesting documents."
+      },
+      {
+        "check": "product_validation",
+        "passed": true,
+        "productCategory": "Smart Watch",
+        "matchedProductId": "PROD-SW-001",
+        "matchedProductName": "FitPulse GT Watch",
+        "brandName": "WristTech",
+        "modelNumber": "WT-FPGT-450",
+        "warrantyMonths": 12,
+        "price": 349.99,
+        "categorySupported": true,
+        "authorizedSellers": [
+          "WristTech Official",
+          "TechZone",
+          "ElectroMart"
+        ],
+        "autoDecision": null,
+        "notes": "Product matched: FitPulse GT Watch (Model: WT-FPGT-450, Category: Smart Watch). Category is supported."
+      }
+    ],
+    "warrantyStatus": "WITHIN_WARRANTY",
+    "productCategory": "Smart Watch",
+    "matchedProduct": {
+      "productId": "PROD-SW-001",
+      "productName": "FitPulse GT Watch",
+      "brandName": "WristTech",
+      "modelNumber": "WT-FPGT-450",
+      "price": 349.99
+    },
+    "autoDecision": "REQUEST_DOCUMENTS",
+    "decisionConfidence": 0.9,
+    "decisionRationale": "Required documents (e.g. purchase invoice) are missing.",
+    "recommendedNextStep": "Send REQUEST_DOCUMENTS email to customer listing missing items.",
+    "audit": [
+      {
+        "step": "Information Extraction",
+        "timestamp": "2026-03-07T21:35:19.022Z",
+        "duration": 2771,
+        "agent": "ExtractionService",
+        "status": "completed",
+        "details": {
+          "documentsProcessed": 0,
+          "errors": []
+        }
+      },
+      {
+        "step": "Validation Engine",
+        "timestamp": "2026-03-07T21:35:19.022Z",
+        "duration": 9,
+        "agent": "ValidationService",
+        "status": "completed",
+        "details": {
+          "warrantyStatus": "WITHIN_WARRANTY",
+          "allChecksPassed": false,
+          "autoDecision": "REQUEST_DOCUMENTS"
+        }
+      },
+      {
+        "step": "Customer & Product Grounding",
+        "timestamp": "2026-03-07T21:35:19.022Z",
+        "duration": 2,
+        "agent": "CustomerGroundingService",
+        "status": "completed",
+        "details": {
+          "recordsFound": 2,
+          "customerVerified": true
+        }
+      },
+      {
+        "step": "Decision Engine",
+        "timestamp": "2026-03-07T21:35:19.022Z",
+        "duration": 0,
+        "agent": "DecisionService",
+        "status": "completed",
+        "details": {
+          "autoDecision": "REQUEST_DOCUMENTS",
+          "decisionConfidence": 0.9
+        }
+      }
+    ],
+    "evidenceSummary": {
+      "totalFields": 10,
+      "highConfidenceFields": 10,
+      "lowConfidenceFields": 0,
+      "avgConfidence": 0.99
+    },
+    "documentAnalysis": {
+      "totalDocuments": 0,
+      "documentTypes": [],
+      "avgDocumentConfidence": 0,
+      "missingDocuments": [
+        "purchase_invoice"
+      ],
+      "presentDocuments": [
+        "product_model"
+      ]
+    },
+    "resolutionAssessment": {
+      "recordsFound": 2,
+      "customerVerified": true,
+      "topMatchScore": 1.0,
+      "recommendation": "AUTO_APPROVE",
+      "autoDecision": "REQUEST_DOCUMENTS",
+      "decisionConfidence": 0.9,
+      "recommendedActions": [
+        "Send REQUEST_DOCUMENTS email to customer listing missing items."
+      ]
+    },
+    "processingSummary": {
+      "stepsCompleted": 4,
+      "stepsWithErrors": 0
+    },
+    "createdAt": "2026-03-07T21:35:19.022Z"
+  },
+  "processingMetrics": {
+    "fieldsAutoPopulated": 10,
+    "stepsCompleted": 4,
+    "stepsFailed": 0,
+    "totalProcessingTime": 6648,
+    "averageHandleTime": 6.648,
+    "extractionTime": 2771,
+    "validationTime": 9
+  },
+  "createdAt": "2026-03-07T21:35:19.022Z",
+  "status": "draft",
+  "autoEmailResponse": {
+    "sent": true,
+    "decision": "REQUEST_DOCUMENTS",
+    "to": "Shubham Sahu <shubhh2003@gmail.com>",
+    "error": null
+  },
+  "processingTime": 6648
+}

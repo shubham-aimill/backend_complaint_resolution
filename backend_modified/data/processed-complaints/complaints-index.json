@@ -1,0 +1,80 @@
+[
+  {
+    "complaintId": "CMP-ING-1772919034419-03c1cd1",
+    "ingestedComplaintId": "ING-1772919034419-03c1cd1",
+    "customerRef": "CUST10009",
+    "customerName": "Emily Johnson",
+    "complaintType": "Dead on Arrival",
+    "createdAt": "2026-03-07T21:37:06.492Z",
+    "filePath": "C:\\Users\\SHUBHAM SAHU\\Downloads\\backend_electronics (2)\\backend_modified\\data\\processed-complaints\\CMP-ING-1772919034419-03c1cd1.json",
+    "warrantyStatus": "WITHIN_WARRANTY",
+    "productCategory": "Tablet",
+    "autoDecision": "APPROVE_REPLACEMENT",
+    "decisionConfidence": 0.88
+  },
+  {
+    "complaintId": "CMP-ING-1772919035607-66ffade",
+    "ingestedComplaintId": "ING-1772919035607-66ffade",
+    "customerRef": "CUST10004",
+    "customerName": "James Wilson",
+    "complaintType": "Battery / Charging",
+    "createdAt": "2026-03-07T21:35:19.022Z",
+    "filePath": "C:\\Users\\SHUBHAM SAHU\\Downloads\\backend_electronics (2)\\backend_modified\\data\\processed-complaints\\CMP-ING-1772919035607-66ffade.json",
+    "warrantyStatus": "WITHIN_WARRANTY",
+    "productCategory": "Smart Watch",
+    "autoDecision": "REQUEST_DOCUMENTS",
+    "decisionConfidence": 0.9
+  },
+  {
+    "complaintId": "CMP-ING-TEST-003",
+    "ingestedComplaintId": "ING-TEST-003",
+    "customerRef": "CUST10009",
+    "customerName": "Test User",
+    "complaintType": "Dead on Arrival",
+    "createdAt": "2026-03-07T20:53:21.841Z",
+    "filePath": "/home/claude/backend_modified/data/processed-complaints/CMP-ING-TEST-003.json",
+    "warrantyStatus": "WITHIN_WARRANTY",
+    "productCategory": "Tablet",
+    "autoDecision": "APPROVE_REPLACEMENT",
+    "decisionConfidence": 0.88
+  },
+  {
+    "complaintId": "CMP-ING-TEST-002",
+    "ingestedComplaintId": "ING-TEST-002",
+    "customerRef": "CUST10004",
+    "customerName": "Test User",
+    "complaintType": "Battery",
+    "createdAt": "2026-03-07T20:53:21.811Z",
+    "filePath": "/home/claude/backend_modified/data/processed-complaints/CMP-ING-TEST-002.json",
+    "warrantyStatus": "OUT_OF_WARRANTY",
+    "productCategory": "Smart Watch",
+    "autoDecision": "DESK_REJECT",
+    "decisionConfidence": 0.95
+  },
+  {
+    "complaintId": "CMP-ING-TEST-001",
+    "ingestedComplaintId": "ING-TEST-001",
+    "customerRef": "CUST10001",
+    "customerName": "Test User",
+    "complaintType": "Connectivity",
+    "createdAt": "2026-03-07T20:53:21.801Z",
+    "filePath": "/home/claude/backend_modified/data/processed-complaints/CMP-ING-TEST-001.json",
+    "warrantyStatus": "WITHIN_WARRANTY",
+    "productCategory": "Smartphone",
+    "autoDecision": "APPROVE_REPAIR",
+    "decisionConfidence": 0.85
+  },
+  {
+    "complaintId": "CMP-ING-1772870087784-95c741d",
+    "ingestedComplaintId": "ING-1772870087784-95c741d",
+    "customerRef": "ORD-20260307-001",
+    "customerName": "Ananya Sharma",
+    "complaintType": "Technical",
+    "createdAt": "2026-03-07T12:28:26.062Z",
+    "filePath": "data/processed-complaints/CMP-ING-1772870087784-95c741d.json",
+    "warrantyStatus": "UNKNOWN",
+    "productCategory": "",
+    "autoDecision": "",
+    "decisionConfidence": 0.0
+  }
+]

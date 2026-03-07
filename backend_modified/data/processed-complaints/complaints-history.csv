@@ -1,0 +1,7 @@
+complaintId,ingestedComplaintId,customerRef,customerName,complaintType,description,status,createdAt
+CMP-ING-1772870087784-95c741d,ING-1772870087784-95c741d,ORD-20260307-001,Ananya Sharma,Technical,The camera disconnects from WiFi frequently and stops recording intermittently. The device appears offline in the mobile application even though the internet connection is stable.,draft,2026-03-07T12:28:26.062Z
+CMP-ING-TEST-001,ING-TEST-001,CUST10001,Test User,Connectivity,WiFi drops after update,draft,2026-03-07T20:53:21.801Z,WITHIN_WARRANTY,Smartphone,APPROVE_REPAIR,0.85
+CMP-ING-TEST-002,ING-TEST-002,CUST10004,Test User,Battery,Battery drains in 2 hours — out of warranty,draft,2026-03-07T20:53:21.811Z,OUT_OF_WARRANTY,Smart Watch,DESK_REJECT,0.95
+CMP-ING-TEST-003,ING-TEST-003,CUST10009,Test User,Dead on Arrival,Device never powered on — DOA,draft,2026-03-07T20:53:21.841Z,WITHIN_WARRANTY,Tablet,APPROVE_REPLACEMENT,0.88
+CMP-ING-1772919035607-66ffade,ING-1772919035607-66ffade,CUST10004,James Wilson,Battery / Charging,My watch battery drains completely within 3 hours of normal use.,draft,2026-03-07T21:35:19.022Z,WITHIN_WARRANTY,Smart Watch,REQUEST_DOCUMENTS,0.9
+CMP-ING-1772919034419-03c1cd1,ING-1772919034419-03c1cd1,CUST10009,Emily Johnson,Dead on Arrival,The tablet I received does not power on at all. I tried multiple chargers over 48 hours. The box seal was completely intact when I opened it. This is a Dead on Arrival unit — I have never been able to use it.,draft,2026-03-07T21:37:06.492Z,WITHIN_WARRANTY,Tablet,APPROVE_REPLACEMENT,0.88

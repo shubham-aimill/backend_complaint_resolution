@@ -1,0 +1,262 @@
+{
+  "complaintId": "CMP-ING-TEST-003",
+  "ingestedComplaintId": "ING-TEST-003",
+  "sourceEmailFrom": "test@test.com",
+  "warrantyStatus": "WITHIN_WARRANTY",
+  "productCategory": "Tablet",
+  "autoDecision": "APPROVE_REPLACEMENT",
+  "decisionConfidence": 0.88,
+  "recommendedNextStep": "Send APPROVE_REPLACEMENT email. Initiate replacement dispatch process within SLA.",
+  "decisionPack": {
+    "id": "DP-1772916801841",
+    "complaintDraft": {
+      "id": "DRAFT-1772916801841",
+      "complaintRef": "CUST10009",
+      "customerName": "Test User",
+      "customerEmail": "Not found",
+      "customerPhone": "Not found",
+      "complaintDate": "2026-03-07",
+      "complaintType": "Dead on Arrival",
+      "productOrService": "SlimTab 10 Tablet",
+      "description": "Device never powered on \u2014 DOA",
+      "desiredResolution": "Not specified",
+      "estimatedAmount": 0.0,
+      "attachments": [],
+      "customerVerified": true,
+      "createdAt": "2026-03-07T20:53:21.841Z",
+      "source": "information_extraction",
+      "confidence": 0.9
+    },
+    "evidence": [
+      {
+        "field": "productOrService",
+        "fieldName": "Product",
+        "value": "SlimTab 10 Tablet",
+        "confidence": 0.9
+      }
+    ],
+    "documents": [
+      {
+        "name": "invoice.png",
+        "type": "Invoice",
+        "confidence": 0.9,
+        "keyFields": {
+          "invoiceNumber": "INV-X",
+          "purchaseDate": "2025-10-01"
+        },
+        "metadata": {}
+      }
+    ],
+    "customerGrounding": [
+      {
+        "recordId": "CMP-20251212-014",
+        "title": "PRODUCT_DEFECT \u2014 SlimTab 10 Tablet",
+        "snippet": "PRODUCT_DEFECT \u2014 Dead on Arrival",
+        "content": "Customer: Emily Johnson (CUST10009) | Account status: ACTIVE | Loyalty tier: BRONZE | Complaint ID: CMP-20251212-014 | Type: PRODUCT_DEFECT | Category: Hardware Issue | Sub-category: Dead on Arrival | Current status: IN_PROGRESS | Priority: HIGH | Severity: SEVERE | Escalated: No | SLA: 24h | Refund issued: $0.00 | Compensation: $0.00 | Product: SlimTab 10 Tablet (NovaTech) | Warranty: 12 months | Price: $449.99 | Latest action: SlimTab 10 DOA reported. High priority. Invoice and purchase date verified. Replacement approved immediately.",
+        "section": "Hardware Issue",
+        "score": 1.0,
+        "confidence_score": 1.0,
+        "recommendation": "AUTO_APPROVE",
+        "action": "Customer and product verified \u2014 proceed with resolution per SLA",
+        "sourceDocument": "complaints.json + product_service.json (Consumer Electronics)",
+        "customer_verified": true,
+        "customer_name": "Emily Johnson",
+        "customer_status": "ACTIVE",
+        "loyalty_tier": "BRONZE",
+        "open_complaints": 1,
+        "total_complaints": 1,
+        "complaint_id": "CMP-20251212-014",
+        "complaint_type": "PRODUCT_DEFECT",
+        "complaint_category": "Hardware Issue",
+        "current_status": "IN_PROGRESS",
+        "priority_level": "HIGH",
+        "severity_level": "SEVERE",
+        "is_escalated": false,
+        "assigned_team": "FULFILMENT",
+        "sla_hours": 24,
+        "refund_total": 0.0,
+        "compensation_total": 0.0,
+        "product_id": "PROD-TB-002",
+        "product_name": "SlimTab 10 Tablet",
+        "product_category": "Tablet",
+        "warranty_months": 12,
+        "actions_count": 1,
+        "latest_action": "SlimTab 10 DOA reported. High priority. Invoice and purchase date verified. Replacement approved immediately."
+      }
+    ],
+    "customerInfo": {
+      "customer_id": "CUST10009",
+      "first_name": "Emily",
+      "last_name": "Johnson",
+      "full_name": "Emily Johnson",
+      "email_id": "emily.johnson@email.com",
+      "phone_number": "+1-555-934-7823",
+      "address_line1": "14 Elm Street",
+      "address_line2": null,
+      "city": "Boston",
+      "state": "MA",
+      "postal_code": "02101",
+      "country": "USA",
+      "customer_since": "2023-08-15",
+      "customer_status": "ACTIVE",
+      "loyalty_tier": "BRONZE",
+      "total_complaints": 1,
+      "open_complaints": 1,
+      "preferred_contact": "EMAIL",
+      "complaint_ref": "CUST10009",
+      "complaint_id": "CMP-20251212-014",
+      "product_id": "PROD-TB-002",
+      "complaint_type": "PRODUCT_DEFECT",
+      "current_status": "IN_PROGRESS",
+      "priority_level": "HIGH",
+      "severity_level": "SEVERE",
+      "is_escalated": false,
+      "assigned_team": "FULFILMENT",
+      "sla_hours": 24
+    },
+    "validationResults": [
+      {
+        "check": "warranty_validation",
+        "passed": true,
+        "status": "WITHIN_WARRANTY",
+        "warrantyMonths": 12,
+        "purchaseDate": "2025-10-01",
+        "purchaseDateSource": "document:invoice.png",
+        "expiryDate": "2026-10-01",
+        "autoDecision": null,
+        "notes": "Product purchased on 2025-10-01. Warranty of 12 months expires on 2026-10-01. Product is within warranty period."
+      },
+      {
+        "check": "document_validation",
+        "passed": true,
+        "presentDocuments": [
+          "purchase_invoice",
+          "product_model"
+        ],
+        "missingDocuments": [],
+        "serialNumber": null,
+        "autoDecision": null,
+        "notes": "Documents present: purchase_invoice, product_model. Missing: none."
+      },
+      {
+        "check": "product_validation",
+        "passed": true,
+        "productCategory": "Tablet",
+        "matchedProductId": "PROD-TB-002",
+        "matchedProductName": "SlimTab 10 Tablet",
+        "brandName": "NovaTech",
+        "modelNumber": "NT-ST10-64",
+        "warrantyMonths": 12,
+        "price": 449.99,
+        "categorySupported": true,
+        "authorizedSellers": [
+          "NovaTech Official",
+          "TechZone"
+        ],
+        "autoDecision": null,
+        "notes": "Product matched: SlimTab 10 Tablet (Model: NT-ST10-64, Category: Tablet). Category is supported."
+      }
+    ],
+    "warrantyStatus": "WITHIN_WARRANTY",
+    "productCategory": "Tablet",
+    "matchedProduct": {
+      "productId": "PROD-TB-002",
+      "productName": "SlimTab 10 Tablet",
+      "brandName": "NovaTech",
+      "modelNumber": "NT-ST10-64",
+      "price": 449.99
+    },
+    "autoDecision": "APPROVE_REPLACEMENT",
+    "decisionConfidence": 0.88,
+    "decisionRationale": "Customer and product verified. Replacement indicators present.",
+    "recommendedNextStep": "Send APPROVE_REPLACEMENT email. Initiate replacement dispatch process within SLA.",
+    "audit": [
+      {
+        "step": "Information Extraction",
+        "timestamp": "2026-03-07T20:53:21.841Z",
+        "duration": 100,
+        "agent": "ExtractionService",
+        "status": "completed",
+        "details": {
+          "documentsProcessed": 1,
+          "errors": []
+        }
+      },
+      {
+        "step": "Validation Engine",
+        "timestamp": "2026-03-07T20:53:21.841Z",
+        "duration": 10,
+        "agent": "ValidationService",
+        "status": "completed",
+        "details": {
+          "warrantyStatus": "WITHIN_WARRANTY",
+          "allChecksPassed": true,
+          "autoDecision": null
+        }
+      },
+      {
+        "step": "Customer & Product Grounding",
+        "timestamp": "2026-03-07T20:53:21.841Z",
+        "duration": 0,
+        "agent": "CustomerGroundingService",
+        "status": "completed",
+        "details": {
+          "recordsFound": 1,
+          "customerVerified": true
+        }
+      },
+      {
+        "step": "Decision Engine",
+        "timestamp": "2026-03-07T20:53:21.841Z",
+        "duration": 0,
+        "agent": "DecisionService",
+        "status": "completed",
+        "details": {
+          "autoDecision": "APPROVE_REPLACEMENT",
+          "decisionConfidence": 0.88
+        }
+      }
+    ],
+    "evidenceSummary": {
+      "totalFields": 1,
+      "highConfidenceFields": 1,
+      "lowConfidenceFields": 0,
+      "avgConfidence": 0.9
+    },
+    "documentAnalysis": {
+      "totalDocuments": 1,
+      "documentTypes": [
+        "Invoice"
+      ],
+      "avgDocumentConfidence": 0.9,
+      "missingDocuments": [],
+      "presentDocuments": [
+        "purchase_invoice",
+        "product_model"
+      ]
+    },
+    "resolutionAssessment": {
+      "recordsFound": 1,
+      "customerVerified": true,
+      "topMatchScore": 1.0,
+      "recommendation": "AUTO_APPROVE",
+      "autoDecision": "APPROVE_REPLACEMENT",
+      "decisionConfidence": 0.88,
+      "recommendedActions": [
+        "Send APPROVE_REPLACEMENT email. Initiate replacement dispatch process within SLA."
+      ]
+    },
+    "processingSummary": {
+      "stepsCompleted": 4,
+      "stepsWithErrors": 0
+    },
+    "createdAt": "2026-03-07T20:53:21.841Z"
+  },
+  "processingMetrics": {
+    "fieldsAutoPopulated": 1,
+    "stepsCompleted": 4,
+    "stepsFailed": 0
+  },
+  "createdAt": "2026-03-07T20:53:21.841Z",
+  "status": "draft"
+}

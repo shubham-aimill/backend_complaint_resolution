@@ -1,0 +1,298 @@
+{
+  "complaintId": "CMP-ING-TEST-001",
+  "ingestedComplaintId": "ING-TEST-001",
+  "sourceEmailFrom": "test@test.com",
+  "warrantyStatus": "WITHIN_WARRANTY",
+  "productCategory": "Smartphone",
+  "autoDecision": "APPROVE_REPAIR",
+  "decisionConfidence": 0.85,
+  "recommendedNextStep": "Send APPROVE_REPAIR email. Schedule product collection or repair centre visit.",
+  "decisionPack": {
+    "id": "DP-1772916801805",
+    "complaintDraft": {
+      "id": "DRAFT-1772916801804",
+      "complaintRef": "CUST10001",
+      "customerName": "Test User",
+      "customerEmail": "Not found",
+      "customerPhone": "Not found",
+      "complaintDate": "2026-03-07",
+      "complaintType": "Connectivity",
+      "productOrService": "ProMax X15 Smartphone",
+      "description": "WiFi drops after update",
+      "desiredResolution": "Not specified",
+      "estimatedAmount": 0.0,
+      "attachments": [],
+      "customerVerified": true,
+      "createdAt": "2026-03-07T20:53:21.804Z",
+      "source": "information_extraction",
+      "confidence": 0.9
+    },
+    "evidence": [
+      {
+        "field": "productOrService",
+        "fieldName": "Product",
+        "value": "ProMax X15 Smartphone",
+        "confidence": 0.9
+      }
+    ],
+    "documents": [
+      {
+        "name": "invoice.png",
+        "type": "Invoice",
+        "confidence": 0.9,
+        "keyFields": {
+          "invoiceNumber": "INV-X",
+          "purchaseDate": "2025-03-15"
+        },
+        "metadata": {}
+      }
+    ],
+    "customerGrounding": [
+      {
+        "recordId": "CMP-20251101-001",
+        "title": "CONNECTIVITY_ISSUE \u2014 ProMax X15 Smartphone",
+        "snippet": "CONNECTIVITY_ISSUE \u2014 Wi-Fi Dropout",
+        "content": "Customer: Ananya Sharma (CUST10001) | Account status: ACTIVE | Loyalty tier: GOLD | Complaint ID: CMP-20251101-001 | Type: CONNECTIVITY_ISSUE | Category: Connectivity | Sub-category: Wi-Fi Dropout | Current status: IN_PROGRESS | Priority: HIGH | Severity: MODERATE | Escalated: No | SLA: 48h | Refund issued: $0.00 | Compensation: $0.00 | Product: ProMax X15 Smartphone (NovaTech) | Warranty: 12 months | Price: $999.99 | Latest action: Remote diagnostics run on device. Firmware rollback guide sent to customer. Issue confirmed as software regression in update v3.2.1.",
+        "section": "Connectivity",
+        "score": 1.0,
+        "confidence_score": 1.0,
+        "recommendation": "AUTO_APPROVE",
+        "action": "Customer and product verified \u2014 proceed with resolution per SLA",
+        "sourceDocument": "complaints.json + product_service.json (Consumer Electronics)",
+        "customer_verified": true,
+        "customer_name": "Ananya Sharma",
+        "customer_status": "ACTIVE",
+        "loyalty_tier": "GOLD",
+        "open_complaints": 1,
+        "total_complaints": 2,
+        "complaint_id": "CMP-20251101-001",
+        "complaint_type": "CONNECTIVITY_ISSUE",
+        "complaint_category": "Connectivity",
+        "current_status": "IN_PROGRESS",
+        "priority_level": "HIGH",
+        "severity_level": "MODERATE",
+        "is_escalated": false,
+        "assigned_team": "TECHNICAL",
+        "sla_hours": 48,
+        "refund_total": 0.0,
+        "compensation_total": 0.0,
+        "product_id": "PROD-SP-001",
+        "product_name": "ProMax X15 Smartphone",
+        "product_category": "Smartphone",
+        "warranty_months": 12,
+        "actions_count": 2,
+        "latest_action": "Remote diagnostics run on device. Firmware rollback guide sent to customer. Issue confirmed as software regression in update v3.2.1."
+      },
+      {
+        "recordId": "CMP-20251105-002",
+        "title": "PRODUCT_DEFECT \u2014 SoundDrop Pro Earbuds",
+        "snippet": "PRODUCT_DEFECT \u2014 Physical Damage",
+        "content": "Customer: Ananya Sharma (CUST10001) | Account status: ACTIVE | Loyalty tier: GOLD | Complaint ID: CMP-20251105-002 | Type: PRODUCT_DEFECT | Category: Hardware Issue | Sub-category: Physical Damage | Current status: RESOLVED | Priority: NORMAL | Severity: MINOR | Escalated: No | SLA: 72h | Refund issued: $0.00 | Compensation: $0.00 | Product: SoundDrop Pro Earbuds (AudioWave) | Warranty: 12 months | Price: $199.99 | Latest action: Unit inspected. Manufacturing defect confirmed in right driver. Replacement earbud unit dispatched. Complaint resolved.",
+        "section": "Hardware Issue",
+        "score": 1.0,
+        "confidence_score": 1.0,
+        "recommendation": "AUTO_APPROVE",
+        "action": "Customer and product verified \u2014 proceed with resolution per SLA",
+        "sourceDocument": "complaints.json + product_service.json (Consumer Electronics)",
+        "customer_verified": true,
+        "customer_name": "Ananya Sharma",
+        "customer_status": "ACTIVE",
+        "loyalty_tier": "GOLD",
+        "open_complaints": 1,
+        "total_complaints": 2,
+        "complaint_id": "CMP-20251105-002",
+        "complaint_type": "PRODUCT_DEFECT",
+        "complaint_category": "Hardware Issue",
+        "current_status": "RESOLVED",
+        "priority_level": "NORMAL",
+        "severity_level": "MINOR",
+        "is_escalated": false,
+        "assigned_team": "QUALITY",
+        "sla_hours": 72,
+        "refund_total": 0.0,
+        "compensation_total": 0.0,
+        "product_id": "PROD-EB-001",
+        "product_name": "SoundDrop Pro Earbuds",
+        "product_category": "Earbuds",
+        "warranty_months": 12,
+        "actions_count": 2,
+        "latest_action": "Unit inspected. Manufacturing defect confirmed in right driver. Replacement earbud unit dispatched. Complaint resolved."
+      }
+    ],
+    "customerInfo": {
+      "customer_id": "CUST10001",
+      "first_name": "Ananya",
+      "last_name": "Sharma",
+      "full_name": "Ananya Sharma",
+      "email_id": "ananya.sharma@email.com",
+      "phone_number": "+1-555-196-6991",
+      "address_line1": "319 Main Street",
+      "address_line2": null,
+      "city": "Chicago",
+      "state": "IL",
+      "postal_code": "60601",
+      "country": "USA",
+      "customer_since": "2021-03-10",
+      "customer_status": "ACTIVE",
+      "loyalty_tier": "GOLD",
+      "total_complaints": 2,
+      "open_complaints": 1,
+      "preferred_contact": "EMAIL",
+      "complaint_ref": "CUST10001",
+      "complaint_id": "CMP-20251105-002",
+      "product_id": "PROD-EB-001",
+      "complaint_type": "PRODUCT_DEFECT",
+      "current_status": "RESOLVED",
+      "priority_level": "NORMAL",
+      "severity_level": "MINOR",
+      "is_escalated": false,
+      "assigned_team": "QUALITY",
+      "sla_hours": 72
+    },
+    "validationResults": [
+      {
+        "check": "warranty_validation",
+        "passed": true,
+        "status": "WITHIN_WARRANTY",
+        "warrantyMonths": 12,
+        "purchaseDate": "2025-03-15",
+        "purchaseDateSource": "document:invoice.png",
+        "expiryDate": "2026-03-15",
+        "autoDecision": null,
+        "notes": "Product purchased on 2025-03-15. Warranty of 12 months expires on 2026-03-15. Product is within warranty period."
+      },
+      {
+        "check": "document_validation",
+        "passed": true,
+        "presentDocuments": [
+          "purchase_invoice",
+          "product_model"
+        ],
+        "missingDocuments": [],
+        "serialNumber": null,
+        "autoDecision": null,
+        "notes": "Documents present: purchase_invoice, product_model. Missing: none."
+      },
+      {
+        "check": "product_validation",
+        "passed": true,
+        "productCategory": "Smartphone",
+        "matchedProductId": "PROD-SP-001",
+        "matchedProductName": "ProMax X15 Smartphone",
+        "brandName": "NovaTech",
+        "modelNumber": "NT-X15-PRO",
+        "warrantyMonths": 12,
+        "price": 999.99,
+        "categorySupported": true,
+        "authorizedSellers": [
+          "NovaTech Official",
+          "TechZone",
+          "ElectroMart"
+        ],
+        "autoDecision": null,
+        "notes": "Product matched: ProMax X15 Smartphone (Model: NT-X15-PRO, Category: Smartphone). Category is supported."
+      }
+    ],
+    "warrantyStatus": "WITHIN_WARRANTY",
+    "productCategory": "Smartphone",
+    "matchedProduct": {
+      "productId": "PROD-SP-001",
+      "productName": "ProMax X15 Smartphone",
+      "brandName": "NovaTech",
+      "modelNumber": "NT-X15-PRO",
+      "price": 999.99
+    },
+    "autoDecision": "APPROVE_REPAIR",
+    "decisionConfidence": 0.85,
+    "decisionRationale": "Customer and product verified. Repair approved within warranty.",
+    "recommendedNextStep": "Send APPROVE_REPAIR email. Schedule product collection or repair centre visit.",
+    "audit": [
+      {
+        "step": "Information Extraction",
+        "timestamp": "2026-03-07T20:53:21.801Z",
+        "duration": 100,
+        "agent": "ExtractionService",
+        "status": "completed",
+        "details": {
+          "documentsProcessed": 1,
+          "errors": []
+        }
+      },
+      {
+        "step": "Validation Engine",
+        "timestamp": "2026-03-07T20:53:21.801Z",
+        "duration": 10,
+        "agent": "ValidationService",
+        "status": "completed",
+        "details": {
+          "warrantyStatus": "WITHIN_WARRANTY",
+          "allChecksPassed": true,
+          "autoDecision": null
+        }
+      },
+      {
+        "step": "Customer & Product Grounding",
+        "timestamp": "2026-03-07T20:53:21.801Z",
+        "duration": 2,
+        "agent": "CustomerGroundingService",
+        "status": "completed",
+        "details": {
+          "recordsFound": 2,
+          "customerVerified": true
+        }
+      },
+      {
+        "step": "Decision Engine",
+        "timestamp": "2026-03-07T20:53:21.801Z",
+        "duration": 0,
+        "agent": "DecisionService",
+        "status": "completed",
+        "details": {
+          "autoDecision": "APPROVE_REPAIR",
+          "decisionConfidence": 0.85
+        }
+      }
+    ],
+    "evidenceSummary": {
+      "totalFields": 1,
+      "highConfidenceFields": 1,
+      "lowConfidenceFields": 0,
+      "avgConfidence": 0.9
+    },
+    "documentAnalysis": {
+      "totalDocuments": 1,
+      "documentTypes": [
+        "Invoice"
+      ],
+      "avgDocumentConfidence": 0.9,
+      "missingDocuments": [],
+      "presentDocuments": [
+        "purchase_invoice",
+        "product_model"
+      ]
+    },
+    "resolutionAssessment": {
+      "recordsFound": 2,
+      "customerVerified": true,
+      "topMatchScore": 1.0,
+      "recommendation": "AUTO_APPROVE",
+      "autoDecision": "APPROVE_REPAIR",
+      "decisionConfidence": 0.85,
+      "recommendedActions": [
+        "Send APPROVE_REPAIR email. Schedule product collection or repair centre visit."
+      ]
+    },
+    "processingSummary": {
+      "stepsCompleted": 4,
+      "stepsWithErrors": 0
+    },
+    "createdAt": "2026-03-07T20:53:21.801Z"
+  },
+  "processingMetrics": {
+    "fieldsAutoPopulated": 1,
+    "stepsCompleted": 4,
+    "stepsFailed": 0
+  },
+  "createdAt": "2026-03-07T20:53:21.801Z",
+  "status": "draft"
+}
