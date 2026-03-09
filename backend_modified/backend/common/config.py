@@ -22,11 +22,27 @@ def _get_project_root() -> Path:
     return Path(__file__).resolve().parent.parent.parent
 
 
+def _get_env_file() -> Path:
+    """Resolve .env: prefer ENV_FILE, then PROJECT_ROOT/.env, then parent of PROJECT_ROOT/.env (repo root)."""
+    explicit = os.getenv("ENV_FILE")
+    if explicit:
+        return Path(explicit)
+    root = _get_project_root()
+    env_in_root = root / ".env"
+    if env_in_root.exists():
+        return env_in_root
+    # When backend lives in backend_modified/, repo root is parent of PROJECT_ROOT
+    env_in_repo = root.parent / ".env"
+    if env_in_repo.exists():
+        return env_in_repo
+    return env_in_root  # default path even if missing
+
+
 # ── Core paths ────────────────────────────────────────────────────────────
 
 PROJECT_ROOT: Path = _get_project_root()
 DATA_DIR: Path     = _env_path("DATA_DIR", PROJECT_ROOT / "data")
-ENV_FILE: Path     = _env_path("ENV_FILE", PROJECT_ROOT / ".env")
+ENV_FILE: Path     = _get_env_file()
 
 # Attachment storage for ingested complaint emails
 INGESTED_DIR: Path = _env_path("INGESTED_DIR", DATA_DIR / "ingested-attachments")

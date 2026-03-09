@@ -6,8 +6,11 @@ and dashboard customer complaints. Extended with electronics-specific fields
 (warrantyStatus, productCategory, autoDecision, validationResults).
 """
 
+import json
 import os
+import queue
 import sys
+import threading
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -17,6 +20,7 @@ if str(_project_root) not in sys.path:
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 
 from backend.dashboard.service import (
@@ -33,6 +37,24 @@ from backend.ingested_complaints.service import (
     get_ingested_complaint_by_id,
 )
 from backend.process_complaint.orchestrator import process_complaint
+from backend.common.config import ENV_FILE
+
+
+def _load_env_at_startup() -> None:
+    """Load .env from repo root or backend_modified so OPENAI_API_KEY etc. are set."""
+    if ENV_FILE.exists():
+        with open(ENV_FILE, encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith("#") and "=" in line:
+                    key, _, val = line.partition("=")
+                    k = key.strip()
+                    v = val.strip().strip("'\"")
+                    if k and not os.environ.get(k):
+                        os.environ[k] = v
+
+
+_load_env_at_startup()
 
 app = FastAPI(
     title="Consumer Electronics Complaint Resolution API",
@@ -211,6 +233,49 @@ async def sync_inbox_endpoint() -> SyncInboxResponse:
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+def _sync_inbox_stream_generator():
+    """Yield SSE events: progress (total/done/counts) then done (final result)."""
+    q = queue.Queue()
+
+    def on_progress(p: Dict[str, Any]) -> None:
+        q.put(("progress", p))
+
+    def run_sync() -> None:
+        try:
+            result = sync_inbox(progress_callback=on_progress)
+            q.put(("done", result))
+        except Exception as e:
+            q.put(("error", {"errors": [str(e)]}))
+
+    thread = threading.Thread(target=run_sync)
+    thread.start()
+
+    while True:
+        kind, data = q.get()
+        if kind == "progress":
+            yield f"event: progress\ndata: {json.dumps(data)}\n\n"
+        elif kind == "done":
+            yield f"event: done\ndata: {json.dumps(data)}\n\n"
+            break
+        else:
+            yield f"event: error\ndata: {json.dumps(data)}\n\n"
+            break
+
+
+@app.get("/api/sync-inbox/stream")
+def sync_inbox_stream_endpoint():
+    """Stream sync progress (total/done/counts) then final result as SSE."""
+    return StreamingResponse(
+        _sync_inbox_stream_generator(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+            "X-Accel-Buffering": "no",
+        },
+    )
 
 
 @app.get("/")

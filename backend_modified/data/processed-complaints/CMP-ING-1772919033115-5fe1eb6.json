@@ -1,44 +1,37 @@
 {
-  "complaintId": "CMP-ING-1772870087784-95c741d",
-  "ingestedComplaintId": "ING-1772870087784-95c741d",
-  "sourceEmailFrom": "Ananya Sharma <ananya.sharma@email.com>",
+  "complaintId": "CMP-ING-1772919033115-5fe1eb6",
+  "ingestedComplaintId": "ING-1772919033115-5fe1eb6",
+  "sourceEmailFrom": "Shubham Sahu <shubhh2003@gmail.com>",
   "warrantyStatus": "WITHIN_WARRANTY",
   "productCategory": "Smartphone",
   "autoDecision": "APPROVE_REPAIR",
   "decisionConfidence": 0.85,
   "recommendedNextStep": "Send APPROVE_REPAIR email. Schedule product collection or repair centre visit.",
   "decisionPack": {
-    "id": "DP-1773067431180",
+    "id": "DP-1772955415607",
     "complaintDraft": {
-      "id": "DRAFT-1773067431179",
+      "id": "DRAFT-1772955415607",
       "complaintRef": "CUST10001",
       "customerName": "Ananya Sharma",
-      "customerEmail": "an***@email.com",
+      "customerEmail": "sh***@gmail.com",
       "customerPhone": "Not found",
-      "complaintDate": "2025-11-01",
+      "complaintDate": "2026-03-08",
       "complaintType": "Connectivity",
       "productOrService": "NovaTech ProMax X15 Smartphone",
-      "description": "Since updating to firmware version 3.2.1 last week, my smartphone disconnects from WiFi every few hours and requires a manual reconnect. The issue did not occur before the update. I have tried resetting network settings but the problem persists.",
-      "desiredResolution": "Firmware fix or repair under warranty.",
+      "description": "My smartphone keeps disconnecting from WiFi every few hours since the last firmware update. Reconnecting manually every time is very frustrating. I have tried resetting network settings but the problem persists.",
+      "desiredResolution": "Repair or firmware fix under warranty.",
       "estimatedAmount": 0.0,
       "attachments": [
         {
           "id": "doc_0",
-          "name": "invoice_sec_cam.png",
+          "name": "invoice.png",
           "type": "PhotoEvidence",
           "mimeType": "image/png",
-          "confidence": 0.5
-        },
-        {
-          "id": "doc_1",
-          "name": "smart_home_security_camera.jpg",
-          "type": "PhotoEvidence",
-          "mimeType": "image/jpeg",
           "confidence": 0.5
         }
       ],
       "customerVerified": true,
-      "createdAt": "2026-03-09T14:43:51.179Z",
+      "createdAt": "2026-03-08T07:36:55.607Z",
       "source": "information_extraction",
       "confidence": 1.0
     },
@@ -54,7 +47,7 @@
       {
         "field": "customerEmail",
         "fieldName": "Customer Email",
-        "value": "ananya.sharma@email.com",
+        "value": "shubhh2003@gmail.com",
         "confidence": 1.0,
         "sourceLocator": "email_content",
         "rationale": "Extracted from customer email and attachments"
@@ -70,7 +63,7 @@
       {
         "field": "complaintDate",
         "fieldName": "Complaint Date",
-        "value": "2025-11-01",
+        "value": "2026-03-08",
         "confidence": 1.0,
         "sourceLocator": "email_content",
         "rationale": "Extracted from customer email and attachments"
@@ -78,7 +71,7 @@
       {
         "field": "purchaseDate",
         "fieldName": "Purchase Date",
-        "value": "2025-03-15",
+        "value": "2025-06-10",
         "confidence": 1.0,
         "sourceLocator": "email_content",
         "rationale": "Extracted from customer email and attachments"
@@ -118,7 +111,7 @@
       {
         "field": "description",
         "fieldName": "Description",
-        "value": "Since updating to firmware version 3.2.1 last week, my smartphone disconnects from WiFi every few hours and requires a manual reconnect. The issue did not occur before the update. I have tried resetting network settings but the problem persists.",
+        "value": "My smartphone keeps disconnecting from WiFi every few hours since the last firmware update. Reconnecting manually every time is very frustrating. I have tried resetting network settings but the problem persists.",
         "confidence": 1.0,
         "sourceLocator": "email_content",
         "rationale": "Extracted from customer email and attachments"
@@ -127,19 +120,10 @@
     "documents": [
       {
         "id": "doc_0",
-        "name": "invoice_sec_cam.png",
+        "name": "invoice.png",
         "mimeType": "image/png",
         "type": "PhotoEvidence",
-        "content": "Image not found: data/ingested-attachments/ING-1772870087784-95c741d/invoice_sec_cam.png",
-        "confidence": 0.5,
-        "metadata": {}
-      },
-      {
-        "id": "doc_1",
-        "name": "smart_home_security_camera.jpg",
-        "mimeType": "image/jpeg",
-        "type": "PhotoEvidence",
-        "content": "Image not found: data/ingested-attachments/ING-1772870087784-95c741d/smart_home_security_camera.jpg",
+        "content": "Image not found: C:\\Users\\SHUBHAM SAHU\\Downloads\\backend_electronics (2)\\backend_modified\\data\\ingested-attachments\\ING-1772919033115-5fe1eb6\\invoice.png",
         "confidence": 0.5,
         "metadata": {}
       }
@@ -252,11 +236,11 @@
         "passed": true,
         "status": "WITHIN_WARRANTY",
         "warrantyMonths": 12,
-        "purchaseDate": "2025-11-01",
+        "purchaseDate": "2026-03-08",
         "purchaseDateSource": "email_body",
-        "expiryDate": "2026-11-01",
+        "expiryDate": "2027-03-08",
         "autoDecision": null,
-        "notes": "Product purchased on 2025-11-01. Warranty of 12 months expires on 2026-11-01. Product is within warranty period."
+        "notes": "Product purchased on 2026-03-08. Warranty of 12 months expires on 2027-03-08. Product is within warranty period."
       },
       {
         "check": "document_validation",
@@ -306,19 +290,19 @@
     "audit": [
       {
         "step": "Information Extraction",
-        "timestamp": "2026-03-09T14:43:51.114Z",
-        "duration": 4756,
+        "timestamp": "2026-03-08T07:36:55.606Z",
+        "duration": 2342,
         "agent": "ExtractionService",
         "status": "completed",
         "details": {
-          "documentsProcessed": 2,
+          "documentsProcessed": 1,
           "errors": []
         }
       },
       {
         "step": "Validation Engine",
-        "timestamp": "2026-03-09T14:43:51.114Z",
-        "duration": 11,
+        "timestamp": "2026-03-08T07:36:55.606Z",
+        "duration": 2,
         "agent": "ValidationService",
         "status": "completed",
         "details": {
@@ -329,8 +313,8 @@
       },
       {
         "step": "Customer & Product Grounding",
-        "timestamp": "2026-03-09T14:43:51.114Z",
-        "duration": 64,
+        "timestamp": "2026-03-08T07:36:55.606Z",
+        "duration": 0,
         "agent": "CustomerGroundingService",
         "status": "completed",
         "details": {
@@ -340,7 +324,7 @@
       },
       {
         "step": "Decision Engine",
-        "timestamp": "2026-03-09T14:43:51.114Z",
+        "timestamp": "2026-03-08T07:36:55.606Z",
         "duration": 0,
         "agent": "DecisionService",
         "status": "completed",
@@ -357,9 +341,8 @@
       "avgConfidence": 1.0
     },
     "documentAnalysis": {
-      "totalDocuments": 2,
+      "totalDocuments": 1,
       "documentTypes": [
-        "PhotoEvidence",
         "PhotoEvidence"
       ],
       "avgDocumentConfidence": 0.5,
@@ -384,24 +367,24 @@
       "stepsCompleted": 4,
       "stepsWithErrors": 0
     },
-    "createdAt": "2026-03-09T14:43:51.114Z"
+    "createdAt": "2026-03-08T07:36:55.606Z"
   },
   "processingMetrics": {
     "fieldsAutoPopulated": 10,
     "stepsCompleted": 4,
     "stepsFailed": 0,
-    "totalProcessingTime": 9031,
-    "averageHandleTime": 9.031,
-    "extractionTime": 4756,
-    "validationTime": 11
+    "totalProcessingTime": 5852,
+    "averageHandleTime": 5.852,
+    "extractionTime": 2342,
+    "validationTime": 2
   },
-  "createdAt": "2026-03-09T14:43:51.114Z",
+  "createdAt": "2026-03-08T07:36:55.606Z",
   "status": "draft",
   "autoEmailResponse": {
     "sent": true,
     "decision": "APPROVE_REPAIR",
-    "to": "Ananya Sharma <ananya.sharma@email.com>",
+    "to": "Shubham Sahu <shubhh2003@gmail.com>",
     "error": null
   },
-  "processingTime": 9031
+  "processingTime": 5852
 }

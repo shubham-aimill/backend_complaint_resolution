@@ -1,5 +1,44 @@
 [
   {
+    "complaintId": "CMP-ING-1772919026630-66c599d",
+    "ingestedComplaintId": "ING-1772919026630-66c599d",
+    "customerRef": "ORD-20260307-001",
+    "customerName": "Ananya Sharma",
+    "complaintType": "Connectivity",
+    "createdAt": "2026-03-09T15:08:22.917Z",
+    "filePath": "C:\\Users\\Aditi singh\\Desktop\\projects\\company\\backend_complaint_resolution\\backend_modified\\data\\processed-complaints\\CMP-ING-1772919026630-66c599d.json",
+    "warrantyStatus": "WITHIN_WARRANTY",
+    "productCategory": "Camera",
+    "autoDecision": "INVESTIGATE",
+    "decisionConfidence": 0.6
+  },
+  {
+    "complaintId": "CMP-ING-1772870051543-17a214f",
+    "ingestedComplaintId": "ING-1772870051543-17a214f",
+    "customerRef": "CUST10002",
+    "customerName": "Rahul Patel",
+    "complaintType": "Display / Audio",
+    "createdAt": "2026-03-08T11:38:02.857Z",
+    "filePath": "/Users/keshav/Desktop/ai mill/backend_complaint_resolution/backend_modified/data/processed-complaints/CMP-ING-1772870051543-17a214f.json",
+    "warrantyStatus": "WITHIN_WARRANTY",
+    "productCategory": "Laptop",
+    "autoDecision": "INVESTIGATE",
+    "decisionConfidence": 0.75
+  },
+  {
+    "complaintId": "CMP-ING-1772919033115-5fe1eb6",
+    "ingestedComplaintId": "ING-1772919033115-5fe1eb6",
+    "customerRef": "CUST10001",
+    "customerName": "Ananya Sharma",
+    "complaintType": "Connectivity",
+    "createdAt": "2026-03-08T07:36:55.606Z",
+    "filePath": "/Users/keshav/Desktop/ai mill/backend_complaint_resolution/backend_modified/data/processed-complaints/CMP-ING-1772919033115-5fe1eb6.json",
+    "warrantyStatus": "WITHIN_WARRANTY",
+    "productCategory": "Smartphone",
+    "autoDecision": "APPROVE_REPAIR",
+    "decisionConfidence": 0.85
+  },
+  {
     "complaintId": "CMP-ING-1772919034419-03c1cd1",
     "ingestedComplaintId": "ING-1772919034419-03c1cd1",
     "customerRef": "CUST10009",
@@ -18,8 +57,8 @@
     "customerRef": "CUST10004",
     "customerName": "James Wilson",
     "complaintType": "Battery / Charging",
-    "createdAt": "2026-03-07T21:35:19.022Z",
-    "filePath": "C:\\Users\\SHUBHAM SAHU\\Downloads\\backend_electronics (2)\\backend_modified\\data\\processed-complaints\\CMP-ING-1772919035607-66ffade.json",
+    "createdAt": "2026-03-08T09:20:55.035Z",
+    "filePath": "/Users/keshav/Desktop/ai mill/backend_complaint_resolution/backend_modified/data/processed-complaints/CMP-ING-1772919035607-66ffade.json",
     "warrantyStatus": "WITHIN_WARRANTY",
     "productCategory": "Smart Watch",
     "autoDecision": "REQUEST_DOCUMENTS",
@@ -67,14 +106,14 @@
   {
     "complaintId": "CMP-ING-1772870087784-95c741d",
     "ingestedComplaintId": "ING-1772870087784-95c741d",
-    "customerRef": "ORD-20260307-001",
+    "customerRef": "CUST10001",
     "customerName": "Ananya Sharma",
-    "complaintType": "Technical",
-    "createdAt": "2026-03-07T12:28:26.062Z",
-    "filePath": "data/processed-complaints/CMP-ING-1772870087784-95c741d.json",
-    "warrantyStatus": "UNKNOWN",
-    "productCategory": "",
-    "autoDecision": "",
-    "decisionConfidence": 0.0
+    "complaintType": "Connectivity",
+    "createdAt": "2026-03-09T14:43:51.114Z",
+    "filePath": "C:\\Users\\Aditi singh\\Desktop\\projects\\company\\backend_complaint_resolution\\backend_modified\\data\\processed-complaints\\CMP-ING-1772870087784-95c741d.json",
+    "warrantyStatus": "WITHIN_WARRANTY",
+    "productCategory": "Smartphone",
+    "autoDecision": "APPROVE_REPAIR",
+    "decisionConfidence": 0.85
   }
 ]

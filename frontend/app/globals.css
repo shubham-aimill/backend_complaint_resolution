@@ -1,0 +1,235 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Professional Red Theme - Deep reds, neutral grays */
+    --background: 0 0% 100%; /* Pure white background */
+    --foreground: 222 47% 11%; /* Deep gray for text */
+    --card: 0 0% 100%; /* White cards */
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 0 72% 37%; /* Deep red for primary actions (#991B1B) */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 96%; /* Light gray secondary */
+    --secondary-foreground: 222 47% 11%;
+    --muted: 0 0% 98%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 0 0% 98%;
+    --accent-foreground: 222 47% 11%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 90%; /* Subtle borders */
+    --input: 0 0% 98%;
+    --ring: 0 72% 37%; /* Red focus ring */
+    --radius: 0.75rem; /* Rounded corners */
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 84% 4.9%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 94.1%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply text-foreground;
+    position: relative;
+    min-height: 100vh;
+  }
+  
+  /* Animated gradient background - red theme */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    background: linear-gradient(
+      135deg,
+      #991b1b 0%,
+      #b91c1c 25%,
+      #dc2626 50%,
+      #b91c1c 75%,
+      #7f1d1d 100%
+    );
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+    opacity: 0.05;
+  }
+  
+  /* Subtle overlay for better readability */
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    background: radial-gradient(
+      circle at 20% 50%,
+      rgba(153, 27, 27, 0.08) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 80% 80%,
+      rgba(185, 28, 28, 0.08) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 40% 20%,
+      rgba(220, 38, 38, 0.06) 0%,
+      transparent 50%
+    );
+    background-color: hsl(var(--background));
+  }
+}
+
+/* Gradient animation keyframes */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-gradient-to-r from-[#991B1B] to-[#B91C1C] hover:from-[#7F1D1D] hover:to-[#991B1B] text-white h-14 px-10 py-3 inline-flex items-center justify-center rounded-xl text-sm font-semibold transition-all duration-300 shadow-lg hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B91C1C] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none transform hover:-translate-y-0.5 active:translate-y-0 active:scale-95;
+  }
+  
+  .btn-secondary {
+    @apply bg-white hover:bg-[#F9FAFB] text-[#374151] h-12 px-8 py-3 inline-flex items-center justify-center rounded-lg text-sm font-medium transition-colors duration-200 border border-[#E5E7EB] hover:border-[#D1D5DB] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B91C1C] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 transform hover:-translate-y-0.5 active:translate-y-0;
+  }
+  
+  .card {
+    @apply rounded-2xl border border-[#E5E7EB] bg-white/80 backdrop-blur-sm text-[#111827] shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-0.5;
+  }
+  
+  .card-glass {
+    @apply rounded-2xl border border-white/20 bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md shadow-2xl transform hover:-translate-y-0.5;
+  }
+  
+  .input-field {
+    @apply flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  
+  .status-badge {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;
+  }
+  
+  .status-pending {
+    @apply bg-[#FEF3C7] text-[#92400E];
+  }
+  
+  .status-processing {
+    @apply bg-[#FEE2E2] text-[#B91C1C];
+  }
+  
+  .status-completed {
+    @apply bg-[#D1FAE5] text-[#065F46];
+  }
+  
+  .status-error {
+    @apply bg-[#FEE2E2] text-[#991B1B];
+  }
+  
+  .status-needs-review {
+    @apply bg-[#FEF3C7] text-[#92400E];
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F9FAFB;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D1D5DB;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9CA3AF;
+}
+
+/* Smooth transitions */
+* {
+  transition: all 0.15s ease-in-out;
+}
+
+/* Focus styles */
+.focus-visible:focus {
+  outline: 2px solid #991B1B;
+  outline-offset: 2px;
+}
+
+/* Premium Background with Grid + Radial Gradient Glow */
+body {
+  background: linear-gradient(180deg, #FAFBFC 0%, #FFFFFF 100%);
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Subtle full-screen grid (CSS-only, fixed, non-interactive) – Vercel/Linear style */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+  background-size: 48px 48px;
+  background-position: 0 0;
+}
+
+/* Radial gradient overlays (top + bottom glow) */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(ellipse at top, rgba(153, 27, 27, 0.08) 0%, rgba(185, 28, 28, 0.05) 30%, transparent 70%),
+    radial-gradient(ellipse at bottom, rgba(185, 28, 28, 0.04) 0%, transparent 70%);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: top, bottom;
+} 

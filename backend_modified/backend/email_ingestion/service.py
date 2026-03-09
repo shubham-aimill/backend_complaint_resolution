@@ -14,7 +14,7 @@ import ssl
 import sys
 from email import policy as email_policy
 from email.header import decode_header
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Callable, Dict, List, Optional, Tuple
 
 import imaplib
 
@@ -288,9 +288,14 @@ def _extract_raw_message(msg_data: list) -> Optional[bytes]:
 
 # ── Main sync function ─────────────────────────────────────────────────────
 
-def sync_inbox() -> Dict[str, Any]:
+def sync_inbox(
+    progress_callback: Optional[Callable[[Dict[str, Any]], None]] = None,
+) -> Dict[str, Any]:
     """
     Connect to IMAP inbox, scan emails, filter genuine complaints, save them.
+
+    If progress_callback is provided, it is called after each email with
+    { total, done, ingested, skippedDuplicate, skippedNoComplaint, ... }.
 
     Returns:
         Dict with success, ingested, scanned, skippedNoComplaint,
@@ -372,6 +377,22 @@ def sync_inbox() -> Dict[str, Any]:
         result["scanned"] = len(uids)
         existing_ids = get_existing_message_ids()
 
+        total = len(uids)
+        done = 0
+        if progress_callback:
+            try:
+                progress_callback({
+                    "total": total,
+                    "done": 0,
+                    "ingested": 0,
+                    "skippedDuplicate": 0,
+                    "skippedNoComplaint": 0,
+                    "faqAnswered": 0,
+                    "errorsCount": 0,
+                })
+            except Exception:
+                pass
+
         for uid in uids:
             try:
                 _, msg_data = mail.fetch(uid, "(RFC822)")
@@ -451,6 +472,21 @@ def sync_inbox() -> Dict[str, Any]:
 
             except Exception as e:
                 result["errors"].append(f"Message {uid}: {e}")
+
+            done += 1
+            if progress_callback:
+                try:
+                    progress_callback({
+                        "total": total,
+                        "done": done,
+                        "ingested": result["ingested"],
+                        "skippedDuplicate": result["skippedDuplicate"],
+                        "skippedNoComplaint": result["skippedNoComplaint"],
+                        "faqAnswered": result["faqAnswered"],
+                        "errorsCount": len(result["errors"]),
+                    })
+                except Exception:
+                    pass
 
         result["success"] = len(result["errors"]) == 0
         mail.logout()
