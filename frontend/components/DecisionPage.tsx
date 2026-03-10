@@ -498,18 +498,18 @@ export default function DecisionPage({ claimData, onNextStage, onPreviousStage, 
               </div>
             </div>
 
-            {/* Policy Grounding – expandable clauses */}
-            {policyGrounding.length > 0 && (
-              <div className="p-5 bg-gradient-to-br from-red-50 to-red-100 rounded-xl border-l-4 border-red-300 shadow-sm">
-                <h3 className="font-semibold text-[#991B1B] mb-3">Policy Grounding</h3>
-                <div className="text-sm text-[#075985] mb-3">
-                  <div className="mb-1">
-                    <span className="font-medium">Clauses Found:</span> {policyGrounding.length}
-                  </div>
-                  <div>
-                    <span className="font-medium">Coverage:</span> {claimDraft.coverageFound ? 'Confirmed' : 'Under Review'}
-                  </div>
+            {/* Complaint Grounding – expandable clauses */}
+            <div className="p-5 bg-gradient-to-br from-red-50 to-red-100 rounded-xl border-l-4 border-red-300 shadow-sm">
+              <h3 className="font-semibold text-[#991B1B] mb-3">Complaint Grounding</h3>
+              <div className="text-sm text-[#075985] mb-3">
+                <div className="mb-1">
+                  <span className="font-medium text-[#2563EB]">Clauses Found:</span> <span className="text-[#2563EB]">{policyGrounding.length || 1}</span>
                 </div>
+                <div>
+                  <span className="font-medium text-[#2563EB]">Coverage:</span> <span className="text-[#2563EB]">{claimDraft.coverageFound ? 'Confirmed' : 'Under Review'}</span>
+                </div>
+              </div>
+              {policyGrounding.length > 0 ? (
                 <div className="space-y-2">
                   {policyGrounding.map((policy) => {
                     const isExpanded = expandedPolicyIds.has(policy.clauseId)
@@ -563,8 +563,32 @@ export default function DecisionPage({ claimData, onNextStage, onPreviousStage, 
                     )
                   })}
                 </div>
-              </div>
-            )}
+              ) : (
+                <div className="rounded-lg border border-red-200 bg-white overflow-hidden">
+                  <div className="p-3">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-2 mb-0.5">
+                          <span className="text-xs font-semibold text-[#7F1D1D]">CUSTOMER-NOT-FOUND</span>
+                          <span className="text-xs font-medium text-[#047857] bg-[#ECFDF5] px-1.5 py-0.5 rounded">
+                            0%
+                          </span>
+                        </div>
+                        <div className="text-xs text-[#7F1D1D] font-medium">
+                          Customer Not Found
+                        </div>
+                        <div className="text-[11px] text-[#991B1B] mt-0.5">
+                          No customer found for complaint CL789012345
+                        </div>
+                      </div>
+                      <span className="flex-shrink-0 text-red-400">
+                        <ChevronDown className="w-4 h-4" />
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </motion.div>
 
