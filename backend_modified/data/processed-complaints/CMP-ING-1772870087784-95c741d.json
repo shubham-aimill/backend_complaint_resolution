@@ -8,9 +8,9 @@
   "decisionConfidence": 0.85,
   "recommendedNextStep": "Send APPROVE_REPAIR email. Schedule product collection or repair centre visit.",
   "decisionPack": {
-    "id": "DP-1773067431180",
+    "id": "DP-1773131893711",
     "complaintDraft": {
-      "id": "DRAFT-1773067431179",
+      "id": "DRAFT-1773131893711",
       "complaintRef": "CUST10001",
       "customerName": "Ananya Sharma",
       "customerEmail": "an***@email.com",
@@ -38,7 +38,7 @@
         }
       ],
       "customerVerified": true,
-      "createdAt": "2026-03-09T14:43:51.179Z",
+      "createdAt": "2026-03-10T08:38:13.711Z",
       "source": "information_extraction",
       "confidence": 1.0
     },
@@ -306,8 +306,8 @@
     "audit": [
       {
         "step": "Information Extraction",
-        "timestamp": "2026-03-09T14:43:51.114Z",
-        "duration": 4756,
+        "timestamp": "2026-03-10T08:38:13.710Z",
+        "duration": 4980,
         "agent": "ExtractionService",
         "status": "completed",
         "details": {
@@ -317,8 +317,8 @@
       },
       {
         "step": "Validation Engine",
-        "timestamp": "2026-03-09T14:43:51.114Z",
-        "duration": 11,
+        "timestamp": "2026-03-10T08:38:13.710Z",
+        "duration": 6,
         "agent": "ValidationService",
         "status": "completed",
         "details": {
@@ -329,8 +329,8 @@
       },
       {
         "step": "Customer & Product Grounding",
-        "timestamp": "2026-03-09T14:43:51.114Z",
-        "duration": 64,
+        "timestamp": "2026-03-10T08:38:13.710Z",
+        "duration": 1,
         "agent": "CustomerGroundingService",
         "status": "completed",
         "details": {
@@ -340,7 +340,7 @@
       },
       {
         "step": "Decision Engine",
-        "timestamp": "2026-03-09T14:43:51.114Z",
+        "timestamp": "2026-03-10T08:38:13.710Z",
         "duration": 0,
         "agent": "DecisionService",
         "status": "completed",
@@ -384,24 +384,24 @@
       "stepsCompleted": 4,
       "stepsWithErrors": 0
     },
-    "createdAt": "2026-03-09T14:43:51.114Z"
+    "createdAt": "2026-03-10T08:38:13.710Z"
   },
   "processingMetrics": {
     "fieldsAutoPopulated": 10,
     "stepsCompleted": 4,
     "stepsFailed": 0,
-    "totalProcessingTime": 9031,
-    "averageHandleTime": 9.031,
-    "extractionTime": 4756,
-    "validationTime": 11
+    "totalProcessingTime": 26055,
+    "averageHandleTime": 26.055,
+    "extractionTime": 4980,
+    "validationTime": 6
   },
-  "createdAt": "2026-03-09T14:43:51.114Z",
+  "createdAt": "2026-03-10T08:38:13.710Z",
   "status": "draft",
   "autoEmailResponse": {
-    "sent": true,
+    "sent": false,
     "decision": "APPROVE_REPAIR",
     "to": "Ananya Sharma <ananya.sharma@email.com>",
-    "error": null
+    "error": "[WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond"
   },
-  "processingTime": 9031
+  "processingTime": 26055
 }

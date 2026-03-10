@@ -15,7 +15,10 @@ import {
   X,
   ChevronDown,
   ChevronUp,
-  Mail
+  Mail,
+  Calendar,
+  MapPin,
+  User
 } from 'lucide-react'
 import ClaimSummaryBar from './ClaimSummaryBar'
 import { ClaimData } from '@/types/claims'
@@ -54,6 +57,14 @@ export default function DecisionPage({ claimData, onNextStage, onPreviousStage, 
     policyClauses: Array<{ clauseId: string; title: string; score?: number }>
     recommendedActions: string[]
   } | null>(null)
+  const [showAppointmentModal, setShowAppointmentModal] = useState(false)
+  const [appointmentData, setAppointmentData] = useState({
+    date: '',
+    engineerName: '',
+    time: '',
+    location: ''
+  })
+  const [appointmentError, setAppointmentError] = useState<string | null>(null)
 
   useEffect(() => {
     setClaimStatus('pending')
@@ -367,6 +378,44 @@ export default function DecisionPage({ claimData, onNextStage, onPreviousStage, 
     }
   }
 
+  const handleBookAppointment = () => {
+    setShowAppointmentModal(true)
+    setAppointmentError(null)
+  }
+
+  const handleCloseAppointmentModal = () => {
+    setShowAppointmentModal(false)
+    setAppointmentData({
+      date: '',
+      engineerName: '',
+      time: '',
+      location: ''
+    })
+    setAppointmentError(null)
+  }
+
+  const handleAppointmentSubmit = async () => {
+    // Validate fields
+    if (!appointmentData.date || !appointmentData.engineerName || !appointmentData.time || !appointmentData.location) {
+      setAppointmentError('Please fill in all fields')
+      return
+    }
+
+    try {
+      // Here you would typically make an API call to save the appointment
+      console.log('Appointment booked:', appointmentData)
+      alert(`Appointment booked successfully!\n\nDate: ${appointmentData.date}\nEngineer: ${appointmentData.engineerName}\nTime: ${appointmentData.time}\nLocation: ${appointmentData.location}`)
+      handleCloseAppointmentModal()
+    } catch (err) {
+      setAppointmentError(err instanceof Error ? err.message : 'Failed to book appointment')
+    }
+  }
+
+  const handleCaptureMailChain = () => {
+    // Placeholder for capturing mail chain functionality
+    alert('Capture Chain of Mail functionality will be implemented here')
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -412,15 +461,16 @@ export default function DecisionPage({ claimData, onNextStage, onPreviousStage, 
               <h3 className="font-semibold text-[#991B1B] mb-3">Complaint Summary</h3>
               <div className="grid grid-cols-2 gap-2 text-sm">
                 <div className="col-span-2">
-                  <span className="font-medium">Complaint Status:</span>{' '}
+                  <span className="font-medium">Complaint Resolution Status:</span>{' '}
                   <span className={`font-semibold ${claimStatus === 'accepted' ? 'text-emerald-600' : claimStatus === 'rejected' ? 'text-rose-600' : 'text-[#64748B]'}`}>
                     {claimStatus === 'accepted' ? 'Accepted' : claimStatus === 'rejected' ? 'Rejected' : 'Pending'}
                   </span>
                 </div>
                 <div><span className="font-medium">Complaint:</span> {claimDraft.policyNumber || claimDraft.policyId || '—'}</div>
-                <div><span className="font-medium">Loss Date:</span> {claimDraft.lossDate || '—'}</div>
-                <div><span className="font-medium">Type:</span> {claimDraft.lossType || '—'}</div>
-                <div><span className="font-medium">Location:</span> {claimDraft.lossLocation || claimDraft.location || claimDraft.propertyAddress || '—'}</div>
+                <div><span className="font-medium">Complainant Name:</span> {claimDraft.claimantName || claimDraft.customerName || '—'}</div>
+                <div><span className="font-medium">Issue Date:</span> {claimDraft.lossDate || claimDraft.complaintDate || '—'}</div>
+                <div><span className="font-medium">Type:</span> {claimDraft.lossType || claimDraft.complaintType || '—'}</div>
+                <div><span className="font-medium">Product:</span> {claimDraft.lossLocation || claimDraft.location || claimDraft.propertyAddress || claimDraft.productOrService || '—'}</div>
                 {claimDraft.deductible && (
                   <div><span className="font-medium">Deductible:</span> ${claimDraft.deductible}</div>
                 )}
@@ -537,7 +587,7 @@ export default function DecisionPage({ claimData, onNextStage, onPreviousStage, 
             <div className="p-5 border-2 border-cloud-200 rounded-xl bg-white hover:shadow-md transition-shadow">
               <h3 className="font-semibold text-[#2D3748] mb-2">Create Draft in Core System</h3>
               <p className="text-sm text-[#718096] mb-4">
-                Creates a draft with all extracted details (policy, claimant, loss info, evidence, policy clauses) in the core system
+                Creates a draft with all extracted details (complaint, complainant, issue info, evidence, complaint clauses) in the core system
               </p>
               
               {draftError && (
@@ -712,6 +762,36 @@ export default function DecisionPage({ claimData, onNextStage, onPreviousStage, 
               </div>
             )}
 
+            {/* Book an Appointment */}
+            <div className="p-5 border-2 border-blue-200 rounded-xl bg-gradient-to-br from-blue-50/50 to-white hover:shadow-md transition-shadow">
+              <h3 className="font-semibold text-[#1E40AF] mb-2">Book an Appointment</h3>
+              <p className="text-sm text-[#718096] mb-4">
+                Schedule an appointment with an engineer for product inspection or repair
+              </p>
+              <button
+                onClick={handleBookAppointment}
+                className="w-full flex items-center justify-center space-x-2 py-3 px-4 rounded-xl font-medium text-white bg-gradient-to-r from-[#1E40AF] to-[#1E3A8A] hover:from-[#1E3A8A] hover:to-[#1E40AF] transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+              >
+                <Calendar className="w-4 h-4" />
+                <span>Book Appointment</span>
+              </button>
+            </div>
+
+            {/* Capture Chain of Mail */}
+            <div className="p-5 border-2 border-purple-200 rounded-xl bg-gradient-to-br from-purple-50/50 to-white hover:shadow-md transition-shadow">
+              <h3 className="font-semibold text-[#7C3AED] mb-2">Capture Chain of Mail</h3>
+              <p className="text-sm text-[#718096] mb-4">
+                Capture and save the complete email conversation history for this complaint
+              </p>
+              <button
+                onClick={handleCaptureMailChain}
+                className="w-full flex items-center justify-center space-x-2 py-3 px-4 rounded-xl font-medium text-white bg-gradient-to-r from-[#7C3AED] to-[#6D28D9] hover:from-[#6D28D9] hover:to-[#7C3AED] transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+              >
+                <Mail className="w-4 h-4" />
+                <span>Capture Mail Chain</span>
+              </button>
+            </div>
+
             {/* Download Decision Pack */}
             <div className="p-5 border-2 border-cloud-200 rounded-xl bg-white hover:shadow-md transition-shadow">
               <h3 className="font-semibold text-[#2D3748] mb-2">Download Decision Pack</h3>
@@ -880,6 +960,119 @@ export default function DecisionPage({ claimData, onNextStage, onPreviousStage, 
           <ArrowRight className="w-4 h-4" />
         </button>
       </div>
+
+      {/* Book Appointment Modal */}
+      {showAppointmentModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white rounded-xl shadow-2xl max-w-md w-full p-6"
+          >
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xl font-bold text-[#2D3748] flex items-center gap-2">
+                <Calendar className="w-5 h-5 text-[#1E40AF]" />
+                Book an Appointment
+              </h3>
+              <button
+                onClick={handleCloseAppointmentModal}
+                className="text-gray-500 hover:text-gray-700 p-1"
+                aria-label="Close"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <p className="text-sm text-[#64748B] mb-4">
+              Schedule an appointment with an engineer for product inspection or repair
+            </p>
+
+            {appointmentError && (
+              <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-200 text-sm text-red-700 flex items-center gap-2">
+                <AlertTriangle className="w-4 h-4 flex-shrink-0" />
+                {appointmentError}
+              </div>
+            )}
+
+            <div className="space-y-4">
+              {/* Date Field */}
+              <div>
+                <label className="flex items-center gap-2 text-sm font-medium text-[#374151] mb-1.5">
+                  <Calendar className="w-4 h-4 text-[#6B7280]" />
+                  Date
+                </label>
+                <input
+                  type="date"
+                  value={appointmentData.date}
+                  onChange={(e) => setAppointmentData({ ...appointmentData, date: e.target.value })}
+                  className="w-full px-3 py-2 text-sm text-[#334155] bg-white border border-[#E2E8F0] rounded-lg focus:ring-2 focus:ring-blue-200 focus:border-blue-400 outline-none"
+                />
+              </div>
+
+              {/* Engineer Name Field */}
+              <div>
+                <label className="flex items-center gap-2 text-sm font-medium text-[#374151] mb-1.5">
+                  <User className="w-4 h-4 text-[#6B7280]" />
+                  Engineer Name
+                </label>
+                <input
+                  type="text"
+                  value={appointmentData.engineerName}
+                  onChange={(e) => setAppointmentData({ ...appointmentData, engineerName: e.target.value })}
+                  placeholder="Enter engineer name"
+                  className="w-full px-3 py-2 text-sm text-[#334155] bg-white border border-[#E2E8F0] rounded-lg focus:ring-2 focus:ring-blue-200 focus:border-blue-400 outline-none"
+                />
+              </div>
+
+              {/* Time Field */}
+              <div>
+                <label className="flex items-center gap-2 text-sm font-medium text-[#374151] mb-1.5">
+                  <Clock className="w-4 h-4 text-[#6B7280]" />
+                  Time
+                </label>
+                <input
+                  type="time"
+                  value={appointmentData.time}
+                  onChange={(e) => setAppointmentData({ ...appointmentData, time: e.target.value })}
+                  className="w-full px-3 py-2 text-sm text-[#334155] bg-white border border-[#E2E8F0] rounded-lg focus:ring-2 focus:ring-blue-200 focus:border-blue-400 outline-none"
+                />
+              </div>
+
+              {/* Location Field */}
+              <div>
+                <label className="flex items-center gap-2 text-sm font-medium text-[#374151] mb-1.5">
+                  <MapPin className="w-4 h-4 text-[#6B7280]" />
+                  Location
+                </label>
+                <input
+                  type="text"
+                  value={appointmentData.location}
+                  onChange={(e) => setAppointmentData({ ...appointmentData, location: e.target.value })}
+                  placeholder="Enter location address"
+                  className="w-full px-3 py-2 text-sm text-[#334155] bg-white border border-[#E2E8F0] rounded-lg focus:ring-2 focus:ring-blue-200 focus:border-blue-400 outline-none"
+                />
+              </div>
+            </div>
+
+            {/* Modal Actions */}
+            <div className="flex gap-3 mt-6">
+              <button
+                onClick={handleCloseAppointmentModal}
+                className="flex-1 px-4 py-2 text-sm font-medium text-[#64748B] bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleAppointmentSubmit}
+                className="flex-1 px-4 py-2 text-sm font-medium text-white bg-[#1E40AF] hover:bg-[#1E3A8A] rounded-lg transition-colors flex items-center justify-center gap-2"
+              >
+                <Calendar className="w-4 h-4" />
+                Book Appointment
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </motion.div>
   )
 } 

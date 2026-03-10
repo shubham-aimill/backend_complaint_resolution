@@ -279,6 +279,23 @@ export default function DashboardPage({ claimData, onReset }: DashboardPageProps
                 Attachments and evidence
               </p>
             </div>
+
+            <div className="bg-white rounded-xl border border-[#E2E8F0] p-6 shadow-sm">
+              <div className="flex items-center justify-between mb-3">
+                <div className="p-2.5 bg-[#ECFDF5] rounded-lg">
+                  <Shield className="w-5 h-5 text-[#059669]" />
+                </div>
+              </div>
+              <p className="text-xs font-medium text-[#64748B] uppercase tracking-wider mb-1">
+                Complaint Coverage Match
+              </p>
+              <p className="text-2xl font-bold text-[#0F172A]">
+                {kpis?.coverageMatchRate ?? 100}%
+              </p>
+              <p className="text-xs text-[#64748B] mt-2">
+                Complaints with complaint clause matches
+              </p>
+            </div>
           </div>
 
           {/* Charts Row */}

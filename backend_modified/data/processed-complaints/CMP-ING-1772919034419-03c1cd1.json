@@ -8,9 +8,9 @@
   "decisionConfidence": 0.88,
   "recommendedNextStep": "Send APPROVE_REPLACEMENT email. Initiate replacement dispatch process within SLA.",
   "decisionPack": {
-    "id": "DP-1772919426494",
+    "id": "DP-1773125315629",
     "complaintDraft": {
-      "id": "DRAFT-1772919426493",
+      "id": "DRAFT-1773125315628",
       "complaintRef": "CUST10009",
       "customerName": "Emily Johnson",
       "customerEmail": "sh***@gmail.com",
@@ -25,13 +25,13 @@
         {
           "id": "doc_0",
           "name": "invoice_emily.txt.txt",
-          "type": "Invoice",
+          "type": "Other",
           "mimeType": "text/plain",
-          "confidence": 1.0
+          "confidence": 0.7
         }
       ],
       "customerVerified": true,
-      "createdAt": "2026-03-07T21:37:06.493Z",
+      "createdAt": "2026-03-10T06:48:35.628Z",
       "source": "information_extraction",
       "confidence": 0.99
     },
@@ -122,31 +122,10 @@
         "id": "doc_0",
         "name": "invoice_emily.txt.txt",
         "mimeType": "text/plain",
-        "type": "Invoice",
-        "content": "================================================\n     TECHZONE ELECTRONICS - PURCHASE INVOICE\n================================================\nInvoice Number : INV-2025-1120-014\nInvoice Date   : 2025-11-20\n================================================\n\nBill To:\n  Name    : Emily Johnson\n  Email   : emily.johnson@email.com\n  Phone   : +1-555-934-7823\n  Address : 14 Elm Street, Boston, MA 02101\n\n------------------------------------------------\nItem Description              Qty   Unit Price\n------------------------------------------------\nNovaTech SlimTab 10 Tablet     1     $449.99\n(NT-ST10-64)\nSerial: NT2025TB-00912\n------------------------------------------------\nSubtotal                             $449.99\nTax (8%)                              $36.00\n------------------------------------------------\nTOTAL PAID                           $485.99\n------------------------------------------------\nPayment Method : Debit Card\nPayment Status : PAID\n\nSold By:\n  TechZone Electronics\n  456 Tech Plaza, Boston, MA\n  support@techzone.com\n================================================",
-        "confidence": 1.0,
-        "metadata": {},
-        "keyFields": {
-          "invoiceNumber": "INV-2025-1120-014",
-          "vendor": "TechZone Electronics",
-          "customer": {
-            "name": "Emily Johnson",
-            "email": "emily.johnson@email.com",
-            "phone": "+1-555-934-7823",
-            "address": "14 Elm Street, Boston, MA 02101"
-          },
-          "lineItems": [
-            {
-              "description": "NovaTech SlimTab 10 Tablet",
-              "quantity": 1,
-              "unitPrice": 449.99,
-              "productModel": "NT-ST10-64",
-              "serialNumber": "NT2025TB-00912"
-            }
-          ],
-          "total": 485.99,
-          "purchaseDate": "2025-11-20"
-        }
+        "type": "Other",
+        "content": "[Binary/non-text: invoice_emily.txt.txt]",
+        "confidence": 0.7,
+        "metadata": {}
       }
     ],
     "customerGrounding": [
@@ -222,11 +201,11 @@
         "passed": true,
         "status": "WITHIN_WARRANTY",
         "warrantyMonths": 12,
-        "purchaseDate": "2025-11-20",
-        "purchaseDateSource": "document:invoice_emily.txt.txt",
-        "expiryDate": "2026-11-20",
+        "purchaseDate": "2026-03-08",
+        "purchaseDateSource": "email_body",
+        "expiryDate": "2027-03-08",
         "autoDecision": null,
-        "notes": "Product purchased on 2025-11-20. Warranty of 12 months expires on 2026-11-20. Product is within warranty period."
+        "notes": "Product purchased on 2026-03-08. Warranty of 12 months expires on 2027-03-08. Product is within warranty period."
       },
       {
         "check": "document_validation",
@@ -275,8 +254,8 @@
     "audit": [
       {
         "step": "Information Extraction",
-        "timestamp": "2026-03-07T21:37:06.492Z",
-        "duration": 4713,
+        "timestamp": "2026-03-10T06:48:35.626Z",
+        "duration": 6236,
         "agent": "ExtractionService",
         "status": "completed",
         "details": {
@@ -286,8 +265,8 @@
       },
       {
         "step": "Validation Engine",
-        "timestamp": "2026-03-07T21:37:06.492Z",
-        "duration": 0,
+        "timestamp": "2026-03-10T06:48:35.626Z",
+        "duration": 6,
         "agent": "ValidationService",
         "status": "completed",
         "details": {
@@ -298,8 +277,8 @@
       },
       {
         "step": "Customer & Product Grounding",
-        "timestamp": "2026-03-07T21:37:06.492Z",
-        "duration": 0,
+        "timestamp": "2026-03-10T06:48:35.626Z",
+        "duration": 1,
         "agent": "CustomerGroundingService",
         "status": "completed",
         "details": {
@@ -309,7 +288,7 @@
       },
       {
         "step": "Decision Engine",
-        "timestamp": "2026-03-07T21:37:06.492Z",
+        "timestamp": "2026-03-10T06:48:35.626Z",
         "duration": 0,
         "agent": "DecisionService",
         "status": "completed",
@@ -328,9 +307,9 @@
     "documentAnalysis": {
       "totalDocuments": 1,
       "documentTypes": [
-        "Invoice"
+        "Other"
       ],
-      "avgDocumentConfidence": 1.0,
+      "avgDocumentConfidence": 0.7,
       "missingDocuments": [],
       "presentDocuments": [
         "purchase_invoice",
@@ -352,24 +331,24 @@
       "stepsCompleted": 4,
       "stepsWithErrors": 0
     },
-    "createdAt": "2026-03-07T21:37:06.492Z"
+    "createdAt": "2026-03-10T06:48:35.626Z"
   },
   "processingMetrics": {
     "fieldsAutoPopulated": 10,
     "stepsCompleted": 4,
     "stepsFailed": 0,
-    "totalProcessingTime": 8329,
-    "averageHandleTime": 8.329,
-    "extractionTime": 4713,
-    "validationTime": 0
+    "totalProcessingTime": 27326,
+    "averageHandleTime": 27.326,
+    "extractionTime": 6236,
+    "validationTime": 6
   },
-  "createdAt": "2026-03-07T21:37:06.492Z",
+  "createdAt": "2026-03-10T06:48:35.626Z",
   "status": "draft",
   "autoEmailResponse": {
-    "sent": true,
+    "sent": false,
     "decision": "APPROVE_REPLACEMENT",
     "to": "Shubham Sahu <shubhh2003@gmail.com>",
-    "error": null
+    "error": "[WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond"
   },
-  "processingTime": 8329
+  "processingTime": 27326
 }

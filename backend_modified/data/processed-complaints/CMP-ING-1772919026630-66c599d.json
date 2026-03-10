@@ -8,9 +8,9 @@
   "decisionConfidence": 0.6,
   "recommendedNextStep": "Send acknowledgement email. Assign to complaints team for review.",
   "decisionPack": {
-    "id": "DP-1773068902919",
+    "id": "DP-1773134630427",
     "complaintDraft": {
-      "id": "DRAFT-1773068902918",
+      "id": "DRAFT-1773134630425",
       "complaintRef": "ORD-20260307-001",
       "customerName": "Ananya Sharma",
       "customerEmail": "sh***@gmail.com",
@@ -38,9 +38,9 @@
         }
       ],
       "customerVerified": false,
-      "createdAt": "2026-03-09T15:08:22.917Z",
+      "createdAt": "2026-03-10T09:23:50.425Z",
       "source": "information_extraction",
-      "confidence": 0.975
+      "confidence": 0.9625
     },
     "evidence": [
       {
@@ -79,7 +79,7 @@
         "field": "complaintType",
         "fieldName": "Complaint Type",
         "value": "Connectivity",
-        "confidence": 0.9,
+        "confidence": 0.8,
         "sourceLocator": "email_content",
         "rationale": "Extracted from customer email and attachments"
       },
@@ -194,8 +194,8 @@
     "audit": [
       {
         "step": "Information Extraction",
-        "timestamp": "2026-03-09T15:08:22.917Z",
-        "duration": 4167,
+        "timestamp": "2026-03-10T09:23:50.425Z",
+        "duration": 4160,
         "agent": "ExtractionService",
         "status": "completed",
         "details": {
@@ -205,8 +205,8 @@
       },
       {
         "step": "Validation Engine",
-        "timestamp": "2026-03-09T15:08:22.917Z",
-        "duration": 9,
+        "timestamp": "2026-03-10T09:23:50.425Z",
+        "duration": 6,
         "agent": "ValidationService",
         "status": "completed",
         "details": {
@@ -217,7 +217,7 @@
       },
       {
         "step": "Customer & Product Grounding",
-        "timestamp": "2026-03-09T15:08:22.917Z",
+        "timestamp": "2026-03-10T09:23:50.425Z",
         "duration": 0,
         "agent": "CustomerGroundingService",
         "status": "completed",
@@ -228,7 +228,7 @@
       },
       {
         "step": "Decision Engine",
-        "timestamp": "2026-03-09T15:08:22.917Z",
+        "timestamp": "2026-03-10T09:23:50.425Z",
         "duration": 0,
         "agent": "DecisionService",
         "status": "completed",
@@ -242,7 +242,7 @@
       "totalFields": 8,
       "highConfidenceFields": 8,
       "lowConfidenceFields": 0,
-      "avgConfidence": 0.975
+      "avgConfidence": 0.9625
     },
     "documentAnalysis": {
       "totalDocuments": 2,
@@ -272,24 +272,24 @@
       "stepsCompleted": 4,
       "stepsWithErrors": 0
     },
-    "createdAt": "2026-03-09T15:08:22.917Z"
+    "createdAt": "2026-03-10T09:23:50.425Z"
   },
   "processingMetrics": {
     "fieldsAutoPopulated": 8,
     "stepsCompleted": 4,
     "stepsFailed": 0,
-    "totalProcessingTime": 7800,
-    "averageHandleTime": 7.8,
-    "extractionTime": 4167,
-    "validationTime": 9
+    "totalProcessingTime": 25239,
+    "averageHandleTime": 25.239,
+    "extractionTime": 4160,
+    "validationTime": 6
   },
-  "createdAt": "2026-03-09T15:08:22.917Z",
+  "createdAt": "2026-03-10T09:23:50.425Z",
   "status": "draft",
   "autoEmailResponse": {
-    "sent": true,
+    "sent": false,
     "decision": "INVESTIGATE",
     "to": "Shubham Sahu <shubhh2003@gmail.com>",
-    "error": null
+    "error": "[WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond"
   },
-  "processingTime": 7800
+  "processingTime": 25239
 }

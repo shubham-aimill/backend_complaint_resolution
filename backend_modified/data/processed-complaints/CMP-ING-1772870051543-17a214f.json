@@ -8,9 +8,9 @@
   "decisionConfidence": 0.75,
   "recommendedNextStep": "Assign to senior agent. Send acknowledgement email.",
   "decisionPack": {
-    "id": "DP-1772969882857",
+    "id": "DP-1773114395592",
     "complaintDraft": {
-      "id": "DRAFT-1772969882857",
+      "id": "DRAFT-1773114395589",
       "complaintRef": "CUST10002",
       "customerName": "Rahul Patel",
       "customerEmail": "ra***@email.com",
@@ -27,18 +27,18 @@
           "name": "water-extraction-estimate.txt",
           "type": "Other",
           "mimeType": "text/plain",
-          "confidence": 0.9
+          "confidence": 0.7
         },
         {
           "id": "doc_1",
           "name": "emergency-invoice.txt",
-          "type": "Invoice",
+          "type": "Other",
           "mimeType": "text/plain",
-          "confidence": 0.95
+          "confidence": 0.7
         }
       ],
       "customerVerified": true,
-      "createdAt": "2026-03-08T11:38:02.857Z",
+      "createdAt": "2026-03-10T03:46:35.588Z",
       "source": "information_extraction",
       "confidence": 0.99
     },
@@ -130,147 +130,18 @@
         "name": "water-extraction-estimate.txt",
         "mimeType": "text/plain",
         "type": "Other",
-        "content": "DRYFAST WATER DAMAGE RESTORATION\nCertified Water Damage Specialists\n567 Industrial Park Road, Springfield, IL 62705\n24/7 Emergency: (555) DRY-FAST\nIICRC Certified | Licensed & Insured\n\nWATER DAMAGE RESTORATION ESTIMATE\n\nEstimate #: DF-2024-0318-001\nDate: March 18, 2024\nTime of Assessment: 08:30 AM\n\nCustomer Information:\nName: Robert Chen\nProperty: 456 Elm Street, Springfield, IL 62704\nPhone: (555) 987-6543\nInsurance: InsuranceCo Policy #HO456789234\n\nLoss Information:\nDate of Loss: March 17-18, 2024\nCause: Storm damage - tree through roof\nWater Source: Clean water (rainwater infiltration)\nAffected Areas: Master bedroom, hallway, living room ceiling\n\nMOISTURE ASSESSMENT:\nEquipment Used: Tramex Moisture Meter, FLIR Thermal Camera\n- Master bedroom carpet: 85% moisture content (Category 2)\n- Hallway carpet: 90% moisture content (Category 2)\n- Drywall (bedroom): 45% moisture content\n- Drywall (living room ceiling): 65% moisture content\n- Hardwood flooring (living room): 18% moisture content\n- Subfloor (second floor): 35% moisture content\n\nAFFECTED MATERIALS:\nArea 1 - Master Bedroom (320 sq ft):\n- Carpet and pad removal required\n- Drywall (2 walls, 180 sq ft) - salvageable with drying\n- Baseboard trim (45 linear ft) - removal and replacement\n\nArea 2 - Second Floor Hallway (120 sq ft):\n- Carpet and pad removal required\n- Drywall (4 walls, 220 sq ft) - salvageable with drying\n- Baseboard trim (35 linear ft) - removal and replacement\n\nArea 3 - Living Room Ceiling (280 sq ft):\n- Drywall ceiling - partial replacement required\n- Insulation - complete replacement required\n- Light fixtures - assessment and cleaning\n\nSCOPE OF WORK:\n\nPhase 1 - Emergency Water Extraction:\n- Water extraction using truck-mounted equipment\n- Furniture and contents protection/moving\n- Initial moisture documentation\n- Anti-microbial application\n\nPhase 2 - Structural Drying:\n- Industrial dehumidifier placement (3 units)\n- Air mover placement (8 units)\n- Daily monitoring and documentation\n- HVAC system protection\n\nPhase 3 - Demolition and Removal:\n- Carpet and pad removal (440 sq ft)\n- Damaged drywall removal (ceiling area)\n- Insulation removal and disposal\n- Trim removal and storage\n\nPhase 4 - Final Restoration Prep:\n- Final moisture verification\n- Anti-microbial treatment\n- Equipment removal\n- Clearance documentation\n\nCOST BREAKDOWN:\n\nEmergency Services:\n- Water extraction (truck-mounted)               $485.00\n- Content manipulation and protection            $320.00\n- Initial assessment and documentation           $150.00\n\nEquipment Rental (5-day minimum):\n- Dehumidifiers (3 units @ $85/day)             $1,275.00\n- Air movers (8 units @ $25/day)                $1,000.00\n- Moisture monitoring equipment                   $175.00\n\nLabor:\n- Carpet and pad removal                         $440.00\n- Selective demolition                           $380.00\n- Daily monitoring (5 days @ $120/day)          $600.00\n- Final cleanup and documentation                $245.00\n\nMaterials and Supplies:\n- Anti-microbial treatment                       $185.00\n- Plastic sheeting and containment               $95.00\n- Waste disposal and dumpster                    $165.00\n\nTOTAL ESTIMATE:                                  $5,515.00\n\nInsurance Deductible Consideration:\nNote: This estimate covers water extraction and structural drying only. \nReconstruction costs (new carpet, drywall repair, painting, etc.) are separate and will require additional estimates from qualified contractors.\n\nTIMELINE:\n- Emergency extraction: Same day\n- Drying process: 3-5 days depending on conditions\n- Final clearance: Day 6\n\nCERTIFICATIONS:\n- IICRC Water Loss Specialist (WLS)\n- IICRC Applied Structural Drying (ASD)\n- Illinois Environmental Health Association\n\nPrepared by: Mike Thompson, WLS\nReviewed by: Sarah Williams, Project Manager\nDate: March 18, 2024\n\nAUTHORIZATION REQUIRED FOR IMMEDIATE START:\n\u2610 Insurance company approval\n\u2610 Customer authorization\n\u2610 Access arrangements confirmed\n\nTHIS ESTIMATE VALID FOR 30 DAYS",
-        "confidence": 0.9,
-        "metadata": {},
-        "keyFields": {
-          "estimateNumber": "DF-2024-0318-001",
-          "vendor": "DRYFAST WATER DAMAGE RESTORATION",
-          "customer": {
-            "name": "Robert Chen",
-            "property": "456 Elm Street, Springfield, IL 62704",
-            "phone": "(555) 987-6543",
-            "insurance": "InsuranceCo Policy #HO456789234"
-          },
-          "lossInformation": {
-            "dateOfLoss": "March 17-18, 2024",
-            "cause": "Storm damage - tree through roof",
-            "waterSource": "Clean water (rainwater infiltration)",
-            "affectedAreas": [
-              "Master bedroom",
-              "hallway",
-              "living room ceiling"
-            ]
-          },
-          "moistureAssessment": {
-            "equipmentUsed": [
-              "Tramex Moisture Meter",
-              "FLIR Thermal Camera"
-            ],
-            "areas": {
-              "masterBedroomCarpet": "85% moisture content (Category 2)",
-              "hallwayCarpet": "90% moisture content (Category 2)",
-              "drywallBedroom": "45% moisture content",
-              "drywallLivingRoomCeiling": "65% moisture content",
-              "hardwoodFlooringLivingRoom": "18% moisture content",
-              "subfloorSecondFloor": "35% moisture content"
-            }
-          },
-          "scopeOfWork": [
-            "Emergency Water Extraction",
-            "Structural Drying",
-            "Demolition and Removal",
-            "Final Restoration Prep"
-          ],
-          "costBreakdown": {
-            "emergencyServices": {
-              "waterExtraction": "$485.00",
-              "contentManipulation": "$320.00",
-              "initialAssessment": "$150.00"
-            },
-            "equipmentRental": {
-              "dehumidifiers": "$1,275.00",
-              "airMovers": "$1,000.00",
-              "moistureMonitoring": "$175.00"
-            },
-            "labor": {
-              "carpetRemoval": "$440.00",
-              "selectiveDemolition": "$380.00",
-              "dailyMonitoring": "$600.00",
-              "finalCleanup": "$245.00"
-            },
-            "materialsAndSupplies": {
-              "antiMicrobialTreatment": "$185.00",
-              "plasticSheeting": "$95.00",
-              "wasteDisposal": "$165.00"
-            }
-          },
-          "totalEstimate": "$5,515.00",
-          "timeline": {
-            "emergencyExtraction": "Same day",
-            "dryingProcess": "3-5 days",
-            "finalClearance": "Day 6"
-          },
-          "certifications": [
-            "IICRC Water Loss Specialist (WLS)",
-            "IICRC Applied Structural Drying (ASD)",
-            "Illinois Environmental Health Association"
-          ],
-          "preparedBy": "Mike Thompson, WLS",
-          "reviewedBy": "Sarah Williams, Project Manager",
-          "date": "March 18, 2024",
-          "authorizationRequired": [
-            "Insurance company approval",
-            "Customer authorization",
-            "Access arrangements confirmed"
-          ]
-        }
+        "content": "[Binary/non-text: water-extraction-estimate.txt]",
+        "confidence": 0.7,
+        "metadata": {}
       },
       {
         "id": "doc_1",
         "name": "emergency-invoice.txt",
         "mimeType": "text/plain",
-        "type": "Invoice",
-        "content": "ABC ROOFING & EMERGENCY SERVICES\n24/7 Storm Damage Response\n1234 Service Drive, Springfield, IL 62703\nEmergency Hotline: (555) ROOF-911\nLicense: IL-RC-98765\n\nEMERGENCY SERVICE INVOICE\n\nInvoice #: ABC-EM-2024-0318\nDate: March 18, 2024\nTime of Service: 02:30 AM - 04:15 AM\n\nCustomer Information:\nName: Robert Chen\nAddress: 456 Elm Street, Springfield, IL 62704\nPhone: (555) 987-6543\nEmail: robert.chen@email.com\n\nProperty Information:\nType: Single family residence, 2-story\nRoof Type: Asphalt shingle, gable style\nAge: Approximately 12 years\nInsurance: InsuranceCo Policy #HO456789234\n\nEMERGENCY SITUATION:\nStorm damage from severe thunderstorm on March 17-18, 2024\nLarge oak tree branch (estimated 18\" diameter, 25 feet long) fell on southwest corner of roof creating hole approximately 4' x 6' in roof deck and shingles.\n\nEMERGENCY SERVICES PERFORMED:\n- Emergency response within 90 minutes of call\n- Safety assessment of roof structure\n- Removal of tree branch debris\n- Installation of heavy-duty waterproof tarp (20' x 30')\n- Secured tarp with 2x4 lumber and galvanized nails\n- Interior water intrusion stoppage\n- Basic debris cleanup\n\nMATERIALS USED:\n- Heavy duty blue tarp (20' x 30')                $85.00\n- 2x4 lumber pressure treated (6 pieces)          $45.00\n- Galvanized roofing nails (5 lbs)               $25.00\n- Roofing cement (2 tubes)                       $30.00\n- Safety equipment and supplies                   $40.00\n\nLABOR:\n- Emergency response fee                          $250.00\n- Tree debris removal (2.5 hours @ $75/hr)       $187.50\n- Tarp installation (1.75 hours @ $75/hr)        $131.25\n- Cleanup and securing (0.75 hours @ $75/hr)     $56.25\n\nTOTAL MATERIALS:                                  $225.00\nTOTAL LABOR:                                      $625.00\n\nSUBTOTAL:                                         $850.00\nEMERGENCY SURCHARGE (storms after midnight):      $0.00*\nTAX:                                              $0.00**\n\nTOTAL DUE:                                        $850.00\n\n*Emergency surcharge waived for insurance claims\n**Tax exempt emergency services per IL statute\n\nPAYMENT: PAID IN FULL - Check #2847 (Robert Chen)\n\nNOTES:\n- Tarp installation is temporary (72-hour solution)\n- Permanent repairs required immediately\n- Recommend interior water damage assessment\n- Full roof inspection scheduled for daylight hours\n- Estimate for permanent repairs to follow\n\nWARRANTY:\n- Emergency tarp installation: 72 hours or until permanent repair\n- Materials: Manufacturer warranty applies\n- Labor: 30 days from service date\n\nTECHNICIAN: Jake Morrison (IL License #EM-4521)\nSUPERVISOR: Maria Santos (IL Master License #MS-1205)\n\nCustomer Signature: R. Chen                Date: 03/18/2024\n\nFOLLOW-UP REQUIRED:\n\u2610 Permanent roof repair estimate (within 24 hours)\n\u2610 Interior damage assessment\n\u2610 Insurance adjuster coordination\n\u2610 Structural engineer consultation if needed",
-        "confidence": 0.95,
-        "metadata": {},
-        "keyFields": {
-          "invoiceNumber": "ABC-EM-2024-0318",
-          "vendor": "ABC Roofing & Emergency Services",
-          "customer": "Robert Chen",
-          "lineItems": [
-            {
-              "description": "Heavy duty blue tarp (20' x 30')",
-              "amount": 85.0
-            },
-            {
-              "description": "2x4 lumber pressure treated (6 pieces)",
-              "amount": 45.0
-            },
-            {
-              "description": "Galvanized roofing nails (5 lbs)",
-              "amount": 25.0
-            },
-            {
-              "description": "Roofing cement (2 tubes)",
-              "amount": 30.0
-            },
-            {
-              "description": "Safety equipment and supplies",
-              "amount": 40.0
-            },
-            {
-              "description": "Emergency response fee",
-              "amount": 250.0
-            },
-            {
-              "description": "Tree debris removal (2.5 hours @ $75/hr)",
-              "amount": 187.5
-            },
-            {
-              "description": "Tarp installation (1.75 hours @ $75/hr)",
-              "amount": 131.25
-            },
-            {
-              "description": "Cleanup and securing (0.75 hours @ $75/hr)",
-              "amount": 56.25
-            }
-          ],
-          "total": 850.0,
-          "purchaseDate": "2024-03-18",
-          "productModel": null,
-          "serialNumber": null
-        }
+        "type": "Other",
+        "content": "[Binary/non-text: emergency-invoice.txt]",
+        "confidence": 0.7,
+        "metadata": {}
       }
     ],
     "customerGrounding": [
@@ -346,11 +217,11 @@
         "passed": true,
         "status": "WITHIN_WARRANTY",
         "warrantyMonths": 24,
-        "purchaseDate": "2024-03-18",
-        "purchaseDateSource": "document:water-extraction-estimate.txt",
-        "expiryDate": "2026-03-18",
+        "purchaseDate": "2025-11-10",
+        "purchaseDateSource": "email_body",
+        "expiryDate": "2027-11-10",
         "autoDecision": null,
-        "notes": "Product purchased on 2024-03-18. Warranty of 24 months expires on 2026-03-18. Product is within warranty period."
+        "notes": "Product purchased on 2025-11-10. Warranty of 24 months expires on 2027-11-10. Product is within warranty period."
       },
       {
         "check": "document_validation",
@@ -401,8 +272,8 @@
     "audit": [
       {
         "step": "Information Extraction",
-        "timestamp": "2026-03-08T11:38:02.857Z",
-        "duration": 10175,
+        "timestamp": "2026-03-10T03:46:35.579Z",
+        "duration": 6856,
         "agent": "ExtractionService",
         "status": "completed",
         "details": {
@@ -412,8 +283,8 @@
       },
       {
         "step": "Validation Engine",
-        "timestamp": "2026-03-08T11:38:02.857Z",
-        "duration": 3,
+        "timestamp": "2026-03-10T03:46:35.579Z",
+        "duration": 120,
         "agent": "ValidationService",
         "status": "completed",
         "details": {
@@ -424,8 +295,8 @@
       },
       {
         "step": "Customer & Product Grounding",
-        "timestamp": "2026-03-08T11:38:02.857Z",
-        "duration": 0,
+        "timestamp": "2026-03-10T03:46:35.579Z",
+        "duration": 8,
         "agent": "CustomerGroundingService",
         "status": "completed",
         "details": {
@@ -435,7 +306,7 @@
       },
       {
         "step": "Decision Engine",
-        "timestamp": "2026-03-08T11:38:02.857Z",
+        "timestamp": "2026-03-10T03:46:35.579Z",
         "duration": 0,
         "agent": "DecisionService",
         "status": "completed",
@@ -455,9 +326,9 @@
       "totalDocuments": 2,
       "documentTypes": [
         "Other",
-        "Invoice"
+        "Other"
       ],
-      "avgDocumentConfidence": 0.925,
+      "avgDocumentConfidence": 0.7,
       "missingDocuments": [],
       "presentDocuments": [
         "purchase_invoice",
@@ -479,24 +350,24 @@
       "stepsCompleted": 4,
       "stepsWithErrors": 0
     },
-    "createdAt": "2026-03-08T11:38:02.857Z"
+    "createdAt": "2026-03-10T03:46:35.579Z"
   },
   "processingMetrics": {
     "fieldsAutoPopulated": 10,
     "stepsCompleted": 4,
     "stepsFailed": 0,
-    "totalProcessingTime": 14120,
-    "averageHandleTime": 14.12,
-    "extractionTime": 10175,
-    "validationTime": 3
+    "totalProcessingTime": 28039,
+    "averageHandleTime": 28.039,
+    "extractionTime": 6856,
+    "validationTime": 120
   },
-  "createdAt": "2026-03-08T11:38:02.857Z",
+  "createdAt": "2026-03-10T03:46:35.579Z",
   "status": "draft",
   "autoEmailResponse": {
-    "sent": true,
+    "sent": false,
     "decision": "INVESTIGATE",
     "to": "Rahul Patel <rahul.patel@email.com>",
-    "error": null
+    "error": "[WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond"
   },
-  "processingTime": 14120
+  "processingTime": 28039
 }
