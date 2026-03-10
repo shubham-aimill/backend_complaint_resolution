@@ -2,9 +2,9 @@
 
 import React, { useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
-import { 
-  FileText, 
-  Search, 
+import {
+  FileText,
+  Search,
   CheckCircle,
   AlertTriangle,
   ArrowRight,
@@ -18,7 +18,11 @@ import {
   TrendingUp,
   ImageIcon,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  BookOpen,
+  Tag,
+  Activity,
+  Info
 } from 'lucide-react'
 import ClaimSummaryBar from './ClaimSummaryBar'
 import { ClaimData, Document, FieldEvidence, PolicyHit } from '@/types/claims'
@@ -569,8 +573,8 @@ export default function ReviewPage({ claimData, onNextStage, onPreviousStage, on
                 })}
               </div>
 
-              {/* Policy Holder Details Section */}
-              {decisionPack?.policyHolderInfo && Object.keys(decisionPack.policyHolderInfo).length > 0 && (
+              {/* Complaint Grounding Section */}
+              {(decisionPack?.policyHolderInfo || (decisionPack?.policyGrounding && decisionPack.policyGrounding.length > 0)) && (
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -578,203 +582,248 @@ export default function ReviewPage({ claimData, onNextStage, onPreviousStage, on
                   className="mt-6 pt-6 border-t-2 border-[#E5E7EB]"
                 >
                   <div className="flex items-center space-x-2 mb-4">
-                    <User className="w-5 h-5 text-[#991B1B]" />
-                    <h2 className="text-base font-bold text-[#111827] uppercase tracking-wider">Policy Holder Details</h2>
+                    <BookOpen className="w-5 h-5 text-[#991B1B]" />
+                    <h2 className="text-base font-bold text-[#111827] uppercase tracking-wider">Complaint Grounding</h2>
+                    {decisionPack?.policyGrounding && decisionPack.policyGrounding.length > 0 && (
+                      <span className="ml-auto text-xs font-medium text-[#6B7280] bg-[#F3F4F6] px-2 py-0.5 rounded">
+                        {decisionPack.policyGrounding.length} match{decisionPack.policyGrounding.length !== 1 ? 'es' : ''}
+                      </span>
+                    )}
                   </div>
 
-                  <div className="bg-gradient-to-br from-red-50 to-red-100/80 rounded-xl border border-red-200 p-5">
-                    {/* Customer Information */}
-                    <div className="mb-5">
-                      <h3 className="text-xs font-semibold text-[#991B1B] uppercase tracking-wider mb-3">Customer Information</h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <div className="bg-white rounded-lg p-3 border border-red-100">
-                          <div className="text-xs text-[#6B7280] mb-1">Full Name</div>
-                          <div className="text-sm font-semibold text-[#111827]">
-                            {decisionPack.policyHolderInfo.full_name || '—'}
-                          </div>
-                        </div>
-                        <div className="bg-white rounded-lg p-3 border border-red-100">
-                          <div className="text-xs text-[#6B7280] mb-1">Customer ID</div>
-                          <div className="text-sm font-semibold text-[#111827] font-mono">
-                            {decisionPack.policyHolderInfo.customer_id || '—'}
-                          </div>
-                        </div>
-                        <div className="bg-white rounded-lg p-3 border border-red-100">
-                          <div className="text-xs text-[#6B7280] mb-1">Email</div>
-                          <div className="text-sm font-semibold text-[#111827] break-all">
-                            {decisionPack.policyHolderInfo.email_id || '—'}
-                          </div>
-                        </div>
-                        <div className="bg-white rounded-lg p-3 border border-red-100">
-                          <div className="text-xs text-[#6B7280] mb-1">Phone</div>
-                          <div className="text-sm font-semibold text-[#111827]">
-                            {decisionPack.policyHolderInfo.phone_number || '—'}
-                          </div>
-                        </div>
-                        <div className="bg-white rounded-lg p-3 border border-red-100 md:col-span-2">
-                          <div className="text-xs text-[#6B7280] mb-1">Address</div>
-                          <div className="text-sm font-semibold text-[#111827]">
-                            {(() => {
-                              const parts = []
-                              if (decisionPack.policyHolderInfo.address_line1) {
-                                parts.push(decisionPack.policyHolderInfo.address_line1)
-                              }
-                              if (decisionPack.policyHolderInfo.address_line2) {
-                                parts.push(decisionPack.policyHolderInfo.address_line2)
-                              }
-                              const cityStateZip = [
-                                decisionPack.policyHolderInfo.city,
-                                decisionPack.policyHolderInfo.state,
-                                decisionPack.policyHolderInfo.postal_code
-                              ].filter(Boolean).join(', ')
-                              if (cityStateZip) {
-                                parts.push(cityStateZip)
-                              }
-                              return parts.length > 0 ? parts.join(', ') : '—'
-                            })()}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                  <div className="space-y-4">
 
-                    {/* Policy Information */}
-                    <div className="mb-5">
-                      <h3 className="text-xs font-semibold text-[#991B1B] uppercase tracking-wider mb-3">Policy Information</h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <div className="bg-white rounded-lg p-3 border border-red-100">
-                          <div className="text-xs text-[#6B7280] mb-1">Policy Number</div>
-                          <div className="text-sm font-semibold text-[#111827] font-mono">
-                            {decisionPack.policyHolderInfo.policy_number || '—'}
+                    {/* Customer Profile */}
+                    {decisionPack?.policyHolderInfo && Object.keys(decisionPack.policyHolderInfo).length > 0 && (
+                      <div className="bg-gradient-to-br from-red-50 to-red-100/80 rounded-xl border border-red-200 p-5">
+                        <h3 className="text-xs font-semibold text-[#991B1B] uppercase tracking-wider mb-3 flex items-center space-x-1.5">
+                          <User className="w-3.5 h-3.5" />
+                          <span>Customer Profile</span>
+                        </h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          <div className="bg-white rounded-lg p-3 border border-red-100">
+                            <div className="text-xs text-[#6B7280] mb-1">Full Name</div>
+                            <div className="text-sm font-semibold text-[#111827]">
+                              {decisionPack.policyHolderInfo.full_name || '—'}
+                            </div>
                           </div>
-                        </div>
-                        <div className="bg-white rounded-lg p-3 border border-red-100">
-                          <div className="text-xs text-[#6B7280] mb-1">Policy Type</div>
-                          <div className="text-sm font-semibold text-[#111827]">
-                            {decisionPack.policyHolderInfo.policy_type || '—'}
+                          <div className="bg-white rounded-lg p-3 border border-red-100">
+                            <div className="text-xs text-[#6B7280] mb-1">Customer ID</div>
+                            <div className="text-sm font-semibold text-[#111827] font-mono">
+                              {decisionPack.policyHolderInfo.customer_id || '—'}
+                            </div>
                           </div>
-                        </div>
-                        <div className="bg-white rounded-lg p-3 border border-red-100">
-                          <div className="text-xs text-[#6B7280] mb-1">Policy Status</div>
-                          <div className={`text-sm font-semibold ${
-                            decisionPack.policyHolderInfo.policy_status === 'ACTIVE' 
-                              ? 'text-[#059669]' 
-                              : 'text-[#DC2626]'
-                          }`}>
-                            {decisionPack.policyHolderInfo.policy_status || '—'}
+                          <div className="bg-white rounded-lg p-3 border border-red-100">
+                            <div className="text-xs text-[#6B7280] mb-1">Email</div>
+                            <div className="text-sm font-semibold text-[#111827] break-all">
+                              {decisionPack.policyHolderInfo.email_id || '—'}
+                            </div>
                           </div>
-                        </div>
-                        <div className="bg-white rounded-lg p-3 border border-red-100">
-                          <div className="text-xs text-[#6B7280] mb-1">Carrier</div>
-                          <div className="text-sm font-semibold text-[#111827]">
-                            {decisionPack.policyHolderInfo.carrier_name || '—'}
+                          <div className="bg-white rounded-lg p-3 border border-red-100">
+                            <div className="text-xs text-[#6B7280] mb-1">Phone</div>
+                            <div className="text-sm font-semibold text-[#111827]">
+                              {decisionPack.policyHolderInfo.phone_number || '—'}
+                            </div>
                           </div>
-                        </div>
-                        <div className="bg-white rounded-lg p-3 border border-red-100">
-                          <div className="text-xs text-[#6B7280] mb-1">Effective Date</div>
-                          <div className="text-sm font-semibold text-[#111827]">
-                            {decisionPack.policyHolderInfo.effective_date || '—'}
+                          <div className="bg-white rounded-lg p-3 border border-red-100">
+                            <div className="text-xs text-[#6B7280] mb-1">Customer Since</div>
+                            <div className="text-sm font-semibold text-[#111827]">
+                              {decisionPack.policyHolderInfo.customer_since || '—'}
+                            </div>
                           </div>
-                        </div>
-                        <div className="bg-white rounded-lg p-3 border border-red-100">
-                          <div className="text-xs text-[#6B7280] mb-1">Expiration Date</div>
-                          <div className="text-sm font-semibold text-[#111827]">
-                            {decisionPack.policyHolderInfo.expiration_date || '—'}
+                          <div className="bg-white rounded-lg p-3 border border-red-100">
+                            <div className="text-xs text-[#6B7280] mb-1">Status</div>
+                            <div className={`text-sm font-semibold ${
+                              decisionPack.policyHolderInfo.customer_status === 'ACTIVE'
+                                ? 'text-[#059669]'
+                                : decisionPack.policyHolderInfo.customer_status
+                                  ? 'text-[#B45309]'
+                                  : 'text-[#6B7280]'
+                            }`}>
+                              {decisionPack.policyHolderInfo.customer_status || '—'}
+                            </div>
                           </div>
-                        </div>
-                        <div className="bg-white rounded-lg p-3 border border-red-100">
-                          <div className="text-xs text-[#6B7280] mb-1">Premium</div>
-                          <div className="text-sm font-semibold text-[#111827]">
-                            {(() => {
-                              const amount = decisionPack.policyHolderInfo.premium_amount
-                              const frequency = decisionPack.policyHolderInfo.premium_frequency
-                              if (amount != null && !isNaN(Number(amount))) {
-                                const formatted = `$${Number(amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
-                                return frequency ? `${formatted} ${frequency}` : formatted
-                              }
-                              return '—'
-                            })()}
-                          </div>
-                        </div>
-                        <div className="bg-white rounded-lg p-3 border border-red-100">
-                          <div className="text-xs text-[#6B7280] mb-1">Payment Status</div>
-                          <div className={`text-sm font-semibold ${
-                            decisionPack.policyHolderInfo.payment_status === 'CURRENT' 
-                              ? 'text-[#059669]' 
-                              : 'text-[#DC2626]'
-                          }`}>
-                            {decisionPack.policyHolderInfo.payment_status || '—'}
+                          {decisionPack.policyHolderInfo.loyalty_tier && (
+                            <div className="bg-white rounded-lg p-3 border border-red-100">
+                              <div className="text-xs text-[#6B7280] mb-1">Loyalty Tier</div>
+                              <div className="text-sm font-semibold text-[#111827]">
+                                {decisionPack.policyHolderInfo.loyalty_tier}
+                              </div>
+                            </div>
+                          )}
+                          <div className="bg-white rounded-lg p-3 border border-red-100 md:col-span-2">
+                            <div className="text-xs text-[#6B7280] mb-1">Address</div>
+                            <div className="text-sm font-semibold text-[#111827]">
+                              {(() => {
+                                const parts: string[] = []
+                                if (decisionPack.policyHolderInfo.address_line1) parts.push(decisionPack.policyHolderInfo.address_line1)
+                                if (decisionPack.policyHolderInfo.address_line2) parts.push(decisionPack.policyHolderInfo.address_line2)
+                                const city = [
+                                  decisionPack.policyHolderInfo.city,
+                                  decisionPack.policyHolderInfo.state,
+                                  decisionPack.policyHolderInfo.postal_code,
+                                ].filter(Boolean).join(', ')
+                                if (city) parts.push(city)
+                                return parts.length > 0 ? parts.join(', ') : '—'
+                              })()}
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
+                    )}
 
-                    {/* Coverage & Risk Information */}
-                    <div>
-                      <h3 className="text-xs font-semibold text-[#991B1B] uppercase tracking-wider mb-3">Coverage & Risk</h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <div className="bg-white rounded-lg p-3 border border-red-100">
-                          <div className="text-xs text-[#6B7280] mb-1">Total Coverage Limit</div>
-                          <div className="text-sm font-semibold text-[#111827]">
-                            {(() => {
-                              const limit = decisionPack.policyHolderInfo.total_coverage_limit
-                              if (limit != null && !isNaN(Number(limit))) {
-                                return `$${Number(limit).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
-                              }
-                              return '—'
-                            })()}
-                          </div>
-                        </div>
-                        <div className="bg-white rounded-lg p-3 border border-red-100">
-                          <div className="text-xs text-[#6B7280] mb-1">Aggregate Deductible</div>
-                          <div className="text-sm font-semibold text-[#111827]">
-                            {(() => {
-                              const deductible = decisionPack.policyHolderInfo.aggregate_deductible
-                              if (deductible != null && !isNaN(Number(deductible))) {
-                                return `$${Number(deductible).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
-                              }
-                              return '—'
-                            })()}
-                          </div>
-                        </div>
-                        <div className="bg-white rounded-lg p-3 border border-red-100">
-                          <div className="text-xs text-[#6B7280] mb-1">Risk Profile</div>
-                          <div className={`text-sm font-semibold ${
-                            decisionPack.policyHolderInfo.risk_profile === 'LOW' 
-                              ? 'text-[#059669]' 
-                              : decisionPack.policyHolderInfo.risk_profile === 'MEDIUM'
-                              ? 'text-[#F59E0B]'
-                              : 'text-[#DC2626]'
-                          }`}>
-                            {decisionPack.policyHolderInfo.risk_profile || '—'}
-                          </div>
-                        </div>
-                        <div className="bg-white rounded-lg p-3 border border-red-100">
-                          <div className="text-xs text-[#6B7280] mb-1">Credit Score</div>
-                          <div className="text-sm font-semibold text-[#111827]">
-                            {decisionPack.policyHolderInfo.credit_score || '—'}
-                          </div>
-                        </div>
-                        <div className="bg-white rounded-lg p-3 border border-red-100">
-                          <div className="text-xs text-[#6B7280] mb-1">Customer Since</div>
-                          <div className="text-sm font-semibold text-[#111827]">
-                            {decisionPack.policyHolderInfo.customer_since || '—'}
-                          </div>
-                        </div>
-                        <div className="bg-white rounded-lg p-3 border border-red-100">
-                          <div className="text-xs text-[#6B7280] mb-1">Agent Contact</div>
-                          <div className="text-sm font-semibold text-[#111827]">
-                            {(() => {
-                              const agentName = decisionPack.policyHolderInfo.agent_name
-                              const agentContact = decisionPack.policyHolderInfo.agent_contact
-                              if (agentName) {
-                                return agentContact ? `${agentName} • ${agentContact}` : agentName
-                              }
-                              return '—'
-                            })()}
-                          </div>
+                    {/* Complaint Status & History */}
+                    {decisionPack?.policyHolderInfo && (
+                      decisionPack.policyHolderInfo.total_complaints != null ||
+                      decisionPack.policyHolderInfo.complaint_type ||
+                      decisionPack.policyHolderInfo.current_status ||
+                      decisionPack.policyHolderInfo.priority_level ||
+                      decisionPack.policyHolderInfo.assigned_team
+                    ) && (
+                      <div className="bg-white rounded-xl border border-[#E5E7EB] p-5">
+                        <h3 className="text-xs font-semibold text-[#991B1B] uppercase tracking-wider mb-3 flex items-center space-x-1.5">
+                          <Activity className="w-3.5 h-3.5" />
+                          <span>Complaint Status &amp; History</span>
+                        </h3>
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                          {decisionPack.policyHolderInfo.total_complaints != null && (
+                            <div className="bg-[#F9FAFB] rounded-lg p-3 border border-[#E5E7EB]">
+                              <div className="text-xs text-[#6B7280] mb-1">Total Complaints</div>
+                              <div className="text-sm font-semibold text-[#111827]">
+                                {decisionPack.policyHolderInfo.total_complaints}
+                              </div>
+                            </div>
+                          )}
+                          {decisionPack.policyHolderInfo.open_complaints != null && (
+                            <div className="bg-[#F9FAFB] rounded-lg p-3 border border-[#E5E7EB]">
+                              <div className="text-xs text-[#6B7280] mb-1">Open</div>
+                              <div className={`text-sm font-semibold ${
+                                Number(decisionPack.policyHolderInfo.open_complaints) > 0 ? 'text-[#DC2626]' : 'text-[#059669]'
+                              }`}>
+                                {decisionPack.policyHolderInfo.open_complaints}
+                              </div>
+                            </div>
+                          )}
+                          {decisionPack.policyHolderInfo.complaint_type && (
+                            <div className="bg-[#F9FAFB] rounded-lg p-3 border border-[#E5E7EB]">
+                              <div className="text-xs text-[#6B7280] mb-1">Complaint Type</div>
+                              <div className="text-sm font-semibold text-[#111827]">
+                                {decisionPack.policyHolderInfo.complaint_type}
+                              </div>
+                            </div>
+                          )}
+                          {decisionPack.policyHolderInfo.current_status && (
+                            <div className="bg-[#F9FAFB] rounded-lg p-3 border border-[#E5E7EB]">
+                              <div className="text-xs text-[#6B7280] mb-1">Current Status</div>
+                              <div className="text-sm font-semibold text-[#111827]">
+                                {decisionPack.policyHolderInfo.current_status}
+                              </div>
+                            </div>
+                          )}
+                          {decisionPack.policyHolderInfo.priority_level && (
+                            <div className="bg-[#F9FAFB] rounded-lg p-3 border border-[#E5E7EB]">
+                              <div className="text-xs text-[#6B7280] mb-1">Priority</div>
+                              <div className={`text-sm font-semibold ${
+                                decisionPack.policyHolderInfo.priority_level === 'HIGH' ? 'text-[#DC2626]'
+                                : decisionPack.policyHolderInfo.priority_level === 'MEDIUM' ? 'text-[#B45309]'
+                                : 'text-[#059669]'
+                              }`}>
+                                {decisionPack.policyHolderInfo.priority_level}
+                              </div>
+                            </div>
+                          )}
+                          {decisionPack.policyHolderInfo.is_escalated != null && (
+                            <div className="bg-[#F9FAFB] rounded-lg p-3 border border-[#E5E7EB]">
+                              <div className="text-xs text-[#6B7280] mb-1">Escalated</div>
+                              <div className={`text-sm font-semibold ${
+                                decisionPack.policyHolderInfo.is_escalated ? 'text-[#DC2626]' : 'text-[#059669]'
+                              }`}>
+                                {decisionPack.policyHolderInfo.is_escalated ? 'Yes' : 'No'}
+                              </div>
+                            </div>
+                          )}
+                          {decisionPack.policyHolderInfo.assigned_team && (
+                            <div className="bg-[#F9FAFB] rounded-lg p-3 border border-[#E5E7EB]">
+                              <div className="text-xs text-[#6B7280] mb-1">Assigned Team</div>
+                              <div className="text-sm font-semibold text-[#111827]">
+                                {decisionPack.policyHolderInfo.assigned_team}
+                              </div>
+                            </div>
+                          )}
+                          {decisionPack.policyHolderInfo.sla_hours != null && (
+                            <div className="bg-[#F9FAFB] rounded-lg p-3 border border-[#E5E7EB]">
+                              <div className="text-xs text-[#6B7280] mb-1">SLA (hours)</div>
+                              <div className="text-sm font-semibold text-[#111827]">
+                                {decisionPack.policyHolderInfo.sla_hours}
+                              </div>
+                            </div>
+                          )}
                         </div>
                       </div>
-                    </div>
+                    )}
+
+                    {/* Grounding Matches */}
+                    {decisionPack?.policyGrounding && decisionPack.policyGrounding.length > 0 && (
+                      <div className="bg-white rounded-xl border border-[#E5E7EB] p-5">
+                        <h3 className="text-xs font-semibold text-[#991B1B] uppercase tracking-wider mb-3 flex items-center space-x-1.5">
+                          <Tag className="w-3.5 h-3.5" />
+                          <span>Matched Resolution Rules</span>
+                        </h3>
+                        <div className="space-y-3">
+                          {decisionPack.policyGrounding.map((hit, idx) => {
+                            const score = Number(hit.score ?? hit.similarity ?? 0)
+                            const isCustomerRecord = !String(hit.clauseId ?? '').startsWith('RES-')
+                            const recommendation = String(hit.rationale ?? '')
+                            return (
+                              <div
+                                key={hit.clauseId ?? idx}
+                                className="rounded-lg border border-[#E5E7EB] bg-[#F9FAFB] p-4"
+                              >
+                                <div className="flex items-start justify-between gap-3 mb-2">
+                                  <div className="flex items-center space-x-2 flex-1 min-w-0">
+                                    {isCustomerRecord
+                                      ? <User className="w-3.5 h-3.5 text-[#3B82F6] flex-shrink-0" />
+                                      : <BookOpen className="w-3.5 h-3.5 text-[#991B1B] flex-shrink-0" />
+                                    }
+                                    <span className="text-sm font-semibold text-[#111827] truncate">
+                                      {hit.title || hit.clauseId}
+                                    </span>
+                                  </div>
+                                  <div className="flex items-center space-x-2 flex-shrink-0">
+                                    {hit.section && (
+                                      <span className="text-xs text-[#6B7280] bg-[#F3F4F6] px-2 py-0.5 rounded">
+                                        {hit.section}
+                                      </span>
+                                    )}
+                                    <span className={`text-xs font-medium px-2 py-0.5 rounded ${
+                                      score >= 0.8
+                                        ? 'bg-[#ECFDF5] text-[#047857] border border-[#A7F3D0]'
+                                        : score >= 0.6
+                                          ? 'bg-[#EFF6FF] text-[#1D4ED8] border border-[#BFDBFE]'
+                                          : 'bg-[#F3F4F6] text-[#6B7280] border border-[#E5E7EB]'
+                                    }`}>
+                                      {Math.round(score * 100)}%
+                                    </span>
+                                  </div>
+                                </div>
+                                {hit.snippet && (
+                                  <p className="text-xs text-[#6B7280] leading-relaxed mb-2 line-clamp-3">
+                                    {hit.snippet}
+                                  </p>
+                                )}
+                                {recommendation && (
+                                  <div className="flex items-start space-x-1.5 mt-2 pt-2 border-t border-[#E5E7EB]">
+                                    <Info className="w-3 h-3 text-[#991B1B] flex-shrink-0 mt-0.5" />
+                                    <span className="text-xs text-[#374151]">{recommendation}</span>
+                                  </div>
+                                )}
+                              </div>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    )}
+
                   </div>
                 </motion.div>
               )}

@@ -18,7 +18,7 @@ from typing import Any, Callable, Dict, List, Optional, Tuple
 
 import imaplib
 
-from backend.common.config import ENV_FILE
+from backend.common.config import ENV_FILE, IMAP_SYNC_CACHE_FILE
 from backend.faq_resolution.service import process_faq_email
 from backend.ingested_complaints.service import (
     add_dedup_keys_to_set,
@@ -143,11 +143,14 @@ def _classify_complaint_by_llm(subject: str, body: str) -> bool:
                 {
                     "role": "system",
                     "content": (
-                        "You are a customer complaint email classifier. "
-                        "Reply ONLY with 'yes' if the email is a genuine customer complaint "
-                        "(dissatisfaction, refund request, defective product, billing error, "
-                        "delivery problem, poor service, or escalation). "
-                        "Reply ONLY with 'no' for spam, newsletters, or unrelated emails."
+                        "You are a customer complaint email classifier for a consumer electronics company. "
+                        "Reply ONLY with 'yes' if the email is a genuine customer complaint requiring "
+                        "investigation or action — this includes: product defects, hardware or software "
+                        "failures, warranty claims, billing errors, delivery problems, poor service, "
+                        "refund or replacement requests, safety concerns, or escalations. "
+                        "Reply ONLY with 'no' for: spam, marketing or promotional emails, newsletters, "
+                        "order confirmations, subscription notifications, general enquiries, or any "
+                        "email that does not describe a specific problem or customer dissatisfaction."
                     ),
                 },
                 {
@@ -286,6 +289,51 @@ def _extract_raw_message(msg_data: list) -> Optional[bytes]:
     return None
 
 
+# ── UID cache helpers ──────────────────────────────────────────────────────
+
+def _load_sync_cache() -> Dict[str, Any]:
+    """Load the IMAP UID sync cache from disk."""
+    try:
+        if IMAP_SYNC_CACHE_FILE.exists():
+            return json.loads(IMAP_SYNC_CACHE_FILE.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        pass
+    return {}
+
+
+def _save_sync_cache(cache: Dict[str, Any]) -> None:
+    """Persist the IMAP UID sync cache to disk."""
+    try:
+        IMAP_SYNC_CACHE_FILE.parent.mkdir(parents=True, exist_ok=True)
+        IMAP_SYNC_CACHE_FILE.write_text(json.dumps(cache, indent=2), encoding="utf-8")
+    except OSError as e:
+        print(f"Warning: could not save IMAP sync cache: {e}", file=sys.stderr)
+
+
+def _cache_key(account: str, mailbox: str) -> str:
+    return f"{account.lower()}:{mailbox}"
+
+
+def _get_last_uid(cache: Dict[str, Any], account: str, mailbox: str) -> Optional[int]:
+    """Return last synced UID for this account+mailbox, or None if first sync."""
+    key = _cache_key(account, mailbox)
+    val = cache.get(key, {}).get("lastUID")
+    try:
+        return int(val) if val is not None else None
+    except (TypeError, ValueError):
+        return None
+
+
+def _set_last_uid(cache: Dict[str, Any], account: str, mailbox: str, uid: int) -> None:
+    """Update the cache with the latest UID seen."""
+    import datetime
+    key = _cache_key(account, mailbox)
+    cache[key] = {
+        "lastUID": uid,
+        "syncedAt": datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
+    }
+
+
 # ── Main sync function ─────────────────────────────────────────────────────
 
 def sync_inbox(
@@ -328,12 +376,13 @@ def sync_inbox(
     max_emails   = int(os.environ.get("IMAP_SYNC_MAX_EMAILS", "100"))
     ssl_verify   = os.environ.get("IMAP_SSL_VERIFY", "false").lower() not in ("false", "0", "no")
 
-    def parse_uids(data: list) -> List[str]:
+    def parse_uid_list(data: list) -> List[str]:
+        """Parse UID search response into a list of UID strings."""
         if not data or data[0] is None:
             return []
         raw = data[0]
         s = raw.decode("utf-8", errors="replace") if isinstance(raw, bytes) else str(raw)
-        return [u for u in s.split() if u]
+        return [u for u in s.split() if u.isdigit()]
 
     try:
         ctx = ssl.create_default_context()
@@ -344,21 +393,46 @@ def sync_inbox(
         mail = imaplib.IMAP4_SSL(host, port, ssl_context=ctx)
         mail.login(user, password)
 
+        # Load UID cache to only fetch emails we haven't seen before
+        sync_cache = _load_sync_cache()
+
         mailboxes_to_try = [mailbox]
         if "gmail" in host.lower() and mailbox.upper() == "INBOX":
             mailboxes_to_try = ["[Gmail]/All Mail", "[Google Mail]/All Mail", "INBOX"]
 
         uids: List[str] = []
+        last_uid: Optional[int] = None
+        active_mailbox: str = mailbox
+
         for mbox in mailboxes_to_try:
             try:
                 status, _ = mail.select(mbox)
                 if status != "OK":
                     continue
-                _, data = mail.search(None, "ALL" if include_read else "UNSEEN")
-                uids = parse_uids(data)
-                if len(uids) > max_emails:
-                    uids = uids[-max_emails:]
-                if uids:
+
+                last_uid = _get_last_uid(sync_cache, user, mbox)
+
+                if last_uid is not None:
+                    # Only fetch emails with UID strictly greater than last seen
+                    search_criteria = f"UID {last_uid + 1}:*"
+                    _, data = mail.uid("search", None, search_criteria)
+                    all_uids = parse_uid_list(data)
+                    # Filter out the boundary UID itself (IMAP returns it when no newer exist)
+                    uids = [u for u in all_uids if int(u) > last_uid]
+                    result["cachedSyncFrom"] = last_uid
+                    result["newOnly"] = True
+                else:
+                    # First sync: fall back to ALL/UNSEEN limited to max_emails
+                    search_term = "ALL" if include_read else "UNSEEN"
+                    _, data = mail.uid("search", None, search_term)
+                    all_uids = parse_uid_list(data)
+                    if len(all_uids) > max_emails:
+                        all_uids = all_uids[-max_emails:]
+                    uids = all_uids
+                    result["newOnly"] = False
+
+                if uids or last_uid is not None:
+                    active_mailbox = mbox
                     result["mailboxUsed"] = mbox
                     break
             except Exception:
@@ -367,9 +441,13 @@ def sync_inbox(
         if not uids:
             result["success"] = True
             result["hint"] = (
-                "Inbox is empty or no emails found. "
-                "For Gmail, enable 'All Mail' in IMAP settings, "
-                "or set IMAP_MAILBOX='[Gmail]/All Mail' in .env"
+                "No new emails since last sync. "
+                if last_uid is not None
+                else (
+                    "Inbox is empty or no emails found. "
+                    "For Gmail, enable 'All Mail' in IMAP settings, "
+                    "or set IMAP_MAILBOX='[Gmail]/All Mail' in .env"
+                )
             )
             mail.logout()
             return result
@@ -379,6 +457,8 @@ def sync_inbox(
 
         total = len(uids)
         done = 0
+        max_uid_seen: int = last_uid or 0
+
         if progress_callback:
             try:
                 progress_callback({
@@ -394,8 +474,9 @@ def sync_inbox(
                 pass
 
         for uid in uids:
+            max_uid_seen = max(max_uid_seen, int(uid))
             try:
-                _, msg_data = mail.fetch(uid, "(RFC822)")
+                _, msg_data = mail.uid("fetch", uid, "(RFC822)")
                 raw = _extract_raw_message(
                     list(msg_data) if hasattr(msg_data, "__iter__") else msg_data
                 )
@@ -487,6 +568,12 @@ def sync_inbox(
                     })
                 except Exception:
                     pass
+
+        # Persist the highest UID we processed so next sync skips these emails
+        if max_uid_seen > (last_uid or 0):
+            _set_last_uid(sync_cache, user, active_mailbox, max_uid_seen)
+            _save_sync_cache(sync_cache)
+            result["lastUIDSaved"] = max_uid_seen
 
         result["success"] = len(result["errors"]) == 0
         mail.logout()

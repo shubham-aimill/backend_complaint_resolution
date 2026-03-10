@@ -12,7 +12,8 @@ Each check returns a structured result dict that is collected into a
 ``validationResults`` block attached to the decision pack.
 
 Auto-decision codes produced:
-  DESK_REJECT        — product is out of warranty (warranty check fails)
+  DESK_REJECT        — product is out of warranty, physically/accidentally damaged,
+                       repaired by an unauthorised third party, or unsupported product
   REQUEST_DOCUMENTS  — required documents are missing
   VALID              — all checks pass; proceed to the decision engine
 """
@@ -357,6 +358,105 @@ def validate_product(
     }
 
 
+# ── Eligibility checks (non-warranty desk-reject scenarios) ───────────────
+
+def validate_eligibility(
+    extracted_fields: Dict[str, Any],
+    documents: List[Dict[str, Any]],
+) -> Dict[str, Any]:
+    """
+    Check complaint eligibility beyond warranty period.
+
+    Triggers DESK_REJECT for:
+      1. Physical / accidental damage caused by user misuse
+      2. Unauthorised / third-party repair (voids warranty)
+      3. Product not in our supported electronics categories
+
+    Returns a validation result with an optional ``rejectReason`` field.
+    """
+    description = (extracted_fields.get("description") or "").lower()
+    product     = (extracted_fields.get("productOrService") or "").lower()
+    combined    = f"{description} {product}"
+
+    # ─ Check 1: Physical / accidental damage ──────────────────────────────
+    accidental_patterns = [
+        r"\bdropped\b", r"\bfall\b", r"\bfell\b",
+        r"\bwater.?damage[d]?\b", r"\bwater.?damaged\b",
+        r"\bspill(?:ed)?\b", r"\bsplash(?:ed)?\b",
+        r"\baccidental(?:ly)?\b",
+        r"\bphysically damaged\b",
+        r"\bbent\b",
+        r"\bsmashed screen\b", r"\bscreen smashed\b",
+        r"\bcracked.*(?:drop|fall|impact|hit)\b",
+        r"\b(?:drop|fall|impact|hit).*crack\b",
+        r"\bdamage.*(?:drop|fall|hit|impact)\b",
+        r"\b(?:drop|fall|hit|impact).*damage\b",
+    ]
+    if any(re.search(p, combined, re.IGNORECASE) for p in accidental_patterns):
+        return {
+            "check": "eligibility_validation",
+            "passed": False,
+            "rejectReason": "physical_damage",
+            "autoDecision": "DESK_REJECT",
+            "notes": (
+                "Complaint indicates physical or accidental damage caused by the user. "
+                "Physical damage due to misuse is not covered under the standard warranty."
+            ),
+        }
+
+    # ─ Check 2: Unauthorised / third-party repair ──────────────────────────
+    tamper_patterns = [
+        r"\bthird.party repair\b", r"\blocal repair\b",
+        r"\bunauthori[sz]ed repair\b",
+        r"\brepaired by\b", r"\btook it to a(?:nother)? shop\b",
+        r"\bwarranty.*void\b", r"\bvoid.*warranty\b",
+        r"\bwarranty seal.*broken\b", r"\btamper(?:ed)?\b",
+        r"\bself.?repair\b", r"\bopened the device\b",
+        r"\bmodified the\b",
+        r"\bnon.authoris(?:ed|ed) technician\b",
+        r"\brepaired.*outside\b",
+    ]
+    if any(re.search(p, combined, re.IGNORECASE) for p in tamper_patterns):
+        return {
+            "check": "eligibility_validation",
+            "passed": False,
+            "rejectReason": "unauthorized_repair",
+            "autoDecision": "DESK_REJECT",
+            "notes": (
+                "Complaint indicates the product was repaired or modified by an "
+                "unauthorised third party, which voids the manufacturer warranty."
+            ),
+        }
+
+    # ─ Check 3: Unsupported / non-electronics product ─────────────────────
+    non_electronics_patterns = [
+        r"\bfurniture\b", r"\bclothing\b", r"\bfood\b", r"\bdrink\b",
+        r"\bvehicle\b", r"\bhome appliance\b",
+        r"\bwashing machine\b", r"\brefrigerator\b", r"\bmicrowave\b",
+        r"\bvacuum cleaner\b", r"\bblender\b", r"\bdishwasher\b",
+        r"\boven\b", r"\bcooker\b",
+    ]
+    if any(re.search(p, combined, re.IGNORECASE) for p in non_electronics_patterns):
+        return {
+            "check": "eligibility_validation",
+            "passed": False,
+            "rejectReason": "unsupported_product",
+            "autoDecision": "DESK_REJECT",
+            "notes": (
+                f"Product '{extracted_fields.get('productOrService', '')}' is not in our "
+                "supported consumer electronics categories. Cannot process this complaint."
+            ),
+        }
+
+    return {
+        "check": "eligibility_validation",
+        "passed": True,
+        "rejectReason": None,
+        "autoDecision": None,
+        "notes": "No eligibility issues detected.",
+    }
+
+
 # ── Main entry point ───────────────────────────────────────────────────────
 
 def run_validation(
@@ -390,12 +490,14 @@ def run_validation(
             None,
         )
 
-    warranty_result  = validate_warranty(extracted_fields, documents, matched_product)
-    document_result  = validate_documents(extracted_fields, documents)
+    eligibility_result = validate_eligibility(extracted_fields, documents)
+    warranty_result    = validate_warranty(extracted_fields, documents, matched_product)
+    document_result    = validate_documents(extracted_fields, documents)
 
-    results = [warranty_result, document_result, product_result]
+    results = [eligibility_result, warranty_result, document_result, product_result]
 
     # Priority order for auto-decision: DESK_REJECT > REQUEST_DOCUMENTS > None
+    # Eligibility check takes precedence over warranty (covers additional reject scenarios)
     auto_decision: Optional[str] = None
     for r in results:
         ad = r.get("autoDecision")

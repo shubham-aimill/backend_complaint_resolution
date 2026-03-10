@@ -64,6 +64,9 @@ PRODUCTS_FILE:         Path = DATA_DIR / "product_service.json"
 # Raw complaints ingested from email (before AI processing)
 INGESTED_COMPLAINTS_FILE: Path = DATA_DIR / "ingested-complaints.json"
 
+# IMAP sync UID cache (tracks last seen UID per account+mailbox to avoid re-fetching)
+IMAP_SYNC_CACHE_FILE: Path = DATA_DIR / "imap-sync-cache.json"
+
 # Processed complaint index + history CSV
 COMPLAINTS_INDEX_FILE:  Path = PROCESSED_COMPLAINTS_DIR / "complaints-index.json"
 COMPLAINTS_HISTORY_CSV: Path = PROCESSED_COMPLAINTS_DIR / "complaints-history.csv"

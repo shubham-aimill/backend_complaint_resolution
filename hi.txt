@@ -1,0 +1,19 @@
+1.Ingestion should be done only for the mails which has not been processed, currently it was checking last 100 mails every time. We can also use any caching logic here.
+
+2.Adding More Scenarios for desk rejects as suggested.
+
+3.Better Prompts for mails triggered.
+
+4.Component Remapping according to the Frontend.
+
+Capturing chain of mail:
+Chain of mail also needs to be captured @SHUBHAM SAHU
+
+Complaint Grouding section to be added
+
+
+
+Change Complaint Summary components
+
+
+Schedule Engineer Vist button and Pop Up

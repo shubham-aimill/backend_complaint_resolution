@@ -68,6 +68,60 @@ def _derive_auto_decision(
 
     # Hard-stop decisions from validation
     if validation_auto == "DESK_REJECT":
+        # Determine the specific reject reason for tailored rationale
+        eligibility_result = next(
+            (r for r in validation.get("validationResults", [])
+             if r.get("check") == "eligibility_validation"),
+            {}
+        )
+        reject_reason = eligibility_result.get("rejectReason")
+
+        if reject_reason == "physical_damage":
+            return {
+                "autoDecision":        "DESK_REJECT",
+                "decisionConfidence":  0.90,
+                "decisionRationale":   (
+                    "Physical or accidental damage caused by the user is not covered "
+                    "under the standard manufacturer warranty."
+                ),
+                "recommendedNextStep": (
+                    "Send DESK_REJECT email (physical damage). "
+                    "Offer paid repair quote at authorised service centre."
+                ),
+                "rejectReason": "physical_damage",
+            }
+
+        if reject_reason == "unauthorized_repair":
+            return {
+                "autoDecision":        "DESK_REJECT",
+                "decisionConfidence":  0.92,
+                "decisionRationale":   (
+                    "Product was repaired or modified by an unauthorised third party, "
+                    "which voids the manufacturer warranty."
+                ),
+                "recommendedNextStep": (
+                    "Send DESK_REJECT email (unauthorised repair). "
+                    "Advise customer to use only authorised service centres."
+                ),
+                "rejectReason": "unauthorized_repair",
+            }
+
+        if reject_reason == "unsupported_product":
+            return {
+                "autoDecision":        "DESK_REJECT",
+                "decisionConfidence":  0.95,
+                "decisionRationale":   (
+                    "Product type is not in our supported consumer electronics categories "
+                    "and cannot be processed through this complaint channel."
+                ),
+                "recommendedNextStep": (
+                    "Send DESK_REJECT email (unsupported product). "
+                    "Direct customer to the appropriate support channel."
+                ),
+                "rejectReason": "unsupported_product",
+            }
+
+        # Default: out of warranty
         return {
             "autoDecision":        "DESK_REJECT",
             "decisionConfidence":  0.95,
@@ -76,6 +130,7 @@ def _derive_auto_decision(
                 "Send DESK_REJECT email. "
                 "Offer out-of-warranty paid repair if applicable."
             ),
+            "rejectReason": "out_of_warranty",
         }
 
     if validation_auto == "REQUEST_DOCUMENTS":
@@ -379,6 +434,7 @@ def build_decision_pack(
         "autoDecision":        decision_block["autoDecision"],
         "decisionConfidence":  decision_block["decisionConfidence"],
         "recommendedNextStep": decision_block["recommendedNextStep"],
+        "rejectReason":        decision_block.get("rejectReason"),
 
         "decisionPack": {
             "id":               f"DP-{int(time.time() * 1000)}",
@@ -399,6 +455,7 @@ def build_decision_pack(
             "decisionConfidence":  decision_block["decisionConfidence"],
             "decisionRationale":   decision_block["decisionRationale"],
             "recommendedNextStep": decision_block["recommendedNextStep"],
+            "rejectReason":        decision_block.get("rejectReason"),
 
             "audit": audit,
 

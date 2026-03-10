@@ -102,6 +102,9 @@ def process_complaint(ingested_complaint_id: str) -> Dict[str, Any]:
     warranty_expiry = warranty_result.get("expiryDate")
     purchase_date   = warranty_result.get("purchaseDate")
 
+    # Gather reject reason for DESK_REJECT (physical damage, unauthorized repair, etc.)
+    reject_reason = complaint_data.get("rejectReason")
+
     auto_email_result: Dict[str, Any] = {"sent": False, "skipped": True, "reason": "no_decision"}
 
     if auto_decision and customer_email:
@@ -114,6 +117,7 @@ def process_complaint(ingested_complaint_id: str) -> Dict[str, Any]:
             missing_docs=missing_docs,
             warranty_expiry=warranty_expiry,
             purchase_date=purchase_date,
+            reject_reason=reject_reason,
         )
     elif not customer_email:
         auto_email_result = {

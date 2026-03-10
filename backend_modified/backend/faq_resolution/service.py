@@ -100,11 +100,14 @@ def _is_faq_query(subject: str, body: str) -> bool:
                 {
                     "role": "system",
                     "content": (
-                        "You are an email classifier for a customer support team. "
-                        "Reply ONLY with 'FAQ' if the email is asking a general question "
-                        "that could be answered from a knowledge base. "
-                        "Reply ONLY with 'COMPLAINT' if it describes a specific problem, "
-                        "incident, or dissatisfaction that needs investigation."
+                        "You are an email classifier for a consumer electronics customer support team. "
+                        "Reply ONLY with 'FAQ' if the email is a general information request or simple "
+                        "question that could be answered from a product or policy knowledge base — "
+                        "for example: 'how do I reset my device?', 'what is your return policy?', "
+                        "'how long does delivery take?', 'where is my nearest service centre?'. "
+                        "Reply ONLY with 'COMPLAINT' if the email describes a specific incident, "
+                        "product defect, hardware or software fault, billing problem, delivery issue, "
+                        "or customer dissatisfaction that requires investigation or direct action."
                     ),
                 },
                 {
@@ -152,11 +155,18 @@ def _find_faq_answer(question_text: str, faqs: List[Dict[str, str]]) -> Optional
             messages=[
                 {
                     "role": "system",
-                    "content": "You are an FAQ matcher. Respond ONLY with the FAQ number (Q1, Q2, …) or 'NONE'.",
+                    "content": (
+                        "You are an FAQ matching assistant for a consumer electronics customer support team. "
+                        "Given a customer's question and a list of FAQ entries, identify the single FAQ "
+                        "entry that best semantically addresses the customer's question — even if the exact "
+                        "wording differs. Prioritise meaning and intent over keyword overlap. "
+                        "Respond ONLY with the FAQ number (e.g. Q1, Q3) of the best match, "
+                        "or 'NONE' if no FAQ adequately addresses the question."
+                    ),
                 },
                 {
                     "role": "user",
-                    "content": f"Question: {question_text}\n\nFAQ list:\n{faq_context}",
+                    "content": f"Customer question: {question_text}\n\nFAQ list:\n{faq_context}",
                 },
             ],
             max_tokens=10,
@@ -196,23 +206,40 @@ def _send_faq_response_email(
     smtp_port = int(os.environ.get("SMTP_PORT", "587"))
 
     body_lines = [
-        f"Thank you for contacting Customer Support.",
+        "Dear Valued Customer,",
+        "",
+        "Thank you for contacting Consumer Electronics Customer Support.",
+        "We're happy to help with your enquiry.",
         "",
     ]
     if matched_question:
-        body_lines += [f"You asked: {matched_question}", ""]
+        body_lines += [
+            f"Your question: {matched_question}",
+            "",
+            "Our answer:",
+        ]
     body_lines += [
-        answer, "",
-        "---",
-        "This is an automated response. If this does not answer your question, "
-        "please reply and our team will respond within 2 business days.",
+        answer,
+        "",
+        "─" * 60,
+        "If this response does not fully address your question, or if you",
+        "have a more specific issue to report, please reply to this email",
+        "and a member of our team will assist you within 2 business days.",
+        "",
+        "For urgent matters, you can also reach us at:",
+        "  Phone: 1-800-ELEC-HELP  (Monday – Friday, 9am – 6pm)",
+        "  Email: support@electronics.com",
+        "",
+        "Kind regards,",
+        "Customer Support Team",
+        "Consumer Electronics",
     ]
     text_body = "\n".join(body_lines)
 
     msg = MIMEMultipart("alternative")
     msg["From"] = f"Customer Support <{sender_email}>"
     msg["To"] = to_addr
-    msg["Subject"] = f"Re: {original_subject}"
+    msg["Subject"] = f"Re: {original_subject} — Consumer Electronics Support"
     msg.attach(MIMEText(text_body, "plain"))
     msg.attach(MIMEText(text_body.replace("\n", "<br>"), "html"))
 
@@ -249,8 +276,11 @@ def process_faq_email(
 
         if not faq_match:
             generic = (
-                "Thank you for your enquiry. We have received your message and a "
-                "member of our team will respond within 2 business days."
+                "We have received your enquiry and are looking into it.\n\n"
+                "One of our support specialists will review your message and respond "
+                "with a personalised answer within 2 business days.\n\n"
+                "If your matter is urgent, please call us at 1-800-ELEC-HELP "
+                "(Monday – Friday, 9am – 6pm)."
             )
             _send_faq_response_email(from_addr, subject, email_body, generic)
             return {"is_faq": True, "answered": True, "answer": generic, "error": None}

@@ -48,25 +48,33 @@ def _build_request_documents_body(
     doc_list = "\n".join(f"  • {doc.replace('_', ' ').title()}" for doc in missing_docs)
     return f"""Dear {customer_name or 'Valued Customer'},
 
-Thank you for contacting our Customer Support team regarding your {product_name or 'product'}.
+Thank you for getting in touch with Consumer Electronics Customer Support.
 
-We have received your complaint (Reference: {complaint_id}) and are committed to resolving 
-your issue as quickly as possible. However, we are unable to proceed without the following 
-required documents:
+We have received your complaint (Reference: {complaint_id}) regarding your \
+{product_name or 'product'} and want to resolve this for you as quickly as possible.
+
+To progress your complaint, we need the following document(s):
 
 {doc_list}
 
-Please reply to this email with the above documents attached, or upload them at:
-  https://support.electronics.com/complaints/{complaint_id}
+These documents help us verify your purchase and process your claim efficiently.
 
-Once we receive the required information, we will review your complaint and respond 
-within 2 business days.
+What to do next:
+  • Reply to this email with the document(s) attached, or
+  • Contact us quoting your complaint reference: {complaint_id}
 
-We apologise for any inconvenience caused and appreciate your patience.
+Once we receive the required information, our team will review your case and
+respond with an outcome within 2 business days.
+
+If you have any difficulty locating these documents, please reply and we will
+do our best to assist you.
+
+We apologise for the additional step and appreciate your cooperation.
 
 Kind regards,
 Customer Support Team
-Consumer Electronics"""
+Consumer Electronics
+  Email: support@electronics.com  |  Phone: 1-800-ELEC-HELP (Mon–Fri, 9am–6pm)"""
 
 
 def _build_desk_reject_body(
@@ -75,7 +83,106 @@ def _build_desk_reject_body(
     complaint_id: str,
     warranty_expiry: Optional[str],
     purchase_date: Optional[str],
+    reject_reason: Optional[str] = None,
 ) -> str:
+    name    = customer_name or "Valued Customer"
+    product = product_name or "product"
+
+    if reject_reason == "physical_damage":
+        return f"""Dear {name},
+
+Thank you for contacting Consumer Electronics Customer Support regarding your
+{product} (Complaint Reference: {complaint_id}).
+
+We have carefully reviewed your complaint. Unfortunately, we are unable to process
+this complaint under our warranty or guarantee scheme for the following reason:
+
+  Reason: Physical or accidental damage caused by user misuse is not covered
+  under the standard manufacturer's warranty.
+
+Our warranty covers manufacturing defects and hardware failures under normal use.
+Damage resulting from accidental drops, liquid exposure, or physical impact falls
+outside the scope of warranty coverage.
+
+Options available to you:
+  1. Paid repair service — our authorised service centres can assess and repair
+     your device. Please contact: repairs@electronics.com for a quote.
+  2. Insurance claim — if you have device insurance, this type of damage is
+     typically covered. Please contact your insurer directly.
+  3. Consumer rights — statutory rights may apply in limited circumstances.
+     Please contact your local consumer authority for guidance.
+
+If you believe this decision has been made in error, please reply within 14 days
+with any additional evidence and we will be happy to re-evaluate.
+
+We apologise for any inconvenience caused.
+
+Kind regards,
+Customer Support Team
+Consumer Electronics"""
+
+    if reject_reason == "unauthorized_repair":
+        return f"""Dear {name},
+
+Thank you for contacting Consumer Electronics Customer Support regarding your
+{product} (Complaint Reference: {complaint_id}).
+
+We have carefully reviewed your complaint. Unfortunately, we are unable to process
+this complaint under our warranty or guarantee scheme for the following reason:
+
+  Reason: The manufacturer's warranty is void as the product has been repaired or
+  modified by an unauthorised third party.
+
+Our warranty requires that all repairs and servicing be carried out by authorised
+service centres only. Third-party repairs or modifications to the device void the
+manufacturer's warranty.
+
+Options available to you:
+  1. Authorised repair service — our service centres can still repair your device
+     on a paid basis. Please contact: repairs@electronics.com for a quote.
+  2. Consumer rights — depending on your jurisdiction, statutory rights may still
+     apply in certain circumstances. Please contact your local consumer authority.
+
+For all future servicing, please use only our authorised service centres to
+preserve your warranty. A list of authorised centres is available at:
+  https://support.electronics.com/service-centres
+
+If you believe this decision has been made in error, please reply within 14 days
+with any relevant documentation and we will be happy to review.
+
+We apologise for any inconvenience caused.
+
+Kind regards,
+Customer Support Team
+Consumer Electronics"""
+
+    if reject_reason == "unsupported_product":
+        return f"""Dear {name},
+
+Thank you for contacting Consumer Electronics Customer Support regarding your
+{product} (Complaint Reference: {complaint_id}).
+
+We have carefully reviewed your complaint. Unfortunately, we are unable to process
+this complaint through our current channel for the following reason:
+
+  Reason: The product described does not fall within our supported consumer
+  electronics product categories.
+
+Our complaint resolution service covers smartphones, laptops, tablets, earbuds,
+smartwatches, and cameras. For other product types, please contact the relevant
+manufacturer or retailer directly.
+
+If you believe your product falls within our supported categories and this
+decision has been made in error, please reply within 14 days with your product
+model and serial number and we will be happy to re-evaluate.
+
+We apologise for any inconvenience caused.
+
+Kind regards,
+Customer Support Team
+Consumer Electronics"""
+
+    # Default: out of warranty
     warranty_info = ""
     if purchase_date and warranty_expiry:
         warranty_info = (
@@ -83,12 +190,12 @@ def _build_desk_reject_body(
             f"on {purchase_date}, and the manufacturer's warranty expired on {warranty_expiry}."
         )
 
-    return f"""Dear {customer_name or 'Valued Customer'},
+    return f"""Dear {name},
 
-Thank you for contacting Consumer Electronics Customer Support regarding your 
-{product_name or 'product'} (Complaint Reference: {complaint_id}).
+Thank you for contacting Consumer Electronics Customer Support regarding your
+{product} (Complaint Reference: {complaint_id}).
 
-We have carefully reviewed your complaint. Unfortunately, we are unable to process 
+We have carefully reviewed your complaint. Unfortunately, we are unable to process
 this complaint under our warranty or guarantee scheme for the following reason:
 
   Reason: The product is outside its manufacturer's warranty period.
@@ -102,8 +209,8 @@ Options available to you:
   3. Consumer rights — depending on your jurisdiction, statutory consumer rights
      may still apply. Please contact your local consumer authority for guidance.
 
-If you believe this decision has been made in error, or if you have additional 
-evidence (e.g. a different purchase date or extended warranty), please reply to 
+If you believe this decision has been made in error, or if you have additional
+evidence (e.g. a different purchase date or extended warranty), please reply to
 this email within 14 days and we will be happy to re-evaluate your case.
 
 We apologise for any inconvenience caused.
@@ -128,20 +235,24 @@ def _build_approval_body(
     )
     return f"""Dear {customer_name or 'Valued Customer'},
 
-Great news! We have reviewed your complaint (Reference: {complaint_id}) regarding your 
-{product_name or 'product'} and are pleased to inform you that your complaint has been 
-APPROVED for {action_label.upper()}.
+We have good news regarding your complaint (Reference: {complaint_id}) about your
+{product_name or 'product'}.
 
-Next steps:
+After reviewing the details of your case, we are pleased to confirm that your
+complaint has been approved and we will be arranging a {action_label} for you.
+
+What happens next:
 {steps}
 
-Please keep this email for your records. If you have any questions in the meantime, 
-do not hesitate to contact us:
-  Email: support@electronics.com
-  Phone: 1-800-ELEC-HELP (Mon–Fri, 9am–6pm)
+Please keep this email for your records and quote your reference number
+({complaint_id}) in any future correspondence.
 
-Thank you for your patience throughout this process. We are committed to ensuring 
-you have the best possible experience with our products.
+If you have any questions at any point during this process, our team is here to help:
+  Email: support@electronics.com
+  Phone: 1-800-ELEC-HELP  (Monday – Friday, 9am – 6pm)
+
+Thank you for bringing this to our attention. We are sorry for the inconvenience
+caused and look forward to getting this resolved for you promptly.
 
 Kind regards,
 Customer Support Team
@@ -157,21 +268,29 @@ def _build_investigate_body(
 
 Thank you for contacting Consumer Electronics Customer Support.
 
-We have received your complaint (Reference: {complaint_id}) regarding your 
-{product_name or 'product'} and have assigned it to our specialist team for review.
+We have received your complaint (Reference: {complaint_id}) regarding your \
+{product_name or 'product'} and want to assure you that we take all customer
+concerns seriously.
+
+Your case has been assigned to our specialist team who will carry out a
+thorough review of all the details you have provided.
 
 What happens next:
-  1. A member of our team will review all the information and documents you have 
-     provided within 2 business days.
-  2. We may contact you if we require any additional information.
-  3. You will receive a follow-up email with our findings and proposed resolution 
+  1. Our team will carefully review your complaint and any documents provided
+     within 2 business days.
+  2. We may reach out if we need any additional information from you.
+  3. You will receive a written outcome with our findings and proposed resolution
      within 5 business days.
 
-You can check the status of your complaint at any time at:
-  https://support.electronics.com/complaints/{complaint_id}
+Your complaint reference is: {complaint_id}
+Please quote this in any future correspondence with us.
 
-We appreciate your patience and will work hard to resolve your complaint fairly 
-and promptly.
+If you have any questions in the meantime, please do not hesitate to contact us:
+  Email: support@electronics.com
+  Phone: 1-800-ELEC-HELP  (Monday – Friday, 9am – 6pm)
+
+We appreciate your patience and are committed to resolving this matter fairly
+and as quickly as possible.
 
 Kind regards,
 Customer Support Team
@@ -224,6 +343,7 @@ def send_auto_response(
     warranty_expiry: Optional[str] = None,
     purchase_date: Optional[str] = None,
     next_steps: Optional[List[str]] = None,
+    reject_reason: Optional[str] = None,
 ) -> Dict[str, Any]:
     """
     Send the appropriate automated email response based on the decision code.
@@ -266,6 +386,7 @@ def send_auto_response(
             body    = _build_desk_reject_body(
                 customer_name, product_name or "your product",
                 complaint_id, warranty_expiry, purchase_date,
+                reject_reason=reject_reason,
             )
 
         elif decision in ("APPROVE_REPAIR", "APPROVE_REPLACEMENT"):

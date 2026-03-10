@@ -94,6 +94,7 @@ export interface ClaimDraft {
 }
 
 export interface PolicyHolderInfo {
+  // Core customer fields (electronics backend)
   customer_id?: string
   first_name?: string
   last_name?: string
@@ -108,11 +109,27 @@ export interface PolicyHolderInfo {
   country?: string
   customer_since?: string
   customer_status?: string
+  loyalty_tier?: string
+  total_complaints?: number
+  open_complaints?: number
+  preferred_contact?: string
+  complaint_ref?: string
+  complaint_id?: string
+  product_id?: string
+  complaint_type?: string
+  current_status?: string
+  priority_level?: string
+  severity_level?: string
+  is_escalated?: boolean
+  assigned_team?: string
+  sla_hours?: number
+  // Aliases / insurance-era fields (mapped by normalizeClaim.ts)
+  policy_number?: string
+  policy_status?: string
+  // Insurance-specific (not populated by electronics backend, kept for type compat)
   risk_profile?: string
   credit_score?: number
-  policy_number?: string
   policy_type?: string
-  policy_status?: string
   effective_date?: string
   expiration_date?: string
   premium_amount?: number
@@ -144,12 +161,19 @@ export interface DecisionPack {
     documentTypes: string[]
     avgDocumentConfidence: number
     missingDocuments: string[]
+    presentDocuments?: string[]
   }
   policyAssessment?: {
     clausesFound: number
     coverageConfirmed: boolean
     topSimilarityScore: number
     recommendedActions: string[]
+    // Raw backend fields (also present after normalization)
+    recordsFound?: number
+    customerVerified?: boolean
+    topMatchScore?: number
+    autoDecision?: string
+    decisionConfidence?: number
   }
   processingSummary?: {
     totalTime: number
@@ -158,6 +182,39 @@ export interface DecisionPack {
     automationLevel: number
   }
   createdAt?: string
+
+  // ── Electronics-specific fields from backend ────────────────────────────
+  /** Current warranty status: WITHIN_WARRANTY | OUT_OF_WARRANTY | UNKNOWN */
+  warrantyStatus?: string
+  /** Product category detected (Smartphone, Laptop, etc.) */
+  productCategory?: string
+  /** Matched product from product catalogue */
+  matchedProduct?: {
+    productId?: string
+    productName?: string
+    brandName?: string
+    modelNumber?: string
+    price?: number
+  }
+  /** Full validation results from warranty, document, product, eligibility checks */
+  validationResults?: Array<{
+    check: string
+    passed: boolean
+    autoDecision?: string
+    rejectReason?: string
+    notes?: string
+    [key: string]: unknown
+  }>
+  /** Final decision code */
+  autoDecision?: string
+  /** Decision confidence score (0–1) */
+  decisionConfidence?: number
+  /** Human-readable rationale for the decision */
+  decisionRationale?: string
+  /** Recommended next step for the agent */
+  recommendedNextStep?: string
+  /** Specific reason for desk rejection */
+  rejectReason?: string
 }
 
 export interface ProcessingMetrics {
@@ -181,6 +238,20 @@ export interface ClaimData {
   processingMetrics: ProcessingMetrics
   createdAt: string
   status: string
+
+  // ── Electronics-specific top-level fields ─────────────────────────────
+  /** Final auto-decision code (APPROVE_REPAIR | APPROVE_REPLACEMENT | DESK_REJECT | etc.) */
+  autoDecision?: string
+  /** Decision confidence score (0–1) */
+  decisionConfidence?: number
+  /** Recommended next step for the handling agent */
+  recommendedNextStep?: string
+  /** Warranty status: WITHIN_WARRANTY | OUT_OF_WARRANTY | UNKNOWN */
+  warrantyStatus?: string
+  /** Product category detected */
+  productCategory?: string
+  /** Specific reason for desk rejection */
+  rejectReason?: string
 
   // Legacy compatibility
   processingTime?: number
