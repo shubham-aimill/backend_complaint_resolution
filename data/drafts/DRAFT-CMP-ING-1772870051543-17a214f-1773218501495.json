@@ -1,0 +1,54 @@
+{
+  "draftId": "DRAFT-CMP-ING-1772870051543-17a214f-1773218501495",
+  "claimId": "CMP-ING-1772870051543-17a214f",
+  "ingestedClaimId": "ING-1772870051543-17a214f",
+  "status": "pending",
+  "createdAt": "2026-03-11T08:41:41.495Z",
+  "claimFields": {
+    "policyNumber": "CUST10002",
+    "claimantName": "Rahul Patel",
+    "contactEmail": "ra***@email.com",
+    "lossDate": "2025-11-10",
+    "lossType": "Display / Audio",
+    "lossLocation": "CoreMax ProBook Ultra 15 Laptop",
+    "description": "Two months after purchase, three vertical lines of dead pixels appeared on the screen. The lines extend from the top to the bottom of the display and are present at all times, making the laptop very difficult to use for my work. This is clearly a manufacturing defect.",
+    "estimatedAmount": 0,
+    "propertyAddress": "CoreMax ProBook Ultra 15 Laptop"
+  },
+  "attachments": [
+    {
+      "id": "doc_0",
+      "name": "water-extraction-estimate.txt",
+      "type": "Other",
+      "mimeType": "text/plain",
+      "confidence": 0.7
+    },
+    {
+      "id": "doc_1",
+      "name": "emergency-invoice.txt",
+      "type": "Other",
+      "mimeType": "text/plain",
+      "confidence": 0.7
+    }
+  ],
+  "evidenceSummary": {
+    "totalFields": 10,
+    "highConfidenceFields": 10,
+    "lowConfidenceFields": 0,
+    "avgConfidence": 0.99
+  },
+  "policyClauses": [
+    {
+      "title": "PRODUCT_DEFECT — ProBook Ultra 15 Laptop",
+      "section": "Hardware Issue",
+      "score": 1
+    }
+  ],
+  "recommendedActions": [
+    "Assign to senior agent. Send acknowledgement email."
+  ],
+  "documentTypes": [
+    "Other",
+    "Other"
+  ]
+}

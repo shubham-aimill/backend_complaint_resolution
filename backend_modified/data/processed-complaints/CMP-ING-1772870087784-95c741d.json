@@ -7,10 +7,11 @@
   "autoDecision": "APPROVE_REPAIR",
   "decisionConfidence": 0.85,
   "recommendedNextStep": "Send APPROVE_REPAIR email. Schedule product collection or repair centre visit.",
+  "rejectReason": null,
   "decisionPack": {
-    "id": "DP-1773131893711",
+    "id": "DP-1773254608331",
     "complaintDraft": {
-      "id": "DRAFT-1773131893711",
+      "id": "DRAFT-1773254608331",
       "complaintRef": "CUST10001",
       "customerName": "Ananya Sharma",
       "customerEmail": "an***@email.com",
@@ -25,9 +26,9 @@
         {
           "id": "doc_0",
           "name": "invoice_sec_cam.png",
-          "type": "PhotoEvidence",
+          "type": "CorrespondenceRecord",
           "mimeType": "image/png",
-          "confidence": 0.5
+          "confidence": 0.95
         },
         {
           "id": "doc_1",
@@ -38,9 +39,9 @@
         }
       ],
       "customerVerified": true,
-      "createdAt": "2026-03-10T08:38:13.711Z",
+      "createdAt": "2026-03-11T18:43:28.331Z",
       "source": "information_extraction",
-      "confidence": 1.0
+      "confidence": 0.99
     },
     "evidence": [
       {
@@ -87,7 +88,7 @@
         "field": "complaintType",
         "fieldName": "Complaint Type",
         "value": "Connectivity",
-        "confidence": 1.0,
+        "confidence": 0.9,
         "sourceLocator": "email_content",
         "rationale": "Extracted from customer email and attachments"
       },
@@ -126,22 +127,50 @@
     ],
     "documents": [
       {
+        "id": "doc_email",
+        "name": "Customer Email",
+        "mimeType": "text/plain",
+        "type": "CorrespondenceRecord",
+        "content": "Subject: Complaint: WiFi Connectivity Issue \u2014 NovaTech ProMax X15 Smartphone (CUST10001)\nFrom: Ananya Sharma <ananya.sharma@email.com>\nTo: support@electronics.com\nDate: November 01, 2025 10:00 AM\n\nDear Support Team,\n\nI am writing to report an issue with my NovaTech ProMax X15 Smartphone.\n\nCustomer ID: CUST10001\nCustomer Name: Ananya Sharma\n\nProduct Name: NovaTech ProMax X15 Smartphone\nModel Number: NT-X15-PRO\nSerial Number: NT2025X15-00451\nPurchase Date: 2025-03-15\nOrder Reference: ORD-20250315-001\n\nIssue Description:\nSince updating to firmware version 3.2.1 last week, my smartphone disconnects from WiFi every few hours and requires a manual reconnect. The issue did not occur before the update. I have tried resetting network settings but the problem persists.\n\nI purchased the device from TechZone in March 2025 and have attached the original purchase invoice for your reference.\n\nDesired Resolution: Firmware fix or repair under warranty.\n\nKind regards,\nAnanya Sharma\nCustomer ID: CUST10001",
+        "confidence": 0.95,
+        "metadata": {
+          "source": "email_body"
+        },
+        "keyFields": {
+          "customerName": "Ananya Sharma",
+          "customerEmail": "ananya.sharma@email.com",
+          "complaintRef": "CUST10001",
+          "complaintDate": "2025-11-01",
+          "purchaseDate": "2025-03-15",
+          "complaintType": "Connectivity",
+          "productOrService": "NovaTech ProMax X15 Smartphone",
+          "productModel": "NT-X15-PRO",
+          "serialNumber": "NT2025X15-00451",
+          "description": "Since updating to firmware version 3.2.1 last week, my smartphone disconnects from WiFi every few hours and requires a manual reconnect. The issue did not occur before the update. I have tried resetting network settings but the problem persists.",
+          "desiredResolution": "Firmware fix or repair under warranty."
+        }
+      },
+      {
         "id": "doc_0",
         "name": "invoice_sec_cam.png",
         "mimeType": "image/png",
         "type": "PhotoEvidence",
-        "content": "Image not found: data/ingested-attachments/ING-1772870087784-95c741d/invoice_sec_cam.png",
+        "content": "",
         "confidence": 0.5,
-        "metadata": {}
+        "metadata": {
+          "analysisError": "Image not found: data/ingested-attachments/ING-1772870087784-95c741d/invoice_sec_cam.png"
+        }
       },
       {
         "id": "doc_1",
         "name": "smart_home_security_camera.jpg",
         "mimeType": "image/jpeg",
         "type": "PhotoEvidence",
-        "content": "Image not found: data/ingested-attachments/ING-1772870087784-95c741d/smart_home_security_camera.jpg",
+        "content": "",
         "confidence": 0.5,
-        "metadata": {}
+        "metadata": {
+          "analysisError": "Image not found: data/ingested-attachments/ING-1772870087784-95c741d/smart_home_security_camera.jpg"
+        }
       }
     ],
     "customerGrounding": [
@@ -248,27 +277,35 @@
     },
     "validationResults": [
       {
+        "check": "eligibility_validation",
+        "passed": true,
+        "rejectReason": null,
+        "autoDecision": null,
+        "notes": "No eligibility issues detected."
+      },
+      {
         "check": "warranty_validation",
         "passed": true,
         "status": "WITHIN_WARRANTY",
         "warrantyMonths": 12,
-        "purchaseDate": "2025-11-01",
-        "purchaseDateSource": "email_body",
-        "expiryDate": "2026-11-01",
+        "purchaseDate": "2025-03-15",
+        "purchaseDateSource": "document:Customer Email",
+        "expiryDate": "2026-03-15",
         "autoDecision": null,
-        "notes": "Product purchased on 2025-11-01. Warranty of 12 months expires on 2026-11-01. Product is within warranty period."
+        "notes": "Product purchased on 2025-03-15. Warranty of 12 months expires on 2026-03-15. Product is within warranty period."
       },
       {
         "check": "document_validation",
         "passed": true,
         "presentDocuments": [
           "purchase_invoice",
-          "product_model"
+          "product_model",
+          "serial_number"
         ],
         "missingDocuments": [],
-        "serialNumber": null,
+        "serialNumber": "NT2025X15-00451",
         "autoDecision": null,
-        "notes": "Documents present: purchase_invoice, product_model. Missing: none."
+        "notes": "Documents present: purchase_invoice, product_model, serial_number. Missing: none."
       },
       {
         "check": "product_validation",
@@ -303,22 +340,23 @@
     "decisionConfidence": 0.85,
     "decisionRationale": "Customer and product verified. Repair approved within warranty.",
     "recommendedNextStep": "Send APPROVE_REPAIR email. Schedule product collection or repair centre visit.",
+    "rejectReason": null,
     "audit": [
       {
         "step": "Information Extraction",
-        "timestamp": "2026-03-10T08:38:13.710Z",
-        "duration": 4980,
+        "timestamp": "2026-03-11T18:43:28.331Z",
+        "duration": 7966,
         "agent": "ExtractionService",
         "status": "completed",
         "details": {
-          "documentsProcessed": 2,
+          "documentsProcessed": 3,
           "errors": []
         }
       },
       {
         "step": "Validation Engine",
-        "timestamp": "2026-03-10T08:38:13.710Z",
-        "duration": 6,
+        "timestamp": "2026-03-11T18:43:28.331Z",
+        "duration": 1,
         "agent": "ValidationService",
         "status": "completed",
         "details": {
@@ -329,8 +367,8 @@
       },
       {
         "step": "Customer & Product Grounding",
-        "timestamp": "2026-03-10T08:38:13.710Z",
-        "duration": 1,
+        "timestamp": "2026-03-11T18:43:28.331Z",
+        "duration": 0,
         "agent": "CustomerGroundingService",
         "status": "completed",
         "details": {
@@ -340,7 +378,7 @@
       },
       {
         "step": "Decision Engine",
-        "timestamp": "2026-03-10T08:38:13.710Z",
+        "timestamp": "2026-03-11T18:43:28.331Z",
         "duration": 0,
         "agent": "DecisionService",
         "status": "completed",
@@ -354,19 +392,21 @@
       "totalFields": 10,
       "highConfidenceFields": 10,
       "lowConfidenceFields": 0,
-      "avgConfidence": 1.0
+      "avgConfidence": 0.99
     },
     "documentAnalysis": {
-      "totalDocuments": 2,
+      "totalDocuments": 3,
       "documentTypes": [
+        "CorrespondenceRecord",
         "PhotoEvidence",
         "PhotoEvidence"
       ],
-      "avgDocumentConfidence": 0.5,
+      "avgDocumentConfidence": 0.65,
       "missingDocuments": [],
       "presentDocuments": [
         "purchase_invoice",
-        "product_model"
+        "product_model",
+        "serial_number"
       ]
     },
     "resolutionAssessment": {
@@ -384,24 +424,24 @@
       "stepsCompleted": 4,
       "stepsWithErrors": 0
     },
-    "createdAt": "2026-03-10T08:38:13.710Z"
+    "createdAt": "2026-03-11T18:43:28.331Z"
   },
   "processingMetrics": {
     "fieldsAutoPopulated": 10,
     "stepsCompleted": 4,
     "stepsFailed": 0,
-    "totalProcessingTime": 26055,
-    "averageHandleTime": 26.055,
-    "extractionTime": 4980,
-    "validationTime": 6
+    "totalProcessingTime": 11658,
+    "averageHandleTime": 11.658,
+    "extractionTime": 7966,
+    "validationTime": 1
   },
-  "createdAt": "2026-03-10T08:38:13.710Z",
+  "createdAt": "2026-03-11T18:43:28.331Z",
   "status": "draft",
   "autoEmailResponse": {
-    "sent": false,
+    "sent": true,
     "decision": "APPROVE_REPAIR",
     "to": "Ananya Sharma <ananya.sharma@email.com>",
-    "error": "[WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond"
+    "error": null
   },
-  "processingTime": 26055
+  "processingTime": 11658
 }

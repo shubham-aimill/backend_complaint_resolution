@@ -7,10 +7,11 @@
   "autoDecision": "APPROVE_REPLACEMENT",
   "decisionConfidence": 0.88,
   "recommendedNextStep": "Send APPROVE_REPLACEMENT email. Initiate replacement dispatch process within SLA.",
+  "rejectReason": null,
   "decisionPack": {
-    "id": "DP-1773125315629",
+    "id": "DP-1773253608308",
     "complaintDraft": {
-      "id": "DRAFT-1773125315628",
+      "id": "DRAFT-1773253608307",
       "complaintRef": "CUST10009",
       "customerName": "Emily Johnson",
       "customerEmail": "sh***@gmail.com",
@@ -25,13 +26,13 @@
         {
           "id": "doc_0",
           "name": "invoice_emily.txt.txt",
-          "type": "Other",
+          "type": "CorrespondenceRecord",
           "mimeType": "text/plain",
-          "confidence": 0.7
+          "confidence": 0.95
         }
       ],
       "customerVerified": true,
-      "createdAt": "2026-03-10T06:48:35.628Z",
+      "createdAt": "2026-03-11T18:26:48.307Z",
       "source": "information_extraction",
       "confidence": 0.99
     },
@@ -119,6 +120,30 @@
     ],
     "documents": [
       {
+        "id": "doc_email",
+        "name": "Customer Email",
+        "mimeType": "text/plain",
+        "type": "CorrespondenceRecord",
+        "content": "Subject: URGENT: Dead on Arrival \u2014 SlimTab 10 Tablet [CUST10009]\nFrom: Shubham Sahu <shubhh2003@gmail.com>\nTo: arp290825@gmail.com\nDate: March 08, 2026 02:54 AM\n\nDear Support Team,\r\n\r\nI am filing a complaint for a Dead on Arrival product.\r\n\r\nCustomer ID   : CUST10009\r\nCustomer Name : Emily Johnson\r\nProduct       : NovaTech SlimTab 10 Tablet\r\nModel Number  : NT-ST10-64\r\nSerial Number : NT2025TB-00912\r\nPurchase Date : 2025-11-20\r\nOrder Ref     : ORD-20251120-014\r\n\r\nIssue:\r\nThe tablet I received does not power on at all. I tried multiple chargers\r\nover 48 hours. The box seal was completely intact when I opened it.\r\nThis is a Dead on Arrival unit \u2014 I have never been able to use it.\r\n\r\nDesired Resolution: Immediate replacement.\r\n\r\nEmily Johnson\r\nCustomer ID: CUST10009",
+        "confidence": 0.95,
+        "metadata": {
+          "source": "email_body"
+        },
+        "keyFields": {
+          "customerName": "Emily Johnson",
+          "customerEmail": "shubhh2003@gmail.com",
+          "complaintRef": "CUST10009",
+          "complaintDate": "2026-03-08",
+          "purchaseDate": "2025-11-20",
+          "complaintType": "Dead on Arrival",
+          "productOrService": "NovaTech SlimTab 10 Tablet",
+          "productModel": "NT-ST10-64",
+          "serialNumber": "NT2025TB-00912",
+          "description": "The tablet I received does not power on at all. I tried multiple chargers over 48 hours. The box seal was completely intact when I opened it. This is a Dead on Arrival unit \u2014 I have never been able to use it.",
+          "desiredResolution": "Immediate replacement."
+        }
+      },
+      {
         "id": "doc_0",
         "name": "invoice_emily.txt.txt",
         "mimeType": "text/plain",
@@ -197,27 +222,35 @@
     },
     "validationResults": [
       {
+        "check": "eligibility_validation",
+        "passed": true,
+        "rejectReason": null,
+        "autoDecision": null,
+        "notes": "No eligibility issues detected."
+      },
+      {
         "check": "warranty_validation",
         "passed": true,
         "status": "WITHIN_WARRANTY",
         "warrantyMonths": 12,
-        "purchaseDate": "2026-03-08",
-        "purchaseDateSource": "email_body",
-        "expiryDate": "2027-03-08",
+        "purchaseDate": "2025-11-20",
+        "purchaseDateSource": "document:Customer Email",
+        "expiryDate": "2026-11-20",
         "autoDecision": null,
-        "notes": "Product purchased on 2026-03-08. Warranty of 12 months expires on 2027-03-08. Product is within warranty period."
+        "notes": "Product purchased on 2025-11-20. Warranty of 12 months expires on 2026-11-20. Product is within warranty period."
       },
       {
         "check": "document_validation",
         "passed": true,
         "presentDocuments": [
           "purchase_invoice",
-          "product_model"
+          "product_model",
+          "serial_number"
         ],
         "missingDocuments": [],
-        "serialNumber": null,
+        "serialNumber": "NT2025TB-00912",
         "autoDecision": null,
-        "notes": "Documents present: purchase_invoice, product_model. Missing: none."
+        "notes": "Documents present: purchase_invoice, product_model, serial_number. Missing: none."
       },
       {
         "check": "product_validation",
@@ -251,22 +284,23 @@
     "decisionConfidence": 0.88,
     "decisionRationale": "Customer and product verified. Replacement indicators present.",
     "recommendedNextStep": "Send APPROVE_REPLACEMENT email. Initiate replacement dispatch process within SLA.",
+    "rejectReason": null,
     "audit": [
       {
         "step": "Information Extraction",
-        "timestamp": "2026-03-10T06:48:35.626Z",
-        "duration": 6236,
+        "timestamp": "2026-03-11T18:26:48.305Z",
+        "duration": 4511,
         "agent": "ExtractionService",
         "status": "completed",
         "details": {
-          "documentsProcessed": 1,
+          "documentsProcessed": 2,
           "errors": []
         }
       },
       {
         "step": "Validation Engine",
-        "timestamp": "2026-03-10T06:48:35.626Z",
-        "duration": 6,
+        "timestamp": "2026-03-11T18:26:48.305Z",
+        "duration": 5,
         "agent": "ValidationService",
         "status": "completed",
         "details": {
@@ -277,7 +311,7 @@
       },
       {
         "step": "Customer & Product Grounding",
-        "timestamp": "2026-03-10T06:48:35.626Z",
+        "timestamp": "2026-03-11T18:26:48.305Z",
         "duration": 1,
         "agent": "CustomerGroundingService",
         "status": "completed",
@@ -288,7 +322,7 @@
       },
       {
         "step": "Decision Engine",
-        "timestamp": "2026-03-10T06:48:35.626Z",
+        "timestamp": "2026-03-11T18:26:48.305Z",
         "duration": 0,
         "agent": "DecisionService",
         "status": "completed",
@@ -305,15 +339,17 @@
       "avgConfidence": 0.99
     },
     "documentAnalysis": {
-      "totalDocuments": 1,
+      "totalDocuments": 2,
       "documentTypes": [
+        "CorrespondenceRecord",
         "Other"
       ],
-      "avgDocumentConfidence": 0.7,
+      "avgDocumentConfidence": 0.825,
       "missingDocuments": [],
       "presentDocuments": [
         "purchase_invoice",
-        "product_model"
+        "product_model",
+        "serial_number"
       ]
     },
     "resolutionAssessment": {
@@ -331,24 +367,24 @@
       "stepsCompleted": 4,
       "stepsWithErrors": 0
     },
-    "createdAt": "2026-03-10T06:48:35.626Z"
+    "createdAt": "2026-03-11T18:26:48.305Z"
   },
   "processingMetrics": {
     "fieldsAutoPopulated": 10,
     "stepsCompleted": 4,
     "stepsFailed": 0,
-    "totalProcessingTime": 27326,
-    "averageHandleTime": 27.326,
-    "extractionTime": 6236,
-    "validationTime": 6
+    "totalProcessingTime": 8093,
+    "averageHandleTime": 8.093,
+    "extractionTime": 4511,
+    "validationTime": 5
   },
-  "createdAt": "2026-03-10T06:48:35.626Z",
+  "createdAt": "2026-03-11T18:26:48.305Z",
   "status": "draft",
   "autoEmailResponse": {
-    "sent": false,
+    "sent": true,
     "decision": "APPROVE_REPLACEMENT",
     "to": "Shubham Sahu <shubhh2003@gmail.com>",
-    "error": "[WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond"
+    "error": null
   },
-  "processingTime": 27326
+  "processingTime": 8093
 }
