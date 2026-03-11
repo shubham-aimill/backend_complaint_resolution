@@ -71,6 +71,9 @@ IMAP_SYNC_CACHE_FILE: Path = DATA_DIR / "imap-sync-cache.json"
 COMPLAINTS_INDEX_FILE:  Path = PROCESSED_COMPLAINTS_DIR / "complaints-index.json"
 COMPLAINTS_HISTORY_CSV: Path = PROCESSED_COMPLAINTS_DIR / "complaints-history.csv"
 
+# Engineer appointments
+APPOINTMENTS_FILE: Path = DATA_DIR / "appointments.json"
+
 # ── Utility ───────────────────────────────────────────────────────────────
 
 def ensure_data_dir() -> None:

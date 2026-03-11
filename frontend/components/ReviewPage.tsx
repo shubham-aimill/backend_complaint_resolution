@@ -22,12 +22,48 @@ import {
   BookOpen,
   Tag,
   Activity,
-  Info
+  Info,
+  Package,
+  ShieldCheck,
+  ShieldX,
+  ShieldAlert,
+  BadgeCheck,
+  Mail,
+  FileImage,
+  Receipt
 } from 'lucide-react'
 import ClaimSummaryBar from './ClaimSummaryBar'
 import { ClaimData, Document, FieldEvidence, PolicyHit } from '@/types/claims'
 import { CONFIDENCE } from '@/lib/confidence'
 import { getClaimDraft } from '@/lib/normalizeClaim'
+
+/** Image preview with graceful "unavailable" fallback when the file can't be served */
+function ImagePreview({ src, alt }: { src: string; alt: string }) {
+  const [state, setState] = React.useState<'loading' | 'ok' | 'error'>('loading')
+  return (
+    <div className="rounded-lg overflow-hidden bg-[#F3F4F6] flex items-center justify-center min-h-[100px]">
+      {state !== 'error' && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={src}
+          alt={alt}
+          className={`max-w-full max-h-48 object-contain ${state === 'loading' ? 'opacity-0 absolute' : ''}`}
+          onLoad={() => setState('ok')}
+          onError={() => setState('error')}
+        />
+      )}
+      {state === 'loading' && (
+        <span className="text-xs text-[#9CA3AF]">Loading image…</span>
+      )}
+      {state === 'error' && (
+        <div className="flex flex-col items-center gap-1 py-4 text-[#9CA3AF]">
+          <FileImage className="w-8 h-8" />
+          <span className="text-xs">Image not available on this machine</span>
+        </div>
+      )}
+    </div>
+  )
+}
 
 /** Render flat KPI key-values (e.g. from damage photos, water leakage images) */
 function ImageKpiContent({ keyFields }: { keyFields: Record<string, unknown> }) {
@@ -317,7 +353,7 @@ export default function ReviewPage({ claimData, onNextStage, onPreviousStage, on
       />
 
       {/* Main Content - Two Column Layout */}
-      <div className="px-8 py-8">
+      <div className="px-4 py-8">
         <div className="grid grid-cols-12 gap-6">
           {/* Left Column - Source Documents (Compact) */}
           <div className="col-span-12 lg:col-span-4">
@@ -358,7 +394,11 @@ export default function ReviewPage({ claimData, onNextStage, onPreviousStage, on
                         <div className="flex items-start justify-between mb-2 gap-2">
                           <div className="flex items-center space-x-2 flex-1 min-w-0 overflow-x-auto" style={{ scrollbarWidth: 'thin' }}>
                             {isImageDoc ? (
-                              <ImageIcon className="w-4 h-4 text-[#991B1B] flex-shrink-0" />
+                              <FileImage className="w-4 h-4 text-[#991B1B] flex-shrink-0" />
+                            ) : doc.type === 'CorrespondenceRecord' ? (
+                              <Mail className="w-4 h-4 text-[#3B82F6] flex-shrink-0" />
+                            ) : doc.type === 'Invoice' || doc.type === 'Receipt' ? (
+                              <Receipt className="w-4 h-4 text-[#10B981] flex-shrink-0" />
                             ) : (
                               <FileText className="w-4 h-4 text-[#6B7280] flex-shrink-0" />
                             )}
@@ -366,8 +406,16 @@ export default function ReviewPage({ claimData, onNextStage, onPreviousStage, on
                               {doc.name}
                             </span>
                           </div>
-                          <span className="text-xs font-medium text-[#6B7280] bg-[#F3F4F6] px-1.5 py-0.5 rounded flex-shrink-0">
-                            {doc.type}
+                          <span className={`text-xs font-medium px-1.5 py-0.5 rounded flex-shrink-0 ${
+                            doc.type === 'CorrespondenceRecord'
+                              ? 'bg-[#EFF6FF] text-[#1D4ED8]'
+                              : doc.type === 'Invoice' || doc.type === 'Receipt'
+                                ? 'bg-[#ECFDF5] text-[#047857]'
+                                : isImageDoc
+                                  ? 'bg-[#FEF2F2] text-[#991B1B]'
+                                  : 'bg-[#F3F4F6] text-[#6B7280]'
+                          }`}>
+                            {doc.type === 'CorrespondenceRecord' ? 'Email' : doc.type}
                           </span>
                         </div>
                         <div className="flex items-center justify-between">
@@ -388,90 +436,99 @@ export default function ReviewPage({ claimData, onNextStage, onPreviousStage, on
                         </div>
                       </div>
                       {/* Image preview + detailed summary + extracted KPIs for image documents */}
-                      {isImageDoc && isSelected && (
-                        <div className="border-t border-[#E5E7EB] bg-white/80 p-3 space-y-4">
-                          {imageUrl && (
-                            <div className="rounded-lg overflow-hidden bg-[#F3F4F6] aspect-video flex items-center justify-center">
-                              {/* eslint-disable-next-line @next/next/no-img-element */}
-                              <img
-                                src={imageUrl}
-                                alt={doc.name}
-                                className="max-w-full max-h-40 object-contain"
-                                onError={(e) => {
-                                  e.currentTarget.style.display = 'none'
-                                }}
-                              />
-                            </div>
-                          )}
-                          {/* Detailed Summary - Show prominently if available */}
-                          {doc.content && typeof doc.content === 'string' && doc.content.trim() ? (
-                            <div className="bg-[#FEF2F2] border border-[#FECACA] rounded-lg p-4">
-                              <div className="text-xs font-semibold text-[#991B1B] uppercase tracking-wider mb-3 flex items-center space-x-2">
-                                <FileText className="w-4 h-4" />
-                                <span>Detailed Image Analysis Summary</span>
+                      {isImageDoc && isSelected && (() => {
+                        const analysisError = (doc.metadata as Record<string, unknown>)?.analysisError as string | undefined
+                        return (
+                          <div className="border-t border-[#E5E7EB] bg-white/80 p-3 space-y-3">
+                            {/* Image preview */}
+                            {imageUrl ? (
+                              <ImagePreview src={imageUrl as string} alt={doc.name} />
+                            ) : null}
+                            {/* Analysis error state */}
+                            {analysisError ? (
+                              <div className="bg-[#FFFBEB] border border-[#FDE68A] rounded-lg p-3 flex items-start gap-2">
+                                <AlertTriangle className="w-4 h-4 text-[#B45309] flex-shrink-0 mt-0.5" />
+                                <div>
+                                  <div className="text-xs font-semibold text-[#B45309] mb-1">Image Analysis Unavailable</div>
+                                  <div className="text-xs text-[#92400E]">
+                                    The original image file could not be found on this machine. It may have been processed on a different computer.
+                                  </div>
+                                </div>
                               </div>
-                              <div className="text-sm text-[#1C1917] leading-relaxed whitespace-pre-wrap overflow-x-auto" style={{ scrollbarWidth: 'thin' }}>
-                                {doc.content}
+                            ) : doc.content && typeof doc.content === 'string' && doc.content.trim() ? (
+                              /* Detailed Summary */
+                              <div className="bg-[#FEF2F2] border border-[#FECACA] rounded-lg p-3">
+                                <div className="text-xs font-semibold text-[#991B1B] uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                                  <FileText className="w-3.5 h-3.5" />
+                                  Image Analysis Summary
+                                </div>
+                                <div className="text-xs text-[#1C1917] leading-relaxed whitespace-pre-wrap">
+                                  {doc.content}
+                                </div>
                               </div>
-                            </div>
-                          ) : null}
-                          {/* Extracted KPIs - Show if available */}
-                          {doc.keyFields &&
-                          Object.keys(doc.keyFields as object).length > 0 ? (
-                            <div>
-                              <div className="text-xs font-semibold text-[#6B7280] uppercase tracking-wider mb-2">
-                                Extracted KPIs
-                              </div>
-                              <div className="overflow-x-auto" style={{ scrollbarWidth: 'thin' }}>
+                            ) : null}
+                            {/* Extracted KPIs */}
+                            {doc.keyFields && Object.keys(doc.keyFields as object).length > 0 ? (
+                              <div>
+                                <div className="text-xs font-semibold text-[#6B7280] uppercase tracking-wider mb-2">
+                                  Extracted KPIs
+                                </div>
                                 <ImageKpiContent keyFields={doc.keyFields as Record<string, unknown>} />
                               </div>
-                            </div>
-                          ) : null}
-                        </div>
-                      )}
+                            ) : null}
+                            {/* No data at all */}
+                            {!analysisError && !doc.content && (!doc.keyFields || Object.keys(doc.keyFields as object).length === 0) && (
+                              <p className="text-xs text-[#6B7280] italic">No analysis data extracted</p>
+                            )}
+                          </div>
+                        )
+                      })()}
                       {/* Text document content when selected */}
                       {!isImageDoc && isSelected && (
-                        <div className="border-t border-[#E5E7EB] bg-white/80 p-3">
+                        <div className="border-t border-[#E5E7EB] bg-white/80 p-3 space-y-3">
+                          {/* Extracted fields (keyFields) */}
                           {doc.keyFields &&
                           Object.keys(doc.keyFields as object).length > 0 ? (
                             <>
-                              <div className="text-xs font-semibold text-[#6B7280] uppercase tracking-wider mb-2">
-                                Structured Content
+                              <div className="text-xs font-semibold text-[#6B7280] uppercase tracking-wider">
+                                {doc.type === 'CorrespondenceRecord' ? 'Extracted Fields' : 'Structured Content'}
                               </div>
                               <div className="overflow-x-auto" style={{ scrollbarWidth: 'thin' }}>
                                 <StructuredDocContent doc={doc} />
                               </div>
                             </>
-                          ) : doc.content && typeof doc.content === 'string' ? (
+                          ) : null}
+                          {/* Raw content / email body */}
+                          {doc.content && typeof doc.content === 'string' && doc.content.trim() ? (
                             <>
-                              <div className="text-xs font-semibold text-[#6B7280] uppercase tracking-wider mb-1">
-                                Content
+                              <div className="text-xs font-semibold text-[#6B7280] uppercase tracking-wider">
+                                {doc.type === 'CorrespondenceRecord' ? 'Email Body' : 'Content'}
                               </div>
-                              <div className="overflow-x-auto" style={{ scrollbarWidth: 'thin' }}>
-                                <p className="text-xs text-[#374151] leading-relaxed whitespace-pre-wrap min-w-max">
+                              <div className={`rounded-lg p-3 ${doc.type === 'CorrespondenceRecord' ? 'bg-[#EFF6FF] border border-[#BFDBFE]' : 'bg-[#F9FAFB]'}`}>
+                                <p className="text-xs text-[#374151] leading-relaxed whitespace-pre-wrap">
                                   {expandedDocId === doc.id
                                     ? doc.content
                                     : doc.content.length > SUMMARY_PREVIEW_LENGTH
                                       ? `${doc.content.slice(0, SUMMARY_PREVIEW_LENGTH).trim()}...`
                                       : doc.content}
                                 </p>
+                                {doc.content.length > SUMMARY_PREVIEW_LENGTH && (
+                                  <button
+                                    type="button"
+                                    onClick={(e) => {
+                                      e.stopPropagation()
+                                      setExpandedDocId(expandedDocId === doc.id ? null : doc.id)
+                                    }}
+                                    className="mt-2 text-xs font-medium text-[#1D4ED8] hover:underline"
+                                  >
+                                    {expandedDocId === doc.id ? 'View less' : 'View full email'}
+                                  </button>
+                                )}
                               </div>
-                              {doc.content.length > SUMMARY_PREVIEW_LENGTH && (
-                                <button
-                                  type="button"
-                                  onClick={(e) => {
-                                    e.stopPropagation()
-                                    setExpandedDocId(expandedDocId === doc.id ? null : doc.id)
-                                  }}
-                                  className="mt-1 text-xs font-medium text-[#991B1B] hover:text-[#991B1B] hover:underline"
-                                >
-                                  {expandedDocId === doc.id ? 'View less' : 'View more'}
-                                </button>
-                              )}
                             </>
-                          ) : (
+                          ) : !doc.keyFields || Object.keys(doc.keyFields as object).length === 0 ? (
                             <p className="text-xs text-[#6B7280] italic">No structured content extracted</p>
-                          )}
+                          ) : null}
                         </div>
                       )}
                     </div>
@@ -574,7 +631,7 @@ export default function ReviewPage({ claimData, onNextStage, onPreviousStage, on
               </div>
 
               {/* Complaint Grounding Section */}
-              {(decisionPack?.policyHolderInfo || (decisionPack?.policyGrounding && decisionPack.policyGrounding.length > 0)) && (
+              {(decisionPack?.policyHolderInfo || decisionPack?.warrantyStatus || decisionPack?.matchedProduct || decisionPack?.productCategory || (decisionPack?.policyGrounding && decisionPack.policyGrounding.length > 0)) && (
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -761,6 +818,182 @@ export default function ReviewPage({ claimData, onNextStage, onPreviousStage, on
                         </div>
                       </div>
                     )}
+
+                    {/* Product & Warranty Coverage */}
+                    {(() => {
+                      const warrantyStatus = decisionPack?.warrantyStatus
+                      const matchedProduct = decisionPack?.matchedProduct
+                      const productCategory = decisionPack?.productCategory
+                      const warrantyResult = (decisionPack?.validationResults ?? []).find(
+                        (r: Record<string, unknown>) => r.check === 'warranty_validation'
+                      ) as Record<string, unknown> | undefined
+
+                      const hasData = warrantyStatus || matchedProduct || productCategory || warrantyResult
+                      if (!hasData) return null
+
+                      const purchaseDate = warrantyResult?.purchaseDate as string | undefined
+                      const expiryDate = warrantyResult?.expiryDate as string | undefined
+                      const warrantyMonths = warrantyResult?.warrantyMonths as number | undefined
+                      const warrantyNotes = warrantyResult?.notes as string | undefined
+
+                      const daysRemaining = expiryDate
+                        ? Math.ceil((new Date(expiryDate).getTime() - Date.now()) / 86400000)
+                        : null
+
+                      const isWithin = warrantyStatus === 'WITHIN_WARRANTY'
+                      const isOut = warrantyStatus === 'OUT_OF_WARRANTY'
+
+                      const borderColor = isWithin ? 'border-emerald-200' : isOut ? 'border-red-200' : 'border-amber-200'
+                      const bgGradient = isWithin
+                        ? 'from-emerald-50 to-emerald-100/60'
+                        : isOut
+                        ? 'from-red-50 to-red-100/60'
+                        : 'from-amber-50 to-amber-100/60'
+                      const statusTextColor = isWithin ? 'text-emerald-700' : isOut ? 'text-red-700' : 'text-amber-700'
+                      const StatusIcon = isWithin ? ShieldCheck : isOut ? ShieldX : ShieldAlert
+
+                      return (
+                        <div className={`rounded-xl border-2 ${borderColor} bg-gradient-to-br ${bgGradient} p-5`}>
+                          {/* Header */}
+                          <div className="flex items-center justify-between mb-4">
+                            <h3 className="text-xs font-semibold text-[#991B1B] uppercase tracking-wider flex items-center space-x-1.5">
+                              <Package className="w-3.5 h-3.5" />
+                              <span>Product &amp; Warranty Coverage</span>
+                            </h3>
+                            {/* Warranty status badge */}
+                            <div className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-full text-xs font-bold ${
+                              isWithin
+                                ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
+                                : isOut
+                                ? 'bg-red-100 text-red-800 border border-red-300'
+                                : 'bg-amber-100 text-amber-800 border border-amber-300'
+                            }`}>
+                              <StatusIcon className="w-3.5 h-3.5" />
+                              <span>{isWithin ? 'Within Warranty' : isOut ? 'Out of Warranty' : 'Warranty Unknown'}</span>
+                            </div>
+                          </div>
+
+                          {/* Product info grid */}
+                          <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mb-3">
+                            {(matchedProduct?.productName || productCategory) && (
+                              <div className="bg-white/80 rounded-lg p-2.5 border border-white/60">
+                                <div className="text-xs text-[#6B7280] mb-0.5">Product</div>
+                                <div className="text-sm font-semibold text-[#111827]">
+                                  {matchedProduct?.productName || productCategory || '—'}
+                                </div>
+                              </div>
+                            )}
+                            {productCategory && (
+                              <div className="bg-white/80 rounded-lg p-2.5 border border-white/60">
+                                <div className="text-xs text-[#6B7280] mb-0.5">Category</div>
+                                <div className="text-sm font-semibold text-[#111827]">{productCategory}</div>
+                              </div>
+                            )}
+                            {matchedProduct?.brandName && (
+                              <div className="bg-white/80 rounded-lg p-2.5 border border-white/60">
+                                <div className="text-xs text-[#6B7280] mb-0.5">Brand</div>
+                                <div className="text-sm font-semibold text-[#111827]">{matchedProduct.brandName}</div>
+                              </div>
+                            )}
+                            {matchedProduct?.modelNumber && (
+                              <div className="bg-white/80 rounded-lg p-2.5 border border-white/60">
+                                <div className="text-xs text-[#6B7280] mb-0.5">Model</div>
+                                <div className="text-sm font-semibold text-[#111827] font-mono">{matchedProduct.modelNumber}</div>
+                              </div>
+                            )}
+                            {matchedProduct?.price != null && (
+                              <div className="bg-white/80 rounded-lg p-2.5 border border-white/60">
+                                <div className="text-xs text-[#6B7280] mb-0.5">Purchase Price</div>
+                                <div className="text-sm font-semibold text-[#111827]">
+                                  ₹{Number(matchedProduct.price).toLocaleString()}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Warranty dates row */}
+                          {(purchaseDate || expiryDate || warrantyMonths != null) && (
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-3">
+                              {purchaseDate && (
+                                <div className="bg-white/80 rounded-lg p-2.5 border border-white/60">
+                                  <div className="text-xs text-[#6B7280] mb-0.5">Purchase Date</div>
+                                  <div className="text-sm font-semibold text-[#111827]">
+                                    {new Date(purchaseDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
+                                  </div>
+                                </div>
+                              )}
+                              {warrantyMonths != null && (
+                                <div className="bg-white/80 rounded-lg p-2.5 border border-white/60">
+                                  <div className="text-xs text-[#6B7280] mb-0.5">Warranty Period</div>
+                                  <div className="text-sm font-semibold text-[#111827]">{warrantyMonths} months</div>
+                                </div>
+                              )}
+                              {expiryDate && (
+                                <div className="bg-white/80 rounded-lg p-2.5 border border-white/60">
+                                  <div className="text-xs text-[#6B7280] mb-0.5">Warranty Expires</div>
+                                  <div className={`text-sm font-semibold ${isOut ? 'text-red-700' : 'text-[#111827]'}`}>
+                                    {new Date(expiryDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
+                                  </div>
+                                </div>
+                              )}
+                              {daysRemaining !== null && (
+                                <div className={`rounded-lg p-2.5 border ${
+                                  daysRemaining > 30
+                                    ? 'bg-emerald-50 border-emerald-200'
+                                    : daysRemaining > 0
+                                    ? 'bg-amber-50 border-amber-200'
+                                    : 'bg-red-50 border-red-200'
+                                }`}>
+                                  <div className="text-xs text-[#6B7280] mb-0.5">
+                                    {daysRemaining > 0 ? 'Days Remaining' : 'Days Expired'}
+                                  </div>
+                                  <div className={`text-sm font-bold ${
+                                    daysRemaining > 30 ? 'text-emerald-700'
+                                    : daysRemaining > 0 ? 'text-amber-700'
+                                    : 'text-red-700'
+                                  }`}>
+                                    {Math.abs(daysRemaining)} days
+                                    {daysRemaining <= 0 ? ' ago' : ''}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          )}
+
+                          {/* T&C / Coverage notes */}
+                          {warrantyNotes && (
+                            <div className="bg-white/70 rounded-lg p-3 border border-white/60">
+                              <div className="flex items-start space-x-2">
+                                <BadgeCheck className={`w-4 h-4 flex-shrink-0 mt-0.5 ${statusTextColor}`} />
+                                <div>
+                                  <div className="text-xs font-semibold text-[#374151] mb-1">Warranty Assessment</div>
+                                  <p className="text-xs text-[#6B7280] leading-relaxed">{warrantyNotes}</p>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Standard coverage terms */}
+                          <div className="mt-3 bg-white/70 rounded-lg p-3 border border-white/60">
+                            <div className="text-xs font-semibold text-[#374151] mb-2">Standard Warranty T&amp;C</div>
+                            <ul className="space-y-1">
+                              {[
+                                'Manufacturing defects and hardware failures covered under warranty',
+                                'Physical or accidental damage is not covered (drops, liquid ingress, misuse)',
+                                'Warranty void if repaired by unauthorized third-party technicians',
+                                'Warranty is non-transferable and applies to original purchaser only',
+                                'Software issues and data loss are excluded from warranty coverage',
+                              ].map((term, i) => (
+                                <li key={i} className="flex items-start space-x-1.5 text-xs text-[#6B7280]">
+                                  <span className="text-[#9CA3AF] mt-0.5 flex-shrink-0">•</span>
+                                  <span>{term}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                      )
+                    })()}
 
                     {/* Grounding Matches */}
                     {decisionPack?.policyGrounding && decisionPack.policyGrounding.length > 0 && (

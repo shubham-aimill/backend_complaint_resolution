@@ -70,7 +70,7 @@ export default function LoginPage() {
   const handleTestUserLogin = async () => {
     setError('')
     setLoading(true)
-    const testEmail = 'james.wilson@acmeinsurance.com'
+    const testEmail = 'james.wilson@aimill-support.com'
     const testPassword = 'ExecSecure2024!'
     try {
       const result = await login(testEmail, testPassword)

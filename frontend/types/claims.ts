@@ -8,7 +8,7 @@ export interface ProcessedClaimSummary {
   createdAt: string
 }
 
-export type DocumentType = 'PoliceReport' | 'RepairEstimate' | 'DamagePhoto' | 'Invoice' | 'MedicalRecord' | 'IncidentReport' | 'Other'
+export type DocumentType = 'PoliceReport' | 'RepairEstimate' | 'DamagePhoto' | 'Invoice' | 'MedicalRecord' | 'IncidentReport' | 'Other' | 'CorrespondenceRecord' | 'PhotoEvidence' | 'Receipt' | 'Screenshot' | 'ContractOrAgreement'
 
 export type LossType = 'Collision' | 'Water' | 'Fire' | 'Theft' | 'Liability' | 'Other' | 'AutoCollision' | 'PropertyDamage'
 

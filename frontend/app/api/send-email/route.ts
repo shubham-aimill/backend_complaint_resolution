@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Email body is required' }, { status: 400 })
     }
 
-    const finalSubject = subject && typeof subject === 'string' ? subject : 'Claim Correspondence'
+    const finalSubject = subject && typeof subject === 'string' ? subject : 'Support Request'
 
     if (!SENDER_EMAIL || !EMAIL_PASSWORD) {
       return NextResponse.json(
@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
 
     const transporter = createTransporter()
     const info = await transporter.sendMail({
-      from: `"Claims Department" <${SENDER_EMAIL}>`,
+      from: `"Customer Support" <${SENDER_EMAIL}>`,
       to: to.trim(),
       subject: finalSubject,
       text: emailBody,

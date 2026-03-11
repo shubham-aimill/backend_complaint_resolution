@@ -65,6 +65,8 @@ export default function DecisionPage({ claimData, onNextStage, onPreviousStage, 
     location: ''
   })
   const [appointmentError, setAppointmentError] = useState<string | null>(null)
+  const [appointmentBooked, setAppointmentBooked] = useState(false)
+  const [isBookingAppointment, setIsBookingAppointment] = useState(false)
 
   useEffect(() => {
     setClaimStatus('pending')
@@ -128,159 +130,138 @@ export default function DecisionPage({ claimData, onNextStage, onPreviousStage, 
 
   const generateAcknowledgment = () => {
     const draft = claimDraft as Record<string, unknown> || {}
-    const claimantName = draft.claimantName || 'Valued Policyholder'
-    const policyRef = draft.policyNumber || draft.policyId || 'on file'
-    const claimNumber = claimData.claimId || 'Pending'
-    const lossDate = draft.lossDate || 'the reported date'
-    const lossType = draft.lossType || 'the reported incident'
-    const lossLocation = draft.lossLocation || draft.location || draft.propertyAddress || ''
-    const description = draft.description ? (draft.description.length > 200 ? `${draft.description.slice(0, 200)}...` : draft.description) : ''
-    const estimatedAmount = draft.estimatedAmount
-    const deductible = draft.deductible
+    const customerName = (draft.claimantName || draft.customerName || 'Valued Customer') as string
+    const complaintRef = (draft.policyNumber || draft.policyId || claimData.claimId || 'Pending') as string
+    const complaintDate = (draft.lossDate || draft.complaintDate || 'the reported date') as string
+    const complaintType = (draft.lossType || draft.complaintType || 'your complaint') as string
+    const product = (draft.productOrService || draft.description || 'your product') as string
+    const warrantyStatus = claimData.warrantyStatus
     const docCount = documents?.length || 0
-    const docList = documents?.length ? documents.map((d) => d.name || d.type).filter(Boolean).slice(0, 5).join(', ') + (documents.length > 5 ? ' and others' : '') : ''
-    const hasCoverageMatch = policyGrounding.length > 0
-    const policyAssessment = decisionPack?.policyAssessment
-
-    const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+    const today = new Date().toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' })
 
     let letter = `${today}\n\n`
-    letter += `Dear ${claimantName},\n\n`
-    letter += `RE: First Notice of Loss – Claim Number ${claimNumber}\n`
-    letter += `Policy Reference: ${policyRef}\n\n`
-    letter += `Thank you for submitting your First Notice of Loss. We have received and logged your claim as of today's date.\n\n`
-    letter += `CLAIM SUMMARY\n`
-    letter += `  • Incident Date: ${lossDate}\n`
-    letter += `  • Loss Type: ${lossType}\n`
-    if (lossLocation) letter += `  • Location: ${lossLocation}\n`
-    if (description) letter += `  • Description: ${description}\n`
-    if (estimatedAmount != null) letter += `  • Estimated Amount: $${Number(estimatedAmount).toLocaleString()}\n`
-    if (deductible != null) letter += `  • Applicable Deductible: $${Number(deductible).toLocaleString()}\n`
+    letter += `Dear ${customerName},\n\n`
+    letter += `RE: Complaint Received – Reference ${complaintRef}\n\n`
+    letter += `Thank you for contacting Consumer Electronics Customer Support. We have received your complaint and it has been logged in our system.\n\n`
+    letter += `COMPLAINT DETAILS\n`
+    letter += `  • Complaint Reference: ${complaintRef}\n`
+    letter += `  • Date Submitted: ${complaintDate}\n`
+    letter += `  • Complaint Type: ${complaintType}\n`
+    letter += `  • Product: ${product}\n`
+    if (warrantyStatus) letter += `  • Warranty Status: ${warrantyStatus === 'WITHIN_WARRANTY' ? 'Within Warranty' : warrantyStatus === 'OUT_OF_WARRANTY' ? 'Out of Warranty' : warrantyStatus}\n`
+    if (docCount > 0) letter += `  • Documents Received: ${docCount}\n`
     letter += `\n`
-    letter += `DOCUMENTS RECEIVED\n`
-    if (docCount > 0) {
-      letter += `  We have received ${docCount} document(s) in support of your claim${docList ? `: ${docList}` : '.'}\n\n`
-    } else {
-      letter += `  Supporting documents may be submitted at your earliest convenience.\n\n`
-    }
-    letter += `COVERAGE ASSESSMENT\n`
-    if (hasCoverageMatch && policyAssessment?.coverageConfirmed) {
-      letter += `  Our preliminary review indicates that your policy may provide coverage for this loss, subject to verification. We have identified relevant policy provisions and will complete a full review shortly.\n\n`
-    } else {
-      letter += `  We are reviewing your policy to determine applicable coverage. A claims specialist will contact you with our assessment.\n\n`
-    }
     letter += `NEXT STEPS\n`
-    letter += `  1. A dedicated claims adjuster will be assigned within 24–48 business hours.\n`
-    letter += `  2. You will receive a follow-up call or email to discuss your claim and any additional information needed.\n`
-    letter += `  3. For urgent inquiries, please reference Claim Number ${claimNumber} when contacting our Claims Department.\n\n`
-    letter += `We are committed to processing your claim efficiently and will keep you informed throughout the process.\n\n`
-    letter += `Sincerely,\n\n`
-    letter += `Claims Department\n`
-    letter += `Insurance Claims Team`
+    letter += `  1. Our support team will review your complaint within 2 business days.\n`
+    letter += `  2. You will receive a follow-up email with our assessment and proposed resolution.\n`
+    letter += `  3. For any urgent queries, please quote your complaint reference: ${complaintRef}.\n\n`
+    letter += `We appreciate your patience and are committed to resolving this matter promptly.\n\n`
+    letter += `Kind regards,\n\n`
+    letter += `Customer Support Team\n`
+    letter += `Consumer Electronics\n`
+    letter += `support@electronics.com  |  1-800-ELEC-HELP (Mon–Fri, 9am–6pm)`
 
     return letter
   }
 
   const generateAcceptanceLetter = () => {
-    const draft = claimDraft || {}
-    const claimantName = draft.claimantName || 'Valued Policyholder'
-    const policyRef = draft.policyNumber || draft.policyId || 'on file'
-    const claimNumber = claimData.claimId || 'Pending'
-    const lossDate = draft.lossDate || 'the reported date'
-    const lossType = draft.lossType || 'the reported incident'
-    const estimatedAmount = draft.estimatedAmount
-    const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+    const draft = claimDraft as Record<string, unknown> || {}
+    const customerName = (draft.claimantName || draft.customerName || 'Valued Customer') as string
+    const complaintRef = (draft.policyNumber || draft.policyId || claimData.claimId || 'Pending') as string
+    const complaintType = (draft.lossType || draft.complaintType || 'your complaint') as string
+    const product = (draft.productOrService || draft.description || 'your product') as string
+    const autoDecision = claimData.autoDecision
+    const actionLabel = autoDecision === 'APPROVE_REPLACEMENT' ? 'replacement' : 'repair'
+    const today = new Date().toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' })
+
     let letter = `${today}\n\n`
-    letter += `Dear ${claimantName},\n\n`
-    letter += `RE: Claim Acceptance – Claim Number ${claimNumber}\n`
-    letter += `Policy Reference: ${policyRef}\n\n`
-    letter += `We are pleased to inform you that your claim has been approved.\n\n`
-    letter += `CLAIM DETAILS\n`
-    letter += `  • Incident Date: ${lossDate}\n`
-    letter += `  • Loss Type: ${lossType}\n`
-    if (estimatedAmount != null) letter += `  • Approved Amount: $${Number(estimatedAmount).toLocaleString()}\n`
-    letter += `\n`
+    letter += `Dear ${customerName},\n\n`
+    letter += `RE: Complaint Approved – Reference ${complaintRef}\n\n`
+    letter += `We are pleased to inform you that your complaint regarding your ${product} has been reviewed and approved.\n\n`
+    letter += `COMPLAINT DETAILS\n`
+    letter += `  • Complaint Reference: ${complaintRef}\n`
+    letter += `  • Complaint Type: ${complaintType}\n`
+    letter += `  • Product: ${product}\n`
+    letter += `  • Decision: Approved for ${actionLabel}\n\n`
     letter += `NEXT STEPS\n`
-    letter += `  1. Payment will be processed within 5–10 business days.\n`
-    letter += `  2. You will receive a separate confirmation when the payment is issued.\n`
-    letter += `  3. If you have any questions, please reference Claim Number ${claimNumber} when contacting us.\n\n`
-    letter += `Thank you for your patience throughout this process.\n\n`
-    letter += `Sincerely,\n\n`
-    letter += `Claims Department\n`
-    letter += `Insurance Claims Team`
+    letter += `  1. Our technical team will contact you within 48 hours to arrange the ${actionLabel}.\n`
+    letter += `  2. Please have your product and proof of purchase ready.\n`
+    letter += `  3. If a courier collection is required, we will arrange this at no cost to you.\n\n`
+    letter += `Please quote your reference number (${complaintRef}) in any future correspondence.\n\n`
+    letter += `Thank you for bringing this to our attention. We apologise for any inconvenience caused.\n\n`
+    letter += `Kind regards,\n\n`
+    letter += `Customer Support Team\n`
+    letter += `Consumer Electronics\n`
+    letter += `support@electronics.com  |  1-800-ELEC-HELP (Mon–Fri, 9am–6pm)`
     return letter
   }
 
   const generateRejectionLetter = () => {
-    const draft = claimDraft || {}
-    const claimantName = draft.claimantName || 'Valued Policyholder'
-    const policyRef = draft.policyNumber || draft.policyId || 'on file'
-    const claimNumber = claimData.claimId || 'Pending'
-    const lossDate = draft.lossDate || 'the reported date'
-    const lossType = draft.lossType || 'the reported incident'
-    const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+    const draft = claimDraft as Record<string, unknown> || {}
+    const customerName = (draft.claimantName || draft.customerName || 'Valued Customer') as string
+    const complaintRef = (draft.policyNumber || draft.policyId || claimData.claimId || 'Pending') as string
+    const complaintType = (draft.lossType || draft.complaintType || 'your complaint') as string
+    const product = (draft.productOrService || draft.description || 'your product') as string
+    const warrantyStatus = claimData.warrantyStatus
+    const today = new Date().toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' })
+
     let letter = `${today}\n\n`
-    letter += `Dear ${claimantName},\n\n`
-    letter += `RE: Claim Decision – Claim Number ${claimNumber}\n`
-    letter += `Policy Reference: ${policyRef}\n\n`
-    letter += `Thank you for submitting your claim. After a thorough review of your policy and the circumstances of your loss, we regret to inform you that we are unable to provide coverage for this claim.\n\n`
-    letter += `CLAIM REVIEWED\n`
-    letter += `  • Incident Date: ${lossDate}\n`
-    letter += `  • Loss Type: ${lossType}\n`
+    letter += `Dear ${customerName},\n\n`
+    letter += `RE: Complaint Decision – Reference ${complaintRef}\n\n`
+    letter += `Thank you for contacting Consumer Electronics Customer Support regarding your ${product}. We have carefully reviewed your complaint and regret to inform you that we are unable to process it at this time.\n\n`
+    letter += `COMPLAINT DETAILS\n`
+    letter += `  • Complaint Reference: ${complaintRef}\n`
+    letter += `  • Complaint Type: ${complaintType}\n`
+    letter += `  • Product: ${product}\n`
+    if (warrantyStatus === 'OUT_OF_WARRANTY') letter += `  • Warranty Status: Out of Warranty\n`
     letter += `\n`
-    letter += `REASON FOR DENIAL\n`
-    letter += `  Based on the terms and conditions of your policy, this loss does not fall within the scope of covered perils. Our determination is based on the policy provisions applicable to your coverage.\n\n`
+    letter += `REASON\n`
+    letter += warrantyStatus === 'OUT_OF_WARRANTY'
+      ? `  Your product is outside the manufacturer's warranty period and therefore does not qualify for a free repair or replacement under our warranty scheme.\n\n`
+      : `  After reviewing your complaint, we have determined that it does not meet the criteria for resolution under our current policy.\n\n`
     letter += `YOUR OPTIONS\n`
-    letter += `  1. If you believe this decision was made in error, you may submit an appeal with additional documentation within 30 days.\n`
-    letter += `  2. For questions regarding your policy coverage, please contact our Customer Service department.\n`
-    letter += `  3. Reference Claim Number ${claimNumber} in all correspondence.\n\n`
-    letter += `We understand this may be disappointing and encourage you to reach out if you have any questions.\n\n`
-    letter += `Sincerely,\n\n`
-    letter += `Claims Department\n`
-    letter += `Insurance Claims Team`
+    letter += `  1. Out-of-warranty paid repair — contact repairs@electronics.com for a quote.\n`
+    letter += `  2. If you believe this decision is incorrect, reply within 14 days with additional evidence for re-evaluation.\n`
+    letter += `  3. For consumer rights guidance, please contact your local consumer authority.\n\n`
+    letter += `We apologise for any inconvenience caused.\n\n`
+    letter += `Kind regards,\n\n`
+    letter += `Customer Support Team\n`
+    letter += `Consumer Electronics\n`
+    letter += `support@electronics.com  |  1-800-ELEC-HELP (Mon–Fri, 9am–6pm)`
     return letter
   }
 
   const generateMoreInformationRequest = () => {
-    const draft = claimDraft || {}
-    const claimantName = draft.claimantName || 'Valued Policyholder'
-    const policyRef = draft.policyNumber || draft.policyId || 'on file'
-    const claimNumber = claimData.claimId || 'Pending'
-    const lossDate = draft.lossDate || 'the reported date'
-    const lossType = draft.lossType || 'the reported incident'
-    const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+    const draft = claimDraft as Record<string, unknown> || {}
+    const customerName = (draft.claimantName || draft.customerName || 'Valued Customer') as string
+    const complaintRef = (draft.policyNumber || draft.policyId || claimData.claimId || 'Pending') as string
+    const complaintType = (draft.lossType || draft.complaintType || 'your complaint') as string
+    const product = (draft.productOrService || draft.description || 'your product') as string
+    const today = new Date().toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' })
+
     let letter = `${today}\n\n`
-    letter += `Dear ${claimantName},\n\n`
-    letter += `RE: Additional Information Required – Claim Number ${claimNumber}\n`
-    letter += `Policy Reference: ${policyRef}\n\n`
-    letter += `Thank you for submitting your First Notice of Loss. We have reviewed your claim and require additional information to proceed with our assessment.\n\n`
-    letter += `CLAIM DETAILS\n`
-    letter += `  • Incident Date: ${lossDate}\n`
-    letter += `  • Loss Type: ${lossType}\n`
-    letter += `  • Claim Number: ${claimNumber}\n`
-    letter += `\n`
-    letter += `ADDITIONAL INFORMATION REQUIRED\n`
-    letter += `To complete our review of your claim, we need the following information:\n\n`
-    letter += `  1. Detailed incident report or statement describing the events leading to the loss\n`
-    letter += `  2. Supporting documentation (photographs, receipts, estimates, police reports, etc.)\n`
-    letter += `  3. Any relevant medical records or reports (if applicable)\n`
-    letter += `  4. Contact information for any witnesses or third parties involved\n`
-    letter += `  5. Any other documentation that may support your claim\n\n`
-    letter += `SUBMISSION INSTRUCTIONS\n`
-    letter += `  • Please submit all requested documents within 14 business days\n`
-    letter += `  • You may submit documents via email, mail, or through our online portal\n`
-    letter += `  • Reference Claim Number ${claimNumber} in all correspondence\n`
-    letter += `  • If you have questions about what documents are needed, please contact our Claims Department\n\n`
-    letter += `NEXT STEPS\n`
-    letter += `  Once we receive the requested information, we will:\n`
-    letter += `  1. Review all submitted documentation\n`
-    letter += `  2. Complete our coverage assessment\n`
-    letter += `  3. Provide you with a decision on your claim within 5-10 business days\n\n`
-    letter += `We appreciate your cooperation in providing this information, as it will help us process your claim more efficiently.\n\n`
-    letter += `If you have any questions or need assistance, please do not hesitate to contact our Claims Department. Reference Claim Number ${claimNumber} in all communications.\n\n`
-    letter += `Sincerely,\n\n`
-    letter += `Claims Department\n`
-    letter += `Insurance Claims Team`
+    letter += `Dear ${customerName},\n\n`
+    letter += `RE: Additional Information Required – Reference ${complaintRef}\n\n`
+    letter += `Thank you for contacting Consumer Electronics Customer Support regarding your ${product}. We have reviewed your complaint and require some additional information to proceed.\n\n`
+    letter += `COMPLAINT DETAILS\n`
+    letter += `  • Complaint Reference: ${complaintRef}\n`
+    letter += `  • Complaint Type: ${complaintType}\n`
+    letter += `  • Product: ${product}\n\n`
+    letter += `DOCUMENTS REQUIRED\n`
+    letter += `  1. Proof of purchase (invoice or receipt) showing product model and purchase date\n`
+    letter += `  2. Photos or video clearly showing the fault or damage\n`
+    letter += `  3. Serial number or IMEI of the device\n`
+    letter += `  4. Any previous repair records or service reports (if applicable)\n\n`
+    letter += `HOW TO SUBMIT\n`
+    letter += `  • Reply to this email with the documents attached\n`
+    letter += `  • Quote your complaint reference ${complaintRef} in all correspondence\n`
+    letter += `  • Please submit within 14 days to avoid delays\n\n`
+    letter += `Once we receive the required documents, we will review and respond within 2 business days.\n\n`
+    letter += `If you have any questions, please do not hesitate to contact us.\n\n`
+    letter += `Kind regards,\n\n`
+    letter += `Customer Support Team\n`
+    letter += `Consumer Electronics\n`
+    letter += `support@electronics.com  |  1-800-ELEC-HELP (Mon–Fri, 9am–6pm)`
     return letter
   }
 
@@ -395,19 +376,42 @@ export default function DecisionPage({ claimData, onNextStage, onPreviousStage, 
   }
 
   const handleAppointmentSubmit = async () => {
-    // Validate fields
     if (!appointmentData.date || !appointmentData.engineerName || !appointmentData.time || !appointmentData.location) {
       setAppointmentError('Please fill in all fields')
       return
     }
 
+    const complaintId = claimData.claimId || claimData.decisionPack?.id || null
+    if (!complaintId) {
+      setAppointmentError('No complaint ID found. Please process the complaint first.')
+      return
+    }
+
+    setIsBookingAppointment(true)
+    setAppointmentError(null)
     try {
-      // Here you would typically make an API call to save the appointment
-      console.log('Appointment booked:', appointmentData)
-      alert(`Appointment booked successfully!\n\nDate: ${appointmentData.date}\nEngineer: ${appointmentData.engineerName}\nTime: ${appointmentData.time}\nLocation: ${appointmentData.location}`)
+      const res = await fetch('/api/appointments', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          complaintId,
+          date: appointmentData.date,
+          time: appointmentData.time,
+          engineerName: appointmentData.engineerName,
+          location: appointmentData.location,
+        }),
+      })
+      const result = await res.json()
+      if (!res.ok) {
+        setAppointmentError(result.error || result.detail || 'Failed to book appointment. Check that the backend server is running.')
+        return
+      }
+      setAppointmentBooked(true)
       handleCloseAppointmentModal()
     } catch (err) {
-      setAppointmentError(err instanceof Error ? err.message : 'Failed to book appointment')
+      setAppointmentError('Cannot connect to backend. Make sure the FastAPI server is running on port 8020.')
+    } finally {
+      setIsBookingAppointment(false)
     }
   }
 
@@ -459,20 +463,28 @@ export default function DecisionPage({ claimData, onNextStage, onPreviousStage, 
             {/* Complaint Summary */}
             <div className="p-5 bg-gradient-to-br from-red-50 to-red-100 rounded-xl border-l-4 border-red-300 shadow-sm">
               <h3 className="font-semibold text-[#991B1B] mb-3">Complaint Summary</h3>
-              <div className="grid grid-cols-2 gap-2 text-sm">
-                <div className="col-span-2">
-                  <span className="font-medium">Complaint Resolution Status:</span>{' '}
+              <div className="flex flex-col gap-1.5 text-sm">
+                <div>
+                  <span className="font-medium">Status:</span>{' '}
                   <span className={`font-semibold ${claimStatus === 'accepted' ? 'text-emerald-600' : claimStatus === 'rejected' ? 'text-rose-600' : 'text-[#64748B]'}`}>
                     {claimStatus === 'accepted' ? 'Accepted' : claimStatus === 'rejected' ? 'Rejected' : 'Pending'}
                   </span>
+                  {claimData.autoDecision && (
+                    <span className={`ml-2 font-semibold ${claimData.autoDecision.startsWith('APPROVE') ? 'text-emerald-600' : claimData.autoDecision === 'DESK_REJECT' ? 'text-rose-600' : 'text-amber-600'}`}>
+                      · {claimData.autoDecision}{typeof claimData.decisionConfidence === 'number' ? ` (${Math.round(claimData.decisionConfidence * 100)}%)` : ''}
+                    </span>
+                  )}
                 </div>
-                <div><span className="font-medium">Complaint:</span> {claimDraft.policyNumber || claimDraft.policyId || '—'}</div>
-                <div><span className="font-medium">Complainant Name:</span> {claimDraft.claimantName || claimDraft.customerName || '—'}</div>
-                <div><span className="font-medium">Issue Date:</span> {claimDraft.lossDate || claimDraft.complaintDate || '—'}</div>
-                <div><span className="font-medium">Type:</span> {claimDraft.lossType || claimDraft.complaintType || '—'}</div>
-                <div><span className="font-medium">Product:</span> {claimDraft.lossLocation || claimDraft.location || claimDraft.propertyAddress || claimDraft.productOrService || '—'}</div>
-                {claimDraft.deductible && (
-                  <div><span className="font-medium">Deductible:</span> ${claimDraft.deductible}</div>
+                <div><span className="font-medium">Complaint Ref:</span> {claimDraft.policyNumber || claimDraft.policyId || '—'}</div>
+                <div><span className="font-medium">Name:</span> {claimDraft.claimantName || (claimDraft as Record<string, unknown>).customerName as string || '—'}</div>
+                <div><span className="font-medium">Type:</span> {claimDraft.lossType || (claimDraft as Record<string, unknown>).complaintType as string || '—'}</div>
+                {claimData.warrantyStatus && (
+                  <div>
+                    <span className="font-medium">Warranty:</span>{' '}
+                    <span className={`font-semibold ${claimData.warrantyStatus === 'WITHIN_WARRANTY' ? 'text-emerald-600' : claimData.warrantyStatus === 'OUT_OF_WARRANTY' ? 'text-rose-600' : 'text-[#64748B]'}`}>
+                      {claimData.warrantyStatus === 'WITHIN_WARRANTY' ? 'Within Warranty' : claimData.warrantyStatus === 'OUT_OF_WARRANTY' ? 'Out of Warranty' : claimData.warrantyStatus}
+                    </span>
+                  </div>
                 )}
               </div>
             </div>
@@ -607,6 +619,28 @@ export default function DecisionPage({ claimData, onNextStage, onPreviousStage, 
           </div>
           
           <div className="space-y-4">
+            {/* Book an Appointment — first because it's the primary action for electronics */}
+            <div className="p-5 border-2 border-blue-200 rounded-xl bg-gradient-to-br from-blue-50/50 to-white hover:shadow-md transition-shadow">
+              <h3 className="font-semibold text-[#1E40AF] mb-2">Book an Appointment</h3>
+              <p className="text-sm text-[#718096] mb-4">
+                Schedule an engineer visit for product inspection or repair
+              </p>
+              {appointmentBooked ? (
+                <div className="flex items-center space-x-2 text-green-600">
+                  <Check className="w-5 h-5" />
+                  <span className="font-medium">Appointment Booked</span>
+                </div>
+              ) : (
+                <button
+                  onClick={handleBookAppointment}
+                  className="w-full flex items-center justify-center space-x-2 py-3 px-4 rounded-xl font-medium text-white bg-gradient-to-r from-[#1E40AF] to-[#1E3A8A] hover:from-[#1E3A8A] hover:to-[#1E40AF] hover:shadow-lg transition-all duration-300 shadow-md transform hover:-translate-y-0.5"
+                >
+                  <Calendar className="w-4 h-4" />
+                  <span>Book Appointment</span>
+                </button>
+              )}
+            </div>
+
             {/* Create Draft in Core */}
             <div className="p-5 border-2 border-cloud-200 rounded-xl bg-white hover:shadow-md transition-shadow">
               <h3 className="font-semibold text-[#2D3748] mb-2">Create Draft in Core System</h3>
@@ -785,21 +819,6 @@ export default function DecisionPage({ claimData, onNextStage, onPreviousStage, 
                 )}
               </div>
             )}
-
-            {/* Book an Appointment */}
-            <div className="p-5 border-2 border-blue-200 rounded-xl bg-gradient-to-br from-blue-50/50 to-white hover:shadow-md transition-shadow">
-              <h3 className="font-semibold text-[#1E40AF] mb-2">Book an Appointment</h3>
-              <p className="text-sm text-[#718096] mb-4">
-                Schedule an appointment with an engineer for product inspection or repair
-              </p>
-              <button
-                onClick={handleBookAppointment}
-                className="w-full flex items-center justify-center space-x-2 py-3 px-4 rounded-xl font-medium text-white bg-gradient-to-r from-[#1E40AF] to-[#1E3A8A] hover:from-[#1E3A8A] hover:to-[#1E40AF] transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
-              >
-                <Calendar className="w-4 h-4" />
-                <span>Book Appointment</span>
-              </button>
-            </div>
 
             {/* Capture Chain of Mail */}
             <div className="p-5 border-2 border-purple-200 rounded-xl bg-gradient-to-br from-purple-50/50 to-white hover:shadow-md transition-shadow">
@@ -1088,10 +1107,20 @@ export default function DecisionPage({ claimData, onNextStage, onPreviousStage, 
               </button>
               <button
                 onClick={handleAppointmentSubmit}
-                className="flex-1 px-4 py-2 text-sm font-medium text-white bg-[#1E40AF] hover:bg-[#1E3A8A] rounded-lg transition-colors flex items-center justify-center gap-2"
+                disabled={isBookingAppointment}
+                className="flex-1 px-4 py-2 text-sm font-medium text-white bg-[#1E40AF] hover:bg-[#1E3A8A] disabled:opacity-60 disabled:cursor-not-allowed rounded-lg transition-colors flex items-center justify-center gap-2"
               >
-                <Calendar className="w-4 h-4" />
-                Book Appointment
+                {isBookingAppointment ? (
+                  <>
+                    <Clock className="w-4 h-4 animate-spin" />
+                    Booking...
+                  </>
+                ) : (
+                  <>
+                    <Calendar className="w-4 h-4" />
+                    Book Appointment
+                  </>
+                )}
               </button>
             </div>
           </motion.div>

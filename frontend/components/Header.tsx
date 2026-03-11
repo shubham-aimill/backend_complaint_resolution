@@ -56,7 +56,7 @@ export default function Header({ currentStage, onStageChange }: HeaderProps) {
   return (
     <>
       <header className="bg-[#FFFAFA] border-b border-red-100/80 sticky top-0 z-50 shadow-sm shadow-red-950/5">
-        <div className="container mx-auto px-8">
+        <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <div className="flex items-center space-x-3">

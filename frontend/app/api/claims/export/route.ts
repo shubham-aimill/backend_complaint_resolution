@@ -1,21 +1,29 @@
 /**
  * GET /api/claims/export
- * Delegates to backend dashboard (Python) for CSV export.
+ * Proxies to FastAPI backend for CSV export of all processed complaints.
  */
 import { NextResponse } from 'next/server'
-import { runPython } from '@/lib/backend'
-
-const CSV_HEADERS =
-  'claimId,ingestedClaimId,policyNumber,claimantName,contactEmail,contactPhone,lossDate,lossType,lossLocation,description,status,createdAt\n'
+import { getApiUrl } from '@/lib/api-config'
 
 export async function GET() {
   try {
-    const csv = await runPython('backend.dashboard', ['csv'])
-    const content = csv.trim() || CSV_HEADERS
-    return new NextResponse(content, {
+    const response = await fetch(getApiUrl('api/complaints/export/csv'), {
+      method: 'GET',
+    })
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({}))
+      return NextResponse.json(
+        { error: (error as { detail?: string }).detail || 'Failed to export CSV' },
+        { status: response.status }
+      )
+    }
+
+    const csv = await response.text()
+    return new NextResponse(csv, {
       headers: {
         'Content-Type': 'text/csv',
-        'Content-Disposition': 'attachment; filename="claims-history.csv"',
+        'Content-Disposition': 'attachment; filename="complaints-history.csv"',
       },
     })
   } catch (error) {

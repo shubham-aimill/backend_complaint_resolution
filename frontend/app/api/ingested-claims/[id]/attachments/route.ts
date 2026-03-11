@@ -1,11 +1,11 @@
 /**
  * GET /api/ingested-claims/[id]/attachments?name=filename.jpg
- * Serves attachment file. Uses backend to get claim, then reads file from path.
+ * Fetches the ingested complaint from FastAPI, then reads the attachment from disk.
  */
 import { NextRequest, NextResponse } from 'next/server'
+import { getApiUrl } from '@/lib/api-config'
 import fs from 'fs'
 import path from 'path'
-import { runPython } from '@/lib/backend'
 
 export async function GET(
   request: NextRequest,
@@ -21,19 +21,20 @@ export async function GET(
       )
     }
 
-    const stdout = await runPython('backend.ingested_complaints', ['get', id])
-    const trimmed = stdout.trim()
-    if (trimmed === 'null') {
-      return NextResponse.json({ error: 'Claim not found' }, { status: 404 })
+    const encodedId = encodeURIComponent(id)
+    const response = await fetch(getApiUrl(`api/ingested-complaints/${encodedId}`), {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    })
+
+    if (!response.ok) {
+      return NextResponse.json({ error: 'Complaint not found' }, { status: 404 })
     }
 
-    const claim = JSON.parse(trimmed)
+    const claim = await response.json()
     const att = claim.attachments?.find((a: { name: string }) => a.name === name)
     if (!att || !att.path) {
-      return NextResponse.json(
-        { error: 'Attachment not found' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Attachment not found' }, { status: 404 })
     }
 
     const projectRoot = path.resolve(process.cwd(), '..')
@@ -43,22 +44,14 @@ export async function GET(
       : path.resolve(backendModified, att.path)
 
     if (!fs.existsSync(filePath)) {
-      return NextResponse.json(
-        { error: 'Attachment file not found' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Attachment file not found' }, { status: 404 })
     }
 
     const ext = path.extname(att.name).toLowerCase()
     const imageExts = ['.jpg', '.jpeg', '.png', '.gif', '.webp']
-    const isImage =
-      imageExts.includes(ext) ||
-      (att.mimeType || '').startsWith('image/')
+    const isImage = imageExts.includes(ext) || (att.mimeType || '').startsWith('image/')
     if (!isImage) {
-      return NextResponse.json(
-        { error: 'Not an image attachment' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Not an image attachment' }, { status: 400 })
     }
 
     const buffer = fs.readFileSync(filePath)
@@ -70,9 +63,6 @@ export async function GET(
     })
   } catch (error) {
     console.error('Attachment serve error:', error)
-    return NextResponse.json(
-      { error: 'Failed to serve attachment' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to serve attachment' }, { status: 500 })
   }
 }

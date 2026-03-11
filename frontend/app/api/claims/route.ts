@@ -23,7 +23,17 @@ export async function GET() {
       )
     }
 
-    const summaries = await response.json()
+    const raw = await response.json()
+    // Normalize complaintId → claimId so frontend keys are consistent
+    const summaries = Array.isArray(raw)
+      ? raw.map((s: Record<string, unknown>) => ({
+          ...s,
+          claimId: (s.claimId ?? s.complaintId) as string,
+          ingestedClaimId: (s.ingestedClaimId ?? s.ingestedComplaintId) as string | undefined,
+          claimantName: (s.claimantName ?? s.customerName) as string | undefined,
+          policyNumber: (s.policyNumber ?? s.customerRef) as string | undefined,
+        }))
+      : []
     return NextResponse.json(summaries)
   } catch (error) {
     console.error('List claims error:', error)

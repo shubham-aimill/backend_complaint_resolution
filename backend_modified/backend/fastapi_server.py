@@ -20,10 +20,11 @@ if str(_project_root) not in sys.path:
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import StreamingResponse
+from fastapi.responses import Response, StreamingResponse
 from pydantic import BaseModel
 
 from backend.dashboard.service import (
+    get_csv_content,
     get_dashboard_kpis,
     get_processed_complaint_by_id,
     get_processed_complaint_summaries,
@@ -37,6 +38,7 @@ from backend.ingested_complaints.service import (
     get_ingested_complaint_by_id,
 )
 from backend.process_complaint.orchestrator import process_complaint
+from backend.appointments.service import book_appointment, get_appointments, get_appointment_by_id
 from backend.common.config import ENV_FILE
 
 
@@ -95,6 +97,15 @@ class SaveComplaintRequest(BaseModel):
     autoDecision:        Optional[str] = None
     decisionConfidence:  Optional[float] = None
     recommendedNextStep: Optional[str] = None
+
+
+class BookAppointmentRequest(BaseModel):
+    complaintId:  str
+    date:         str
+    time:         str
+    engineerName: str
+    location:     str
+    notes:        Optional[str] = None
 
 
 class SyncInboxResponse(BaseModel):
@@ -190,6 +201,22 @@ async def save_complaint_endpoint(request: SaveComplaintRequest) -> Dict[str, An
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@app.get("/api/complaints/export/csv")
+async def export_complaints_csv() -> Response:
+    """Export all processed complaints as a CSV file."""
+    try:
+        content = get_csv_content()
+        if not content:
+            content = "complaintId,ingestedComplaintId,customerRef,customerName,complaintType,description,status,createdAt,warrantyStatus,productCategory,autoDecision,decisionConfidence\n"
+        return Response(
+            content=content,
+            media_type="text/csv",
+            headers={"Content-Disposition": "attachment; filename=complaints-history.csv"},
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @app.get("/api/complaints/{complaint_id}")
 async def get_complaint_endpoint(complaint_id: str) -> Dict[str, Any]:
     """Get a processed complaint by ID (includes full decisionPack, validationResults, autoDecision)."""
@@ -276,6 +303,41 @@ def sync_inbox_stream_endpoint():
             "X-Accel-Buffering": "no",
         },
     )
+
+
+@app.post("/api/appointments")
+async def book_appointment_endpoint(request: BookAppointmentRequest) -> Dict[str, Any]:
+    """Book an engineer visit appointment for a complaint."""
+    try:
+        record = book_appointment(
+            complaint_id=request.complaintId,
+            date=request.date,
+            time_slot=request.time,
+            engineer_name=request.engineerName,
+            location=request.location,
+            notes=request.notes,
+        )
+        return record
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/appointments")
+async def list_appointments_endpoint(complaintId: Optional[str] = None) -> List[Dict[str, Any]]:
+    """List all appointments, optionally filtered by complaintId."""
+    try:
+        return get_appointments(complaint_id=complaintId)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/appointments/{appointment_id}")
+async def get_appointment_endpoint(appointment_id: str) -> Dict[str, Any]:
+    """Get a single appointment by ID."""
+    result = get_appointment_by_id(appointment_id)
+    if result is None:
+        raise HTTPException(status_code=404, detail="Appointment not found")
+    return result
 
 
 @app.get("/")

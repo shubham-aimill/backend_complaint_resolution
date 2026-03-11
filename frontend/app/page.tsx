@@ -121,7 +121,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-white relative">
       <Header currentStage={currentStage} onStageChange={handleStageChange} />
-      <main className="container mx-auto px-8 py-16 relative z-10">
+      <main className="container mx-auto px-4 py-16 relative z-10">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentStage}

@@ -323,6 +323,24 @@ def extract_claim_information(
         email_fields = {}
     result["extractedFields"] = email_fields
 
+    # Always add the email body as the primary source document
+    if email_body and email_body.strip():
+        email_key_fields: Dict[str, Any] = {
+            k: v for k, v in email_fields.items()
+            if not str(k).startswith("_") and v not in (None, "", [])
+        }
+        email_doc: Dict[str, Any] = {
+            "id":         "doc_email",
+            "name":       "Customer Email",
+            "mimeType":   "text/plain",
+            "type":       "CorrespondenceRecord",
+            "content":    email_body[:6000],
+            "confidence": 0.95,
+            "metadata":   {"source": "email_body"},
+            "keyFields":  email_key_fields,
+        }
+        result["documents"].append(email_doc)
+
     # Electronics-specific field names including new fields
     field_names = {
         "customerName":    "Customer Name",
@@ -359,7 +377,9 @@ def extract_claim_information(
             findings = analyze_image_evidence(path, client)
             doc_entry["type"] = "PhotoEvidence"
             if "_error" in findings or "_parse_error" in findings:
-                doc_entry["content"]    = findings.get("_error") or findings.get("_parse_error", "Vision analysis failed")
+                error_msg = findings.get("_error") or findings.get("_parse_error", "Vision analysis failed")
+                doc_entry["metadata"]["analysisError"] = error_msg
+                doc_entry["content"]    = ""   # keep content clean — error goes in metadata
                 doc_entry["confidence"] = 0.5
             else:
                 img_conf         = findings.pop("_confidence", None)

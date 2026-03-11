@@ -68,7 +68,7 @@ export default function ClaimSummaryBar({
   }
 
   return (
-    <div className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-[#E5E7EB] shadow-sm px-8 py-4 mb-6">
+    <div className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-[#E5E7EB] shadow-sm px-4 py-4 mb-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-6">
           <div className="relative flex items-end gap-3">
@@ -90,9 +90,9 @@ export default function ClaimSummaryBar({
                   <>
                     <div className="fixed inset-0 z-40" onClick={() => setDropdownOpen(false)} aria-hidden="true" />
                     <div className="absolute left-0 top-full mt-1 z-50 w-full max-w-md max-h-64 overflow-auto bg-white border border-[#E5E7EB] rounded-lg shadow-lg py-1">
-                      {processedClaims.map((c) => (
+                      {processedClaims.map((c, idx) => (
                         <button
-                          key={c.claimId}
+                          key={c.claimId || c.ingestedClaimId || idx}
                           type="button"
                           onClick={() => {
                             onClaimSelect(c.claimId)
