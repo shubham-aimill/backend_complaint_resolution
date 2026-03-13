@@ -1,0 +1,340 @@
+{
+  "complaintId": "CMP-ING-1772918975375-7d9953d",
+  "ingestedComplaintId": "ING-1772918975375-7d9953d",
+  "sourceEmailFrom": "PRANAY NATH <pranay15nath@gmail.com>",
+  "warrantyStatus": "WITHIN_WARRANTY",
+  "productCategory": null,
+  "autoDecision": "DESK_REJECT",
+  "decisionConfidence": 0.9,
+  "recommendedNextStep": "Send DESK_REJECT email (physical damage). Offer paid repair quote at authorised service centre.",
+  "rejectReason": "physical_damage",
+  "decisionPack": {
+    "id": "DP-1773422868104",
+    "complaintDraft": {
+      "id": "DRAFT-1773422868104",
+      "complaintRef": "HO456789234",
+      "customerName": "Rajat Kumar",
+      "customerEmail": "ro***@email.com",
+      "customerPhone": "(555) 987-6543",
+      "complaintDate": "2026-01-31",
+      "complaintType": "Other",
+      "productOrService": "Not specified",
+      "description": "Significant water damage to home due to a storm. A tree branch fell on the roof, causing a hole and water intrusion into the master bedroom, hallway, and living room. Active roof leak, soaked carpeting, water stains, damaged drywall, and affected furniture and belongings.",
+      "desiredResolution": "Adjuster visit for damage assessment and repair",
+      "estimatedAmount": 11750.0,
+      "attachments": [
+        {
+          "id": "doc_0",
+          "name": "water-extraction-estimate.txt",
+          "type": "CorrespondenceRecord",
+          "mimeType": "text/plain",
+          "confidence": 0.95
+        },
+        {
+          "id": "doc_1",
+          "name": "emergency-invoice.txt",
+          "type": "Other",
+          "mimeType": "text/plain",
+          "confidence": 0.7
+        },
+        {
+          "id": "doc_2",
+          "name": "roof-leaking-water-damage.jpg",
+          "type": "Other",
+          "mimeType": "image/jpeg",
+          "confidence": 0.7
+        }
+      ],
+      "customerVerified": false,
+      "createdAt": "2026-03-13T17:27:48.104Z",
+      "source": "information_extraction",
+      "confidence": 0.9857142857142858
+    },
+    "evidence": [
+      {
+        "field": "customerName",
+        "fieldName": "Customer Name",
+        "value": "Rajat Kumar",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "customerEmail",
+        "fieldName": "Customer Email",
+        "value": "robert.chen@email.com",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "customerPhone",
+        "fieldName": "Customer Phone",
+        "value": "(555) 987-6543",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "complaintRef",
+        "fieldName": "Complaint Reference",
+        "value": "HO456789234",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "complaintDate",
+        "fieldName": "Complaint Date",
+        "value": "2026-01-31",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "complaintType",
+        "fieldName": "Complaint Type",
+        "value": "Other",
+        "confidence": 0.9,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "description",
+        "fieldName": "Description",
+        "value": "Significant water damage to home due to a storm. A tree branch fell on the roof, causing a hole and water intrusion into the master bedroom, hallway, and living room. Active roof leak, soaked carpeting, water stains, damaged drywall, and affected furniture and belongings.",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      }
+    ],
+    "documents": [
+      {
+        "id": "doc_email",
+        "name": "Customer Email",
+        "mimeType": "text/plain",
+        "type": "CorrespondenceRecord",
+        "content": "Subject: Fwd: Subject: Urgent - Water Damage Claim - Policy #HO456789234\nFrom: PRANAY NATH <pranay15nath@gmail.com>\nTo: arp290825@gmail.com\nDate: January 31, 2026 11:06 AM\n\nDear Claims Department,\r\n\r\nI'm writing to report significant water damage to my home that occurred\r\nlast night during the severe thunderstorm. My policy number is HO456789234.\r\n\r\nWhat happened:\r\nAround 11:30 PM last night, a large tree branch fell on my roof during the\r\nstorm, creating a hole that allowed substantial water intrusion into my\r\nhouse. The damage is primarily in the master bedroom, hallway, and living\r\nroom below.\r\n\r\nCurrent situation:\r\n- Active roof leak (temporarily tarped by emergency service)\r\n- Soaked carpeting throughout second floor hallway and master bedroom\r\n- Water stains on living room ceiling with active dripping\r\n- Damaged drywall in multiple rooms\r\n- Several pieces of furniture and personal belongings affected\r\n\r\nI've attached:\r\n1. Photos of the roof damage and interior water damage\r\n2. Emergency roof repair invoice from ABC Roofing ($850 for temporary tarp)\r\n3. Water extraction estimate from DryFast Services\r\n\r\nMy contact information:\r\n- Phone: (555) 987-6543\r\n- Email: robert.chen@email.com\r\n- Property address: 456 Elm Street, Springfield, IL 62704\r\n\r\nI had DryFast Services come out this morning for emergency water\r\nextraction. They estimate $3,200 for complete water removal and drying. The\r\nroof repair company (ABC Roofing) estimates $8,500 for permanent roof\r\nrepair and interior restoration.\r\n\r\nThe storm was definitely covered under my policy - it was the same system\r\nthat caused the tornado warning in our area last night. Weather reports\r\nshow winds up to 75 mph.\r\n\r\nI need to know how quickly you can get an adjuster out here. The water\r\ndamage is getting worse by the hour and I'm concerned about mold if we\r\ndon't act fast.\r\n\r\nPlease call me as soon as possible.\r\n\r\nThanks,\r\nRajat Kumar\r\nHomeowner",
+        "confidence": 0.95,
+        "metadata": {
+          "source": "email_body"
+        },
+        "keyFields": {
+          "customerName": "Rajat Kumar",
+          "customerEmail": "robert.chen@email.com",
+          "customerPhone": "(555) 987-6543",
+          "complaintRef": "HO456789234",
+          "complaintDate": "2026-01-31",
+          "complaintType": "Other",
+          "description": "Significant water damage to home due to a storm. A tree branch fell on the roof, causing a hole and water intrusion into the master bedroom, hallway, and living room. Active roof leak, soaked carpeting, water stains, damaged drywall, and affected furniture and belongings.",
+          "desiredResolution": "Adjuster visit for damage assessment and repair",
+          "estimatedAmount": 11750
+        }
+      },
+      {
+        "id": "doc_0",
+        "name": "water-extraction-estimate.txt",
+        "mimeType": "text/plain",
+        "type": "Other",
+        "content": "[Binary/non-text: water-extraction-estimate.txt]",
+        "confidence": 0.7,
+        "metadata": {}
+      },
+      {
+        "id": "doc_1",
+        "name": "emergency-invoice.txt",
+        "mimeType": "text/plain",
+        "type": "Other",
+        "content": "[Binary/non-text: emergency-invoice.txt]",
+        "confidence": 0.7,
+        "metadata": {}
+      },
+      {
+        "id": "doc_2",
+        "name": "roof-leaking-water-damage.jpg",
+        "mimeType": "image/jpeg",
+        "type": "PhotoEvidence",
+        "content": "",
+        "confidence": 0.5,
+        "metadata": {
+          "analysisError": "Image not found: C:\\Users\\SHUBHAM SAHU\\Downloads\\backend_electronics (2)\\backend_modified\\data\\ingested-attachments\\ING-1772918975375-7d9953d\\roof-leaking-water-damage.jpg"
+        }
+      }
+    ],
+    "customerGrounding": [
+      {
+        "recordId": "CUSTOMER-NOT-FOUND",
+        "title": "Customer Not Found",
+        "snippet": "No customer record found for ID: HO456789234",
+        "content": "Customer ID 'HO456789234' was not found. Please verify the reference number.",
+        "section": "Customer Verification",
+        "score": 0.0,
+        "confidence_score": 0.0,
+        "recommendation": "INVESTIGATE",
+        "action": "Verify the customer reference number provided in the complaint.",
+        "sourceDocument": "customers.json (Consumer Electronics CRM)",
+        "customer_verified": false
+      }
+    ],
+    "customerInfo": null,
+    "validationResults": [
+      {
+        "check": "eligibility_validation",
+        "passed": false,
+        "rejectReason": "physical_damage",
+        "autoDecision": "DESK_REJECT",
+        "notes": "Complaint indicates physical or accidental damage caused by the user. Physical damage due to misuse is not covered under the standard warranty."
+      },
+      {
+        "check": "warranty_validation",
+        "passed": true,
+        "status": "WITHIN_WARRANTY",
+        "warrantyMonths": 12,
+        "purchaseDate": "2026-01-31",
+        "purchaseDateSource": "email_body",
+        "expiryDate": "2027-01-31",
+        "autoDecision": null,
+        "notes": "Product purchased on 2026-01-31. Warranty of 12 months expires on 2027-01-31. Product is within warranty period."
+      },
+      {
+        "check": "document_validation",
+        "passed": true,
+        "presentDocuments": [
+          "purchase_invoice"
+        ],
+        "missingDocuments": [
+          "product_model"
+        ],
+        "serialNumber": null,
+        "autoDecision": null,
+        "notes": "Documents present: purchase_invoice. Missing: product_model."
+      },
+      {
+        "check": "product_validation",
+        "passed": false,
+        "productCategory": null,
+        "matchedProductId": null,
+        "matchedProductName": null,
+        "brandName": null,
+        "modelNumber": null,
+        "warrantyMonths": null,
+        "price": null,
+        "categorySupported": false,
+        "authorizedSellers": [],
+        "autoDecision": null,
+        "notes": "Product '' not found in product catalogue. Category not recognised \u2014 manual review advised."
+      }
+    ],
+    "warrantyStatus": "WITHIN_WARRANTY",
+    "productCategory": null,
+    "matchedProduct": null,
+    "autoDecision": "DESK_REJECT",
+    "decisionConfidence": 0.9,
+    "decisionRationale": "Physical or accidental damage caused by the user is not covered under the standard manufacturer warranty.",
+    "recommendedNextStep": "Send DESK_REJECT email (physical damage). Offer paid repair quote at authorised service centre.",
+    "rejectReason": "physical_damage",
+    "audit": [
+      {
+        "step": "Information Extraction",
+        "timestamp": "2026-03-13T17:27:48.104Z",
+        "duration": 6461,
+        "agent": "ExtractionService",
+        "status": "completed",
+        "details": {
+          "documentsProcessed": 4,
+          "errors": []
+        }
+      },
+      {
+        "step": "Validation Engine",
+        "timestamp": "2026-03-13T17:27:48.104Z",
+        "duration": 2,
+        "agent": "ValidationService",
+        "status": "completed",
+        "details": {
+          "warrantyStatus": "WITHIN_WARRANTY",
+          "allChecksPassed": false,
+          "autoDecision": "DESK_REJECT"
+        }
+      },
+      {
+        "step": "Customer & Product Grounding",
+        "timestamp": "2026-03-13T17:27:48.104Z",
+        "duration": 0,
+        "agent": "CustomerGroundingService",
+        "status": "completed",
+        "details": {
+          "recordsFound": 1,
+          "customerVerified": false
+        }
+      },
+      {
+        "step": "Decision Engine",
+        "timestamp": "2026-03-13T17:27:48.104Z",
+        "duration": 0,
+        "agent": "DecisionService",
+        "status": "completed",
+        "details": {
+          "autoDecision": "DESK_REJECT",
+          "decisionConfidence": 0.9
+        }
+      }
+    ],
+    "evidenceSummary": {
+      "totalFields": 7,
+      "highConfidenceFields": 7,
+      "lowConfidenceFields": 0,
+      "avgConfidence": 0.9857142857142858
+    },
+    "documentAnalysis": {
+      "totalDocuments": 4,
+      "documentTypes": [
+        "CorrespondenceRecord",
+        "Other",
+        "Other",
+        "PhotoEvidence"
+      ],
+      "avgDocumentConfidence": 0.7124999999999999,
+      "missingDocuments": [
+        "product_model"
+      ],
+      "presentDocuments": [
+        "purchase_invoice"
+      ]
+    },
+    "resolutionAssessment": {
+      "recordsFound": 1,
+      "customerVerified": false,
+      "topMatchScore": 0.0,
+      "recommendation": "INVESTIGATE",
+      "autoDecision": "DESK_REJECT",
+      "decisionConfidence": 0.9,
+      "recommendedActions": [
+        "Send DESK_REJECT email (physical damage). Offer paid repair quote at authorised service centre."
+      ]
+    },
+    "processingSummary": {
+      "stepsCompleted": 4,
+      "stepsWithErrors": 0
+    },
+    "createdAt": "2026-03-13T17:27:48.104Z"
+  },
+  "processingMetrics": {
+    "fieldsAutoPopulated": 7,
+    "stepsCompleted": 4,
+    "stepsFailed": 0,
+    "totalProcessingTime": 10300,
+    "averageHandleTime": 10.3,
+    "extractionTime": 6461,
+    "validationTime": 2
+  },
+  "createdAt": "2026-03-13T17:27:48.104Z",
+  "status": "draft",
+  "autoEmailResponse": {
+    "sent": true,
+    "decision": "DESK_REJECT",
+    "to": "PRANAY NATH <pranay15nath@gmail.com>",
+    "error": null
+  },
+  "processingTime": 10300
+}

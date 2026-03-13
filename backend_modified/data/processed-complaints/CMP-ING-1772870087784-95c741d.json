@@ -9,9 +9,9 @@
   "recommendedNextStep": "Send APPROVE_REPAIR email. Schedule product collection or repair centre visit.",
   "rejectReason": null,
   "decisionPack": {
-    "id": "DP-1773254608331",
+    "id": "DP-1773423325753",
     "complaintDraft": {
-      "id": "DRAFT-1773254608331",
+      "id": "DRAFT-1773423325753",
       "complaintRef": "CUST10001",
       "customerName": "Ananya Sharma",
       "customerEmail": "an***@email.com",
@@ -39,9 +39,9 @@
         }
       ],
       "customerVerified": true,
-      "createdAt": "2026-03-11T18:43:28.331Z",
+      "createdAt": "2026-03-13T17:35:25.753Z",
       "source": "information_extraction",
-      "confidence": 0.99
+      "confidence": 1.0
     },
     "evidence": [
       {
@@ -88,7 +88,7 @@
         "field": "complaintType",
         "fieldName": "Complaint Type",
         "value": "Connectivity",
-        "confidence": 0.9,
+        "confidence": 1.0,
         "sourceLocator": "email_content",
         "rationale": "Extracted from customer email and attachments"
       },
@@ -344,8 +344,8 @@
     "audit": [
       {
         "step": "Information Extraction",
-        "timestamp": "2026-03-11T18:43:28.331Z",
-        "duration": 7966,
+        "timestamp": "2026-03-13T17:35:25.752Z",
+        "duration": 4525,
         "agent": "ExtractionService",
         "status": "completed",
         "details": {
@@ -355,8 +355,8 @@
       },
       {
         "step": "Validation Engine",
-        "timestamp": "2026-03-11T18:43:28.331Z",
-        "duration": 1,
+        "timestamp": "2026-03-13T17:35:25.752Z",
+        "duration": 2,
         "agent": "ValidationService",
         "status": "completed",
         "details": {
@@ -367,7 +367,7 @@
       },
       {
         "step": "Customer & Product Grounding",
-        "timestamp": "2026-03-11T18:43:28.331Z",
+        "timestamp": "2026-03-13T17:35:25.752Z",
         "duration": 0,
         "agent": "CustomerGroundingService",
         "status": "completed",
@@ -378,7 +378,7 @@
       },
       {
         "step": "Decision Engine",
-        "timestamp": "2026-03-11T18:43:28.331Z",
+        "timestamp": "2026-03-13T17:35:25.752Z",
         "duration": 0,
         "agent": "DecisionService",
         "status": "completed",
@@ -392,7 +392,7 @@
       "totalFields": 10,
       "highConfidenceFields": 10,
       "lowConfidenceFields": 0,
-      "avgConfidence": 0.99
+      "avgConfidence": 1.0
     },
     "documentAnalysis": {
       "totalDocuments": 3,
@@ -424,18 +424,18 @@
       "stepsCompleted": 4,
       "stepsWithErrors": 0
     },
-    "createdAt": "2026-03-11T18:43:28.331Z"
+    "createdAt": "2026-03-13T17:35:25.752Z"
   },
   "processingMetrics": {
     "fieldsAutoPopulated": 10,
     "stepsCompleted": 4,
     "stepsFailed": 0,
-    "totalProcessingTime": 11658,
-    "averageHandleTime": 11.658,
-    "extractionTime": 7966,
-    "validationTime": 1
+    "totalProcessingTime": 8053,
+    "averageHandleTime": 8.053,
+    "extractionTime": 4525,
+    "validationTime": 2
   },
-  "createdAt": "2026-03-11T18:43:28.331Z",
+  "createdAt": "2026-03-13T17:35:25.752Z",
   "status": "draft",
   "autoEmailResponse": {
     "sent": true,
@@ -443,5 +443,5 @@
     "to": "Ananya Sharma <ananya.sharma@email.com>",
     "error": null
   },
-  "processingTime": 11658
+  "processingTime": 8053
 }

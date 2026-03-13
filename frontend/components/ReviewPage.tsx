@@ -536,6 +536,7 @@ export default function ReviewPage({ claimData, onNextStage, onPreviousStage, on
                 })}
               </div>
             </motion.div>
+
           </div>
 
           {/* Center Column - Extracted Fields (Dominant) */}

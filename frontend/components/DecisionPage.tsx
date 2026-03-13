@@ -18,7 +18,9 @@ import {
   Mail,
   Calendar,
   MapPin,
-  User
+  User,
+  MessageSquare,
+  Inbox
 } from 'lucide-react'
 import ClaimSummaryBar from './ClaimSummaryBar'
 import { ClaimData } from '@/types/claims'
@@ -67,6 +69,23 @@ export default function DecisionPage({ claimData, onNextStage, onPreviousStage, 
   const [appointmentError, setAppointmentError] = useState<string | null>(null)
   const [appointmentBooked, setAppointmentBooked] = useState(false)
   const [isBookingAppointment, setIsBookingAppointment] = useState(false)
+  const [bookedAppointmentDetails, setBookedAppointmentDetails] = useState<{
+    appointmentId: string
+    complaintId: string
+    date: string
+    time: string
+    engineerName: string
+    location: string
+    bookedAt: string
+  } | null>(null)
+  const [showAppointmentConfirmModal, setShowAppointmentConfirmModal] = useState(false)
+  const [showMailChainModal, setShowMailChainModal] = useState(false)
+  const [mailChain, setMailChain] = useState<Array<{
+    id: string; from: string; to: string; subject: string;
+    emailBody: string; createdAt: string; inReplyTo?: string
+  }>>([])
+  const [mailChainLoading, setMailChainLoading] = useState(false)
+  const [expandedMailId, setExpandedMailId] = useState<string | null>(null)
 
   useEffect(() => {
     setClaimStatus('pending')
@@ -407,7 +426,17 @@ export default function DecisionPage({ claimData, onNextStage, onPreviousStage, 
         return
       }
       setAppointmentBooked(true)
+      setBookedAppointmentDetails({
+        appointmentId: result.appointmentId || result.id || '—',
+        complaintId: complaintId,
+        date: appointmentData.date,
+        time: appointmentData.time,
+        engineerName: appointmentData.engineerName,
+        location: appointmentData.location,
+        bookedAt: new Date().toLocaleString(),
+      })
       handleCloseAppointmentModal()
+      setShowAppointmentConfirmModal(true)
     } catch (err) {
       setAppointmentError('Cannot connect to backend. Make sure the FastAPI server is running on port 8020.')
     } finally {
@@ -415,9 +444,23 @@ export default function DecisionPage({ claimData, onNextStage, onPreviousStage, 
     }
   }
 
-  const handleCaptureMailChain = () => {
-    // Placeholder for capturing mail chain functionality
-    alert('Capture Chain of Mail functionality will be implemented here')
+  const handleCaptureMailChain = async () => {
+    const ingestedId = claimData?.ingestedClaimId ?? (claimData as unknown as Record<string, unknown>)?.ingestedComplaintId as string | undefined
+    if (!ingestedId) {
+      setShowMailChainModal(true)
+      return
+    }
+    setMailChainLoading(true)
+    setShowMailChainModal(true)
+    try {
+      const res = await fetch(`/api/ingested-claims/${ingestedId}/thread`)
+      const data = await res.json()
+      setMailChain(Array.isArray(data) ? data : [])
+    } catch {
+      setMailChain([])
+    } finally {
+      setMailChainLoading(false)
+    }
   }
 
   return (
@@ -523,7 +566,7 @@ export default function DecisionPage({ claimData, onNextStage, onPreviousStage, 
               </div>
               {policyGrounding.length > 0 ? (
                 <div className="space-y-2">
-                  {policyGrounding.map((policy) => {
+                  {policyGrounding.map((policy, pi) => {
                     const isExpanded = expandedPolicyIds.has(policy.clauseId)
                     const fullContent = policy.content || policy.snippet || ''
                     const toggle = () => {
@@ -535,7 +578,7 @@ export default function DecisionPage({ claimData, onNextStage, onPreviousStage, 
                       })
                     }
                     return (
-                      <div key={policy.clauseId} className="rounded-lg border border-red-200 bg-white overflow-hidden">
+                      <div key={policy.clauseId ?? pi} className="rounded-lg border border-red-200 bg-white overflow-hidden">
                         <button
                           type="button"
                           onClick={toggle}
@@ -1126,6 +1169,139 @@ export default function DecisionPage({ claimData, onNextStage, onPreviousStage, 
           </motion.div>
         </div>
       )}
+      {/* Appointment Confirmation Modal */}
+      {showAppointmentConfirmModal && bookedAppointmentDetails && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white rounded-xl shadow-2xl w-full max-w-md"
+          >
+            {/* Header */}
+            <div className="bg-green-50 rounded-t-xl px-6 py-5 flex items-center gap-3 border-b border-green-100">
+              <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
+                <CheckCircle className="w-6 h-6 text-green-600" />
+              </div>
+              <div>
+                <h2 className="text-lg font-semibold text-green-800">Appointment Confirmed</h2>
+                <p className="text-sm text-green-600">Engineer visit has been scheduled</p>
+              </div>
+            </div>
+
+            {/* Details */}
+            <div className="px-6 py-5 space-y-3">
+              {[
+                { label: 'Appointment ID', value: bookedAppointmentDetails.appointmentId },
+                { label: 'Complaint Ref', value: bookedAppointmentDetails.complaintId },
+                { label: 'Date', value: new Date(bookedAppointmentDetails.date).toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) },
+                { label: 'Time', value: bookedAppointmentDetails.time },
+                { label: 'Engineer', value: bookedAppointmentDetails.engineerName },
+                { label: 'Location', value: bookedAppointmentDetails.location },
+                { label: 'Booked At', value: bookedAppointmentDetails.bookedAt },
+              ].map(({ label, value }) => (
+                <div key={label} className="flex justify-between items-start text-sm">
+                  <span className="text-[#6B7280] font-medium w-36 shrink-0">{label}</span>
+                  <span className="text-[#111827] text-right">{value}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Footer */}
+            <div className="px-6 pb-5">
+              <button
+                onClick={() => setShowAppointmentConfirmModal(false)}
+                className="w-full px-4 py-2 text-sm font-medium text-white bg-[#1E40AF] hover:bg-[#1E3A8A] rounded-lg transition-colors"
+              >
+                Done
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
+      {/* Mail Chain Modal */}
+      {showMailChainModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white rounded-xl shadow-2xl w-full max-w-lg flex flex-col max-h-[80vh]"
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between px-6 py-4 border-b border-[#E5E7EB]">
+              <div className="flex items-center gap-2">
+                <MessageSquare className="w-5 h-5 text-[#7C3AED]" />
+                <h2 className="text-base font-semibold text-[#111827]">Mail Chain</h2>
+                <span className="text-xs font-medium text-[#6B7280] bg-[#F3F4F6] px-2 py-0.5 rounded">
+                  {mailChain.length} email{mailChain.length !== 1 ? 's' : ''}
+                </span>
+              </div>
+              <button onClick={() => setShowMailChainModal(false)} className="text-[#9CA3AF] hover:text-[#374151]">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Body */}
+            <div className="overflow-y-auto flex-1 px-6 py-4 space-y-3">
+              {mailChainLoading ? (
+                <div className="text-sm text-[#9CA3AF] text-center py-8">Loading thread…</div>
+              ) : mailChain.length === 0 ? (
+                <div className="text-sm text-[#9CA3AF] text-center py-8">No thread emails found for this complaint.</div>
+              ) : (
+                mailChain.map((msg, idx) => {
+                  const isCustomer = !msg.from?.toLowerCase().includes('aimill') && !msg.from?.toLowerCase().includes('support')
+                  const isExpanded = expandedMailId === msg.id
+                  const dateStr = msg.createdAt ? new Date(msg.createdAt).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : ''
+                  const bodyPreview = (msg.emailBody || '').replace(/^(Subject|From|To|Date):.*\n/gm, '').trim().slice(0, 100)
+
+                  return (
+                    <div key={msg.id ?? idx} className={`rounded-lg border ${isCustomer ? 'border-[#E5E7EB] bg-white' : 'border-[#BFDBFE] bg-[#EFF6FF]'}`}>
+                      <button
+                        className="w-full text-left px-4 py-3 flex items-start gap-3"
+                        onClick={() => setExpandedMailId(isExpanded ? null : msg.id)}
+                      >
+                        <div className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 mt-0.5 ${isCustomer ? 'bg-[#6B7280]' : 'bg-[#1E40AF]'}`}>
+                          {isCustomer ? <Inbox className="w-3.5 h-3.5 text-white" /> : <Send className="w-3.5 h-3.5 text-white" />}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between gap-2">
+                            <span className="text-xs font-semibold text-[#111827] truncate">
+                              {msg.from?.replace(/<.*>/, '').trim() || 'Unknown'}
+                            </span>
+                            <span className="text-[10px] text-[#9CA3AF] shrink-0">{dateStr}</span>
+                          </div>
+                          <div className="text-[11px] text-[#6B7280] truncate">{msg.subject}</div>
+                          {!isExpanded && <div className="text-[11px] text-[#9CA3AF] truncate mt-0.5">{bodyPreview}…</div>}
+                        </div>
+                        <ChevronDown className={`w-4 h-4 text-[#9CA3AF] shrink-0 mt-1 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+                      </button>
+                      {isExpanded && (
+                        <div className="px-4 pb-3 border-t border-[#E5E7EB] pt-2">
+                          <pre className="text-[11px] text-[#374151] whitespace-pre-wrap font-sans leading-relaxed max-h-52 overflow-y-auto">
+                            {msg.emailBody || '(no body)'}
+                          </pre>
+                        </div>
+                      )}
+                      {msg.inReplyTo && idx > 0 && (
+                        <div className="px-4 pb-1.5 text-[10px] text-[#9CA3AF]">↩ reply</div>
+                      )}
+                    </div>
+                  )
+                })
+              )}
+            </div>
+
+            {/* Footer */}
+            <div className="px-6 py-4 border-t border-[#E5E7EB]">
+              <button
+                onClick={() => setShowMailChainModal(false)}
+                className="w-full px-4 py-2 text-sm font-medium text-white bg-[#7C3AED] hover:bg-[#6D28D9] rounded-lg transition-colors"
+              >
+                Close
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </motion.div>
   )
-} 
+}

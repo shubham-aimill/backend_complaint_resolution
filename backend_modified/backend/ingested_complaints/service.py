@@ -114,6 +114,8 @@ def save_ingested_complaint(
     source: str = "imap",
     message_id: Optional[str] = None,
     email_message_id_for_display: Optional[str] = None,
+    in_reply_to: Optional[str] = None,
+    references: Optional[List[str]] = None,
 ) -> Dict[str, Any]:
     """Save a raw complaint from email to the ingested complaints store."""
     complaint_id = f"ING-{int(time.time() * 1000)}-{uuid.uuid4().hex[:7]}"
@@ -142,6 +144,10 @@ def save_ingested_complaint(
             "mimeType": mime_type or "application/octet-stream",
         })
 
+    # Compute threadId: root of thread = first References entry, else In-Reply-To, else own Message-ID
+    refs = references or []
+    thread_id = refs[0] if refs else (in_reply_to or email_message_id_for_display or message_id or complaint_id)
+
     complaint: Dict[str, Any] = {
         "id":           complaint_id,
         "complaintRef": complaint_ref,
@@ -152,9 +158,14 @@ def save_ingested_complaint(
         "attachments":  attachments,
         "createdAt":    _iso_now(),
         "source":       source,
+        "threadId":     thread_id,
     }
     if message_id:
         complaint["messageId"] = message_id
+    if in_reply_to:
+        complaint["inReplyTo"] = in_reply_to
+    if refs:
+        complaint["references"] = refs
 
     complaints = _load_complaints()
     # Remove demo records once real emails arrive
@@ -182,6 +193,29 @@ def get_ingested_complaint_by_id(complaint_id: str) -> Optional[Dict[str, Any]]:
     return next((c for c in _load_complaints() if c.get("id") == complaint_id), None)
 
 # Alias
+
+
+def get_thread_by_complaint_id(complaint_id: str) -> List[Dict[str, Any]]:
+    """Return all emails in the same thread as the given ingested complaint, sorted oldest-first."""
+    all_complaints = _load_complaints()
+    target = next((c for c in all_complaints if c.get("id") == complaint_id), None)
+    if not target:
+        return []
+    thread_id = target.get("threadId")
+    own_msg_id = target.get("messageId") or target.get("id")
+    # Collect all emails that share the same threadId, or reference/reply to each other
+    thread: List[Dict[str, Any]] = []
+    for c in all_complaints:
+        c_thread = c.get("threadId")
+        c_refs   = c.get("references", [])
+        c_reply  = c.get("inReplyTo", "")
+        if (c_thread and thread_id and c_thread == thread_id) or \
+           (own_msg_id and own_msg_id in c_refs) or \
+           (c_reply and c_reply == own_msg_id):
+            thread.append(c)
+    # Sort oldest first
+    thread.sort(key=lambda x: x.get("createdAt", ""))
+    return thread
 
 
 def get_complaint_references() -> List[Dict[str, str]]:

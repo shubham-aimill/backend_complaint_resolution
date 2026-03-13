@@ -1,0 +1,60 @@
+{
+  "draftId": "DRAFT-CMP-ING-1772870087784-95c741d-1773421862347",
+  "claimId": "CMP-ING-1772870087784-95c741d",
+  "ingestedClaimId": "ING-1772870087784-95c741d",
+  "status": "pending",
+  "createdAt": "2026-03-13T17:11:02.347Z",
+  "claimFields": {
+    "policyNumber": "CUST10001",
+    "claimantName": "Ananya Sharma",
+    "contactEmail": "an***@email.com",
+    "lossDate": "2025-11-01",
+    "lossType": "Connectivity",
+    "lossLocation": "NovaTech ProMax X15 Smartphone",
+    "description": "Since updating to firmware version 3.2.1 last week, my smartphone disconnects from WiFi every few hours and requires a manual reconnect. The issue did not occur before the update. I have tried resetting network settings but the problem persists.",
+    "estimatedAmount": 0,
+    "propertyAddress": "NovaTech ProMax X15 Smartphone"
+  },
+  "attachments": [
+    {
+      "id": "doc_0",
+      "name": "invoice_sec_cam.png",
+      "type": "CorrespondenceRecord",
+      "mimeType": "image/png",
+      "confidence": 0.95
+    },
+    {
+      "id": "doc_1",
+      "name": "smart_home_security_camera.jpg",
+      "type": "PhotoEvidence",
+      "mimeType": "image/jpeg",
+      "confidence": 0.5
+    }
+  ],
+  "evidenceSummary": {
+    "totalFields": 10,
+    "highConfidenceFields": 10,
+    "lowConfidenceFields": 0,
+    "avgConfidence": 0.99
+  },
+  "policyClauses": [
+    {
+      "title": "CONNECTIVITY_ISSUE — ProMax X15 Smartphone",
+      "section": "Connectivity",
+      "score": 1
+    },
+    {
+      "title": "PRODUCT_DEFECT — SoundDrop Pro Earbuds",
+      "section": "Hardware Issue",
+      "score": 1
+    }
+  ],
+  "recommendedActions": [
+    "Send APPROVE_REPAIR email. Schedule product collection or repair centre visit."
+  ],
+  "documentTypes": [
+    "CorrespondenceRecord",
+    "PhotoEvidence",
+    "PhotoEvidence"
+  ]
+}

@@ -36,6 +36,7 @@ from backend.ingested_complaints.service import (
     get_all_ingested_complaints,
     get_complaint_references,
     get_ingested_complaint_by_id,
+    get_thread_by_complaint_id,
 )
 from backend.process_complaint.orchestrator import process_complaint
 from backend.appointments.service import book_appointment, get_appointments, get_appointment_by_id
@@ -168,6 +169,12 @@ async def get_ingested_complaint_endpoint(complaint_id: str) -> Dict[str, Any]:
     if result is None:
         raise HTTPException(status_code=404, detail="Ingested complaint not found")
     return result
+
+
+@app.get("/api/ingested-complaints/{complaint_id}/thread")
+async def get_ingested_complaint_thread(complaint_id: str) -> List[Dict[str, Any]]:
+    """Get all emails in the same thread as the given ingested complaint."""
+    return get_thread_by_complaint_id(complaint_id)
 
 
 @app.post("/api/ingested-complaints/clear")

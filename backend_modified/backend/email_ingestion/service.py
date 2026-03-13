@@ -489,9 +489,12 @@ def sync_inbox(
                 subject    = _decode_header_value(msg.get("Subject", "(No subject)") or "(No subject)")
                 from_addr  = _format_address(msg.get("From", ""))
                 to_addr    = _format_address(msg.get("To", ""))
-                message_id = _decode_header_value(msg.get("Message-ID", "")).strip() or None
-                date_hdr   = msg.get("Date", "")
-                dedup_key  = message_id or f"{subject}|{from_addr}|{date_hdr}"
+                message_id  = _decode_header_value(msg.get("Message-ID", "")).strip() or None
+                in_reply_to = _decode_header_value(msg.get("In-Reply-To", "")).strip() or None
+                references_raw = _decode_header_value(msg.get("References", "")).strip()
+                references  = [r.strip() for r in references_raw.split() if r.strip()] if references_raw else []
+                date_hdr    = msg.get("Date", "")
+                dedup_key   = message_id or f"{subject}|{from_addr}|{date_hdr}"
 
                 if is_duplicate_email(subject, from_addr, message_id or "", date_hdr, existing_ids):
                     result["skippedDuplicate"] += 1
@@ -544,6 +547,8 @@ def sync_inbox(
                     attachment_files, "imap",
                     message_id=dedup_key,
                     email_message_id_for_display=message_id,
+                    in_reply_to=in_reply_to,
+                    references=references,
                 )
                 result["ingested"] += 1
                 add_dedup_keys_to_set(existing_ids, subject, from_addr, message_id or "", dedup_key)

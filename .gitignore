@@ -1,5 +1,6 @@
 .env
 .env.example
+frontend/login_credentials.csv
 
 # Python
 __pycache__/
