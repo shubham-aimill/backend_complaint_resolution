@@ -249,6 +249,66 @@ def clear_all_ingested_complaints() -> None:
 # Alias
 
 
+def add_email_to_thread(
+    complaint_id: str,
+    from_addr: str,
+    to_addr: str,
+    subject: str,
+    email_body: str,
+    direction: str = "outbound",
+    email_type: Optional[str] = None,
+    rejection_reason: Optional[str] = None,
+    rejection_details: Optional[str] = None,
+    in_reply_to: Optional[str] = None,
+) -> Dict[str, Any]:
+    """Append an outbound (or any) email to the thread of an existing ingested complaint."""
+    target = get_ingested_complaint_by_id(complaint_id)
+    if not target:
+        raise ValueError(f"Ingested complaint {complaint_id!r} not found")
+
+    entry_id = f"OUT-{int(time.time() * 1000)}-{uuid.uuid4().hex[:7]}"
+    entry: Dict[str, Any] = {
+        "id":           entry_id,
+        "complaintRef": target.get("complaintRef", complaint_id),
+        "from":         from_addr,
+        "to":           to_addr,
+        "subject":      subject,
+        "emailBody":    email_body,
+        "attachments":  [],
+        "createdAt":    _iso_now(),
+        "source":       "outbound",
+        "direction":    direction,
+        "threadId":     target.get("threadId", complaint_id),
+        "inReplyTo":    in_reply_to or target.get("messageId") or complaint_id,
+    }
+    if email_type:
+        entry["emailType"] = email_type
+    if rejection_reason:
+        entry["rejectionReason"] = rejection_reason
+    if rejection_details:
+        entry["rejectionDetails"] = rejection_details
+
+    complaints = _load_complaints()
+    complaints.insert(0, entry)
+    _save_complaints(complaints)
+    return entry
+
+
+def update_complaint_status(complaint_id: str, status: str, rejection_reason: Optional[str] = None, rejection_details: Optional[str] = None) -> bool:
+    """Update the status field of a processed complaint by ID."""
+    from backend.dashboard.service import get_processed_complaint_by_id, save_processed_complaint
+    record = get_processed_complaint_by_id(complaint_id)
+    if record is None:
+        return False
+    record["status"] = status
+    if rejection_reason:
+        record["rejectionReason"] = rejection_reason
+    if rejection_details:
+        record["rejectionDetails"] = rejection_details
+    save_processed_complaint(record)
+    return True
+
+
 def read_attachment_content(complaint_id: str, attachment_name: str) -> str:
     """Read text content of a saved attachment."""
     complaint = get_ingested_complaint_by_id(complaint_id)

@@ -21,7 +21,6 @@ if str(_project_root) not in sys.path:
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response, StreamingResponse
-from pydantic import BaseModel
 
 from backend.dashboard.service import (
     get_csv_content,
@@ -32,15 +31,25 @@ from backend.dashboard.service import (
 )
 from backend.email_ingestion.service import sync_inbox
 from backend.ingested_complaints.service import (
+    add_email_to_thread,
     clear_all_ingested_complaints,
     get_all_ingested_complaints,
     get_complaint_references,
     get_ingested_complaint_by_id,
     get_thread_by_complaint_id,
+    update_complaint_status,
 )
 from backend.process_complaint.orchestrator import process_complaint
 from backend.appointments.service import book_appointment, get_appointments, get_appointment_by_id
 from backend.common.config import ENV_FILE
+from backend.common.models import (
+    ProcessComplaintRequest,
+    SaveComplaintRequest,
+    UpdateComplaintStatusRequest,
+    AddThreadEmailRequest,
+    BookAppointmentRequest,
+    SyncInboxResponse,
+)
 
 
 def _load_env_at_startup() -> None:
@@ -78,48 +87,9 @@ app.add_middleware(
 )
 
 
-# ── Request / Response models ──────────────────────────────────────────────
-
-class ProcessComplaintRequest(BaseModel):
-    ingestedComplaintId: str
-
-
-class SaveComplaintRequest(BaseModel):
-    complaintId:         Optional[str] = None
-    ingestedComplaintId: Optional[str] = None
-    decisionPack:        Dict[str, Any]
-    status:              Optional[str] = None
-    createdAt:           Optional[str] = None
-    processingTime:      Optional[int] = None
-    processingMetrics:   Optional[Dict[str, Any]] = None
-    # New electronics fields
-    warrantyStatus:      Optional[str] = None
-    productCategory:     Optional[str] = None
-    autoDecision:        Optional[str] = None
-    decisionConfidence:  Optional[float] = None
-    recommendedNextStep: Optional[str] = None
-
-
-class BookAppointmentRequest(BaseModel):
-    complaintId:  str
-    date:         str
-    time:         str
-    engineerName: str
-    location:     str
-    notes:        Optional[str] = None
-
-
-class SyncInboxResponse(BaseModel):
-    success:            bool
-    ingested:           int
-    scanned:            int
-    skippedNoComplaint: int = 0
-    skippedDuplicate:   int = 0
-    faqAnswered:        int = 0
-    faqError:           int = 0
-    errors:             List[str]
-    hint:               Optional[str] = None
-
+# ── Models imported from backend.common.models ────────────────────────────
+# ProcessComplaintRequest, SaveComplaintRequest, UpdateComplaintStatusRequest,
+# AddThreadEmailRequest, BookAppointmentRequest, SyncInboxResponse
 
 # ── Endpoints ──────────────────────────────────────────────────────────────
 
@@ -177,6 +147,28 @@ async def get_ingested_complaint_thread(complaint_id: str) -> List[Dict[str, Any
     return get_thread_by_complaint_id(complaint_id)
 
 
+@app.post("/api/ingested-complaints/{complaint_id}/thread")
+async def add_to_ingested_complaint_thread(complaint_id: str, request: AddThreadEmailRequest) -> Dict[str, Any]:
+    """Append an outbound email to the thread of an ingested complaint."""
+    try:
+        entry = add_email_to_thread(
+            complaint_id=complaint_id,
+            from_addr=request.fromAddr,
+            to_addr=request.toAddr,
+            subject=request.subject,
+            email_body=request.emailBody,
+            direction=request.direction,
+            email_type=request.emailType,
+            rejection_reason=request.rejectionReason,
+            rejection_details=request.rejectionDetails,
+        )
+        return {"success": True, "entry": entry}
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @app.post("/api/ingested-complaints/clear")
 async def clear_ingested_complaints_endpoint() -> Dict[str, Any]:
     """Delete all ingested complaints and their attachment files."""
@@ -231,6 +223,20 @@ async def get_complaint_endpoint(complaint_id: str) -> Dict[str, Any]:
     if result is None:
         raise HTTPException(status_code=404, detail="Complaint not found")
     return result
+
+
+@app.patch("/api/complaints/{complaint_id}/status")
+async def update_complaint_status_endpoint(complaint_id: str, request: UpdateComplaintStatusRequest) -> Dict[str, Any]:
+    """Update the status of a processed complaint (accepted / rejected / pending)."""
+    ok = update_complaint_status(
+        complaint_id=complaint_id,
+        status=request.status,
+        rejection_reason=request.rejectionReason,
+        rejection_details=request.rejectionDetails,
+    )
+    if not ok:
+        raise HTTPException(status_code=404, detail="Complaint not found")
+    return {"success": True, "status": request.status}
 
 
 @app.get("/api/dashboard/kpis")

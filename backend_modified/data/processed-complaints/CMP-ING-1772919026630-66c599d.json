@@ -7,10 +7,11 @@
   "autoDecision": "INVESTIGATE",
   "decisionConfidence": 0.6,
   "recommendedNextStep": "Send acknowledgement email. Assign to complaints team for review.",
+  "rejectReason": null,
   "decisionPack": {
-    "id": "DP-1773253275012",
+    "id": "DP-1773574778929",
     "complaintDraft": {
-      "id": "DRAFT-1773253275011",
+      "id": "DRAFT-1773574778927",
       "complaintRef": "ORD-20260307-001",
       "customerName": "Ananya Sharma",
       "customerEmail": "sh***@gmail.com",
@@ -25,9 +26,9 @@
         {
           "id": "doc_0",
           "name": "smart_home_security_camera.jpg",
-          "type": "PhotoEvidence",
+          "type": "CorrespondenceRecord",
           "mimeType": "image/jpeg",
-          "confidence": 0.5
+          "confidence": 0.95
         },
         {
           "id": "doc_1",
@@ -38,9 +39,9 @@
         }
       ],
       "customerVerified": false,
-      "createdAt": "2026-03-11T18:21:15.011Z",
+      "createdAt": "2026-03-15T11:39:38.926Z",
       "source": "information_extraction",
-      "confidence": 0.9375
+      "confidence": 0.9875
     },
     "evidence": [
       {
@@ -55,7 +56,7 @@
         "field": "customerEmail",
         "fieldName": "Customer Email",
         "value": "shubhh2003@gmail.com",
-        "confidence": 0.9,
+        "confidence": 1.0,
         "sourceLocator": "email_content",
         "rationale": "Extracted from customer email and attachments"
       },
@@ -63,7 +64,7 @@
         "field": "complaintRef",
         "fieldName": "Complaint Reference",
         "value": "ORD-20260307-001",
-        "confidence": 0.9,
+        "confidence": 1.0,
         "sourceLocator": "email_content",
         "rationale": "Extracted from customer email and attachments"
       },
@@ -79,7 +80,7 @@
         "field": "complaintType",
         "fieldName": "Complaint Type",
         "value": "Connectivity",
-        "confidence": 0.8,
+        "confidence": 0.9,
         "sourceLocator": "email_content",
         "rationale": "Extracted from customer email and attachments"
       },
@@ -87,7 +88,7 @@
         "field": "productOrService",
         "fieldName": "Product / Service",
         "value": "SmartHome Security Camera ST-CAM-X200",
-        "confidence": 0.9,
+        "confidence": 1.0,
         "sourceLocator": "email_content",
         "rationale": "Extracted from customer email and attachments"
       },
@@ -110,22 +111,47 @@
     ],
     "documents": [
       {
+        "id": "doc_email",
+        "name": "Customer Email",
+        "mimeType": "text/plain",
+        "type": "CorrespondenceRecord",
+        "content": "Subject: Complaint for SmartHome Security Camera , customer id: CUST10001\nFrom: Shubham Sahu <shubhh2003@gmail.com>\nTo: arp290825@gmail.com\nDate: March 07, 2026 01:17 PM\n\nHello Support Team,\r\n\r\nI would like to report an issue with my SmartHome Security Camera.\r\n\r\nCustomer ID: CUST10001\r\nCustomer Name: Ananya Sharma\r\n\r\nProduct Name: SmartHome Security Camera\r\nProduct ID: PROD-EL-001\r\nModel Number: ST-CAM-X200\r\n\r\nOrder Reference: ORD-20260307-001\r\n\r\nThe camera disconnects from WiFi frequently and stops recording\r\nintermittently. The device appears offline in the mobile application even\r\nthough the internet connection is stable.\r\n\r\nI have attached the purchase invoice and a photo of the device for\r\nreference.\r\n\r\nPlease help resolve this issue.\r\n\r\nRegards\r\nAnanya Sharma\r\nCustomer ID: CUST10001",
+        "confidence": 0.95,
+        "metadata": {
+          "source": "email_body"
+        },
+        "keyFields": {
+          "customerName": "Ananya Sharma",
+          "customerEmail": "shubhh2003@gmail.com",
+          "complaintRef": "ORD-20260307-001",
+          "complaintDate": "2026-03-07",
+          "complaintType": "Connectivity",
+          "productOrService": "SmartHome Security Camera ST-CAM-X200",
+          "productModel": "ST-CAM-X200",
+          "description": "The camera disconnects from WiFi frequently and stops recording intermittently. The device appears offline in the mobile application even though the internet connection is stable."
+        }
+      },
+      {
         "id": "doc_0",
         "name": "smart_home_security_camera.jpg",
         "mimeType": "image/jpeg",
         "type": "PhotoEvidence",
-        "content": "Image not found: C:\\Users\\SHUBHAM SAHU\\Downloads\\backend_electronics (2)\\backend_modified\\data\\ingested-attachments\\ING-1772919026630-66c599d\\smart_home_security_camera.jpg",
+        "content": "",
         "confidence": 0.5,
-        "metadata": {}
+        "metadata": {
+          "analysisError": "Image not found: C:\\Users\\SHUBHAM SAHU\\Downloads\\backend_electronics (2)\\backend_modified\\data\\ingested-attachments\\ING-1772919026630-66c599d\\smart_home_security_camera.jpg"
+        }
       },
       {
         "id": "doc_1",
         "name": "invoice_sec_cam.png",
         "mimeType": "image/png",
         "type": "PhotoEvidence",
-        "content": "Image not found: C:\\Users\\SHUBHAM SAHU\\Downloads\\backend_electronics (2)\\backend_modified\\data\\ingested-attachments\\ING-1772919026630-66c599d\\invoice_sec_cam.png",
+        "content": "",
         "confidence": 0.5,
-        "metadata": {}
+        "metadata": {
+          "analysisError": "Image not found: C:\\Users\\SHUBHAM SAHU\\Downloads\\backend_electronics (2)\\backend_modified\\data\\ingested-attachments\\ING-1772919026630-66c599d\\invoice_sec_cam.png"
+        }
       }
     ],
     "customerGrounding": [
@@ -145,6 +171,13 @@
     ],
     "customerInfo": null,
     "validationResults": [
+      {
+        "check": "eligibility_validation",
+        "passed": true,
+        "rejectReason": null,
+        "autoDecision": null,
+        "notes": "No eligibility issues detected."
+      },
       {
         "check": "warranty_validation",
         "passed": true,
@@ -191,22 +224,23 @@
     "decisionConfidence": 0.6,
     "decisionRationale": "Insufficient verified data. Manual review required before proceeding.",
     "recommendedNextStep": "Send acknowledgement email. Assign to complaints team for review.",
+    "rejectReason": null,
     "audit": [
       {
         "step": "Information Extraction",
-        "timestamp": "2026-03-11T18:21:15.011Z",
-        "duration": 4611,
+        "timestamp": "2026-03-15T11:39:38.924Z",
+        "duration": 5274,
         "agent": "ExtractionService",
         "status": "completed",
         "details": {
-          "documentsProcessed": 2,
+          "documentsProcessed": 3,
           "errors": []
         }
       },
       {
         "step": "Validation Engine",
-        "timestamp": "2026-03-11T18:21:15.011Z",
-        "duration": 1,
+        "timestamp": "2026-03-15T11:39:38.924Z",
+        "duration": 49,
         "agent": "ValidationService",
         "status": "completed",
         "details": {
@@ -217,8 +251,8 @@
       },
       {
         "step": "Customer & Product Grounding",
-        "timestamp": "2026-03-11T18:21:15.011Z",
-        "duration": 0,
+        "timestamp": "2026-03-15T11:39:38.924Z",
+        "duration": 2,
         "agent": "CustomerGroundingService",
         "status": "completed",
         "details": {
@@ -228,7 +262,7 @@
       },
       {
         "step": "Decision Engine",
-        "timestamp": "2026-03-11T18:21:15.011Z",
+        "timestamp": "2026-03-15T11:39:38.924Z",
         "duration": 0,
         "agent": "DecisionService",
         "status": "completed",
@@ -242,15 +276,16 @@
       "totalFields": 8,
       "highConfidenceFields": 8,
       "lowConfidenceFields": 0,
-      "avgConfidence": 0.9375
+      "avgConfidence": 0.9875
     },
     "documentAnalysis": {
-      "totalDocuments": 2,
+      "totalDocuments": 3,
       "documentTypes": [
+        "CorrespondenceRecord",
         "PhotoEvidence",
         "PhotoEvidence"
       ],
-      "avgDocumentConfidence": 0.5,
+      "avgDocumentConfidence": 0.65,
       "missingDocuments": [],
       "presentDocuments": [
         "purchase_invoice",
@@ -272,18 +307,18 @@
       "stepsCompleted": 4,
       "stepsWithErrors": 0
     },
-    "createdAt": "2026-03-11T18:21:15.011Z"
+    "createdAt": "2026-03-15T11:39:38.924Z"
   },
   "processingMetrics": {
     "fieldsAutoPopulated": 8,
     "stepsCompleted": 4,
     "stepsFailed": 0,
-    "totalProcessingTime": 8107,
-    "averageHandleTime": 8.107,
-    "extractionTime": 4611,
-    "validationTime": 1
+    "totalProcessingTime": 10437,
+    "averageHandleTime": 10.437,
+    "extractionTime": 5274,
+    "validationTime": 49
   },
-  "createdAt": "2026-03-11T18:21:15.011Z",
+  "createdAt": "2026-03-15T11:39:38.924Z",
   "status": "draft",
   "autoEmailResponse": {
     "sent": true,
@@ -291,5 +326,5 @@
     "to": "Shubham Sahu <shubhh2003@gmail.com>",
     "error": null
   },
-  "processingTime": 8107
+  "processingTime": 10437
 }
