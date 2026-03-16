@@ -333,35 +333,70 @@ export default function DecisionPage({ claimData, onNextStage, onPreviousStage, 
           </div>
           <div className="space-y-4">
 
-            {/* Accept / Reject */}
-            {decisionHook.status === 'pending' && (
-              <div className="p-5 border-2 border-gray-200 rounded-xl bg-gradient-to-br from-gray-50/50 to-white">
-                <h3 className="font-semibold text-[#2D3748] mb-2">Make a Decision</h3>
-                <p className="text-sm text-[#718096] mb-4">Accept or reject this complaint. An email will be sent to the complainant and captured in the mail chain.</p>
-                {decisionHook.error && (
-                  <div className="mb-3 p-3 rounded-lg bg-red-50 border border-red-200 text-sm text-red-700 flex items-center gap-2">
-                    <AlertTriangle className="w-4 h-4 flex-shrink-0" />{decisionHook.error}
-                  </div>
-                )}
-                <div className="flex gap-3">
-                  <button onClick={() => handleOpenDecisionModal('accept')} className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl font-medium text-white bg-emerald-600 hover:bg-emerald-700 transition-colors shadow-sm">
-                    <Check className="w-4 h-4" /><span>Accept</span>
-                  </button>
-                  <button onClick={() => handleOpenDecisionModal('reject')} className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl font-medium text-white bg-rose-600 hover:bg-rose-700 transition-colors shadow-sm">
-                    <X className="w-4 h-4" /><span>Reject</span>
-                  </button>
-                </div>
+            {/* Send Acknowledgment */}
+            <div className="p-5 border-2 border-[#991B1B]/20 rounded-xl bg-gradient-to-br from-red-50/50 to-white hover:shadow-md transition-shadow">
+              <h3 className="font-semibold text-[#2D3748] mb-2">Send Customer Acknowledgment</h3>
+              <p className="text-sm text-[#718096] mb-4">Generate and send a personalized acknowledgment email to the complainant</p>
+              {!emailDraftHook.sent.acknowledgment ? (
+                <button onClick={() => handleDraftEmail('acknowledgment')} className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-medium text-[#991B1B] bg-white border-2 border-[#991B1B]/40 hover:bg-red-50 hover:border-[#991B1B]/60 transition-colors">
+                  <Mail className="w-4 h-4" />Draft Acknowledgement
+                </button>
+              ) : (
+                <div className="flex items-center space-x-2 text-success-600"><Check className="w-5 h-5" /><span className="font-medium">Acknowledgment Sent</span></div>
+              )}
+            </div>
+
+            {/* Troubleshooting */}
+            <div className="p-5 border-2 border-orange-200 rounded-xl bg-gradient-to-br from-orange-50/50 to-white hover:shadow-md transition-shadow">
+              <h3 className="font-semibold text-[#C2410C] mb-2">Troubleshooting</h3>
+              <p className="text-sm text-[#718096] mb-4">View guided troubleshooting steps or draft a troubleshooting email to send to the complainant.</p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => handleDraftEmail('troubleshootingSteps' as never)}
+                  className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl font-medium text-[#C2410C] bg-white border-2 border-orange-300 hover:bg-orange-50 transition-colors text-sm"
+                >
+                  <CheckCircle className="w-4 h-4" /><span>Troubleshooting Steps</span>
+                </button>
+                <button
+                  onClick={() => {
+                    const { complaintRef, customerName, product } = getDraftFields()
+                    const claimNum = claimData.claimId || 'Pending'
+                    emailDraftHook.open(
+                      'moreInfo',
+                      `Dear ${customerName},\n\nRE: Troubleshooting Assistance – Reference ${complaintRef}\n\nThank you for contacting Consumer Electronics Customer Support regarding your ${product}.\n\nTo help resolve your issue as quickly as possible, we recommend trying the following troubleshooting steps:\n\n  1. Power off the device completely and restart after 30 seconds.\n  2. Check all cables and connections are secure.\n  3. Ensure the device firmware/software is up to date.\n  4. Perform a factory reset if the issue persists (back up your data first).\n  5. Check for any physical damage or obstructions.\n\nPlease try these steps and reply to this email with the outcome. If the issue continues, we will escalate your case for further support.\n\nKind regards,\n\nCustomer Support Team\nConsumer Electronics\nsupport@electronics.com  |  1-800-ELEC-HELP (Mon–Fri, 9am–6pm)`,
+                      claimData.sourceEmailFrom || claimDraft?.contactEmail || '',
+                      `Troubleshooting Assistance – Claim Number ${claimNum}`
+                    )
+                  }}
+                  className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl font-medium text-white bg-orange-500 hover:bg-orange-600 transition-colors shadow-sm text-sm"
+                >
+                  <Mail className="w-4 h-4" /><span>Draft Troubleshoot</span>
+                </button>
               </div>
-            )}
-            {decisionHook.status !== 'pending' && (
-              <div className={`p-4 rounded-xl border-2 ${decisionHook.status === 'accepted' ? 'border-emerald-200 bg-emerald-50' : 'border-rose-200 bg-rose-50'}`}>
-                <div className={`flex items-center gap-2 font-semibold ${decisionHook.status === 'accepted' ? 'text-emerald-700' : 'text-rose-700'}`}>
-                  {decisionHook.status === 'accepted' ? <Check className="w-5 h-5" /> : <X className="w-5 h-5" />}
-                  Complaint {decisionHook.status === 'accepted' ? 'Accepted' : 'Rejected'}
-                </div>
-                <p className="text-sm text-[#718096] mt-1">Decision recorded and email sent to complainant.</p>
-              </div>
-            )}
+            </div>
+
+            {/* Draft Visit */}
+            <div className="p-5 border-2 border-indigo-200 rounded-xl bg-gradient-to-br from-indigo-50/50 to-white hover:shadow-md transition-shadow">
+              <h3 className="font-semibold text-[#3730A3] mb-2">Engineer Visit</h3>
+              <p className="text-sm text-[#718096] mb-4">Draft an email to the complainant asking if we can send an engineer to visit and resolve their issue in person.</p>
+              <button
+                onClick={() => {
+                  const { complaintRef, customerName, product } = getDraftFields()
+                  const claimNum = claimData.claimId || 'Pending'
+                  emailDraftHook.open(
+                    'acknowledgment',
+                    `Dear ${customerName},\n\nRE: Engineer Visit Request – Reference ${complaintRef}\n\nThank you for your patience while we review your complaint regarding your ${product}.\n\nFollowing our initial assessment, we believe the most effective way to resolve your issue is through an in-person engineer visit. Our qualified engineer will inspect the product, diagnose the fault, and carry out any necessary repairs on-site.\n\nWould you be available for an engineer visit at your preferred location? If so, please reply with:\n\n  • Your preferred date(s) and time slot (morning / afternoon)\n  • Your address or preferred visit location\n  • A contact number for the engineer to reach you\n\nOnce we receive your response, we will confirm the appointment and provide the engineer's details.\n\nWe apologise for any inconvenience caused and look forward to resolving this for you promptly.\n\nKind regards,\n\nCustomer Support Team\nConsumer Electronics\nsupport@electronics.com  |  1-800-ELEC-HELP (Mon–Fri, 9am–6pm)`,
+                    claimData.sourceEmailFrom || claimDraft?.contactEmail || '',
+                    `Engineer Visit Request – Claim Number ${claimNum}`
+                  )
+                }}
+                className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-medium text-white bg-gradient-to-r from-[#3730A3] to-[#4338CA] hover:from-[#4338CA] hover:to-[#3730A3] transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+              >
+                <Calendar className="w-4 h-4" /><span>Draft Visit</span>
+              </button>
+            </div>
+
+
 
             {/* Book an Appointment */}
             <div className="p-5 border-2 border-blue-200 rounded-xl bg-gradient-to-br from-blue-50/50 to-white hover:shadow-md transition-shadow">
@@ -419,19 +454,6 @@ export default function DecisionPage({ claimData, onNextStage, onPreviousStage, 
               )}
             </div>
 
-            {/* Send Acknowledgment */}
-            <div className="p-5 border-2 border-[#991B1B]/20 rounded-xl bg-gradient-to-br from-red-50/50 to-white hover:shadow-md transition-shadow">
-              <h3 className="font-semibold text-[#2D3748] mb-2">Send Customer Acknowledgment</h3>
-              <p className="text-sm text-[#718096] mb-4">Generate and send a personalized acknowledgment email to the complainant</p>
-              {!emailDraftHook.sent.acknowledgment ? (
-                <button onClick={() => handleDraftEmail('acknowledgment')} className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-medium text-[#991B1B] bg-white border-2 border-[#991B1B]/40 hover:bg-red-50 hover:border-[#991B1B]/60 transition-colors">
-                  <Mail className="w-4 h-4" />Draft Acknowledgement
-                </button>
-              ) : (
-                <div className="flex items-center space-x-2 text-success-600"><Check className="w-5 h-5" /><span className="font-medium">Acknowledgment Sent</span></div>
-              )}
-            </div>
-
             {/* Request Additional Information */}
             <div className="p-5 border-2 border-amber-200 rounded-xl bg-gradient-to-br from-amber-50/50 to-white hover:shadow-md transition-shadow">
               <h3 className="font-semibold text-[#92400E] mb-2">Request Additional Information</h3>
@@ -441,6 +463,27 @@ export default function DecisionPage({ claimData, onNextStage, onPreviousStage, 
               ) : (
                 <div className="flex items-center space-x-2 text-amber-600"><Check className="w-5 h-5" /><span className="font-medium">Information Request Sent</span></div>
               )}
+            </div>
+
+            {/* Post-Visit Review */}
+            <div className="p-5 border-2 border-teal-200 rounded-xl bg-gradient-to-br from-teal-50/50 to-white hover:shadow-md transition-shadow">
+              <h3 className="font-semibold text-[#0F766E] mb-2">Post-Visit Review</h3>
+              <p className="text-sm text-[#718096] mb-4">Ask the customer for feedback on the engineer visit and confirm whether their issue has been fully resolved</p>
+              <button
+                onClick={() => {
+                  const { complaintRef, customerName, product } = getDraftFields()
+                  const claimNum = claimData.claimId || 'Pending'
+                  emailDraftHook.open(
+                    'acknowledgment',
+                    `Dear ${customerName},\n\nRE: Post-Visit Review – Reference ${complaintRef}\n\nThank you for allowing our engineer to visit and assist with your ${product}. We hope the visit was helpful and that your issue has been resolved to your satisfaction.\n\nWe would appreciate a moment of your time to answer the following:\n\n  1. Was the engineer able to resolve your issue during the visit?\n     ☐ Yes, fully resolved\n     ☐ Partially resolved\n     ☐ No, issue still ongoing\n\n  2. How would you rate the engineer's service?\n     ☐ Excellent  ☐ Good  ☐ Fair  ☐ Poor\n\n  3. Do you have any additional comments or concerns?\n     ___________________________________________________\n\nPlease reply to this email with your responses. If your issue has not been fully resolved, we will arrange a follow-up as a priority.\n\nThank you for your patience and for choosing Consumer Electronics.\n\nKind regards,\n\nCustomer Support Team\nConsumer Electronics\nsupport@electronics.com  |  1-800-ELEC-HELP (Mon–Fri, 9am–6pm)`,
+                    claimData.sourceEmailFrom || claimDraft?.contactEmail || '',
+                    `Post-Visit Review – Claim Number ${claimNum}`
+                  )
+                }}
+                className="text-sm font-medium text-teal-700 bg-white border border-teal-300 hover:bg-teal-50 px-4 py-2 rounded-lg transition-colors w-full"
+              >
+                Draft Review
+              </button>
             </div>
 
             {/* Resolution Letter (after accept) */}
@@ -476,6 +519,30 @@ export default function DecisionPage({ claimData, onNextStage, onPreviousStage, 
               <button onClick={handleCaptureMailChain} className="w-full flex items-center justify-center space-x-2 py-3 px-4 rounded-xl font-medium text-white bg-gradient-to-r from-[#7C3AED] to-[#6D28D9] hover:from-[#6D28D9] hover:to-[#7C3AED] transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
                 <Mail className="w-4 h-4" /><span>Capture Mail Chain</span>
               </button>
+            </div>
+
+            {/* Close Complaint */}
+            <div className="p-5 border-2 border-gray-200 rounded-xl bg-gradient-to-br from-gray-50/50 to-white hover:shadow-md transition-shadow">
+              <h3 className="font-semibold text-[#2D3748] mb-2">Close Complaint</h3>
+              <p className="text-sm text-[#718096] mb-4">Mark this complaint as closed once the issue has been fully resolved and no further action is required</p>
+              {decisionHook.status === 'accepted' ? (
+                <div className="flex items-center gap-2 text-gray-500 text-sm font-medium"><CheckCircle className="w-5 h-5 text-gray-400" />Complaint Closed</div>
+              ) : (
+                <button
+                  onClick={async () => {
+                    if (!claimData.claimId) return
+                    await fetch(`/api/complaints/${claimData.claimId}/status`, {
+                      method: 'PATCH',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ status: 'closed' }),
+                    })
+                    decisionHook.reset()
+                  }}
+                  className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-medium text-white bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                >
+                  <CheckCircle className="w-4 h-4" /><span>Close Complaint</span>
+                </button>
+              )}
             </div>
 
             {/* Download Decision Pack */}
