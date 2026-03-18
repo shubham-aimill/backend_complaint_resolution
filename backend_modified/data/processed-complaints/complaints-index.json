@@ -1,5 +1,31 @@
 [
   {
+    "complaintId": "CMP-ING-1773853318691-71fee3d",
+    "ingestedComplaintId": "ING-1773853318691-71fee3d",
+    "customerRef": "ORD-20260307-001",
+    "customerName": "Ananya Sharma",
+    "complaintType": "Connectivity",
+    "createdAt": "2026-03-18T17:10:37.768Z",
+    "filePath": "/Users/keshav/Desktop/ai mill/backend_complaint_resolution/backend_modified/data/processed-complaints/CMP-ING-1773853318691-71fee3d.json",
+    "warrantyStatus": "WITHIN_WARRANTY",
+    "productCategory": "Camera",
+    "autoDecision": "INVESTIGATE",
+    "decisionConfidence": 0.6
+  },
+  {
+    "complaintId": "CMP-ING-1773853334959-95995ca",
+    "ingestedComplaintId": "ING-1773853334959-95995ca",
+    "customerRef": "CMP-ING-1773423500615-dd94df7",
+    "customerName": "Emily Johnson",
+    "complaintType": "Other",
+    "createdAt": "2026-03-18T17:02:57.259Z",
+    "filePath": "/Users/keshav/Desktop/ai mill/backend_complaint_resolution/backend_modified/data/processed-complaints/CMP-ING-1773853334959-95995ca.json",
+    "warrantyStatus": "WITHIN_WARRANTY",
+    "productCategory": "Tablet",
+    "autoDecision": "INVESTIGATE",
+    "decisionConfidence": 0.6
+  },
+  {
     "complaintId": "CMP-ING-1773424558814-7865b1b",
     "ingestedComplaintId": "ING-1773424558814-7865b1b",
     "customerRef": "CMP-ING-1773423500615-dd94df7",
@@ -18,7 +44,7 @@
     "customerRef": "CMP-ING-1772919034419-03c1cd1",
     "customerName": "Emily Johnson",
     "complaintType": "Other",
-    "createdAt": "2026-03-13T17:56:15.010Z",
+    "createdAt": "2026-03-18T16:27:23.054Z",
     "filePath": "/Users/keshav/Desktop/ai mill/backend_complaint_resolution/backend_modified/data/processed-complaints/CMP-ING-1773423500615-dd94df7.json",
     "warrantyStatus": "WITHIN_WARRANTY",
     "productCategory": "Tablet",

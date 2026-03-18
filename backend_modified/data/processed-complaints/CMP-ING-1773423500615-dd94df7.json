@@ -9,9 +9,9 @@
   "recommendedNextStep": "Send REQUEST_DOCUMENTS email to customer listing missing items.",
   "rejectReason": null,
   "decisionPack": {
-    "id": "DP-1773424575010",
+    "id": "DP-1773851243056",
     "complaintDraft": {
-      "id": "DRAFT-1773424575010",
+      "id": "DRAFT-1773851243056",
       "complaintRef": "CMP-ING-1772919034419-03c1cd1",
       "customerName": "Emily Johnson",
       "customerEmail": "sh***@gmail.com",
@@ -24,7 +24,7 @@
       "estimatedAmount": 0.0,
       "attachments": [],
       "customerVerified": false,
-      "createdAt": "2026-03-13T17:56:15.010Z",
+      "createdAt": "2026-03-18T16:27:23.056Z",
       "source": "information_extraction",
       "confidence": 0.8999999999999999
     },
@@ -184,8 +184,8 @@
     "audit": [
       {
         "step": "Information Extraction",
-        "timestamp": "2026-03-13T17:56:15.010Z",
-        "duration": 4711,
+        "timestamp": "2026-03-18T16:27:23.054Z",
+        "duration": 16779,
         "agent": "ExtractionService",
         "status": "completed",
         "details": {
@@ -195,8 +195,8 @@
       },
       {
         "step": "Validation Engine",
-        "timestamp": "2026-03-13T17:56:15.010Z",
-        "duration": 1,
+        "timestamp": "2026-03-18T16:27:23.054Z",
+        "duration": 6,
         "agent": "ValidationService",
         "status": "completed",
         "details": {
@@ -207,8 +207,8 @@
       },
       {
         "step": "Customer & Product Grounding",
-        "timestamp": "2026-03-13T17:56:15.010Z",
-        "duration": 0,
+        "timestamp": "2026-03-18T16:27:23.054Z",
+        "duration": 1,
         "agent": "CustomerGroundingService",
         "status": "completed",
         "details": {
@@ -218,7 +218,7 @@
       },
       {
         "step": "Decision Engine",
-        "timestamp": "2026-03-13T17:56:15.010Z",
+        "timestamp": "2026-03-18T16:27:23.054Z",
         "duration": 0,
         "agent": "DecisionService",
         "status": "completed",
@@ -262,18 +262,18 @@
       "stepsCompleted": 4,
       "stepsWithErrors": 0
     },
-    "createdAt": "2026-03-13T17:56:15.010Z"
+    "createdAt": "2026-03-18T16:27:23.054Z"
   },
   "processingMetrics": {
     "fieldsAutoPopulated": 6,
     "stepsCompleted": 4,
     "stepsFailed": 0,
-    "totalProcessingTime": 8212,
-    "averageHandleTime": 8.212,
-    "extractionTime": 4711,
-    "validationTime": 1
+    "totalProcessingTime": 20608,
+    "averageHandleTime": 20.608,
+    "extractionTime": 16779,
+    "validationTime": 6
   },
-  "createdAt": "2026-03-13T17:56:15.010Z",
+  "createdAt": "2026-03-18T16:27:23.054Z",
   "status": "draft",
   "autoEmailResponse": {
     "sent": true,
@@ -281,5 +281,5 @@
     "to": "Shubham Sahu <shubhh2003@gmail.com>",
     "error": null
   },
-  "processingTime": 8212
+  "processingTime": 20608
 }

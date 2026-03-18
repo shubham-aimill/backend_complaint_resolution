@@ -1,0 +1,33 @@
+================================================
+     TECHZONE ELECTRONICS - PURCHASE INVOICE
+================================================
+Invoice Number : INV-2025-1120-014
+Invoice Date   : 2025-11-20
+================================================
+
+Bill To:
+  Name    : Emily Johnson
+  Email   : emily.johnson@email.com
+  Phone   : +1-555-934-7823
+  Address : 14 Elm Street, Boston, MA 02101
+
+------------------------------------------------
+Item Description              Qty   Unit Price
+------------------------------------------------
+NovaTech SlimTab 10 Tablet     1     $449.99
+(NT-ST10-64)
+Serial: NT2025TB-00912
+------------------------------------------------
+Subtotal                             $449.99
+Tax (8%)                              $36.00
+------------------------------------------------
+TOTAL PAID                           $485.99
+------------------------------------------------
+Payment Method : Debit Card
+Payment Status : PAID
+
+Sold By:
+  TechZone Electronics
+  456 Tech Plaza, Boston, MA
+  support@techzone.com
+================================================

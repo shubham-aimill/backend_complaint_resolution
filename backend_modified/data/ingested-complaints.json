@@ -1,77 +1,60 @@
 [
   {
-    "id": "ING-1773424558814-7865b1b",
+    "id": "ING-1773853334959-95995ca",
     "complaintRef": "ERENCE",
     "from": "Shubham Sahu <shubhh2003@gmail.com>",
     "to": "Customer Support <arp290825@gmail.com>",
     "subject": "Re: Action Required: Documents Needed \u2014 Complaint CMP-ING-1773423500615-dd94df7",
-    "emailBody": "Subject: Re: Action Required: Documents Needed \u2014 Complaint CMP-ING-1773423500615-dd94df7\nFrom: Shubham Sahu <shubhh2003@gmail.com>\nTo: Customer Support <arp290825@gmail.com>\nDate: March 13, 2026 11:25 PM\n\nPFA the document\r\n\r\nOn Fri, Mar 13, 2026 at 11:13\u202fPM Customer Support <arp290825@gmail.com>\r\nwrote:\r\n\r\n> Dear Emily Johnson,\r\n>\r\n> Thank you for getting in touch with Consumer Electronics Customer Support.\r\n>\r\n> We have received your complaint (Reference: CMP-ING-1773423500615-dd94df7) regarding your NovaTech SlimTab 10 Tablet and want to resolve this for you as quickly as possible.\r\n>\r\n> To progress your complaint, we need the following document(s):\r\n>\r\n>   \u2022 Purchase Invoice\r\n>\r\n> These documents help us verify your purchase and process your claim efficiently.\r\n>\r\n> What to do next:\r\n>   \u2022 Reply to this email with the document(s) attached, or\r\n>   \u2022 Contact us quoting your complaint reference: CMP-ING-1773423500615-dd94df7\r\n>\r\n> Once we receive the required information, our team will review your case and\r\n> respond with an outcome within 2 business days.\r\n>\r\n> If you have any difficulty locating these documents, please reply and we will\r\n> do our best to assist you.\r\n>\r\n> We apologise for the additional step and appreciate your cooperation.\r\n>\r\n> Kind regards,\r\n> Customer Support Team\r\n> Consumer Electronics\r\n>   Email: support@electronics.com  |  Phone: 1-800-ELEC-HELP (Mon\u2013Fri, 9am\u20136pm)\r\n>\r\n>",
+    "emailBody": "Subject: Re: Action Required: Documents Needed \u2014 Complaint CMP-ING-1773423500615-dd94df7\nFrom: Shubham Sahu <shubhh2003@gmail.com>\nTo: Customer Support <arp290825@gmail.com>\nDate: March 13, 2026 11:27 PM\n\nPFA the purchase invoice.\r\n\r\nOn Fri, Mar 13, 2026 at 11:26\u202fPM Customer Support <arp290825@gmail.com>\r\nwrote:\r\n\r\n> Dear Emily Johnson,\r\n>\r\n> Thank you for getting in touch with Consumer Electronics Customer Support.\r\n>\r\n> We have received your complaint (Reference: CMP-ING-1773423500615-dd94df7) regarding your NovaTech SlimTab 10 Tablet and want to resolve this for you as quickly as possible.\r\n>\r\n> To progress your complaint, we need the following document(s):\r\n>\r\n>   \u2022 Purchase Invoice\r\n>\r\n> These documents help us verify your purchase and process your claim efficiently.\r\n>\r\n> What to do next:\r\n>   \u2022 Reply to this email with the document(s) attached, or\r\n>   \u2022 Contact us quoting your complaint reference: CMP-ING-1773423500615-dd94df7\r\n>\r\n> Once we receive the required information, our team will review your case and\r\n> respond with an outcome within 2 business days.\r\n>\r\n> If you have any difficulty locating these documents, please reply and we will\r\n> do our best to assist you.\r\n>\r\n> We apologise for the additional step and appreciate your cooperation.\r\n>\r\n> Kind regards,\r\n> Customer Support Team\r\n> Consumer Electronics\r\n>   Email: support@electronics.com  |  Phone: 1-800-ELEC-HELP (Mon\u2013Fri, 9am\u20136pm)\r\n>\r\n>",
     "attachments": [
       {
         "name": "novatech_tablet_invoice_dummy.pdf",
-        "path": "/Users/keshav/Desktop/ai mill/backend_complaint_resolution/backend_modified/data/ingested-attachments/ING-1773424558814-7865b1b/novatech_tablet_invoice_dummy.pdf",
+        "path": "/Users/keshav/Desktop/ai mill/backend_complaint_resolution/backend_modified/data/ingested-attachments/ING-1773853334959-95995ca/novatech_tablet_invoice_dummy.pdf",
         "size": 2396,
         "mimeType": "application/pdf"
       }
     ],
-    "createdAt": "2026-03-13T17:55:58.815Z",
+    "createdAt": "2026-03-18T17:02:14.960Z",
     "source": "imap",
-    "threadId": "<69b44cdb.170a0220.2f873c.b0d1@mx.google.com>",
-    "messageId": "<CABs85wOv2Pbb5+-H4ROnaUCcoyaK7rS6zmqhFxrbJboQ8S6Pow@mail.gmail.com>",
-    "inReplyTo": "<69b44cdb.170a0220.2f873c.b0d1@mx.google.com>",
+    "threadId": "<69b44fc1.170a0220.71189.74fa@mx.google.com>",
+    "messageId": "<CABs85wPL995BeEikuYw0uG7zfMN7ry300DbZ5N6pBjCy__Q65w@mail.gmail.com>",
+    "inReplyTo": "<69b44fc1.170a0220.71189.74fa@mx.google.com>",
     "references": [
-      "<69b44cdb.170a0220.2f873c.b0d1@mx.google.com>"
+      "<69b44fc1.170a0220.71189.74fa@mx.google.com>"
     ]
   },
   {
-    "id": "ING-1773423500615-dd94df7",
+    "id": "ING-1773853333381-1a51304",
     "complaintRef": "NUMBER",
     "from": "Shubham Sahu <shubhh2003@gmail.com>",
     "to": "Customer Support <arp290825@gmail.com>",
     "subject": "Re: Your Complaint Has Been Approved \u2014 CMP-ING-1772919034419-03c1cd1",
     "emailBody": "Subject: Re: Your Complaint Has Been Approved \u2014 CMP-ING-1772919034419-03c1cd1\nFrom: Shubham Sahu <shubhh2003@gmail.com>\nTo: Customer Support <arp290825@gmail.com>\nDate: March 13, 2026 11:07 PM\n\nDear Support Team,\r\n\r\nThank you for your email and for approving my complaint regarding the\r\nNovaTech SlimTab 10 Tablet.\r\n\r\nI appreciate your prompt response and the arrangement for a replacement. I\r\nwill keep the product and proof of purchase ready as requested and look\r\nforward to being contacted by your technical team within the next 48 hours.\r\n\r\nPlease let me know if any additional information is required from my side.\r\n\r\nThank you for your assistance.\r\n\r\nKind regards,\r\nEmily Johnson\r\n\r\n\r\nOn Wed, Mar 11, 2026 at 11:56\u202fPM Customer Support <arp290825@gmail.com>\r\nwrote:\r\n\r\n> Dear Emily Johnson,\r\n>\r\n> We have good news regarding your complaint (Reference: CMP-ING-1772919034419-03c1cd1) about your\r\n> NovaTech SlimTab 10 Tablet.\r\n>\r\n> After reviewing the details of your case, we are pleased to confirm that your\r\n> complaint has been approved and we will be arranging a replacement for you.\r\n>\r\n> What happens next:\r\n>   1. Our technical team will contact you within 48 hours to arrange the replacement.\r\n>   2. Please have your product and proof of purchase ready.\r\n>   3. If a courier collection is required, we will arrange this at no cost to you.\r\n>\r\n> Please keep this email for your records and quote your reference number\r\n> (CMP-ING-1772919034419-03c1cd1) in any future correspondence.\r\n>\r\n> If you have any questions at any point during this process, our team is here to help:\r\n>   Email: support@electronics.com\r\n>   Phone: 1-800-ELEC-HELP  (Monday \u2013 Friday, 9am \u2013 6pm)\r\n>\r\n> Thank you for bringing this to our attention. We are sorry for the inconvenience\r\n> caused and look forward to getting this resolved for you promptly.\r\n>\r\n> Kind regards,\r\n> Customer Support Team\r\n> Consumer Electronics\r\n>\r\n>",
     "attachments": [],
-    "createdAt": "2026-03-13T17:38:20.616Z",
+    "createdAt": "2026-03-18T17:02:13.384Z",
     "source": "imap",
-    "threadId": "<msg-root-wifi-1772870087784@aimill>",
-    "messageId": "<msg-reply2-1773423500615@aimill>",
-    "inReplyTo": "<msg-reply1-1773423498256@aimill>",
+    "threadId": "<69b1b3eb.050a0220.3114ea.2998@mx.google.com>",
+    "messageId": "<CABs85wPogVY=uNwxtMQ1x0q57KrBqeaiSqq19wnQWu38fO+Zig@mail.gmail.com>",
+    "inReplyTo": "<69b1b3eb.050a0220.3114ea.2998@mx.google.com>",
     "references": [
-      "<msg-root-wifi-1772870087784@aimill>",
-      "<msg-reply1-1773423498256@aimill>"
+      "<69b1b3eb.050a0220.3114ea.2998@mx.google.com>"
     ]
   },
   {
-    "id": "ING-1773423498256-3f2ccb1",
-    "complaintRef": "NUMBER",
-    "from": "Shubham Sahu <shubhh2003@gmail.com>",
-    "to": "Customer Support <arp290825@gmail.com>",
-    "subject": "Re: Your Complaint Has Been Approved \u2014 CMP-ING-1772919034419-03c1cd1",
-    "emailBody": "Subject: Re: Your Complaint Has Been Approved \u2014 CMP-ING-1772919034419-03c1cd1\nFrom: Shubham Sahu <shubhh2003@gmail.com>\nTo: Customer Support <arp290825@gmail.com>\nDate: March 13, 2026 11:07 PM\n\nDear Support Team,\r\n\r\nThank you for your email and for approving my complaint regarding the\r\nNovaTech SlimTab 10 Tablet.\r\n\r\nI appreciate your prompt response and the arrangement for a replacement. I\r\nwill keep the product and proof of purchase ready as requested and look\r\nforward to being contacted by your technical team within the next 48 hours.\r\n\r\nPlease let me know if any additional information is required from my side.\r\n\r\nThank you for your assistance.\r\n\r\nKind regards,\r\nEmily Johnson\r\n\r\n\r\nOn Wed, Mar 11, 2026 at 11:56\u202fPM Customer Support <arp290825@gmail.com>\r\nwrote:\r\n\r\n> Dear Emily Johnson,\r\n>\r\n> We have good news regarding your complaint (Reference: CMP-ING-1772919034419-03c1cd1) about your\r\n> NovaTech SlimTab 10 Tablet.\r\n>\r\n> After reviewing the details of your case, we are pleased to confirm that your\r\n> complaint has been approved and we will be arranging a replacement for you.\r\n>\r\n> What happens next:\r\n>   1. Our technical team will contact you within 48 hours to arrange the replacement.\r\n>   2. Please have your product and proof of purchase ready.\r\n>   3. If a courier collection is required, we will arrange this at no cost to you.\r\n>\r\n> Please keep this email for your records and quote your reference number\r\n> (CMP-ING-1772919034419-03c1cd1) in any future correspondence.\r\n>\r\n> If you have any questions at any point during this process, our team is here to help:\r\n>   Email: support@electronics.com\r\n>   Phone: 1-800-ELEC-HELP  (Monday \u2013 Friday, 9am \u2013 6pm)\r\n>\r\n> Thank you for bringing this to our attention. We are sorry for the inconvenience\r\n> caused and look forward to getting this resolved for you promptly.\r\n>\r\n> Kind regards,\r\n> Customer Support Team\r\n> Consumer Electronics\r\n>\r\n>",
-    "attachments": [],
-    "createdAt": "2026-03-13T17:38:18.259Z",
-    "source": "imap",
-    "threadId": "<msg-root-wifi-1772870087784@aimill>",
-    "messageId": "<msg-reply1-1773423498256@aimill>",
-    "inReplyTo": "<msg-root-wifi-1772870087784@aimill>",
-    "references": [
-      "<msg-root-wifi-1772870087784@aimill>"
-    ]
-  },
-  {
-    "id": "ING-1772919035607-66ffade",
+    "id": "ING-1773853331784-8b0c903",
     "complaintRef": "CUST10004",
     "from": "Shubham Sahu <shubhh2003@gmail.com>",
     "to": "arp290825@gmail.com",
     "subject": "Warranty Complaint: Battery Issue \u2014 FitPulse GT Watch [CUST10004]",
     "emailBody": "Subject: Warranty Complaint: Battery Issue \u2014 FitPulse GT Watch [CUST10004]\nFrom: Shubham Sahu <shubhh2003@gmail.com>\nTo: arp290825@gmail.com\nDate: March 08, 2026 02:55 AM\n\nDear Support,\r\n\r\nI am contacting you about my WristTech FitPulse GT Watch.\r\n\r\nCustomer ID   : CUST10004\r\nCustomer Name : James Wilson\r\nProduct       : WristTech FitPulse GT Watch\r\nModel Number  : WT-FPGT-450\r\nSerial Number : WT2022SW-00341\r\nPurchase Date : 2022-03-01\r\nOrder Ref     : ORD-20220301-005\r\n\r\nIssue:\r\nMy watch battery drains completely within 3 hours of normal use.\r\nI have had this watch for over 3 years. I would like a free battery\r\nreplacement or repair under warranty.\r\n\r\nRegards,\r\nJames Wilson\r\nCustomer ID: CUST10004",
     "attachments": [],
-    "createdAt": "2026-03-07T21:30:35.609Z",
+    "createdAt": "2026-03-18T17:02:11.785Z",
     "source": "imap",
+    "threadId": "<CABs85wNwC6Zg7ciUEC6845PCQTsfXs_AxCkWi6apfG-a+qjzjw@mail.gmail.com>",
     "messageId": "<CABs85wNwC6Zg7ciUEC6845PCQTsfXs_AxCkWi6apfG-a+qjzjw@mail.gmail.com>"
   },
   {
-    "id": "ING-1772919034419-03c1cd1",
+    "id": "ING-1773853330222-8d4647d",
     "complaintRef": "CUST10009",
     "from": "Shubham Sahu <shubhh2003@gmail.com>",
     "to": "arp290825@gmail.com",
@@ -80,17 +63,18 @@
     "attachments": [
       {
         "name": "invoice_emily.txt.txt",
-        "path": "C:\\Users\\SHUBHAM SAHU\\Downloads\\backend_electronics (2)\\backend_modified\\data\\ingested-attachments\\ING-1772919034419-03c1cd1\\invoice_emily.txt.txt",
+        "path": "/Users/keshav/Desktop/ai mill/backend_complaint_resolution/backend_modified/data/ingested-attachments/ING-1773853330222-8d4647d/invoice_emily.txt.txt",
         "size": 1123,
         "mimeType": "text/plain"
       }
     ],
-    "createdAt": "2026-03-07T21:30:34.421Z",
+    "createdAt": "2026-03-18T17:02:10.223Z",
     "source": "imap",
+    "threadId": "<CABs85wNOs7NB3AGYBBeXd-ig1O+-yNwc+cTU5r07Hn2=LMg+WA@mail.gmail.com>",
     "messageId": "<CABs85wNOs7NB3AGYBBeXd-ig1O+-yNwc+cTU5r07Hn2=LMg+WA@mail.gmail.com>"
   },
   {
-    "id": "ING-1772919033115-5fe1eb6",
+    "id": "ING-1773853328013-6db9ce0",
     "complaintRef": "CUST10001",
     "from": "Shubham Sahu <shubhh2003@gmail.com>",
     "to": "arp290825@gmail.com",
@@ -99,17 +83,18 @@
     "attachments": [
       {
         "name": "invoice.png",
-        "path": "C:\\Users\\SHUBHAM SAHU\\Downloads\\backend_electronics (2)\\backend_modified\\data\\ingested-attachments\\ING-1772919033115-5fe1eb6\\invoice.png",
+        "path": "/Users/keshav/Desktop/ai mill/backend_complaint_resolution/backend_modified/data/ingested-attachments/ING-1773853328013-6db9ce0/invoice.png",
         "size": 137038,
         "mimeType": "image/png"
       }
     ],
-    "createdAt": "2026-03-07T21:30:33.119Z",
+    "createdAt": "2026-03-18T17:02:08.014Z",
     "source": "imap",
+    "threadId": "<CABs85wNYB6CLpBGWdHpQ5TF2HTsPfnOi3UrLRqxFTszQw61mXw@mail.gmail.com>",
     "messageId": "<CABs85wNYB6CLpBGWdHpQ5TF2HTsPfnOi3UrLRqxFTszQw61mXw@mail.gmail.com>"
   },
   {
-    "id": "ING-1772919026630-66c599d",
+    "id": "ING-1773853318691-71fee3d",
     "complaintRef": "CUST10001",
     "from": "Shubham Sahu <shubhh2003@gmail.com>",
     "to": "arp290825@gmail.com",
@@ -118,101 +103,20 @@
     "attachments": [
       {
         "name": "smart_home_security_camera.jpg",
-        "path": "C:\\Users\\SHUBHAM SAHU\\Downloads\\backend_electronics (2)\\backend_modified\\data\\ingested-attachments\\ING-1772919026630-66c599d\\smart_home_security_camera.jpg",
+        "path": "/Users/keshav/Desktop/ai mill/backend_complaint_resolution/backend_modified/data/ingested-attachments/ING-1773853318691-71fee3d/smart_home_security_camera.jpg",
         "size": 3939,
         "mimeType": "image/jpeg"
       },
       {
         "name": "invoice_sec_cam.png",
-        "path": "C:\\Users\\SHUBHAM SAHU\\Downloads\\backend_electronics (2)\\backend_modified\\data\\ingested-attachments\\ING-1772919026630-66c599d\\invoice_sec_cam.png",
+        "path": "/Users/keshav/Desktop/ai mill/backend_complaint_resolution/backend_modified/data/ingested-attachments/ING-1773853318691-71fee3d/invoice_sec_cam.png",
         "size": 106552,
         "mimeType": "image/png"
       }
     ],
-    "createdAt": "2026-03-07T21:30:26.632Z",
+    "createdAt": "2026-03-18T17:01:58.693Z",
     "source": "imap",
+    "threadId": "<CABs85wM+cfSuHme-VhgUfcF3vp4sqJ2riLQ24JtwWfceqdFq2g@mail.gmail.com>",
     "messageId": "<CABs85wM+cfSuHme-VhgUfcF3vp4sqJ2riLQ24JtwWfceqdFq2g@mail.gmail.com>"
-  },
-  {
-    "id": "ING-1772918975375-7d9953d",
-    "complaintRef": "CAJjKn9gUvZWZ7d-TosMn4=N=1OKOeD7fKSsLooaG6sttf_yZ3Q@mail.gmail.com",
-    "from": "PRANAY NATH <pranay15nath@gmail.com>",
-    "to": "arp290825@gmail.com",
-    "subject": "Fwd: Subject: Urgent - Water Damage Claim - Policy #HO456789234",
-    "emailBody": "Subject: Fwd: Subject: Urgent - Water Damage Claim - Policy #HO456789234\nFrom: PRANAY NATH <pranay15nath@gmail.com>\nTo: arp290825@gmail.com\nDate: January 31, 2026 11:06 AM\n\nDear Claims Department,\r\n\r\nI'm writing to report significant water damage to my home that occurred\r\nlast night during the severe thunderstorm. My policy number is HO456789234.\r\n\r\nWhat happened:\r\nAround 11:30 PM last night, a large tree branch fell on my roof during the\r\nstorm, creating a hole that allowed substantial water intrusion into my\r\nhouse. The damage is primarily in the master bedroom, hallway, and living\r\nroom below.\r\n\r\nCurrent situation:\r\n- Active roof leak (temporarily tarped by emergency service)\r\n- Soaked carpeting throughout second floor hallway and master bedroom\r\n- Water stains on living room ceiling with active dripping\r\n- Damaged drywall in multiple rooms\r\n- Several pieces of furniture and personal belongings affected\r\n\r\nI've attached:\r\n1. Photos of the roof damage and interior water damage\r\n2. Emergency roof repair invoice from ABC Roofing ($850 for temporary tarp)\r\n3. Water extraction estimate from DryFast Services\r\n\r\nMy contact information:\r\n- Phone: (555) 987-6543\r\n- Email: robert.chen@email.com\r\n- Property address: 456 Elm Street, Springfield, IL 62704\r\n\r\nI had DryFast Services come out this morning for emergency water\r\nextraction. They estimate $3,200 for complete water removal and drying. The\r\nroof repair company (ABC Roofing) estimates $8,500 for permanent roof\r\nrepair and interior restoration.\r\n\r\nThe storm was definitely covered under my policy - it was the same system\r\nthat caused the tornado warning in our area last night. Weather reports\r\nshow winds up to 75 mph.\r\n\r\nI need to know how quickly you can get an adjuster out here. The water\r\ndamage is getting worse by the hour and I'm concerned about mold if we\r\ndon't act fast.\r\n\r\nPlease call me as soon as possible.\r\n\r\nThanks,\r\nRajat Kumar\r\nHomeowner",
-    "attachments": [
-      {
-        "name": "water-extraction-estimate.txt",
-        "path": "C:\\Users\\SHUBHAM SAHU\\Downloads\\backend_electronics (2)\\backend_modified\\data\\ingested-attachments\\ING-1772918975375-7d9953d\\water-extraction-estimate.txt",
-        "size": 4007,
-        "mimeType": "text/plain"
-      },
-      {
-        "name": "emergency-invoice.txt",
-        "path": "C:\\Users\\SHUBHAM SAHU\\Downloads\\backend_electronics (2)\\backend_modified\\data\\ingested-attachments\\ING-1772918975375-7d9953d\\emergency-invoice.txt",
-        "size": 2918,
-        "mimeType": "text/plain"
-      },
-      {
-        "name": "roof-leaking-water-damage.jpg",
-        "path": "C:\\Users\\SHUBHAM SAHU\\Downloads\\backend_electronics (2)\\backend_modified\\data\\ingested-attachments\\ING-1772918975375-7d9953d\\roof-leaking-water-damage.jpg",
-        "size": 112343,
-        "mimeType": "image/jpeg"
-      }
-    ],
-    "createdAt": "2026-03-07T21:29:35.380Z",
-    "source": "imap",
-    "messageId": "<CAJjKn9gUvZWZ7d-TosMn4=N=1OKOeD7fKSsLooaG6sttf_yZ3Q@mail.gmail.com>"
-  },
-  {
-    "id": "ING-1772870087784-95c741d",
-    "complaintRef": "CUST10001",
-    "from": "Ananya Sharma <ananya.sharma@email.com>",
-    "to": "support@electronics.com",
-    "subject": "Complaint: WiFi Connectivity Issue \u2014 NovaTech ProMax X15 Smartphone (CUST10001)",
-    "emailBody": "Subject: Complaint: WiFi Connectivity Issue \u2014 NovaTech ProMax X15 Smartphone (CUST10001)\nFrom: Ananya Sharma <ananya.sharma@email.com>\nTo: support@electronics.com\nDate: November 01, 2025 10:00 AM\n\nDear Support Team,\n\nI am writing to report an issue with my NovaTech ProMax X15 Smartphone.\n\nCustomer ID: CUST10001\nCustomer Name: Ananya Sharma\n\nProduct Name: NovaTech ProMax X15 Smartphone\nModel Number: NT-X15-PRO\nSerial Number: NT2025X15-00451\nPurchase Date: 2025-03-15\nOrder Reference: ORD-20250315-001\n\nIssue Description:\nSince updating to firmware version 3.2.1 last week, my smartphone disconnects from WiFi every few hours and requires a manual reconnect. The issue did not occur before the update. I have tried resetting network settings but the problem persists.\n\nI purchased the device from TechZone in March 2025 and have attached the original purchase invoice for your reference.\n\nDesired Resolution: Firmware fix or repair under warranty.\n\nKind regards,\nAnanya Sharma\nCustomer ID: CUST10001",
-    "attachments": [
-      {
-        "name": "invoice_sec_cam.png",
-        "path": "data/ingested-attachments/ING-1772870087784-95c741d/invoice_sec_cam.png",
-        "size": 106552,
-        "mimeType": "image/png"
-      },
-      {
-        "name": "smart_home_security_camera.jpg",
-        "path": "data/ingested-attachments/ING-1772870087784-95c741d/smart_home_security_camera.jpg",
-        "size": 3939,
-        "mimeType": "image/jpeg"
-      }
-    ],
-    "createdAt": "2025-11-01T10:00:00.000Z",
-    "source": "imap",
-    "messageId": "<msg-root-wifi-1772870087784@aimill>",
-    "threadId": "<msg-root-wifi-1772870087784@aimill>"
-  },
-  {
-    "id": "ING-1772870051543-17a214f",
-    "complaintRef": "CUST10002",
-    "from": "Rahul Patel <rahul.patel@email.com>",
-    "to": "support@electronics.com",
-    "subject": "Urgent Complaint: Dead Pixel Lines on ProBook Ultra 15 Laptop \u2014 CUST10002",
-    "emailBody": "Subject: Urgent Complaint: Dead Pixel Lines on ProBook Ultra 15 Laptop \u2014 CUST10002\nFrom: Rahul Patel <rahul.patel@email.com>\nTo: support@electronics.com\nDate: November 10, 2025 11:00 AM\n\nDear Customer Support,\n\nI am formally raising a warranty complaint regarding my CoreMax ProBook Ultra 15 Laptop.\n\nCustomer ID: CUST10002\nCustomer Name: Rahul Patel\n\nProduct Name: CoreMax ProBook Ultra 15 Laptop\nModel Number: CM-PBU15-2024\nSerial Number: CM2024LT-00782\nPurchase Date: 2025-01-10\nOrder Reference: ORD-20250110-003\n\nIssue Description:\nTwo months after purchase, three vertical lines of dead pixels appeared on the screen. The lines extend from the top to the bottom of the display and are present at all times, making the laptop very difficult to use for my work. This is clearly a manufacturing defect.\n\nThe device is within its 24-month warranty period. I have attached the original invoice from TechZone dated January 10, 2025.\n\nDesired Resolution: Screen repair or full replacement under warranty.\n\nThis issue is significantly affecting my work and I would appreciate urgent attention.\n\nRegards,\nRahul Patel\nCustomer ID: CUST10002",
-    "attachments": [
-      {
-        "name": "water-extraction-estimate.txt",
-        "path": "data/ingested-attachments/ING-1772870051543-17a214f/water-extraction-estimate.txt",
-        "size": 4007,
-        "mimeType": "text/plain"
-      },
-      {
-        "name": "emergency-invoice.txt",
-        "path": "data/ingested-attachments/ING-1772870051543-17a214f/emergency-invoice.txt",
-        "size": 2918,
-        "mimeType": "text/plain"
-      }
-    ],
-    "createdAt": "2025-11-10T11:00:00.000Z",
-    "source": "imap",
-    "messageId": "<complaint-20251110-rahul-laptop@electronics.com>"
   }
 ]

@@ -66,7 +66,7 @@ What to do next:
 Once we receive the required information, our team will review your case and
 respond with an outcome within 2 business days.
 
-If you have any difficulty locating these documents, please reply and we will
+If you have any difficulty locating these documents, please reply anbkjbj
 do our best to assist you.
 
 We apologise for the additional step and appreciate your cooperation.

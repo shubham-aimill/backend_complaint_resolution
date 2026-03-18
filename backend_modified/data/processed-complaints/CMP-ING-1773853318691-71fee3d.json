@@ -1,0 +1,358 @@
+{
+  "complaintId": "CMP-ING-1773853318691-71fee3d",
+  "ingestedComplaintId": "ING-1773853318691-71fee3d",
+  "sourceEmailFrom": "Shubham Sahu <shubhh2003@gmail.com>",
+  "warrantyStatus": "WITHIN_WARRANTY",
+  "productCategory": "Camera",
+  "autoDecision": "INVESTIGATE",
+  "decisionConfidence": 0.6,
+  "recommendedNextStep": "Send acknowledgement email. Assign to complaints team for review.",
+  "rejectReason": null,
+  "decisionPack": {
+    "id": "DP-1773853837768",
+    "complaintDraft": {
+      "id": "DRAFT-1773853837768",
+      "complaintRef": "ORD-20260307-001",
+      "customerName": "Ananya Sharma",
+      "customerEmail": "sh***@gmail.com",
+      "customerPhone": "Not found",
+      "complaintDate": "2026-03-07",
+      "complaintType": "Connectivity",
+      "productOrService": "SmartHome Security Camera ST-CAM-X200",
+      "description": "The camera disconnects from WiFi frequently and stops recording intermittently. The device appears offline in the mobile application even though the internet connection is stable.",
+      "desiredResolution": "Not specified",
+      "estimatedAmount": 0.0,
+      "attachments": [
+        {
+          "id": "doc_0",
+          "name": "smart_home_security_camera.jpg",
+          "type": "CorrespondenceRecord",
+          "mimeType": "image/jpeg",
+          "confidence": 0.95
+        },
+        {
+          "id": "doc_1",
+          "name": "invoice_sec_cam.png",
+          "type": "PhotoEvidence",
+          "mimeType": "image/png",
+          "confidence": 0.8
+        }
+      ],
+      "customerVerified": false,
+      "createdAt": "2026-03-18T17:10:37.768Z",
+      "source": "information_extraction",
+      "confidence": 0.9875
+    },
+    "evidence": [
+      {
+        "field": "customerName",
+        "fieldName": "Customer Name",
+        "value": "Ananya Sharma",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "customerEmail",
+        "fieldName": "Customer Email",
+        "value": "shubhh2003@gmail.com",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "complaintRef",
+        "fieldName": "Complaint Reference",
+        "value": "ORD-20260307-001",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "complaintDate",
+        "fieldName": "Complaint Date",
+        "value": "2026-03-07",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "complaintType",
+        "fieldName": "Complaint Type",
+        "value": "Connectivity",
+        "confidence": 0.9,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "productOrService",
+        "fieldName": "Product / Service",
+        "value": "SmartHome Security Camera ST-CAM-X200",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "productModel",
+        "fieldName": "Product Model Number",
+        "value": "ST-CAM-X200",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "description",
+        "fieldName": "Description",
+        "value": "The camera disconnects from WiFi frequently and stops recording intermittently. The device appears offline in the mobile application even though the internet connection is stable.",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      }
+    ],
+    "documents": [
+      {
+        "id": "doc_email",
+        "name": "Customer Email",
+        "mimeType": "text/plain",
+        "type": "CorrespondenceRecord",
+        "content": "Subject: Complaint for SmartHome Security Camera , customer id: CUST10001\nFrom: Shubham Sahu <shubhh2003@gmail.com>\nTo: arp290825@gmail.com\nDate: March 07, 2026 01:17 PM\n\nHello Support Team,\r\n\r\nI would like to report an issue with my SmartHome Security Camera.\r\n\r\nCustomer ID: CUST10001\r\nCustomer Name: Ananya Sharma\r\n\r\nProduct Name: SmartHome Security Camera\r\nProduct ID: PROD-EL-001\r\nModel Number: ST-CAM-X200\r\n\r\nOrder Reference: ORD-20260307-001\r\n\r\nThe camera disconnects from WiFi frequently and stops recording\r\nintermittently. The device appears offline in the mobile application even\r\nthough the internet connection is stable.\r\n\r\nI have attached the purchase invoice and a photo of the device for\r\nreference.\r\n\r\nPlease help resolve this issue.\r\n\r\nRegards\r\nAnanya Sharma\r\nCustomer ID: CUST10001",
+        "confidence": 0.95,
+        "metadata": {
+          "source": "email_body"
+        },
+        "keyFields": {
+          "customerName": "Ananya Sharma",
+          "customerEmail": "shubhh2003@gmail.com",
+          "complaintRef": "ORD-20260307-001",
+          "complaintDate": "2026-03-07",
+          "complaintType": "Connectivity",
+          "productOrService": "SmartHome Security Camera ST-CAM-X200",
+          "productModel": "ST-CAM-X200",
+          "description": "The camera disconnects from WiFi frequently and stops recording intermittently. The device appears offline in the mobile application even though the internet connection is stable."
+        }
+      },
+      {
+        "id": "doc_0",
+        "name": "smart_home_security_camera.jpg",
+        "mimeType": "image/jpeg",
+        "type": "PhotoEvidence",
+        "content": "The image shows a consumer electronic device, specifically a camera. There is no visible damage or defect apparent in the image. No serial numbers, purchase dates, or model numbers are visible. The image quality is clear, but it does not provide evidence to support a complaint regarding defects or issues with the product. The severity of any defect cannot be assessed from this image alone. It is recommended to request additional information or evidence from the customer to support their complaint.",
+        "confidence": 0.8,
+        "metadata": {},
+        "keyFields": {
+          "structured_findings": {
+            "product_condition": "Unknown",
+            "defect_type": "other",
+            "severity": "Unknown",
+            "visible_damage": "No",
+            "serial_number_visible": "No",
+            "platform": "N/A",
+            "amount_shown": "N/A",
+            "date_shown": "N/A",
+            "discrepancy_visible": "N/A",
+            "relevant_text": "N/A",
+            "package_condition": "N/A",
+            "damage_extent": "N/A",
+            "contents_affected": "N/A",
+            "purchase_date": "N/A",
+            "product_name": "Unknown",
+            "invoice_number": "N/A",
+            "amount_paid": "N/A",
+            "evidence_quality": "Clear",
+            "supports_complaint": "No",
+            "recommended_action": "Request more information"
+          },
+          "evidence_type": "product_image",
+          "supports_complaint": "No",
+          "severity": null
+        }
+      },
+      {
+        "id": "doc_1",
+        "name": "invoice_sec_cam.png",
+        "mimeType": "image/png",
+        "type": "PhotoEvidence",
+        "content": "The image is an invoice for services related to security camera installation. It includes details such as the invoice number (#INV-000101), issued date (02/20/2025), and the total amount due ($660). The services listed involve assessing property for camera placement, mounting a camera unit, running cables, installation and configuration of a control system, and connecting cameras to a remote monitoring service. The invoice is addressed to John Smith, with contact details provided. Payment methods include check, Zelle, and Venmo. This document does not directly indicate any product defects or issues but confirms the billing details related to the complaint.",
+        "confidence": 0.95,
+        "metadata": {},
+        "keyFields": {
+          "evidence_type": "invoice",
+          "supports_complaint": "Partially",
+          "severity": null
+        }
+      }
+    ],
+    "customerGrounding": [
+      {
+        "recordId": "CUSTOMER-NOT-FOUND",
+        "title": "Customer Not Found",
+        "snippet": "No customer record found for ID: ORD-20260307-001",
+        "content": "Customer ID 'ORD-20260307-001' was not found. Please verify the reference number.",
+        "section": "Customer Verification",
+        "score": 0.0,
+        "confidence_score": 0.0,
+        "recommendation": "INVESTIGATE",
+        "action": "Verify the customer reference number provided in the complaint.",
+        "sourceDocument": "customers.json (Consumer Electronics CRM)",
+        "customer_verified": false
+      }
+    ],
+    "customerInfo": null,
+    "validationResults": [
+      {
+        "check": "eligibility_validation",
+        "passed": true,
+        "rejectReason": null,
+        "autoDecision": null,
+        "notes": "No eligibility issues detected."
+      },
+      {
+        "check": "warranty_validation",
+        "passed": true,
+        "status": "WITHIN_WARRANTY",
+        "warrantyMonths": 12,
+        "purchaseDate": "2026-03-07",
+        "purchaseDateSource": "email_body",
+        "expiryDate": "2027-03-07",
+        "autoDecision": null,
+        "notes": "Product purchased on 2026-03-07. Warranty of 12 months expires on 2027-03-07. Product is within warranty period."
+      },
+      {
+        "check": "document_validation",
+        "passed": true,
+        "presentDocuments": [
+          "purchase_invoice",
+          "product_model"
+        ],
+        "missingDocuments": [],
+        "serialNumber": null,
+        "autoDecision": null,
+        "notes": "Documents present: purchase_invoice, product_model. Missing: none."
+      },
+      {
+        "check": "product_validation",
+        "passed": true,
+        "productCategory": "Camera",
+        "matchedProductId": null,
+        "matchedProductName": null,
+        "brandName": null,
+        "modelNumber": null,
+        "warrantyMonths": null,
+        "price": null,
+        "categorySupported": true,
+        "authorizedSellers": [],
+        "autoDecision": null,
+        "notes": "Product 'SmartHome Security Camera ST-CAM-X200' not found in product catalogue. Category 'camera' is recognised as supported."
+      }
+    ],
+    "warrantyStatus": "WITHIN_WARRANTY",
+    "productCategory": "Camera",
+    "matchedProduct": null,
+    "autoDecision": "INVESTIGATE",
+    "decisionConfidence": 0.6,
+    "decisionRationale": "Insufficient verified data. Manual review required before proceeding.",
+    "recommendedNextStep": "Send acknowledgement email. Assign to complaints team for review.",
+    "rejectReason": null,
+    "audit": [
+      {
+        "step": "Information Extraction",
+        "timestamp": "2026-03-18T17:10:37.768Z",
+        "duration": 16627,
+        "agent": "ExtractionService",
+        "status": "completed",
+        "details": {
+          "documentsProcessed": 3,
+          "errors": []
+        }
+      },
+      {
+        "step": "Validation Engine",
+        "timestamp": "2026-03-18T17:10:37.768Z",
+        "duration": 2,
+        "agent": "ValidationService",
+        "status": "completed",
+        "details": {
+          "warrantyStatus": "WITHIN_WARRANTY",
+          "allChecksPassed": true,
+          "autoDecision": null
+        }
+      },
+      {
+        "step": "Customer & Product Grounding",
+        "timestamp": "2026-03-18T17:10:37.768Z",
+        "duration": 0,
+        "agent": "CustomerGroundingService",
+        "status": "completed",
+        "details": {
+          "recordsFound": 1,
+          "customerVerified": false
+        }
+      },
+      {
+        "step": "Decision Engine",
+        "timestamp": "2026-03-18T17:10:37.768Z",
+        "duration": 0,
+        "agent": "DecisionService",
+        "status": "completed",
+        "details": {
+          "autoDecision": "INVESTIGATE",
+          "decisionConfidence": 0.6
+        }
+      }
+    ],
+    "evidenceSummary": {
+      "totalFields": 8,
+      "highConfidenceFields": 8,
+      "lowConfidenceFields": 0,
+      "avgConfidence": 0.9875
+    },
+    "documentAnalysis": {
+      "totalDocuments": 3,
+      "documentTypes": [
+        "CorrespondenceRecord",
+        "PhotoEvidence",
+        "PhotoEvidence"
+      ],
+      "avgDocumentConfidence": 0.9,
+      "missingDocuments": [],
+      "presentDocuments": [
+        "purchase_invoice",
+        "product_model"
+      ]
+    },
+    "resolutionAssessment": {
+      "recordsFound": 1,
+      "customerVerified": false,
+      "topMatchScore": 0.0,
+      "recommendation": "INVESTIGATE",
+      "autoDecision": "INVESTIGATE",
+      "decisionConfidence": 0.6,
+      "recommendedActions": [
+        "Send acknowledgement email. Assign to complaints team for review."
+      ]
+    },
+    "processingSummary": {
+      "stepsCompleted": 4,
+      "stepsWithErrors": 0
+    },
+    "createdAt": "2026-03-18T17:10:37.768Z"
+  },
+  "processingMetrics": {
+    "fieldsAutoPopulated": 8,
+    "stepsCompleted": 4,
+    "stepsFailed": 0,
+    "totalProcessingTime": 20124,
+    "averageHandleTime": 20.124,
+    "extractionTime": 16627,
+    "validationTime": 2
+  },
+  "createdAt": "2026-03-18T17:10:37.768Z",
+  "status": "draft",
+  "autoEmailResponse": {
+    "sent": true,
+    "decision": "INVESTIGATE",
+    "to": "Shubham Sahu <shubhh2003@gmail.com>",
+    "error": null
+  },
+  "processingTime": 20124
+}
