@@ -48,7 +48,9 @@ export default function ClaimSummaryBar({
   }, [showClaimDropdown])
 
   const { decisionPack, claimId, status } = claimData
-  const claimDraft = getClaimDraft(decisionPack) as { id?: string } | undefined
+  const claimDraft = getClaimDraft(
+    decisionPack as unknown as Record<string, unknown>
+  ) as { id?: string } | undefined;
   const evidence = decisionPack?.evidence ?? []
   const displayClaimId = claimId || claimDraft?.id || 'N/A'
   const overallConfidence =

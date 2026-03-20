@@ -5,7 +5,7 @@ import { openaiService } from '@/lib/services/openai'
 export class IngestionAgent {
   async execute(state: AgentState, config: AgentConfig): Promise<Partial<AgentState>> {
     const startTime = Date.now()
-    
+
     try {
       // Log ingestion start
       const auditEvent = {
@@ -23,15 +23,15 @@ export class IngestionAgent {
 
       // Normalize email text
       const normalizedEmail = this.normalizeEmailText(state.emailText)
-      
+
       // Process and classify attachments
       const documents = await this.processAttachments(state.files)
-      
+
       // Extract basic metadata
       const metadata = this.extractEmailMetadata(normalizedEmail)
-      
+
       const duration = Date.now() - startTime
-      
+
       return {
         currentStep: 'Document Classification',
         documents,
@@ -48,7 +48,7 @@ export class IngestionAgent {
       }
     } catch (error) {
       const duration = Date.now() - startTime
-      
+
       return {
         errors: [...state.errors, `Ingestion failed: ${error}`],
         auditEvents: [...state.auditEvents, {
@@ -73,15 +73,15 @@ export class IngestionAgent {
 
   private async processAttachments(files: UploadedFile[]): Promise<any[]> {
     const documents = []
-    
+
     for (const file of files) {
       // Simulate OCR/text extraction
       const extractedText = await this.simulateOCR(file)
-      
+
       try {
         // Use OpenAI for document classification
         const classification = await openaiService.classifyDocument(file.name, extractedText)
-        
+
         documents.push({
           id: `doc_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
           name: file.name,
@@ -100,7 +100,7 @@ export class IngestionAgent {
         // Fallback to rule-based classification
         console.warn(`OpenAI classification failed for ${file.name}, using fallback:`, error)
         const docType = this.classifyDocument(file.name, extractedText)
-        
+
         documents.push({
           id: `doc_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
           name: file.name,
@@ -117,24 +117,24 @@ export class IngestionAgent {
         })
       }
     }
-    
+
     return documents
   }
 
   private async simulateOCR(file: UploadedFile): Promise<string> {
     // In a real implementation, this would call Azure Form Recognizer or AWS Textract
     // For demo, we return the provided content (which simulates extracted text)
-    
+
     // Add some realistic OCR processing delay
     await new Promise(resolve => setTimeout(resolve, 500 + Math.random() * 1000))
-    
+
     return file.content || `[OCR extracted content from ${file.name}]`
   }
 
   private classifyDocument(fileName: string, content: string): DocumentType {
     const name = fileName.toLowerCase()
     const text = content.toLowerCase()
-    
+
     // Rule-based classification
     if (name.includes('police') || text.includes('police report') || text.includes('officer')) {
       return 'PoliceReport'
@@ -151,44 +151,89 @@ export class IngestionAgent {
     if (name.includes('medical') || text.includes('hospital') || text.includes('patient') || text.includes('diagnosis')) {
       return 'MedicalRecord'
     }
-    
+
     return 'Other'
   }
 
   private calculateConfidence(fileName: string, content: string, docType: DocumentType): number {
     // Simple confidence scoring based on keyword matches
     let confidence = 0.6 // Base confidence
-    
+
     const keywords = this.getKeywordsForDocType(docType)
     const text = (fileName + ' ' + content).toLowerCase()
-    
+
     for (const keyword of keywords) {
       if (text.includes(keyword)) {
         confidence += 0.1
       }
     }
-    
+
     return Math.min(confidence, 1.0)
   }
 
   private getKeywordsForDocType(docType: DocumentType): string[] {
     const keywordMap: Record<DocumentType, string[]> = {
-      PoliceReport: ['police', 'officer', 'badge', 'incident', 'citation', 'vehicle'],
-      RepairEstimate: ['estimate', 'repair', 'labor', 'parts', 'total', 'damage'],
+      PoliceReport: [
+        'police',
+        'officer',
+        'badge',
+        'incident',
+        'citation',
+        'vehicle',
+      ],
+      RepairEstimate: [
+        'estimate',
+        'repair',
+        'labor',
+        'parts',
+        'total',
+        'damage',
+      ],
       Invoice: ['invoice', 'bill', 'payment', 'due', 'amount', 'services'],
       DamagePhoto: ['photo', 'image', 'damage', 'picture', 'scene'],
-      MedicalRecord: ['hospital', 'patient', 'diagnosis', 'treatment', 'doctor', 'medical'],
-      IncidentReport: ['incident', 'report', 'accident', 'occurred', 'witness', 'details'],
-      Other: []
-    }
-    
+      MedicalRecord: [
+        'hospital',
+        'patient',
+        'diagnosis',
+        'treatment',
+        'doctor',
+        'medical',
+      ],
+      IncidentReport: [
+        'incident',
+        'report',
+        'accident',
+        'occurred',
+        'witness',
+        'details',
+      ],
+      CorrespondenceRecord: [
+        'letter',
+        'correspondence',
+        'email',
+        'note',
+        'communication',
+      ],
+      PhotoEvidence: ['photo', 'picture', 'image', 'evidence', 'scene'],
+      Receipt: ['receipt', 'proof', 'purchase', 'invoice', 'transaction'],
+      Screenshot: ['screenshot', 'capture', 'screen', 'image'],
+      ContractOrAgreement: [
+        'contract',
+        'agreement',
+        'terms',
+        'clause',
+        'warranty',
+      ],
+      Other: [],
+    };
+
     return keywordMap[docType] || []
   }
 
   private extractEmailMetadata(emailText: string): Record<string, any> {
     const lines = emailText.split('\n')
     const metadata: Record<string, any> = {}
-    
+
     // Extract basic email components
     for (const line of lines) {
       if (line.startsWith('Subject:')) {
@@ -201,7 +246,7 @@ export class IngestionAgent {
         metadata.date = line.replace('Date:', '').trim()
       }
     }
-    
+
     return metadata
   }
 }

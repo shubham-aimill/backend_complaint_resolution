@@ -184,7 +184,8 @@ export async function POST(request: NextRequest) {
     }
 
     const buffer = doc.output('arraybuffer')
-    const filename = `Decision-Pack-${claimId.replace(/[/\\?%*:|"<>]/g, '-')}.pdf`
+    const sanitizedClaimId = typeof claimId === 'string' ? claimId : 'claim';
+    const filename = `Decision-Pack-${sanitizedClaimId.replace(/[/\\?%*:|"<>]/g, '-')}.pdf`;
 
     return new NextResponse(buffer, {
       status: 200,

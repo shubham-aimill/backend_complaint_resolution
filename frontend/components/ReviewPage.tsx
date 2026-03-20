@@ -283,7 +283,9 @@ export default function ReviewPage({ claimData, onNextStage, onPreviousStage, on
 
   const { decisionPack, claimId, status, ingestedClaimId } = claimData
   const { evidence = [], documents = [] } = decisionPack || {};
-  const claimDraft = getClaimDraft(decisionPack)
+  const claimDraft = getClaimDraft(
+    decisionPack as unknown as Record<string, unknown>
+  );
   const sourceDocuments = useMemo(
     () =>
       documents.filter(doc => {
