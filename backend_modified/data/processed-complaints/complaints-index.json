@@ -1,5 +1,18 @@
 [
   {
+    "complaintId": "CMP-ING-1774010987906-e9f8d4a",
+    "ingestedComplaintId": "ING-1774010987906-e9f8d4a",
+    "customerRef": "CUST10004",
+    "customerName": "Keshav Sharma",
+    "complaintType": "Warranty Claim",
+    "createdAt": "2026-03-20T12:51:25.162Z",
+    "filePath": "C:\\Users\\SHUBHAM SAHU\\backend_complaint_resolution\\backend_modified\\data\\processed-complaints\\CMP-ING-1774010987906-e9f8d4a.json",
+    "warrantyStatus": "OUT_OF_WARRANTY",
+    "productCategory": null,
+    "autoDecision": "DESK_REJECT",
+    "decisionConfidence": 0.95
+  },
+  {
     "complaintId": "CMP-ING-1773853318691-71fee3d",
     "ingestedComplaintId": "ING-1773853318691-71fee3d",
     "customerRef": "ORD-20260307-001",

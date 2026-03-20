@@ -1,0 +1,58 @@
+[
+  {
+    "id": "Samsung_Galaxy_S26_Ultra_p0147",
+    "product": "Samsung Galaxy S26 Ultra",
+    "category": "Smartphone",
+    "page_num": 147,
+    "text": "Reset\nResetdeviceandnetworksettings.Youcanalsoresetyourdevicetoitsfactory\ndefaults.\nBackupyourdata\nYoucanconfigureyourdevicetobackupdatatoyourpersonalaccounts.\n\u25cc FromSettings,tap\n Generalmanagement >Resetandtapanoptionunder\nBackupyourdata:\n\u2022 Temporarycloudbackup:BackupunlimiteddatatoSamsungCloudforupto\n30daysorrestoredatayouhavebackedup.\n\u2022 Externalstoragebackup :BackupyourdatatoanSDcardorUSBstorage\ndevice,orrestorebackupdatausingSmartSwitch.\nResetallsettings\nYoucanresetyourdevicetoitsfactorydefaultsettings,whichresetseverything\nexceptthesecurity,language,andaccountsettings.Personaldataisnotaffected.\n1. FromSettings,tap\n Generalmanagement >Reset>Resetallsettings.\n2. TapResetsettings,andconfirmwhenprompted.\nResetmobilenetworksettings\nYoucanresetmobiledatasettingswithResetnetworksettings.\n1. FromSettings,tap\n Generalmanagement >Reset>Resetmobilenetwork\nsettings.\n2. TapResetsettings,andconfirmwhenprompted.\nResetWi-FiandBluetoothsettings\nYoucanresetWi-FiandBluetoothsettings.\n1. FromSettings,tap\nGeneralmanagement >Reset>ResetWi-FiandBluetooth\nsettings.\n2. TapResetsettings,andconfirmwhenprompted.\n147\nSettings"
+  },
+  {
+    "id": "Samsung_Galaxy_S26_Ultra_p0128",
+    "product": "Samsung Galaxy S26 Ultra",
+    "category": "Smartphone",
+    "page_num": 128,
+    "text": "Fingerprintmanagement\nAdd,delete,andrenamefingerprints.\n\u25cc FromSettings,tap\n Securityandprivacy >Screenlockandbiometrics >\nFingerprintsforthefollowingoptions:\n\u2022 Thelistofregisteredfingerprintsisatthetopofthislist.Youcantapa\nfingerprinttoremoveorrenameit.\n\u2022 Addfingerprint: Followthepromptstoregisteranotherfingerprint.\n\u2022 Checkaddedfingerprints :Scanyourfingerprinttocheckifithasbeen\nregistered.\nFingerprintverificationsettings\nUsefingerprintrecognitiontoverifyyouridentityinsupportedappsandactions.\n\u25cc FromSettings,tap\n Securityandprivacy >Screenlockandbiometrics >\nFingerprints.\n\u2022 Fingerprintunlock:Useyourfingerprintforidentificationwhenunlockingyour\ndevice.\n\u2022 Fingerprintalwayson:Scanyourfingerprintevenwhenthescreenisoff.\n\u2022 Showiconwhenscreenisoff:Showthefingerprinticonwhenthescreen\nis\u00a0off.\n\u2022 Showanimationwhenunlocking:Showananimationwhenyouuse\nfingerprintverification.\n\u2022 Aboutfingerprints:Learnadditionalinformationaboutsecuringyourdevice\nwithfingerprints.\nBiometricssettings\nConfigureyourpreferencesforbiometricsecurityoptions.\n\u25cc FromSettings,tap\nSecurityandprivacy >Screenlockandbiometrics forthe\nfollowing:\n\u2022 Aboutunlockingwithbiometrics :Learnadditionalinformationaboutsecuring\nyourdevicewithbiometrics.\n128\nSettings"
+  },
+  {
+    "id": "Samsung_Galaxy_S26_Ultra_p0148",
+    "product": "Samsung Galaxy S26 Ultra",
+    "category": "Smartphone",
+    "page_num": 148,
+    "text": "Resetaccessibilitysettings\nYoucanresetdeviceaccessibilitysettings.Accessibilitysettingsindownloadedapps\nandyourpersonaldataarenotaffected.\n1. FromSettings,tap\n Generalmanagement >Reset>Resetaccessibilitysettings.\n2. TapResetsettings,andconfirmwhenprompted.\nFactoryDataReset\nYoucanresetyourdevicetofactorydefaults,erasingalldatafromyourdevice.\nThisactionpermanentlyerasesALLdatafromthedevice,includingGoogleorother\naccountsettings,systemandapplicationdataandsettings,downloaded\napplications,aswellasyourmusic,photos,videos,andotherfiles.\nIfyousignintoaGoogleAccountonyourdeviceandsetaLockscreen,GoogleDevice\nProtectionisautomaticallyenabled.\nNOTE\u00a0 \u00a0IfyouresetyourGoogleAccountpassword,itcantake24hoursforthe\npasswordresettosyncwithalldevicesregisteredtotheaccount.\nBeforeresettingyourdevice:\n1. Verifythattheinformationyouwanttokeephastransferredtoyourstorage\narea.\n2. LogintoyourGoogleAccountandconfirmyourusernameandpassword.\nToresetyourdevice:\n1. FromSettings,tap\n Generalmanagement >Reset>Factorydatareset.\n2. TapResetandfollowthepromptstoperformthereset.\n3. Whenthedevicerestarts,followthepromptstosetupyourdevice.\nGoogleDeviceProtection\nWhenyousignintoaGoogleAccountonyourdeviceandsetaLockscreen,Google\nDeviceProtectionisenabled.Thisserviceprotectsyourdevicefromunauthorized\nfactorydataresetsbyrequiringyourGoogleaccountinformationtoverifyyour\nidentity.Learnmore: samsung.com/us/support/answer/ANS10003349\n148\nSettings"
+  },
+  {
+    "id": "Samsung_Galaxy_S26_Ultra_p0140",
+    "product": "Samsung Galaxy S26 Ultra",
+    "category": "Smartphone",
+    "page_num": 140,
+    "text": "Devicemaintenance\nCheckthestatusofyourdevice\u2019sbattery,storage,andmemory.Youcanalso\nautomaticallyoptimizeyourdevice\u2019ssystemresources.\nQuickoptimization |Battery\u00a0|Storage\u00a0|Memory\u00a0|Advanceddevicecareoptions\u00a0 |\nLanguageandinput\u00a0|Keyboard\u00a0|Physicalkeyboards |Mouse|Touchpad\u00a0|\nTroubleshooting|Customizationservice\nQuickoptimization\nThequickoptimizationfeatureimprovesdeviceperformancethroughthefollowing\nactions:\n\u2022 Identifyingappsthatuseexcessivebatterypowerandclearingunneededitems.\n\u2022 Deletingunnecessaryfilesandclosingappsrunninginthebackground.\n\u2022 Scanningformalware.\nTousethequickoptimizationfeature:\n\u25cc FromSettings,tap\n Devicecare >Optimizenow.\nBattery\nReviewhowbatterypowerisusedforyourvariousdeviceactivities.\n\u25cc FromSettings,tap\n Devicecare >Batteryforthefollowingoptions:\n\u2022 Powersaving:Savebatterylifebylimitingbackgroundnetworkusage,\nsyncing,andlocationchecking.Choosefromadditionalpowersaving\noptionstosavemorepowerwhenthismodeisenabled.\n\u2022 Backgroundusagelimits:Identifyappsthatyoudon\u2019tuseoftenandlimittheir\nbatteryusage.Todisablethisfeature,tap Putunusedappstosleep.\n\u2022 Batteryprotection:Chooseamethodtoextendthelifespanofyourbattery.\n\u2022 Batteryinformation:Displaybatterystatus,level,andcapacity.\n\u2022 Chargingsettings:Customizethechargingsettingsforyourdevice.\n140\nSettings"
+  },
+  {
+    "id": "Samsung_Galaxy_S26_Ultra_p0099",
+    "product": "Samsung Galaxy S26 Ultra",
+    "category": "Smartphone",
+    "page_num": 99,
+    "text": "UnpairfromaBluetoothdevice\nWhenyouunpairfromaBluetoothdevice,thetwodevicesnolongerrecognizeeach\nother,andyouneedtopairwiththedeviceagaininordertoconnecttoit.\n1. FromSettings,tap\n Connections>Bluetooth,andthentap\n toturnon\nBluetooth.\n2. Tap\n Settingsnexttothedevice,andthentap Unpair.\n3. TapUnpairtoconfirm.\nBluetoothsettings\nAdditionalBluetoothfeaturesareavailableintheMoresettingsmenu.Optionsmay\nvarybyserviceprovider.\n1. FromSettings,tap\n Connections>Bluetooth.\n2. Tap\n Moreoptions andtapanoption:\n\u2022 Advancedsettings:CustomizeyourBluetoothsettings.\n\u2022 Bluetoothtips:ReadhelparticlesaboutconnectingwithBluetooth.\n\u2022 Contactus:ContactSamsungsupportthroughSamsungMembers.\nDualaudio\nYoucanplayaudiofromyourdevicetotwoconnectedBluetoothaudiodevices.\n1. ConnectBluetoothaudiodevicestoyourdevice.\n2. FromtheNotificationpanel,tap Mediaoutput.\n3. UnderAudiooutput,tap\n nexttoeachaudiodevicetoplayaudiotothem(up\ntotwodevices).\n99\nSettings"
+  },
+  {
+    "id": "Samsung_Galaxy_S26_Ultra_p0098",
+    "product": "Samsung Galaxy S26 Ultra",
+    "category": "Smartphone",
+    "page_num": 98,
+    "text": "Wi-Fisettings\nYoucanconfigureconnectionstovarioustypesofWi-Finetworksandhotspots,\nmanagesavednetworks,andreviewyourdevice'snetworkaddresses.Optionsmay\nvarybyserviceprovider.\n1. FromSettings,tap\nConnections>Wi-Fi,andthentap\n toturnonWi-Fi.\n2. Tap\n Moreoptions forthefollowingoptions:\n\u2022 Wi-FiDirect:SharedatadirectlybetweendevicesoverWi-Fi.\n\u2022 IntelligentWi-Fi:ConfigureWi-Fiswitchinganddetectionfeatures.\n\u2022 Advancedsettings:ConfigureWi-FiconnectionsandHotspotsettings.\n\u2022 Contactus:\u00a0ContactSamsungsupportthroughSamsungMembers.\nBluetooth\nYoucanpairyourdevicetootherBluetooth-enableddevices,likeBluetooth\nheadphonesoraBluetooth-enabledvehicleinfotainmentsystem.Onceapairingis\ncreated,thedevicesremembereachotherandcanexchangeinformationwithout\nhavingtoenterthepasskeyagain.\n1. FromSettings,tap\nConnections>Bluetooth,andthentap\n toturnon\nBluetooth.\n2. Tapadeviceandfollowthepromptstoconnect.\n\u2022 Todisconnectfromapaireddevice,tap Disconnect.Tap Connectto\nreconnect.\nTIP\u00a0 \u00a0Whensharingafile,tap\n Bluetoothtousethisfeature.\nRenameapaireddevice\nYoucanrenameapaireddevicetomakeitmorerecognizable.\n1. FromSettings,tap\n Connections>Bluetooth,andthentap\n toturnon\nBluetooth.\n2. Tap\n Settingsnexttothedevicename,andthentap Rename.\n3. Enteranewname,andtap Rename.\n98\nSettings"
+  },
+  {
+    "id": "Samsung_Galaxy_S26_Ultra_p0141",
+    "product": "Samsung Galaxy S26 Ultra",
+    "category": "Smartphone",
+    "page_num": 141,
+    "text": "\u2022 Wirelesspowersharing:Enablewirelesschargingofsupporteddeviceswith\nyourdevice\u2019sbattery.\n\u2022 Autodimscreen:Dimthescreenwhenbatteryisbelow5%.\nStorage\nReviewyourstoragecapacityanddetailedusagebycategoryandfiletype.\n\u25cc FromSettings,tap\n Devicecare >Storage.\n\u2022 Tapacategorytomanagefiles.\nMemory\nChecktheamountofavailablememory.Youcanclosebackgroundappsandreduce\ntheamountofmemoryyouareusingtospeedupyourdevice.\n\u25cc FromSettings,tap\nDevicecare >Memory.Theusedandavailablememoryare\nshown.\n\u2022 TapCleannow tofreeupasmuchmemoryaspossible.\n\u2022 TapViewmore forthefulllistofappsandservicesusingmemory.Tap\ntoincludeorexcludetheseappsandservices.\n\u2022 Memoryresidentapps:Displayanyappsthatruncontinuouslyinmemory.\n\u2022 TapExcludedapps foralistofappsthathavebeenexcluded.Tap\nAddapps tochooseappstoexcludefrommemoryusage\nchecks.\n\u2022 TapRAMPlus toselecthowmuchinternalstoragetouseasvirtual\nmemorytoimproveappperformance.\n141\nSettings"
+  },
+  {
+    "id": "Samsung_Galaxy_S26_Ultra_p0127",
+    "product": "Samsung Galaxy S26 Ultra",
+    "category": "Smartphone",
+    "page_num": 127,
+    "text": "Facerecognitionmanagement\nCustomizehowfacerecognitionworks.\n\u25cc FromSettings,tap\n Securityandprivacy >Screenlockandbiometrics >\nFace\u00a0recognition.\n\u2022 Removefacedata:Deleteexistingfaces.\n\u2022 Addalternativeappearancetoenhancerecognition:Enhanceface\nrecognitionbyaddinganalternativeappearance.\n\u2022 Faceunlock:Enableordisablefacerecognitionsecurity.\n\u2022 StayonLockscreenuntilswipe :Whenyouunlockyourdevicewithface\nrecognition,stayontheLockscreenuntilyouswipethescreen.\n\u2022 Requireopeneyes :Facialrecognitionwillonlyrecognizeyourfacewhen\nyoureyesareopen.\n\u2022 Brightenscreen:\u00a0Increasethescreenbrightnesstemporarilysothatyour\nfacecanberecognizedindarkconditions.\n\u2022 Aboutfacerecognition:Learnadditionalinformationaboutsecuringyour\ndevicewithfacerecognition.\nFingerprintscanner\nUsefingerprintrecognitionasanalternativetoenteringpasswordsincertainapps.\nYoucanalsouseyourfingerprinttoverifyyouridentitywhenloggingintoyour\nSamsungaccount.Touseyourfingerprinttounlockyourdevice,youmustseta\npattern,PIN,orpassword.\n1. FromSettings,tap\nSecurityandprivacy >Screenlockandbiometrics >\nFingerprints.\n2. Followthepromptstoregisteryourfingerprint.\n127\nSettings"
+  }
+]
