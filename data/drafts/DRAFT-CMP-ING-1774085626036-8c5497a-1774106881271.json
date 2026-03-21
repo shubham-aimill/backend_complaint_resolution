@@ -1,0 +1,38 @@
+{
+  "draftId": "DRAFT-CMP-ING-1774085626036-8c5497a-1774106881271",
+  "claimId": "CMP-ING-1774085626036-8c5497a",
+  "ingestedClaimId": "ING-1774085626036-8c5497a",
+  "status": "pending",
+  "createdAt": "2026-03-21T15:28:01.271Z",
+  "claimFields": {
+    "policyNumber": "CMP-ING-1774030093263-b33656f",
+    "claimantName": "Emily Johnson",
+    "contactEmail": "ar***@gmail.com",
+    "lossDate": "2026-03-20",
+    "lossType": "Warranty Claim",
+    "lossLocation": "NovaTech SlimTab 10 Tablet",
+    "description": "Complaint submitted via email",
+    "estimatedAmount": 0,
+    "propertyAddress": "NovaTech SlimTab 10 Tablet"
+  },
+  "attachments": [],
+  "evidenceSummary": {
+    "totalFields": 6,
+    "highConfidenceFields": 6,
+    "lowConfidenceFields": 0,
+    "avgConfidence": 0.9666666666666667
+  },
+  "policyClauses": [
+    {
+      "title": "Customer Not Found",
+      "section": "Customer Verification",
+      "score": 0
+    }
+  ],
+  "recommendedActions": [
+    "Send REQUEST_DOCUMENTS email to customer listing missing items."
+  ],
+  "documentTypes": [
+    "CorrespondenceRecord"
+  ]
+}

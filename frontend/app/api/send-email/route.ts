@@ -36,7 +36,7 @@ function createTransporter() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { to, subject, body: emailBody } = body
+    const { to, subject, body: emailBody, inReplyTo, references } = body
 
     if (!to || typeof to !== 'string') {
       return NextResponse.json({ error: 'Recipient email (to) is required' }, { status: 400 })
@@ -55,13 +55,19 @@ export async function POST(request: NextRequest) {
     }
 
     const transporter = createTransporter()
-    const info = await transporter.sendMail({
+    const mailOptions: Parameters<typeof transporter.sendMail>[0] = {
       from: `"Customer Support" <${SENDER_EMAIL}>`,
       to: to.trim(),
       subject: finalSubject,
       text: emailBody,
       html: emailBody.replace(/\n/g, '<br>'),
-    })
+    }
+    // Thread reply headers — ensures reply lands in the same Gmail/Outlook thread
+    if (inReplyTo && typeof inReplyTo === 'string') {
+      mailOptions.inReplyTo = inReplyTo
+      mailOptions.references = (references && typeof references === 'string') ? references : inReplyTo
+    }
+    const info = await transporter.sendMail(mailOptions)
 
     return NextResponse.json({
       success: true,

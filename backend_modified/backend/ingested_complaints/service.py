@@ -65,10 +65,11 @@ def extract_complaint_reference(text: str) -> Optional[str]:
     patterns = [
         r"\bCUST\d{3,}\b",
         r"\bORD[-\s]?\d{4,}\b",
-        r"customer\s*(?:id|#|number|ref|reference)\s*[:\-]?\s*([A-Z0-9]{4,})",
-        r"complaint\s*(?:id|#|number|ref|reference)\s*[:\-]?\s*([A-Z0-9]{4,})",
-        r"order\s*(?:id|#|number|ref|reference)\s*[:\-]?\s*([A-Z0-9]{4,})",
-        r"ticket\s*(?:id|#|number|ref|reference)\s*[:\-]?\s*([A-Z0-9]{4,})",
+        # Put longer alternatives first to avoid "ref" matching inside "reference"
+        r"customer\s*(?:id|#|number|reference|ref)\s*[:\-]?\s*([A-Z0-9]{4,})",
+        r"complaint\s*(?:id|#|number|reference|ref)\s*[:\-]?\s*([A-Z0-9]{4,})",
+        r"order\s*(?:id|#|number|reference|ref)\s*[:\-]?\s*([A-Z0-9]{4,})",
+        r"ticket\s*(?:id|#|number|reference|ref)\s*[:\-]?\s*([A-Z0-9]{4,})",
         r"reference\s*(?:#|number)?\s*[:\-]?\s*([A-Z0-9]{5,})",
         r"case\s*(?:#|number)?\s*[:\-]?\s*([A-Z0-9]{5,})",
     ]
@@ -121,12 +122,9 @@ def save_ingested_complaint(
     complaint_id = f"ING-{int(time.time() * 1000)}-{uuid.uuid4().hex[:7]}"
 
     # Try extracting a reference from subject first, then body
+    # complaintRef should only be a real customer/order ref (e.g. CUST10001), not a fallback
     extracted_ref = extract_complaint_reference(subject) or extract_complaint_reference(email_body)
-    if not extracted_ref and (email_message_id_for_display or message_id):
-        mid = email_message_id_for_display or message_id or ""
-        inner = mid.replace("<", "").replace(">", "").strip()
-        extracted_ref = inner or complaint_id
-    complaint_ref = extracted_ref or complaint_id
+    complaint_ref = extracted_ref or None  # None means "not found" — orchestrator will use LLM extraction
 
     ensure_data_dir()
     complaint_dir = INGESTED_DIR / complaint_id
@@ -149,16 +147,17 @@ def save_ingested_complaint(
     thread_id = refs[0] if refs else (in_reply_to or email_message_id_for_display or message_id or complaint_id)
 
     complaint: Dict[str, Any] = {
-        "id":           complaint_id,
-        "complaintRef": complaint_ref,
-        "from":         from_addr,
-        "to":           to_addr,
-        "subject":      subject,
-        "emailBody":    email_body,
-        "attachments":  attachments,
-        "createdAt":    _iso_now(),
-        "source":       source,
-        "threadId":     thread_id,
+        "id":               complaint_id,
+        "complaintRef":     complaint_ref,
+        "from":             from_addr,
+        "to":               to_addr,
+        "subject":          subject,
+        "emailBody":        email_body,
+        "attachments":      attachments,
+        "createdAt":        _iso_now(),
+        "source":           source,
+        "threadId":         thread_id,
+        "processingStatus": "pending",
     }
     if message_id:
         complaint["messageId"] = message_id
@@ -225,9 +224,10 @@ def get_complaint_references() -> List[Dict[str, str]]:
     to_show = [c for c in complaints if c.get("source") != "demo"] if has_real else complaints
     return [
         {
-            "id":           c["id"],
-            "complaintRef": c.get("complaintRef", c["id"]),
-            "subject":      c.get("subject", ""),
+            "id":               c["id"],
+            "complaintRef":     c.get("complaintRef", c["id"]),
+            "subject":          c.get("subject", ""),
+            "processingStatus": c.get("processingStatus", "pending"),
         }
         for c in to_show
     ]
@@ -292,6 +292,17 @@ def add_email_to_thread(
     complaints.insert(0, entry)
     _save_complaints(complaints)
     return entry
+
+
+def mark_ingested_complaint_processed(complaint_id: str) -> bool:
+    """Mark an ingested complaint as fully processed through the pipeline."""
+    complaints = _load_complaints()
+    for c in complaints:
+        if c.get("id") == complaint_id:
+            c["processingStatus"] = "processed"
+            _save_complaints(complaints)
+            return True
+    return False
 
 
 def update_complaint_status(complaint_id: str, status: str, rejection_reason: Optional[str] = None, rejection_details: Optional[str] = None) -> bool:

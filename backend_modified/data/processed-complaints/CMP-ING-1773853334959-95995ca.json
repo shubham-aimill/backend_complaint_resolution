@@ -4,14 +4,14 @@
   "sourceEmailFrom": "Shubham Sahu <shubhh2003@gmail.com>",
   "warrantyStatus": "WITHIN_WARRANTY",
   "productCategory": "Tablet",
-  "autoDecision": "INVESTIGATE",
-  "decisionConfidence": 0.6,
-  "recommendedNextStep": "Send acknowledgement email. Assign to complaints team for review.",
-  "rejectReason": null,
+  "autoDecision": "DESK_REJECT",
+  "decisionConfidence": 1.0,
+  "recommendedNextStep": "Send DESK_REJECT email (customer not found). Ask customer to verify their account details or contact us directly.",
+  "rejectReason": "customer_not_found",
   "decisionPack": {
-    "id": "DP-1773853377259",
+    "id": "DP-1774026609270",
     "complaintDraft": {
-      "id": "DRAFT-1773853377259",
+      "id": "DRAFT-1774026609270",
       "complaintRef": "CMP-ING-1773423500615-dd94df7",
       "customerName": "Emily Johnson",
       "customerEmail": "sh***@gmail.com",
@@ -32,7 +32,7 @@
         }
       ],
       "customerVerified": false,
-      "createdAt": "2026-03-18T17:02:57.259Z",
+      "createdAt": "2026-03-20T17:10:09.270Z",
       "source": "information_extraction",
       "confidence": 0.8666666666666667
     },
@@ -202,16 +202,16 @@
       "modelNumber": "NT-ST10-64",
       "price": 449.99
     },
-    "autoDecision": "INVESTIGATE",
-    "decisionConfidence": 0.6,
-    "decisionRationale": "Insufficient verified data. Manual review required before proceeding.",
-    "recommendedNextStep": "Send acknowledgement email. Assign to complaints team for review.",
-    "rejectReason": null,
+    "autoDecision": "DESK_REJECT",
+    "decisionConfidence": 1.0,
+    "decisionRationale": "Customer record not found in the CRM database. Complaint cannot be processed without a verified account.",
+    "recommendedNextStep": "Send DESK_REJECT email (customer not found). Ask customer to verify their account details or contact us directly.",
+    "rejectReason": "customer_not_found",
     "audit": [
       {
         "step": "Information Extraction",
-        "timestamp": "2026-03-18T17:02:57.259Z",
-        "duration": 7496,
+        "timestamp": "2026-03-20T17:10:09.270Z",
+        "duration": 27980,
         "agent": "ExtractionService",
         "status": "completed",
         "details": {
@@ -221,8 +221,8 @@
       },
       {
         "step": "Validation Engine",
-        "timestamp": "2026-03-18T17:02:57.259Z",
-        "duration": 1,
+        "timestamp": "2026-03-20T17:10:09.270Z",
+        "duration": 2,
         "agent": "ValidationService",
         "status": "completed",
         "details": {
@@ -233,7 +233,7 @@
       },
       {
         "step": "Customer & Product Grounding",
-        "timestamp": "2026-03-18T17:02:57.259Z",
+        "timestamp": "2026-03-20T17:10:09.270Z",
         "duration": 0,
         "agent": "CustomerGroundingService",
         "status": "completed",
@@ -244,13 +244,13 @@
       },
       {
         "step": "Decision Engine",
-        "timestamp": "2026-03-18T17:02:57.259Z",
+        "timestamp": "2026-03-20T17:10:09.270Z",
         "duration": 0,
         "agent": "DecisionService",
         "status": "completed",
         "details": {
-          "autoDecision": "INVESTIGATE",
-          "decisionConfidence": 0.6
+          "autoDecision": "DESK_REJECT",
+          "decisionConfidence": 1.0
         }
       }
     ],
@@ -278,35 +278,40 @@
       "recordsFound": 1,
       "customerVerified": false,
       "topMatchScore": 0.0,
-      "recommendation": "INVESTIGATE",
-      "autoDecision": "INVESTIGATE",
-      "decisionConfidence": 0.6,
+      "recommendation": "CUSTOMER_NOT_FOUND",
+      "autoDecision": "DESK_REJECT",
+      "decisionConfidence": 1.0,
       "recommendedActions": [
-        "Send acknowledgement email. Assign to complaints team for review."
+        "Send DESK_REJECT email (customer not found). Ask customer to verify their account details or contact us directly."
       ]
     },
     "processingSummary": {
       "stepsCompleted": 4,
       "stepsWithErrors": 0
     },
-    "createdAt": "2026-03-18T17:02:57.259Z"
+    "createdAt": "2026-03-20T17:10:09.270Z"
   },
   "processingMetrics": {
     "fieldsAutoPopulated": 6,
     "stepsCompleted": 4,
     "stepsFailed": 0,
-    "totalProcessingTime": 11655,
-    "averageHandleTime": 11.655,
-    "extractionTime": 7496,
-    "validationTime": 1
+    "totalProcessingTime": 32223,
+    "averageHandleTime": 32.223,
+    "extractionTime": 27980,
+    "validationTime": 2
   },
-  "createdAt": "2026-03-18T17:02:57.259Z",
-  "status": "draft",
+  "createdAt": "2026-03-20T17:10:09.270Z",
+  "status": "rejected",
   "autoEmailResponse": {
     "sent": true,
-    "decision": "INVESTIGATE",
+    "decision": "DESK_REJECT",
     "to": "Shubham Sahu <shubhh2003@gmail.com>",
-    "error": null
+    "error": null,
+    "subject": "Your Complaint Has Been Reviewed \u2014 CMP-ING-1773853334959-95995ca",
+    "body": "Dear Customer,\n\nThank you for contacting Consumer Electronics Customer Support.\n\nWe have received a complaint submission (Reference: CMP-ING-1773853334959-95995ca), however we were\nunable to locate a matching customer account in our system.\n\nTo process your complaint, we require a verified account with us. Please:\n\n  1. Verify your customer reference number (format: CUST#####) and reply with it, or\n  2. Contact us directly so we can locate your account:\n       Email: support@electronics.com\n       Phone: 1-800-ELEC-HELP  (Monday \u2013 Friday, 9am \u2013 6pm)\n  3. If you are a new customer, please register at our support portal before\n     submitting a complaint.\n\nWe apologise for the inconvenience and look forward to resolving this for you.\n\nKind regards,\nCustomer Support Team\nConsumer Electronics",
+    "sentFrom": "arp290825@gmail.com"
   },
-  "processingTime": 11655
+  "messageId": "<CABs85wPL995BeEikuYw0uG7zfMN7ry300DbZ5N6pBjCy__Q65w@mail.gmail.com>",
+  "threadId": "<69b44fc1.170a0220.71189.74fa@mx.google.com>",
+  "processingTime": 32223
 }

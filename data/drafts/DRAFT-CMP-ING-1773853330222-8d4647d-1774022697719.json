@@ -1,0 +1,47 @@
+{
+  "draftId": "DRAFT-CMP-ING-1773853330222-8d4647d-1774022697719",
+  "claimId": "CMP-ING-1773853330222-8d4647d",
+  "ingestedClaimId": "ING-1773853330222-8d4647d",
+  "status": "pending",
+  "createdAt": "2026-03-20T16:04:57.719Z",
+  "claimFields": {
+    "policyNumber": "CUST10009",
+    "claimantName": "Emily Johnson",
+    "contactEmail": "sh***@gmail.com",
+    "lossDate": "2026-03-08",
+    "lossType": "Dead on Arrival",
+    "lossLocation": "NovaTech SlimTab 10 Tablet",
+    "description": "The tablet I received does not power on at all. I tried multiple chargers over 48 hours. The box seal was completely intact when I opened it. This is a Dead on Arrival unit — I have never been able to use it.",
+    "estimatedAmount": 0,
+    "propertyAddress": "NovaTech SlimTab 10 Tablet"
+  },
+  "attachments": [
+    {
+      "id": "doc_0",
+      "name": "invoice_emily.txt.txt",
+      "type": "CorrespondenceRecord",
+      "mimeType": "text/plain",
+      "confidence": 0.95
+    }
+  ],
+  "evidenceSummary": {
+    "totalFields": 10,
+    "highConfidenceFields": 10,
+    "lowConfidenceFields": 0,
+    "avgConfidence": 0.99
+  },
+  "policyClauses": [
+    {
+      "title": "PRODUCT_DEFECT — SlimTab 10 Tablet",
+      "section": "Hardware Issue",
+      "score": 1
+    }
+  ],
+  "recommendedActions": [
+    "Send APPROVE_REPLACEMENT email. Initiate replacement dispatch process within SLA."
+  ],
+  "documentTypes": [
+    "CorrespondenceRecord",
+    "Invoice"
+  ]
+}

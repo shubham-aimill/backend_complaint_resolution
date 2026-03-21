@@ -1,0 +1,260 @@
+{
+  "complaintId": "CMP-ING-1774108146616-7d7822e",
+  "ingestedComplaintId": "ING-1774108146616-7d7822e",
+  "sourceEmailFrom": "Customer Support <arp290825@gmail.com>",
+  "warrantyStatus": "WITHIN_WARRANTY",
+  "productCategory": null,
+  "autoDecision": "REQUEST_DOCUMENTS",
+  "decisionConfidence": 0.9,
+  "recommendedNextStep": "Send REQUEST_DOCUMENTS email to customer listing missing items.",
+  "rejectReason": null,
+  "decisionPack": {
+    "id": "DP-1774108397491",
+    "complaintDraft": {
+      "id": "DRAFT-1774108397491",
+      "complaintRef": "CMP-ING-1774106933344-9a41ae0",
+      "customerName": "Emily Johnson",
+      "customerEmail": "ar***@gmail.com",
+      "customerPhone": "Not found",
+      "complaintDate": "2026-03-21",
+      "complaintType": "Other",
+      "productOrService": "Not specified",
+      "description": "Complaint submitted via email",
+      "desiredResolution": "Not specified",
+      "estimatedAmount": 0.0,
+      "attachments": [],
+      "customerVerified": false,
+      "createdAt": "2026-03-21T15:53:17.491Z",
+      "source": "information_extraction",
+      "confidence": 1.0
+    },
+    "evidence": [
+      {
+        "field": "customerName",
+        "fieldName": "Customer Name",
+        "value": "Emily Johnson",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "customerEmail",
+        "fieldName": "Customer Email",
+        "value": "arp290825@gmail.com",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "complaintRef",
+        "fieldName": "Complaint Reference",
+        "value": "CMP-ING-1774106933344-9a41ae0",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "complaintDate",
+        "fieldName": "Complaint Date",
+        "value": "2026-03-21",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      }
+    ],
+    "documents": [
+      {
+        "id": "doc_email",
+        "name": "Customer Email",
+        "mimeType": "text/plain",
+        "type": "CorrespondenceRecord",
+        "content": "Subject: Action Required: Documents Needed \u2014 Complaint CMP-ING-1774106933344-9a41ae0\nFrom: Customer Support <arp290825@gmail.com>\nTo: Customer Support <arp290825@gmail.com>\nDate: March 21, 2026 08:39 AM\n\nDear Emily Johnson,\n\nThank you for getting in touch with Consumer Electronics Customer Support.\n\nWe have received your complaint (Reference: CMP-ING-1774106933344-9a41ae0) regarding your Not specified and want to resolve this for you as quickly as possible.\n\nTo progress your complaint, we need the following document(s):\n\n  \u2022 Purchase Invoice\n  \u2022 Product Model\n\nThese documents help us verify your purchase and process your claim efficiently.\n\nWhat to do next:\n  \u2022 Reply to this email with the document(s) attached, or\n  \u2022 Contact us quoting your complaint reference: CMP-ING-1774106933344-9a41ae0\n\nOnce we receive the required information, our team will review your case and\nrespond with an outcome within 2 business days.\n\nIf you have any difficulty locating these documents, please reply and we'll\ndo our best to assist you.\n\nWe apologise for the additional step and appreciate your cooperation.\n\nKind regards,\nCustomer Support Team\nConsumer Electronics\n  Email: support@electronics.com  |  Phone: 1-800-ELEC-HELP (Mon\u2013Fri, 9am\u20136pm)",
+        "confidence": 0.95,
+        "metadata": {
+          "source": "email_body"
+        },
+        "keyFields": {
+          "customerName": "Emily Johnson",
+          "customerEmail": "arp290825@gmail.com",
+          "complaintRef": "CMP-ING-1774106933344-9a41ae0",
+          "complaintDate": "2026-03-21"
+        }
+      }
+    ],
+    "customerGrounding": [
+      {
+        "recordId": "CUSTOMER-NOT-FOUND",
+        "title": "Customer Not Found",
+        "snippet": "No customer record found for ID: CMP-ING-1774106933344-9A41AE0",
+        "content": "Customer ID 'CMP-ING-1774106933344-9A41AE0' was not found. Please verify the reference number.",
+        "section": "Customer Verification",
+        "score": 0.0,
+        "confidence_score": 0.0,
+        "recommendation": "INVESTIGATE",
+        "action": "Verify the customer reference number provided in the complaint.",
+        "sourceDocument": "customers.json (Consumer Electronics CRM)",
+        "customer_verified": false
+      }
+    ],
+    "customerInfo": null,
+    "validationResults": [
+      {
+        "check": "eligibility_validation",
+        "passed": true,
+        "rejectReason": null,
+        "autoDecision": null,
+        "notes": "No eligibility issues detected."
+      },
+      {
+        "check": "warranty_validation",
+        "passed": true,
+        "status": "WITHIN_WARRANTY",
+        "warrantyMonths": 12,
+        "purchaseDate": "2026-03-21",
+        "purchaseDateSource": "email_body",
+        "expiryDate": "2027-03-21",
+        "autoDecision": null,
+        "notes": "Product purchased on 2026-03-21. Warranty of 12 months expires on 2027-03-21. Product is within warranty period."
+      },
+      {
+        "check": "document_validation",
+        "passed": false,
+        "presentDocuments": [],
+        "missingDocuments": [
+          "purchase_invoice",
+          "product_model"
+        ],
+        "serialNumber": null,
+        "autoDecision": "REQUEST_DOCUMENTS",
+        "notes": "Documents present: none. Missing: purchase_invoice, product_model. Purchase invoice is REQUIRED \u2014 requesting documents."
+      },
+      {
+        "check": "product_validation",
+        "passed": false,
+        "productCategory": null,
+        "matchedProductId": null,
+        "matchedProductName": null,
+        "brandName": null,
+        "modelNumber": null,
+        "warrantyMonths": null,
+        "price": null,
+        "categorySupported": false,
+        "authorizedSellers": [],
+        "autoDecision": null,
+        "notes": "Product '' not found in product catalogue. Category not recognised \u2014 manual review advised."
+      }
+    ],
+    "warrantyStatus": "WITHIN_WARRANTY",
+    "productCategory": null,
+    "matchedProduct": null,
+    "autoDecision": "REQUEST_DOCUMENTS",
+    "decisionConfidence": 0.9,
+    "decisionRationale": "Required documents (e.g. purchase invoice) are missing.",
+    "recommendedNextStep": "Send REQUEST_DOCUMENTS email to customer listing missing items.",
+    "rejectReason": null,
+    "audit": [
+      {
+        "step": "Information Extraction",
+        "timestamp": "2026-03-21T15:53:17.490Z",
+        "duration": 5377,
+        "agent": "ExtractionService",
+        "status": "completed",
+        "details": {
+          "documentsProcessed": 1,
+          "errors": []
+        }
+      },
+      {
+        "step": "Validation Engine",
+        "timestamp": "2026-03-21T15:53:17.490Z",
+        "duration": 2,
+        "agent": "ValidationService",
+        "status": "completed",
+        "details": {
+          "warrantyStatus": "WITHIN_WARRANTY",
+          "allChecksPassed": false,
+          "autoDecision": "REQUEST_DOCUMENTS"
+        }
+      },
+      {
+        "step": "Customer & Product Grounding",
+        "timestamp": "2026-03-21T15:53:17.490Z",
+        "duration": 0,
+        "agent": "CustomerGroundingService",
+        "status": "completed",
+        "details": {
+          "recordsFound": 1,
+          "customerVerified": false
+        }
+      },
+      {
+        "step": "Decision Engine",
+        "timestamp": "2026-03-21T15:53:17.490Z",
+        "duration": 0,
+        "agent": "DecisionService",
+        "status": "completed",
+        "details": {
+          "autoDecision": "REQUEST_DOCUMENTS",
+          "decisionConfidence": 0.9
+        }
+      }
+    ],
+    "evidenceSummary": {
+      "totalFields": 4,
+      "highConfidenceFields": 4,
+      "lowConfidenceFields": 0,
+      "avgConfidence": 1.0
+    },
+    "documentAnalysis": {
+      "totalDocuments": 1,
+      "documentTypes": [
+        "CorrespondenceRecord"
+      ],
+      "avgDocumentConfidence": 0.95,
+      "missingDocuments": [
+        "purchase_invoice",
+        "product_model"
+      ],
+      "presentDocuments": []
+    },
+    "resolutionAssessment": {
+      "recordsFound": 1,
+      "customerVerified": false,
+      "topMatchScore": 0.0,
+      "recommendation": "CUSTOMER_NOT_FOUND",
+      "autoDecision": "REQUEST_DOCUMENTS",
+      "decisionConfidence": 0.9,
+      "recommendedActions": [
+        "Send REQUEST_DOCUMENTS email to customer listing missing items."
+      ]
+    },
+    "processingSummary": {
+      "stepsCompleted": 4,
+      "stepsWithErrors": 0
+    },
+    "createdAt": "2026-03-21T15:53:17.490Z"
+  },
+  "processingMetrics": {
+    "fieldsAutoPopulated": 4,
+    "stepsCompleted": 4,
+    "stepsFailed": 0,
+    "totalProcessingTime": 8840,
+    "averageHandleTime": 8.84,
+    "extractionTime": 5377,
+    "validationTime": 2
+  },
+  "createdAt": "2026-03-21T15:53:17.490Z",
+  "status": "draft",
+  "autoEmailResponse": {
+    "sent": true,
+    "decision": "REQUEST_DOCUMENTS",
+    "to": "Customer Support <arp290825@gmail.com>",
+    "error": null,
+    "subject": "Action Required: Documents Needed \u2014 Complaint CMP-ING-1774108146616-7d7822e",
+    "body": "Dear Emily Johnson,\n\nThank you for getting in touch with Consumer Electronics Customer Support.\n\nWe have received your complaint (Reference: CMP-ING-1774108146616-7d7822e) regarding your Not specified and want to resolve this for you as quickly as possible.\n\nTo progress your complaint, we need the following document(s):\n\n  \u2022 Purchase Invoice\n  \u2022 Product Model\n\nThese documents help us verify your purchase and process your claim efficiently.\n\nWhat to do next:\n  \u2022 Reply to this email with the document(s) attached, or\n  \u2022 Contact us quoting your complaint reference: CMP-ING-1774108146616-7d7822e\n\nOnce we receive the required information, our team will review your case and\nrespond with an outcome within 2 business days.\n\nIf you have any difficulty locating these documents, please reply and we'll\ndo our best to assist you.\n\nWe apologise for the additional step and appreciate your cooperation.\n\nKind regards,\nCustomer Support Team\nConsumer Electronics\n  Email: support@electronics.com  |  Phone: 1-800-ELEC-HELP (Mon\u2013Fri, 9am\u20136pm)",
+    "sentFrom": "arp290825@gmail.com"
+  },
+  "messageId": "<69bebb9a.170a0220.200423.8025@mx.google.com>",
+  "threadId": "<69b44fc1.170a0220.71189.74fa@mx.google.com>",
+  "processingTime": 8840
+}

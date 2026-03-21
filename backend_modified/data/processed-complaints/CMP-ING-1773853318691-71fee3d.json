@@ -4,14 +4,14 @@
   "sourceEmailFrom": "Shubham Sahu <shubhh2003@gmail.com>",
   "warrantyStatus": "WITHIN_WARRANTY",
   "productCategory": "Camera",
-  "autoDecision": "INVESTIGATE",
-  "decisionConfidence": 0.6,
-  "recommendedNextStep": "Send acknowledgement email. Assign to complaints team for review.",
-  "rejectReason": null,
+  "autoDecision": "DESK_REJECT",
+  "decisionConfidence": 1.0,
+  "recommendedNextStep": "Send DESK_REJECT email (customer not found). Ask customer to verify their account details or contact us directly.",
+  "rejectReason": "customer_not_found",
   "decisionPack": {
-    "id": "DP-1773853837768",
+    "id": "DP-1774024025611",
     "complaintDraft": {
-      "id": "DRAFT-1773853837768",
+      "id": "DRAFT-1774024025610",
       "complaintRef": "ORD-20260307-001",
       "customerName": "Ananya Sharma",
       "customerEmail": "sh***@gmail.com",
@@ -35,11 +35,11 @@
           "name": "invoice_sec_cam.png",
           "type": "PhotoEvidence",
           "mimeType": "image/png",
-          "confidence": 0.8
+          "confidence": 0.5
         }
       ],
       "customerVerified": false,
-      "createdAt": "2026-03-18T17:10:37.768Z",
+      "createdAt": "2026-03-20T16:27:05.610Z",
       "source": "information_extraction",
       "confidence": 0.9875
     },
@@ -136,35 +136,10 @@
         "name": "smart_home_security_camera.jpg",
         "mimeType": "image/jpeg",
         "type": "PhotoEvidence",
-        "content": "The image shows a consumer electronic device, specifically a camera. There is no visible damage or defect apparent in the image. No serial numbers, purchase dates, or model numbers are visible. The image quality is clear, but it does not provide evidence to support a complaint regarding defects or issues with the product. The severity of any defect cannot be assessed from this image alone. It is recommended to request additional information or evidence from the customer to support their complaint.",
-        "confidence": 0.8,
-        "metadata": {},
-        "keyFields": {
-          "structured_findings": {
-            "product_condition": "Unknown",
-            "defect_type": "other",
-            "severity": "Unknown",
-            "visible_damage": "No",
-            "serial_number_visible": "No",
-            "platform": "N/A",
-            "amount_shown": "N/A",
-            "date_shown": "N/A",
-            "discrepancy_visible": "N/A",
-            "relevant_text": "N/A",
-            "package_condition": "N/A",
-            "damage_extent": "N/A",
-            "contents_affected": "N/A",
-            "purchase_date": "N/A",
-            "product_name": "Unknown",
-            "invoice_number": "N/A",
-            "amount_paid": "N/A",
-            "evidence_quality": "Clear",
-            "supports_complaint": "No",
-            "recommended_action": "Request more information"
-          },
-          "evidence_type": "product_image",
-          "supports_complaint": "No",
-          "severity": null
+        "content": "",
+        "confidence": 0.5,
+        "metadata": {
+          "analysisError": "Expecting value: line 1 column 1 (char 0)"
         }
       },
       {
@@ -172,12 +147,12 @@
         "name": "invoice_sec_cam.png",
         "mimeType": "image/png",
         "type": "PhotoEvidence",
-        "content": "The image is an invoice for services related to security camera installation. It includes details such as the invoice number (#INV-000101), issued date (02/20/2025), and the total amount due ($660). The services listed involve assessing property for camera placement, mounting a camera unit, running cables, installation and configuration of a control system, and connecting cameras to a remote monitoring service. The invoice is addressed to John Smith, with contact details provided. Payment methods include check, Zelle, and Venmo. This document does not directly indicate any product defects or issues but confirms the billing details related to the complaint.",
+        "content": "The image is an invoice for services related to security camera installation. It is issued to John Smith, with an invoice number #INV-000101, dated 02/20/2025. The total amount due is $660, which includes various services such as camera placement assessment, mounting, cable running, system installation, and remote monitoring connection. The invoice provides multiple payment options, including check, Zelle, and Venmo. There is no visible discrepancy in the billing details, and the invoice appears to be clear and legible.",
         "confidence": 0.95,
         "metadata": {},
         "keyFields": {
-          "evidence_type": "invoice",
-          "supports_complaint": "Partially",
+          "evidence_type": "invoices/receipts",
+          "supports_complaint": "Yes",
           "severity": null
         }
       }
@@ -248,16 +223,16 @@
     "warrantyStatus": "WITHIN_WARRANTY",
     "productCategory": "Camera",
     "matchedProduct": null,
-    "autoDecision": "INVESTIGATE",
-    "decisionConfidence": 0.6,
-    "decisionRationale": "Insufficient verified data. Manual review required before proceeding.",
-    "recommendedNextStep": "Send acknowledgement email. Assign to complaints team for review.",
-    "rejectReason": null,
+    "autoDecision": "DESK_REJECT",
+    "decisionConfidence": 1.0,
+    "decisionRationale": "Customer record not found in the CRM database. Complaint cannot be processed without a verified account.",
+    "recommendedNextStep": "Send DESK_REJECT email (customer not found). Ask customer to verify their account details or contact us directly.",
+    "rejectReason": "customer_not_found",
     "audit": [
       {
         "step": "Information Extraction",
-        "timestamp": "2026-03-18T17:10:37.768Z",
-        "duration": 16627,
+        "timestamp": "2026-03-20T16:27:05.610Z",
+        "duration": 56015,
         "agent": "ExtractionService",
         "status": "completed",
         "details": {
@@ -267,8 +242,8 @@
       },
       {
         "step": "Validation Engine",
-        "timestamp": "2026-03-18T17:10:37.768Z",
-        "duration": 2,
+        "timestamp": "2026-03-20T16:27:05.610Z",
+        "duration": 3,
         "agent": "ValidationService",
         "status": "completed",
         "details": {
@@ -279,7 +254,7 @@
       },
       {
         "step": "Customer & Product Grounding",
-        "timestamp": "2026-03-18T17:10:37.768Z",
+        "timestamp": "2026-03-20T16:27:05.610Z",
         "duration": 0,
         "agent": "CustomerGroundingService",
         "status": "completed",
@@ -290,13 +265,13 @@
       },
       {
         "step": "Decision Engine",
-        "timestamp": "2026-03-18T17:10:37.768Z",
+        "timestamp": "2026-03-20T16:27:05.610Z",
         "duration": 0,
         "agent": "DecisionService",
         "status": "completed",
         "details": {
-          "autoDecision": "INVESTIGATE",
-          "decisionConfidence": 0.6
+          "autoDecision": "DESK_REJECT",
+          "decisionConfidence": 1.0
         }
       }
     ],
@@ -313,7 +288,7 @@
         "PhotoEvidence",
         "PhotoEvidence"
       ],
-      "avgDocumentConfidence": 0.9,
+      "avgDocumentConfidence": 0.7999999999999999,
       "missingDocuments": [],
       "presentDocuments": [
         "purchase_invoice",
@@ -324,35 +299,40 @@
       "recordsFound": 1,
       "customerVerified": false,
       "topMatchScore": 0.0,
-      "recommendation": "INVESTIGATE",
-      "autoDecision": "INVESTIGATE",
-      "decisionConfidence": 0.6,
+      "recommendation": "CUSTOMER_NOT_FOUND",
+      "autoDecision": "DESK_REJECT",
+      "decisionConfidence": 1.0,
       "recommendedActions": [
-        "Send acknowledgement email. Assign to complaints team for review."
+        "Send DESK_REJECT email (customer not found). Ask customer to verify their account details or contact us directly."
       ]
     },
     "processingSummary": {
       "stepsCompleted": 4,
       "stepsWithErrors": 0
     },
-    "createdAt": "2026-03-18T17:10:37.768Z"
+    "createdAt": "2026-03-20T16:27:05.610Z"
   },
   "processingMetrics": {
     "fieldsAutoPopulated": 8,
     "stepsCompleted": 4,
     "stepsFailed": 0,
-    "totalProcessingTime": 20124,
-    "averageHandleTime": 20.124,
-    "extractionTime": 16627,
-    "validationTime": 2
+    "totalProcessingTime": 60827,
+    "averageHandleTime": 60.827,
+    "extractionTime": 56015,
+    "validationTime": 3
   },
-  "createdAt": "2026-03-18T17:10:37.768Z",
+  "createdAt": "2026-03-20T16:27:05.610Z",
   "status": "draft",
   "autoEmailResponse": {
     "sent": true,
-    "decision": "INVESTIGATE",
+    "decision": "DESK_REJECT",
     "to": "Shubham Sahu <shubhh2003@gmail.com>",
-    "error": null
+    "error": null,
+    "subject": "Your Complaint Has Been Reviewed \u2014 CMP-ING-1773853318691-71fee3d",
+    "body": "Dear Customer,\n\nThank you for contacting Consumer Electronics Customer Support.\n\nWe have received a complaint submission (Reference: CMP-ING-1773853318691-71fee3d), however we were\nunable to locate a matching customer account in our system.\n\nTo process your complaint, we require a verified account with us. Please:\n\n  1. Verify your customer reference number (format: CUST#####) and reply with it, or\n  2. Contact us directly so we can locate your account:\n       Email: support@electronics.com\n       Phone: 1-800-ELEC-HELP  (Monday \u2013 Friday, 9am \u2013 6pm)\n  3. If you are a new customer, please register at our support portal before\n     submitting a complaint.\n\nWe apologise for the inconvenience and look forward to resolving this for you.\n\nKind regards,\nCustomer Support Team\nConsumer Electronics",
+    "sentFrom": "arp290825@gmail.com"
   },
-  "processingTime": 20124
+  "messageId": "<CABs85wM+cfSuHme-VhgUfcF3vp4sqJ2riLQ24JtwWfceqdFq2g@mail.gmail.com>",
+  "threadId": "<CABs85wM+cfSuHme-VhgUfcF3vp4sqJ2riLQ24JtwWfceqdFq2g@mail.gmail.com>",
+  "processingTime": 60827
 }

@@ -123,6 +123,15 @@ export default function DashboardPage({ claimData, onReset }: DashboardPageProps
   const autoPopulatedFields = evidenceSummary?.highConfidenceFields ?? evidence.filter((e) => e.confidence >= CONFIDENCE.THRESHOLD_HIGH).length
   const autoPopPct = Math.round((autoPopulatedFields / totalFields) * 100) || 0
 
+  // Compute coverage match rate from recent claims data (% with at least 1 policy match)
+  const coverageRate = (() => {
+    if (kpis?.recentClaims && kpis.recentClaims.length > 0) {
+      const matched = kpis.recentClaims.filter(c => ((c.policyMatches as number) ?? 0) > 0).length
+      return Math.round((matched / kpis.recentClaims.length) * 100)
+    }
+    return kpis?.coverageMatchRate ?? 0
+  })()
+
   const lossTypeChartData = kpis?.claimsByLossType
     ? Object.entries(kpis.claimsByLossType).map(([name, value]) => ({
         name,
@@ -290,7 +299,7 @@ export default function DashboardPage({ claimData, onReset }: DashboardPageProps
                 Complaint Coverage Match
               </p>
               <p className="text-2xl font-bold text-[#0F172A]">
-                {kpis?.coverageMatchRate ?? 100}%
+                {coverageRate}%
               </p>
               <p className="text-xs text-[#64748B] mt-2">
                 Complaints with complaint clause matches

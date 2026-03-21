@@ -9,6 +9,8 @@ interface Draft {
   body: string
   recipient: string
   subject: string
+  inReplyTo?: string
+  references?: string
 }
 
 type SentState = {
@@ -30,8 +32,8 @@ export function useEmailDraft() {
   const [sending, setSending] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const open = useCallback((type: DraftType, body: string, recipient: string, subject: string) => {
-    setDraft({ type, body, recipient, subject })
+  const open = useCallback((type: DraftType, body: string, recipient: string, subject: string, inReplyTo?: string, references?: string) => {
+    setDraft({ type, body, recipient, subject, inReplyTo, references })
     setError(null)
   }, [])
 
@@ -56,7 +58,13 @@ export function useEmailDraft() {
       const res = await fetch('/api/send-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ to: draft.recipient, subject: draft.subject, body: draft.body }),
+        body: JSON.stringify({
+          to: draft.recipient,
+          subject: draft.subject,
+          body: draft.body,
+          inReplyTo: draft.inReplyTo,
+          references: draft.references,
+        }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Failed to send email')

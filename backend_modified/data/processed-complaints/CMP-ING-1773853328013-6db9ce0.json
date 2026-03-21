@@ -1,0 +1,436 @@
+{
+  "complaintId": "CMP-ING-1773853328013-6db9ce0",
+  "ingestedComplaintId": "ING-1773853328013-6db9ce0",
+  "sourceEmailFrom": "Shubham Sahu <shubhh2003@gmail.com>",
+  "warrantyStatus": "WITHIN_WARRANTY",
+  "productCategory": "Smartphone",
+  "autoDecision": "APPROVE_REPAIR",
+  "decisionConfidence": 0.85,
+  "recommendedNextStep": "Send APPROVE_REPAIR email. Schedule product collection or repair centre visit.",
+  "rejectReason": null,
+  "decisionPack": {
+    "id": "DP-1774026493915",
+    "complaintDraft": {
+      "id": "DRAFT-1774026493915",
+      "complaintRef": "CUST10001",
+      "customerName": "Ananya Sharma",
+      "customerEmail": "sh***@gmail.com",
+      "customerPhone": "Not found",
+      "complaintDate": "2026-03-08",
+      "complaintType": "Connectivity",
+      "productOrService": "NovaTech ProMax X15 Smartphone",
+      "description": "My smartphone keeps disconnecting from WiFi every few hours since the last firmware update. Reconnecting manually every time is very frustrating. I have tried resetting network settings but the problem persists.",
+      "desiredResolution": "Repair or firmware fix under warranty.",
+      "estimatedAmount": 0.0,
+      "attachments": [
+        {
+          "id": "doc_0",
+          "name": "invoice.png",
+          "type": "CorrespondenceRecord",
+          "mimeType": "image/png",
+          "confidence": 0.95
+        }
+      ],
+      "customerVerified": true,
+      "createdAt": "2026-03-20T17:08:13.915Z",
+      "source": "information_extraction",
+      "confidence": 1.0
+    },
+    "evidence": [
+      {
+        "field": "customerName",
+        "fieldName": "Customer Name",
+        "value": "Ananya Sharma",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "customerEmail",
+        "fieldName": "Customer Email",
+        "value": "shubhh2003@gmail.com",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "complaintRef",
+        "fieldName": "Complaint Reference",
+        "value": "CUST10001",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "complaintDate",
+        "fieldName": "Complaint Date",
+        "value": "2026-03-08",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "purchaseDate",
+        "fieldName": "Purchase Date",
+        "value": "2025-06-10",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "complaintType",
+        "fieldName": "Complaint Type",
+        "value": "Connectivity",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "productOrService",
+        "fieldName": "Product / Service",
+        "value": "NovaTech ProMax X15 Smartphone",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "productModel",
+        "fieldName": "Product Model Number",
+        "value": "NT-X15-PRO",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "serialNumber",
+        "fieldName": "Serial / IMEI Number",
+        "value": "NT2025X15-00451",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "description",
+        "fieldName": "Description",
+        "value": "My smartphone keeps disconnecting from WiFi every few hours since the last firmware update. Reconnecting manually every time is very frustrating. I have tried resetting network settings but the problem persists.",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      }
+    ],
+    "documents": [
+      {
+        "id": "doc_email",
+        "name": "Customer Email",
+        "mimeType": "text/plain",
+        "type": "CorrespondenceRecord",
+        "content": "Subject: Complaint: WiFi Disconnecting \u2014 ProMax X15 Smartphone [CUST10001]\nFrom: Shubham Sahu <shubhh2003@gmail.com>\nTo: arp290825@gmail.com\nDate: March 08, 2026 02:52 AM\n\nDear Support Team,\r\n\r\nI am writing to report an issue with my NovaTech ProMax X15 Smartphone.\r\n\r\nCustomer ID   : CUST10001\r\nCustomer Name : Ananya Sharma\r\nProduct       : NovaTech ProMax X15 Smartphone\r\nModel Number  : NT-X15-PRO\r\nSerial Number : NT2025X15-00451\r\nPurchase Date : 2025-06-10\r\nOrder Ref     : ORD-20250610-001\r\n\r\nIssue:\r\nMy smartphone keeps disconnecting from WiFi every few hours since the\r\nlast firmware update. Reconnecting manually every time is very frustrating.\r\nI have tried resetting network settings but the problem persists.\r\n\r\nI have attached my purchase invoice for reference.\r\n\r\nDesired Resolution: Repair or firmware fix under warranty.\r\n\r\nRegards,\r\nAnanya Sharma\r\nCustomer ID: CUST10001",
+        "confidence": 0.95,
+        "metadata": {
+          "source": "email_body"
+        },
+        "keyFields": {
+          "customerName": "Ananya Sharma",
+          "customerEmail": "shubhh2003@gmail.com",
+          "complaintRef": "CUST10001",
+          "complaintDate": "2026-03-08",
+          "purchaseDate": "2025-06-10",
+          "complaintType": "Connectivity",
+          "productOrService": "NovaTech ProMax X15 Smartphone",
+          "productModel": "NT-X15-PRO",
+          "serialNumber": "NT2025X15-00451",
+          "description": "My smartphone keeps disconnecting from WiFi every few hours since the last firmware update. Reconnecting manually every time is very frustrating. I have tried resetting network settings but the problem persists.",
+          "desiredResolution": "Repair or firmware fix under warranty."
+        }
+      },
+      {
+        "id": "doc_0",
+        "name": "invoice.png",
+        "mimeType": "image/png",
+        "type": "PhotoEvidence",
+        "content": "The image is a tax invoice from Savan Retailers Private Limited for the purchase of an iPhone 15 Pro Max (White, Titanium, 1TB) with a purchase date of 02-04-2024. The invoice number is FAI1R230456648, and the total amount paid is \u20b96,301.11. The serial number of the product is 35467955657865. The invoice includes details such as the order ID, billing and shipping address, and warranty information. The evidence quality is high, and it supports the complaint by providing proof of purchase and product details. There is no visible defect or damage information in this image, as it is purely an invoice. The recommended action is to verify the complaint details against this invoice and proceed with the resolution process.",
+        "confidence": 0.95,
+        "metadata": {},
+        "keyFields": {
+          "evidence_type": "invoice",
+          "supports_complaint": "Yes",
+          "severity": null
+        }
+      }
+    ],
+    "customerGrounding": [
+      {
+        "recordId": "CMP-20251101-001",
+        "title": "CONNECTIVITY_ISSUE \u2014 ProMax X15 Smartphone",
+        "snippet": "CONNECTIVITY_ISSUE \u2014 Wi-Fi Dropout",
+        "content": "Customer: Ananya Sharma (CUST10001) | Account status: ACTIVE | Loyalty tier: GOLD | Complaint ID: CMP-20251101-001 | Type: CONNECTIVITY_ISSUE | Category: Connectivity | Sub-category: Wi-Fi Dropout | Current status: IN_PROGRESS | Priority: HIGH | Severity: MODERATE | Escalated: No | SLA: 48h | Refund issued: $0.00 | Compensation: $0.00 | Product: ProMax X15 Smartphone (NovaTech) | Warranty: 12 months | Price: $999.99 | Latest action: Remote diagnostics run on device. Firmware rollback guide sent to customer. Issue confirmed as software regression in update v3.2.1.",
+        "section": "Connectivity",
+        "score": 1.0,
+        "confidence_score": 1.0,
+        "recommendation": "AUTO_APPROVE",
+        "action": "Customer and product verified \u2014 proceed with resolution per SLA",
+        "sourceDocument": "complaints.json + product_service.json (Consumer Electronics)",
+        "customer_verified": true,
+        "customer_name": "Ananya Sharma",
+        "customer_status": "ACTIVE",
+        "loyalty_tier": "GOLD",
+        "open_complaints": 1,
+        "total_complaints": 2,
+        "complaint_id": "CMP-20251101-001",
+        "complaint_type": "CONNECTIVITY_ISSUE",
+        "complaint_category": "Connectivity",
+        "current_status": "IN_PROGRESS",
+        "priority_level": "HIGH",
+        "severity_level": "MODERATE",
+        "is_escalated": false,
+        "assigned_team": "TECHNICAL",
+        "sla_hours": 48,
+        "refund_total": 0.0,
+        "compensation_total": 0.0,
+        "product_id": "PROD-SP-001",
+        "product_name": "ProMax X15 Smartphone",
+        "product_category": "Smartphone",
+        "warranty_months": 12,
+        "actions_count": 2,
+        "latest_action": "Remote diagnostics run on device. Firmware rollback guide sent to customer. Issue confirmed as software regression in update v3.2.1."
+      },
+      {
+        "recordId": "CMP-20251105-002",
+        "title": "PRODUCT_DEFECT \u2014 SoundDrop Pro Earbuds",
+        "snippet": "PRODUCT_DEFECT \u2014 Physical Damage",
+        "content": "Customer: Ananya Sharma (CUST10001) | Account status: ACTIVE | Loyalty tier: GOLD | Complaint ID: CMP-20251105-002 | Type: PRODUCT_DEFECT | Category: Hardware Issue | Sub-category: Physical Damage | Current status: RESOLVED | Priority: NORMAL | Severity: MINOR | Escalated: No | SLA: 72h | Refund issued: $0.00 | Compensation: $0.00 | Product: SoundDrop Pro Earbuds (AudioWave) | Warranty: 12 months | Price: $199.99 | Latest action: Unit inspected. Manufacturing defect confirmed in right driver. Replacement earbud unit dispatched. Complaint resolved.",
+        "section": "Hardware Issue",
+        "score": 1.0,
+        "confidence_score": 1.0,
+        "recommendation": "AUTO_APPROVE",
+        "action": "Customer and product verified \u2014 proceed with resolution per SLA",
+        "sourceDocument": "complaints.json + product_service.json (Consumer Electronics)",
+        "customer_verified": true,
+        "customer_name": "Ananya Sharma",
+        "customer_status": "ACTIVE",
+        "loyalty_tier": "GOLD",
+        "open_complaints": 1,
+        "total_complaints": 2,
+        "complaint_id": "CMP-20251105-002",
+        "complaint_type": "PRODUCT_DEFECT",
+        "complaint_category": "Hardware Issue",
+        "current_status": "RESOLVED",
+        "priority_level": "NORMAL",
+        "severity_level": "MINOR",
+        "is_escalated": false,
+        "assigned_team": "QUALITY",
+        "sla_hours": 72,
+        "refund_total": 0.0,
+        "compensation_total": 0.0,
+        "product_id": "PROD-EB-001",
+        "product_name": "SoundDrop Pro Earbuds",
+        "product_category": "Earbuds",
+        "warranty_months": 12,
+        "actions_count": 2,
+        "latest_action": "Unit inspected. Manufacturing defect confirmed in right driver. Replacement earbud unit dispatched. Complaint resolved."
+      }
+    ],
+    "customerInfo": {
+      "customer_id": "CUST10001",
+      "first_name": "Ananya",
+      "last_name": "Sharma",
+      "full_name": "Ananya Sharma",
+      "email_id": "ananya.sharma@email.com",
+      "phone_number": "+1-555-196-6991",
+      "address_line1": "319 Main Street",
+      "address_line2": null,
+      "city": "Chicago",
+      "state": "IL",
+      "postal_code": "60601",
+      "country": "USA",
+      "customer_since": "2021-03-10",
+      "customer_status": "ACTIVE",
+      "loyalty_tier": "GOLD",
+      "total_complaints": 2,
+      "open_complaints": 1,
+      "preferred_contact": "EMAIL",
+      "complaint_ref": "CUST10001",
+      "complaint_id": "CMP-20251105-002",
+      "product_id": "PROD-EB-001",
+      "complaint_type": "PRODUCT_DEFECT",
+      "current_status": "RESOLVED",
+      "priority_level": "NORMAL",
+      "severity_level": "MINOR",
+      "is_escalated": false,
+      "assigned_team": "QUALITY",
+      "sla_hours": 72
+    },
+    "validationResults": [
+      {
+        "check": "eligibility_validation",
+        "passed": true,
+        "rejectReason": null,
+        "autoDecision": null,
+        "notes": "No eligibility issues detected."
+      },
+      {
+        "check": "warranty_validation",
+        "passed": true,
+        "status": "WITHIN_WARRANTY",
+        "warrantyMonths": 12,
+        "purchaseDate": "2025-06-10",
+        "purchaseDateSource": "document:Customer Email",
+        "expiryDate": "2026-06-10",
+        "autoDecision": null,
+        "notes": "Product purchased on 2025-06-10. Warranty of 12 months expires on 2026-06-10. Product is within warranty period."
+      },
+      {
+        "check": "document_validation",
+        "passed": true,
+        "presentDocuments": [
+          "purchase_invoice",
+          "product_model",
+          "serial_number"
+        ],
+        "missingDocuments": [],
+        "serialNumber": "NT2025X15-00451",
+        "autoDecision": null,
+        "notes": "Documents present: purchase_invoice, product_model, serial_number. Missing: none."
+      },
+      {
+        "check": "product_validation",
+        "passed": true,
+        "productCategory": "Smartphone",
+        "matchedProductId": "PROD-SP-001",
+        "matchedProductName": "ProMax X15 Smartphone",
+        "brandName": "NovaTech",
+        "modelNumber": "NT-X15-PRO",
+        "warrantyMonths": 12,
+        "price": 999.99,
+        "categorySupported": true,
+        "authorizedSellers": [
+          "NovaTech Official",
+          "TechZone",
+          "ElectroMart"
+        ],
+        "autoDecision": null,
+        "notes": "Product matched: ProMax X15 Smartphone (Model: NT-X15-PRO, Category: Smartphone). Category is supported."
+      }
+    ],
+    "warrantyStatus": "WITHIN_WARRANTY",
+    "productCategory": "Smartphone",
+    "matchedProduct": {
+      "productId": "PROD-SP-001",
+      "productName": "ProMax X15 Smartphone",
+      "brandName": "NovaTech",
+      "modelNumber": "NT-X15-PRO",
+      "price": 999.99
+    },
+    "autoDecision": "APPROVE_REPAIR",
+    "decisionConfidence": 0.85,
+    "decisionRationale": "Customer and product verified. Repair approved within warranty.",
+    "recommendedNextStep": "Send APPROVE_REPAIR email. Schedule product collection or repair centre visit.",
+    "rejectReason": null,
+    "audit": [
+      {
+        "step": "Information Extraction",
+        "timestamp": "2026-03-20T17:08:13.915Z",
+        "duration": 57880,
+        "agent": "ExtractionService",
+        "status": "completed",
+        "details": {
+          "documentsProcessed": 2,
+          "errors": []
+        }
+      },
+      {
+        "step": "Validation Engine",
+        "timestamp": "2026-03-20T17:08:13.915Z",
+        "duration": 2,
+        "agent": "ValidationService",
+        "status": "completed",
+        "details": {
+          "warrantyStatus": "WITHIN_WARRANTY",
+          "allChecksPassed": true,
+          "autoDecision": null
+        }
+      },
+      {
+        "step": "Customer & Product Grounding",
+        "timestamp": "2026-03-20T17:08:13.915Z",
+        "duration": 0,
+        "agent": "CustomerGroundingService",
+        "status": "completed",
+        "details": {
+          "recordsFound": 2,
+          "customerVerified": true
+        }
+      },
+      {
+        "step": "Decision Engine",
+        "timestamp": "2026-03-20T17:08:13.915Z",
+        "duration": 0,
+        "agent": "DecisionService",
+        "status": "completed",
+        "details": {
+          "autoDecision": "APPROVE_REPAIR",
+          "decisionConfidence": 0.85
+        }
+      }
+    ],
+    "evidenceSummary": {
+      "totalFields": 10,
+      "highConfidenceFields": 10,
+      "lowConfidenceFields": 0,
+      "avgConfidence": 1.0
+    },
+    "documentAnalysis": {
+      "totalDocuments": 2,
+      "documentTypes": [
+        "CorrespondenceRecord",
+        "PhotoEvidence"
+      ],
+      "avgDocumentConfidence": 0.95,
+      "missingDocuments": [],
+      "presentDocuments": [
+        "purchase_invoice",
+        "product_model",
+        "serial_number"
+      ]
+    },
+    "resolutionAssessment": {
+      "recordsFound": 2,
+      "customerVerified": true,
+      "topMatchScore": 1.0,
+      "recommendation": "AUTO_APPROVE",
+      "autoDecision": "APPROVE_REPAIR",
+      "decisionConfidence": 0.85,
+      "recommendedActions": [
+        "Send APPROVE_REPAIR email. Schedule product collection or repair centre visit."
+      ]
+    },
+    "processingSummary": {
+      "stepsCompleted": 4,
+      "stepsWithErrors": 0
+    },
+    "createdAt": "2026-03-20T17:08:13.915Z"
+  },
+  "processingMetrics": {
+    "fieldsAutoPopulated": 10,
+    "stepsCompleted": 4,
+    "stepsFailed": 0,
+    "totalProcessingTime": 62347,
+    "averageHandleTime": 62.347,
+    "extractionTime": 57880,
+    "validationTime": 2
+  },
+  "createdAt": "2026-03-20T17:08:13.915Z",
+  "status": "draft",
+  "autoEmailResponse": {
+    "sent": true,
+    "decision": "APPROVE_REPAIR",
+    "to": "Shubham Sahu <shubhh2003@gmail.com>",
+    "error": null,
+    "subject": "Your Complaint Has Been Approved \u2014 CMP-ING-1773853328013-6db9ce0",
+    "body": "Dear Ananya Sharma,\n\nWe have good news regarding your complaint (Reference: CMP-ING-1773853328013-6db9ce0) about your\nNovaTech ProMax X15 Smartphone.\n\nAfter reviewing the details of your case, we are pleased to confirm that your\ncomplaint has been approved and we will be arranging a repair for you.\n\nWhat happens next:\n  1. Our technical team will contact you within 48 hours to arrange the repair.\n  2. Please have your product and proof of purchase ready.\n  3. If a courier collection is required, we will arrange this at no cost to you.\n\nPlease keep this email for your records and quote your reference number\n(CMP-ING-1773853328013-6db9ce0) in any future correspondence.\n\nIf you have any questions at any point during this process, our team is here to help:\n  Email: support@electronics.com\n  Phone: 1-800-ELEC-HELP  (Monday \u2013 Friday, 9am \u2013 6pm)\n\nThank you for bringing this to our attention. We are sorry for the inconvenience\ncaused and look forward to getting this resolved for you promptly.\n\nKind regards,\nCustomer Support Team\nConsumer Electronics",
+    "sentFrom": "arp290825@gmail.com"
+  },
+  "messageId": "<CABs85wNYB6CLpBGWdHpQ5TF2HTsPfnOi3UrLRqxFTszQw61mXw@mail.gmail.com>",
+  "threadId": "<CABs85wNYB6CLpBGWdHpQ5TF2HTsPfnOi3UrLRqxFTszQw61mXw@mail.gmail.com>",
+  "processingTime": 62347
+}

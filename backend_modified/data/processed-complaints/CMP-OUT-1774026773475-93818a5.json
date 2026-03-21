@@ -1,0 +1,270 @@
+{
+  "complaintId": "CMP-OUT-1774026773475-93818a5",
+  "ingestedComplaintId": "OUT-1774026773475-93818a5",
+  "sourceEmailFrom": "Customer Support <support@electronics.com>",
+  "warrantyStatus": "WITHIN_WARRANTY",
+  "productCategory": "Tablet",
+  "autoDecision": "REQUEST_DOCUMENTS",
+  "decisionConfidence": 0.9,
+  "recommendedNextStep": "Send REQUEST_DOCUMENTS email to customer listing missing items.",
+  "rejectReason": null,
+  "decisionPack": {
+    "id": "DP-1774026904352",
+    "complaintDraft": {
+      "id": "DRAFT-1774026904352",
+      "complaintRef": "CMP-ING-1773423500615-dd94df7",
+      "customerName": "Emily Johnson",
+      "customerEmail": "Not found",
+      "customerPhone": "Not found",
+      "complaintDate": "2026-03-20",
+      "complaintType": "Other",
+      "productOrService": "NovaTech SlimTab 10 Tablet",
+      "description": "Complaint submitted via email",
+      "desiredResolution": "Not specified",
+      "estimatedAmount": 0.0,
+      "attachments": [],
+      "customerVerified": false,
+      "createdAt": "2026-03-20T17:15:04.352Z",
+      "source": "information_extraction",
+      "confidence": 1.0
+    },
+    "evidence": [
+      {
+        "field": "customerName",
+        "fieldName": "Customer Name",
+        "value": "Emily Johnson",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "complaintRef",
+        "fieldName": "Complaint Reference",
+        "value": "CMP-ING-1773423500615-dd94df7",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "complaintDate",
+        "fieldName": "Complaint Date",
+        "value": "2026-03-20",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "productOrService",
+        "fieldName": "Product / Service",
+        "value": "NovaTech SlimTab 10 Tablet",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      }
+    ],
+    "documents": [
+      {
+        "id": "doc_email",
+        "name": "Customer Email",
+        "mimeType": "text/plain",
+        "type": "CorrespondenceRecord",
+        "content": "20 March 2026\n\nDear Emily Johnson,\n\nRE: Complaint Decision \u2013 Reference CMP-ING-1773423500615-dd94df7\n\nThank you for contacting Consumer Electronics Customer Support regarding your NovaTech SlimTab 10 Tablet.\n\nAfter reviewing your complaint, we were unable to locate a matching customer record in our system. As a result, we are unable to process your complaint at this time.\n\nREASON\n  Your complaint could not be verified against our customer records.\n\nYOUR OPTIONS\n  1. If you believe this is an error, please reply with your customer ID or order reference.\n  2. For new customer registration, please visit our website.\n\nWe apologise for any inconvenience.\n\nKind regards,\nCustomer Support Team\nConsumer Electronics",
+        "confidence": 0.95,
+        "metadata": {
+          "source": "email_body"
+        },
+        "keyFields": {
+          "customerName": "Emily Johnson",
+          "complaintRef": "CMP-ING-1773423500615-dd94df7",
+          "complaintDate": "2026-03-20",
+          "productOrService": "NovaTech SlimTab 10 Tablet"
+        }
+      }
+    ],
+    "customerGrounding": [
+      {
+        "recordId": "CUSTOMER-NOT-FOUND",
+        "title": "Customer Not Found",
+        "snippet": "No customer record found for ID: CMP-ING-1773423500615-DD94DF7",
+        "content": "Customer ID 'CMP-ING-1773423500615-DD94DF7' was not found. Please verify the reference number.",
+        "section": "Customer Verification",
+        "score": 0.0,
+        "confidence_score": 0.0,
+        "recommendation": "INVESTIGATE",
+        "action": "Verify the customer reference number provided in the complaint.",
+        "sourceDocument": "customers.json (Consumer Electronics CRM)",
+        "customer_verified": false
+      }
+    ],
+    "customerInfo": null,
+    "validationResults": [
+      {
+        "check": "eligibility_validation",
+        "passed": true,
+        "rejectReason": null,
+        "autoDecision": null,
+        "notes": "No eligibility issues detected."
+      },
+      {
+        "check": "warranty_validation",
+        "passed": true,
+        "status": "WITHIN_WARRANTY",
+        "warrantyMonths": 12,
+        "purchaseDate": "2026-03-20",
+        "purchaseDateSource": "email_body",
+        "expiryDate": "2027-03-20",
+        "autoDecision": null,
+        "notes": "Product purchased on 2026-03-20. Warranty of 12 months expires on 2027-03-20. Product is within warranty period."
+      },
+      {
+        "check": "document_validation",
+        "passed": false,
+        "presentDocuments": [
+          "product_model"
+        ],
+        "missingDocuments": [
+          "purchase_invoice"
+        ],
+        "serialNumber": null,
+        "autoDecision": "REQUEST_DOCUMENTS",
+        "notes": "Documents present: product_model. Missing: purchase_invoice. Purchase invoice is REQUIRED \u2014 requesting documents."
+      },
+      {
+        "check": "product_validation",
+        "passed": true,
+        "productCategory": "Tablet",
+        "matchedProductId": "PROD-TB-002",
+        "matchedProductName": "SlimTab 10 Tablet",
+        "brandName": "NovaTech",
+        "modelNumber": "NT-ST10-64",
+        "warrantyMonths": 12,
+        "price": 449.99,
+        "categorySupported": true,
+        "authorizedSellers": [
+          "NovaTech Official",
+          "TechZone"
+        ],
+        "autoDecision": null,
+        "notes": "Product matched: SlimTab 10 Tablet (Model: NT-ST10-64, Category: Tablet). Category is supported."
+      }
+    ],
+    "warrantyStatus": "WITHIN_WARRANTY",
+    "productCategory": "Tablet",
+    "matchedProduct": {
+      "productId": "PROD-TB-002",
+      "productName": "SlimTab 10 Tablet",
+      "brandName": "NovaTech",
+      "modelNumber": "NT-ST10-64",
+      "price": 449.99
+    },
+    "autoDecision": "REQUEST_DOCUMENTS",
+    "decisionConfidence": 0.9,
+    "decisionRationale": "Required documents (e.g. purchase invoice) are missing.",
+    "recommendedNextStep": "Send REQUEST_DOCUMENTS email to customer listing missing items.",
+    "rejectReason": null,
+    "audit": [
+      {
+        "step": "Information Extraction",
+        "timestamp": "2026-03-20T17:15:04.352Z",
+        "duration": 10205,
+        "agent": "ExtractionService",
+        "status": "completed",
+        "details": {
+          "documentsProcessed": 1,
+          "errors": []
+        }
+      },
+      {
+        "step": "Validation Engine",
+        "timestamp": "2026-03-20T17:15:04.352Z",
+        "duration": 1,
+        "agent": "ValidationService",
+        "status": "completed",
+        "details": {
+          "warrantyStatus": "WITHIN_WARRANTY",
+          "allChecksPassed": false,
+          "autoDecision": "REQUEST_DOCUMENTS"
+        }
+      },
+      {
+        "step": "Customer & Product Grounding",
+        "timestamp": "2026-03-20T17:15:04.352Z",
+        "duration": 0,
+        "agent": "CustomerGroundingService",
+        "status": "completed",
+        "details": {
+          "recordsFound": 1,
+          "customerVerified": false
+        }
+      },
+      {
+        "step": "Decision Engine",
+        "timestamp": "2026-03-20T17:15:04.352Z",
+        "duration": 0,
+        "agent": "DecisionService",
+        "status": "completed",
+        "details": {
+          "autoDecision": "REQUEST_DOCUMENTS",
+          "decisionConfidence": 0.9
+        }
+      }
+    ],
+    "evidenceSummary": {
+      "totalFields": 4,
+      "highConfidenceFields": 4,
+      "lowConfidenceFields": 0,
+      "avgConfidence": 1.0
+    },
+    "documentAnalysis": {
+      "totalDocuments": 1,
+      "documentTypes": [
+        "CorrespondenceRecord"
+      ],
+      "avgDocumentConfidence": 0.95,
+      "missingDocuments": [
+        "purchase_invoice"
+      ],
+      "presentDocuments": [
+        "product_model"
+      ]
+    },
+    "resolutionAssessment": {
+      "recordsFound": 1,
+      "customerVerified": false,
+      "topMatchScore": 0.0,
+      "recommendation": "CUSTOMER_NOT_FOUND",
+      "autoDecision": "REQUEST_DOCUMENTS",
+      "decisionConfidence": 0.9,
+      "recommendedActions": [
+        "Send REQUEST_DOCUMENTS email to customer listing missing items."
+      ]
+    },
+    "processingSummary": {
+      "stepsCompleted": 4,
+      "stepsWithErrors": 0
+    },
+    "createdAt": "2026-03-20T17:15:04.352Z"
+  },
+  "processingMetrics": {
+    "fieldsAutoPopulated": 4,
+    "stepsCompleted": 4,
+    "stepsFailed": 0,
+    "totalProcessingTime": 14230,
+    "averageHandleTime": 14.23,
+    "extractionTime": 10205,
+    "validationTime": 1
+  },
+  "createdAt": "2026-03-20T17:15:04.352Z",
+  "status": "draft",
+  "autoEmailResponse": {
+    "sent": true,
+    "decision": "REQUEST_DOCUMENTS",
+    "to": "Customer Support <support@electronics.com>",
+    "error": null,
+    "subject": "Action Required: Documents Needed \u2014 Complaint CMP-OUT-1774026773475-93818a5",
+    "body": "Dear Emily Johnson,\n\nThank you for getting in touch with Consumer Electronics Customer Support.\n\nWe have received your complaint (Reference: CMP-OUT-1774026773475-93818a5) regarding your NovaTech SlimTab 10 Tablet and want to resolve this for you as quickly as possible.\n\nTo progress your complaint, we need the following document(s):\n\n  \u2022 Purchase Invoice\n\nThese documents help us verify your purchase and process your claim efficiently.\n\nWhat to do next:\n  \u2022 Reply to this email with the document(s) attached, or\n  \u2022 Contact us quoting your complaint reference: CMP-OUT-1774026773475-93818a5\n\nOnce we receive the required information, our team will review your case and\nrespond with an outcome within 2 business days.\n\nIf you have any difficulty locating these documents, please reply and we'll\ndo our best to assist you.\n\nWe apologise for the additional step and appreciate your cooperation.\n\nKind regards,\nCustomer Support Team\nConsumer Electronics\n  Email: support@electronics.com  |  Phone: 1-800-ELEC-HELP (Mon\u2013Fri, 9am\u20136pm)",
+    "sentFrom": "arp290825@gmail.com"
+  },
+  "threadId": "<69b44fc1.170a0220.71189.74fa@mx.google.com>",
+  "processingTime": 14230
+}

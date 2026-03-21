@@ -30,12 +30,16 @@ import {
   BadgeCheck,
   Mail,
   FileImage,
-  Receipt
+  Receipt,
+  X,
+  Send,
 } from 'lucide-react'
 import ClaimSummaryBar from './ClaimSummaryBar'
 import { ClaimData, Document, FieldEvidence, PolicyHit } from '@/types/claims'
 import { CONFIDENCE } from '@/lib/confidence'
 import { getClaimDraft } from '@/lib/normalizeClaim'
+import { useMailChain } from '@/lib/hooks/useMailChain'
+import { useComplaintDecision } from '@/lib/hooks/useComplaintDecision'
 
 /** Image preview with graceful "unavailable" fallback when the file can't be served */
 function ImagePreview({ src, alt }: { src: string; alt: string }) {
@@ -282,6 +286,11 @@ export default function ReviewPage({ claimData, onNextStage, onPreviousStage, on
   }
 
   const { decisionPack, claimId, status, ingestedClaimId } = claimData
+  const [showMailChain, setShowMailChain] = useState(false)
+  const mailChainHook = useMailChain(ingestedClaimId)
+  const [showDeskRejectConfirm, setShowDeskRejectConfirm] = useState(false)
+  const [deskRejectDone, setDeskRejectDone] = useState(false)
+  const decisionHook = useComplaintDecision(claimData, ingestedClaimId)
   const { evidence = [], documents = [] } = decisionPack || {};
   const claimDraft = getClaimDraft(
     decisionPack as unknown as Record<string, unknown>
@@ -1364,6 +1373,25 @@ export default function ReviewPage({ claimData, onNextStage, onPreviousStage, on
                                       </span>
                                     </div>
                                   )}
+                                  {/* Desk Reject button for Customer Not Found entries */}
+                                  {isCustomerRecord && (hit.title === 'Customer Not Found' || score === 0) && (
+                                    <div className="mt-3 pt-3 border-t border-[#E5E7EB]">
+                                      {deskRejectDone ? (
+                                        <div className="flex items-center gap-2 text-xs font-semibold text-rose-700 bg-rose-50 border border-rose-200 px-3 py-2 rounded-lg">
+                                          <CheckCircle className="w-3.5 h-3.5" />
+                                          Complaint Desk Rejected
+                                        </div>
+                                      ) : (
+                                        <button
+                                          onClick={() => setShowDeskRejectConfirm(true)}
+                                          className="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-semibold text-white bg-rose-600 hover:bg-rose-700 rounded-lg transition-colors"
+                                        >
+                                          <X className="w-3.5 h-3.5" />
+                                          Desk Reject
+                                        </button>
+                                      )}
+                                    </div>
+                                  )}
                                 </div>
                               );
                             })}
@@ -1372,6 +1400,145 @@ export default function ReviewPage({ claimData, onNextStage, onPreviousStage, on
                       )}
                   </div>
                 </motion.div>
+              )}
+            </motion.div>
+
+            {/* Desk Reject Confirmation Modal */}
+            {showDeskRejectConfirm && (
+              <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="bg-white rounded-xl shadow-2xl w-full max-w-md"
+                >
+                  <div className="bg-rose-50 rounded-t-xl px-6 py-5 flex items-center gap-3 border-b border-rose-100">
+                    <div className="w-10 h-10 rounded-full bg-rose-100 flex items-center justify-center">
+                      <X className="w-5 h-5 text-rose-600" />
+                    </div>
+                    <div>
+                      <h2 className="text-base font-semibold text-rose-800">Desk Reject Complaint</h2>
+                      <p className="text-xs text-rose-600 mt-0.5">Customer not found in CRM — reject without further review</p>
+                    </div>
+                    <button onClick={() => setShowDeskRejectConfirm(false)} className="ml-auto text-gray-400 hover:text-gray-600">
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                  <div className="px-6 py-4 space-y-3">
+                    <div className="p-3 bg-gray-50 rounded-lg border border-gray-200 text-xs text-gray-700 space-y-1">
+                      <p className="font-medium text-gray-900 mb-1.5">What will happen:</p>
+                      <p>1. Complaint status will be updated to <span className="font-semibold text-rose-600">Rejected</span></p>
+                      <p>2. A rejection email will be sent to the complainant</p>
+                      <p>3. Reason: Customer not found in CRM</p>
+                    </div>
+                    {decisionHook.error && (
+                      <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-xs text-red-700 flex items-center gap-2">
+                        <AlertTriangle className="w-3.5 h-3.5 flex-shrink-0" />
+                        {decisionHook.error}
+                      </div>
+                    )}
+                  </div>
+                  <div className="px-6 pb-5 flex gap-3">
+                    <button
+                      onClick={() => setShowDeskRejectConfirm(false)}
+                      className="flex-1 px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={async () => {
+                        const d = (claimDraft as Record<string, unknown>) || {}
+                        const customerName = String(d.claimantName || d.customerName || 'Valued Customer')
+                        const complaintRef = String(d.policyNumber || d.policyId || claimData.claimId || 'Pending')
+                        const product = String(d.productOrService || d.description || 'your product')
+                        const recipient = String((claimData.sourceEmailFrom as string) || d.contactEmail || '')
+                        const today = new Date().toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' })
+                        const letter = `${today}\n\nDear ${customerName},\n\nRE: Complaint Decision – Reference ${complaintRef}\n\nThank you for contacting Consumer Electronics Customer Support regarding your ${product}.\n\nAfter reviewing your complaint, we were unable to locate a matching customer record in our system. As a result, we are unable to process your complaint at this time.\n\nREASON\n  Your complaint could not be verified against our customer records.\n\nYOUR OPTIONS\n  1. If you believe this is an error, please reply with your customer ID or order reference.\n  2. For new customer registration, please visit our website.\n\nWe apologise for any inconvenience.\n\nKind regards,\nCustomer Support Team\nConsumer Electronics`
+                        const ok = await decisionHook.decide({
+                          decision: 'reject',
+                          letter,
+                          recipient,
+                          subject: `Complaint Decision – Reference ${complaintRef}`,
+                          rejectionReason: 'Customer not found in CRM',
+                          inReplyTo: claimData.messageId,
+                          references: claimData.threadId,
+                        })
+                        if (ok) {
+                          setDeskRejectDone(true)
+                          setShowDeskRejectConfirm(false)
+                        }
+                      }}
+                      disabled={decisionHook.loading}
+                      className="flex-1 flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-white bg-rose-600 hover:bg-rose-700 rounded-lg transition-colors disabled:opacity-60"
+                    >
+                      {decisionHook.loading ? (
+                        <><Clock className="w-4 h-4 animate-spin" />Processing...</>
+                      ) : (
+                        <><Send className="w-4 h-4" />Confirm Desk Reject</>
+                      )}
+                    </button>
+                  </div>
+                </motion.div>
+              </div>
+            )}
+
+            {/* Email Thread */}
+            <motion.div
+              className="card p-5 mt-6"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              <button
+                onClick={async () => {
+                  if (!showMailChain) await mailChainHook.fetch()
+                  setShowMailChain(v => !v)
+                }}
+                className="w-full flex items-center justify-between text-left"
+              >
+                <div className="flex items-center gap-2">
+                  <Mail className="w-4 h-4 text-[#3B82F6]" />
+                  <span className="text-sm font-semibold text-[#111827]">Email Thread</span>
+                  {mailChainHook.chain.length > 0 && (
+                    <span className="text-[10px] font-semibold bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded-full">
+                      {mailChainHook.chain.length}
+                    </span>
+                  )}
+                </div>
+                {showMailChain
+                  ? <ChevronUp className="w-4 h-4 text-[#6B7280]" />
+                  : <ChevronDown className="w-4 h-4 text-[#6B7280]" />}
+              </button>
+
+              {showMailChain && (
+                <div className="mt-4">
+                  {mailChainHook.loading ? (
+                    <div className="flex items-center justify-center py-6 gap-2 text-[#9CA3AF]">
+                      <Clock className="w-4 h-4 animate-spin" />
+                      <span className="text-xs">Loading thread…</span>
+                    </div>
+                  ) : mailChainHook.chain.length === 0 ? (
+                    <p className="text-xs text-[#9CA3AF] text-center py-4">No emails in thread yet.</p>
+                  ) : (
+                    <div className="space-y-2">
+                      {mailChainHook.chain.map((msg, i) => (
+                        <div key={msg.id ?? i} className="rounded-lg border border-[#E5E7EB] bg-[#F9FAFB] p-3">
+                          <div className="flex items-center justify-between mb-1 gap-2">
+                            <span className="text-xs font-semibold text-[#111827] truncate">
+                              {msg.from?.replace(/<.*>/, '').trim() || 'Unknown'}
+                            </span>
+                            <span className="text-[10px] text-[#9CA3AF] flex-shrink-0">
+                              {msg.createdAt ? new Date(msg.createdAt).toLocaleDateString('en-GB') : ''}
+                            </span>
+                          </div>
+                          <p className="text-[11px] text-[#374151] font-medium truncate">{msg.subject}</p>
+                          {msg.emailBody && (
+                            <p className="text-[11px] text-[#6B7280] mt-1 line-clamp-2">{msg.emailBody}</p>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               )}
             </motion.div>
           </div>

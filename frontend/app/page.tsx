@@ -87,31 +87,37 @@ export default function Home() {
         )
       case 'review':
         return (
-          <ReviewPage
-            claimData={claimData!}
-            onNextStage={() => setCurrentStage('decision')}
-            onPreviousStage={() => setCurrentStage('home')}
-            onLoadClaim={handleLoadClaim}
-          />
+          <div className="container mx-auto px-4 py-8">
+            <ReviewPage
+              claimData={claimData!}
+              onNextStage={() => setCurrentStage('decision')}
+              onPreviousStage={() => setCurrentStage('home')}
+              onLoadClaim={handleLoadClaim}
+            />
+          </div>
         )
       case 'decision':
         return (
-          <DecisionPage
-            claimData={claimData!}
-            onNextStage={() => setCurrentStage('dashboard')}
-            onPreviousStage={() => setCurrentStage('review')}
-            onLoadClaim={handleLoadClaim}
-          />
+          <div className="container mx-auto px-4 py-8">
+            <DecisionPage
+              claimData={claimData!}
+              onNextStage={() => setCurrentStage('dashboard')}
+              onPreviousStage={() => setCurrentStage('review')}
+              onLoadClaim={handleLoadClaim}
+            />
+          </div>
         )
-        case 'dashboard':
+      case 'dashboard':
         return (
-          <DashboardPage
-            claimData={claimData ?? null}
-            onReset={() => {
-              setCurrentStage('home')
-              setClaimData(null)
-            }}
-          />
+          <div className="container mx-auto px-4 py-8">
+            <DashboardPage
+              claimData={claimData ?? null}
+              onReset={() => {
+                setCurrentStage('home')
+                setClaimData(null)
+              }}
+            />
+          </div>
         )
       default:
         return <HomePage onProcessClaim={handleClaimProcessed} isProcessing={isProcessing} setIsProcessing={setIsProcessing} />
@@ -119,9 +125,9 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-white relative">
+    <div className="min-h-screen bg-[#F8FAFC] relative">
       <Header currentStage={currentStage} onStageChange={handleStageChange} />
-      <main className="container mx-auto px-4 py-16 relative z-10">
+      <main className="relative z-10">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentStage}

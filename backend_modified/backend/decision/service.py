@@ -164,6 +164,21 @@ def _derive_auto_decision(
     wants_replacement = any(re.search(p, combined, re.IGNORECASE) for p in replacement_signals)
     wants_repair      = any(re.search(p, combined, re.IGNORECASE) for p in repair_signals)
 
+    if grounding_recommendation == "CUSTOMER_NOT_FOUND":
+        return {
+            "autoDecision":        "DESK_REJECT",
+            "decisionConfidence":  1.0,
+            "decisionRationale":   (
+                "Customer record not found in the CRM database. "
+                "Complaint cannot be processed without a verified account."
+            ),
+            "recommendedNextStep": (
+                "Send DESK_REJECT email (customer not found). "
+                "Ask customer to verify their account details or contact us directly."
+            ),
+            "rejectReason": "customer_not_found",
+        }
+
     if grounding_recommendation in ("ESCALATE",):
         return {
             "autoDecision":        "INVESTIGATE",
@@ -357,6 +372,9 @@ def build_decision_pack(
     top_score  = top.get("confidence_score", top.get("score", 0))
     top_rec    = top.get("recommendation", "INVESTIGATE")
     top_action = top.get("action", "Manual review required")
+    # Override recommendation when customer is not found in CRM
+    if top.get("recordId") in not_found_ids:
+        top_rec = "CUSTOMER_NOT_FOUND"
 
     # ── Auto-decision (from validation + grounding) ─────────────────────────
     validation = validation or {}

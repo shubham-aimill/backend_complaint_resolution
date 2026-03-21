@@ -11,6 +11,8 @@ interface DecideParams {
   recipient: string
   subject: string
   rejectionReason?: string
+  inReplyTo?: string
+  references?: string
 }
 
 export function useComplaintDecision(claimData: ClaimData, ingestedId?: string) {
@@ -22,12 +24,18 @@ export function useComplaintDecision(claimData: ClaimData, ingestedId?: string) 
     setLoading(true)
     setError(null)
     try {
-      // 1. Send the letter email to the complainant
+      // 1. Send the letter email to the complainant (as a reply in the original thread)
       if (params.recipient) {
         const emailRes = await fetch('/api/send-email', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ to: params.recipient, subject: params.subject, body: params.letter }),
+          body: JSON.stringify({
+            to: params.recipient,
+            subject: params.subject,
+            body: params.letter,
+            inReplyTo: params.inReplyTo,
+            references: params.references,
+          }),
         })
         if (!emailRes.ok) {
           const d = await emailRes.json().catch(() => ({}))

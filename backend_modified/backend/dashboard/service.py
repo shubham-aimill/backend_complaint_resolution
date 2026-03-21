@@ -96,6 +96,9 @@ def save_processed_complaint(complaint: Dict[str, Any]) -> None:
     if existing < 0:
         _append_to_csv(to_save)
 
+    # Store relative path so the index works across machines and OS moves
+    rel_path = file_path.name  # just the filename, e.g. "CMP-ING-xxx.json"
+
     entry = {
         "complaintId":         complaint_id,
         "ingestedComplaintId": complaint.get("ingestedComplaintId"),
@@ -103,7 +106,7 @@ def save_processed_complaint(complaint: Dict[str, Any]) -> None:
         "customerName":        draft.get("customerName", ""),
         "complaintType":       draft.get("complaintType", ""),
         "createdAt":           complaint.get("createdAt", ""),
-        "filePath":            str(file_path),
+        "filePath":            rel_path,
         # New index fields for fast dashboard queries
         "warrantyStatus":      complaint.get("warrantyStatus", "UNKNOWN"),
         "productCategory":     complaint.get("productCategory", ""),
@@ -135,12 +138,26 @@ def get_processed_complaint_summaries() -> List[Dict[str, Any]]:
     ]
 
 
+def _resolve_file_path(raw: str) -> Path:
+    """Resolve stored filePath (relative or absolute) to an absolute Path."""
+    p = Path(raw)
+    if p.is_absolute():
+        # Legacy absolute path — try as-is, then fall back to just the filename
+        if p.exists():
+            return p
+        return PROCESSED_COMPLAINTS_DIR / p.name
+    return PROCESSED_COMPLAINTS_DIR / p
+
+
 def get_processed_complaint_by_id(complaint_id: str) -> Optional[Dict[str, Any]]:
     entry = next((e for e in _get_index() if e.get("complaintId") == complaint_id), None)
-    if not entry or not Path(entry["filePath"]).exists():
+    if not entry:
+        return None
+    file_path = _resolve_file_path(entry["filePath"])
+    if not file_path.exists():
         return None
     try:
-        return json.loads(Path(entry["filePath"]).read_text(encoding="utf-8"))
+        return json.loads(file_path.read_text(encoding="utf-8"))
     except (json.JSONDecodeError, OSError):
         return None
 
@@ -198,10 +215,13 @@ def get_dashboard_kpis() -> Dict[str, Any]:
 
     for entry in index:
         fp = entry.get("filePath")
-        if not fp or not Path(fp).exists():
+        if not fp:
+            continue
+        file_path = _resolve_file_path(fp)
+        if not file_path.exists():
             continue
         try:
-            complaint = json.loads(Path(fp).read_text())
+            complaint = json.loads(file_path.read_text())
         except Exception:
             continue
 

@@ -1,0 +1,252 @@
+{
+  "complaintId": "CMP-OUT-1774022522138-5353ce3",
+  "ingestedComplaintId": "OUT-1774022522138-5353ce3",
+  "sourceEmailFrom": "arp290825@gmail.com",
+  "warrantyStatus": "UNKNOWN",
+  "productCategory": null,
+  "autoDecision": "DESK_REJECT",
+  "decisionConfidence": 0.95,
+  "recommendedNextStep": "Send DESK_REJECT email (unsupported product). Direct customer to the appropriate support channel.",
+  "rejectReason": "unsupported_product",
+  "decisionPack": {
+    "id": "DP-1774108590015",
+    "complaintDraft": {
+      "id": "DRAFT-1774108590015",
+      "complaintRef": "CMP-ING-1774010988065-14da1a6",
+      "customerName": "Keshav Sharma",
+      "customerEmail": "Not found",
+      "customerPhone": "Not found",
+      "complaintDate": "2026-03-21",
+      "complaintType": "Other",
+      "productOrService": "Samsung Bespoke 653L Side-by-Side Refrigerator",
+      "description": "Complaint submitted via email",
+      "desiredResolution": "Not specified",
+      "estimatedAmount": 0.0,
+      "attachments": [],
+      "customerVerified": false,
+      "createdAt": "2026-03-21T15:56:30.015Z",
+      "source": "information_extraction",
+      "confidence": 1.0
+    },
+    "evidence": [
+      {
+        "field": "customerName",
+        "fieldName": "Customer Name",
+        "value": "Keshav Sharma",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "complaintRef",
+        "fieldName": "Complaint Reference",
+        "value": "CMP-ING-1774010988065-14da1a6",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "productOrService",
+        "fieldName": "Product / Service",
+        "value": "Samsung Bespoke 653L Side-by-Side Refrigerator",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      }
+    ],
+    "documents": [
+      {
+        "id": "doc_email",
+        "name": "Customer Email",
+        "mimeType": "text/plain",
+        "type": "CorrespondenceRecord",
+        "content": "Dear Keshav Sharma,\n\nThank you for contacting Consumer Electronics Customer Support regarding your\nSamsung Bespoke 653L Side-by-Side Refrigerator (Complaint Reference: CMP-ING-1774010988065-14da1a6).\n\nWe have carefully reviewed your complaint. Unfortunately, we are unable to process\nthis complaint through our current channel for the following reason:\n\n  Reason: The product described does not fall within our supported consumer\n  electronics product categories.\n\nOur complaint resolution service covers smartphones, laptops, tablets, earbuds,\nsmartwatches, and cameras. For other product types, please contact the relevant\nmanufacturer or retailer directly.\n\nIf you believe your product falls within our supported categories and this\ndecision has been made in error, please reply within 14 days with your product\nmodel and serial number and we will be happy to re-evaluate.\n\nWe apologise for any inconvenience caused.\n\nKind regards,\nCustomer Support Team\nConsumer Electronics",
+        "confidence": 0.95,
+        "metadata": {
+          "source": "email_body"
+        },
+        "keyFields": {
+          "customerName": "Keshav Sharma",
+          "complaintRef": "CMP-ING-1774010988065-14da1a6",
+          "productOrService": "Samsung Bespoke 653L Side-by-Side Refrigerator"
+        }
+      }
+    ],
+    "customerGrounding": [
+      {
+        "recordId": "CUSTOMER-NOT-FOUND",
+        "title": "Customer Not Found",
+        "snippet": "No customer record found for ID: CMP-ING-1774010988065-14DA1A6",
+        "content": "Customer ID 'CMP-ING-1774010988065-14DA1A6' was not found. Please verify the reference number.",
+        "section": "Customer Verification",
+        "score": 0.0,
+        "confidence_score": 0.0,
+        "recommendation": "INVESTIGATE",
+        "action": "Verify the customer reference number provided in the complaint.",
+        "sourceDocument": "customers.json (Consumer Electronics CRM)",
+        "customer_verified": false
+      }
+    ],
+    "customerInfo": null,
+    "validationResults": [
+      {
+        "check": "eligibility_validation",
+        "passed": false,
+        "rejectReason": "unsupported_product",
+        "autoDecision": "DESK_REJECT",
+        "notes": "Product 'Samsung Bespoke 653L Side-by-Side Refrigerator' is not in our supported consumer electronics categories. Cannot process this complaint."
+      },
+      {
+        "check": "warranty_validation",
+        "passed": true,
+        "status": "UNKNOWN",
+        "warrantyMonths": 12,
+        "purchaseDate": null,
+        "purchaseDateSource": "not_found",
+        "expiryDate": null,
+        "autoDecision": null,
+        "notes": "Purchase date could not be determined from the email or attachments. Manual verification required."
+      },
+      {
+        "check": "document_validation",
+        "passed": false,
+        "presentDocuments": [
+          "product_model"
+        ],
+        "missingDocuments": [
+          "purchase_invoice"
+        ],
+        "serialNumber": null,
+        "autoDecision": "REQUEST_DOCUMENTS",
+        "notes": "Documents present: product_model. Missing: purchase_invoice. Purchase invoice is REQUIRED \u2014 requesting documents."
+      },
+      {
+        "check": "product_validation",
+        "passed": false,
+        "productCategory": null,
+        "matchedProductId": null,
+        "matchedProductName": null,
+        "brandName": null,
+        "modelNumber": null,
+        "warrantyMonths": null,
+        "price": null,
+        "categorySupported": false,
+        "authorizedSellers": [],
+        "autoDecision": null,
+        "notes": "Product 'Samsung Bespoke 653L Side-by-Side Refrigerator' not found in product catalogue. Category not recognised \u2014 manual review advised."
+      }
+    ],
+    "warrantyStatus": "UNKNOWN",
+    "productCategory": null,
+    "matchedProduct": null,
+    "autoDecision": "DESK_REJECT",
+    "decisionConfidence": 0.95,
+    "decisionRationale": "Product type is not in our supported consumer electronics categories and cannot be processed through this complaint channel.",
+    "recommendedNextStep": "Send DESK_REJECT email (unsupported product). Direct customer to the appropriate support channel.",
+    "rejectReason": "unsupported_product",
+    "audit": [
+      {
+        "step": "Information Extraction",
+        "timestamp": "2026-03-21T15:56:30.015Z",
+        "duration": 2603,
+        "agent": "ExtractionService",
+        "status": "completed",
+        "details": {
+          "documentsProcessed": 1,
+          "errors": []
+        }
+      },
+      {
+        "step": "Validation Engine",
+        "timestamp": "2026-03-21T15:56:30.015Z",
+        "duration": 2,
+        "agent": "ValidationService",
+        "status": "completed",
+        "details": {
+          "warrantyStatus": "UNKNOWN",
+          "allChecksPassed": false,
+          "autoDecision": "DESK_REJECT"
+        }
+      },
+      {
+        "step": "Customer & Product Grounding",
+        "timestamp": "2026-03-21T15:56:30.015Z",
+        "duration": 0,
+        "agent": "CustomerGroundingService",
+        "status": "completed",
+        "details": {
+          "recordsFound": 1,
+          "customerVerified": false
+        }
+      },
+      {
+        "step": "Decision Engine",
+        "timestamp": "2026-03-21T15:56:30.015Z",
+        "duration": 0,
+        "agent": "DecisionService",
+        "status": "completed",
+        "details": {
+          "autoDecision": "DESK_REJECT",
+          "decisionConfidence": 0.95
+        }
+      }
+    ],
+    "evidenceSummary": {
+      "totalFields": 3,
+      "highConfidenceFields": 3,
+      "lowConfidenceFields": 0,
+      "avgConfidence": 1.0
+    },
+    "documentAnalysis": {
+      "totalDocuments": 1,
+      "documentTypes": [
+        "CorrespondenceRecord"
+      ],
+      "avgDocumentConfidence": 0.95,
+      "missingDocuments": [
+        "purchase_invoice"
+      ],
+      "presentDocuments": [
+        "product_model"
+      ]
+    },
+    "resolutionAssessment": {
+      "recordsFound": 1,
+      "customerVerified": false,
+      "topMatchScore": 0.0,
+      "recommendation": "CUSTOMER_NOT_FOUND",
+      "autoDecision": "DESK_REJECT",
+      "decisionConfidence": 0.95,
+      "recommendedActions": [
+        "Send DESK_REJECT email (unsupported product). Direct customer to the appropriate support channel."
+      ]
+    },
+    "processingSummary": {
+      "stepsCompleted": 4,
+      "stepsWithErrors": 0
+    },
+    "createdAt": "2026-03-21T15:56:30.015Z"
+  },
+  "processingMetrics": {
+    "fieldsAutoPopulated": 3,
+    "stepsCompleted": 4,
+    "stepsFailed": 0,
+    "totalProcessingTime": 6168,
+    "averageHandleTime": 6.168,
+    "extractionTime": 2603,
+    "validationTime": 2
+  },
+  "createdAt": "2026-03-21T15:56:30.015Z",
+  "status": "draft",
+  "autoEmailResponse": {
+    "sent": true,
+    "decision": "DESK_REJECT",
+    "to": "arp290825@gmail.com",
+    "error": null,
+    "subject": "Your Complaint Has Been Reviewed \u2014 CMP-OUT-1774022522138-5353ce3",
+    "body": "Dear Keshav Sharma,\n\nThank you for contacting Consumer Electronics Customer Support regarding your\nSamsung Bespoke 653L Side-by-Side Refrigerator (Complaint Reference: CMP-OUT-1774022522138-5353ce3).\n\nWe have carefully reviewed your complaint. Unfortunately, we are unable to process\nthis complaint through our current channel for the following reason:\n\n  Reason: The product described does not fall within our supported consumer\n  electronics product categories.\n\nOur complaint resolution service covers smartphones, laptops, tablets, earbuds,\nsmartwatches, and cameras. For other product types, please contact the relevant\nmanufacturer or retailer directly.\n\nIf you believe your product falls within our supported categories and this\ndecision has been made in error, please reply within 14 days with your product\nmodel and serial number and we will be happy to re-evaluate.\n\nWe apologise for any inconvenience caused.\n\nKind regards,\nCustomer Support Team\nConsumer Electronics",
+    "sentFrom": "arp290825@gmail.com"
+  },
+  "threadId": "<CABs85wPKJwVd+p3yamtkDEXJTc__478mH=72eUSXeOzssQ8U5g@mail.gmail.com>",
+  "processingTime": 6168
+}

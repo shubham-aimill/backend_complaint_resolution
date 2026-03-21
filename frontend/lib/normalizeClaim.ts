@@ -82,6 +82,9 @@ export function normalizeClaimResponse<T extends RecordLike>(data: T): T {
   // ── Top-level key renames ────────────────────────────────────────────────
   const claimId         = (data.claimId         ?? data.complaintId)         as string | undefined
   const ingestedClaimId = (data.ingestedClaimId  ?? data.ingestedComplaintId) as string | undefined
+  // Email threading — propagated from the original ingested complaint
+  const messageId = data.messageId as string | undefined
+  const threadId  = data.threadId  as string | undefined
 
   // ── DecisionPack normalization ───────────────────────────────────────────
   const dp = data.decisionPack as RecordLike | undefined
@@ -152,6 +155,8 @@ export function normalizeClaimResponse<T extends RecordLike>(data: T): T {
     ...data,
     claimId,
     ingestedClaimId,
+    messageId,
+    threadId,
     auditTrail,
     processingMetrics,
     decisionPack: {

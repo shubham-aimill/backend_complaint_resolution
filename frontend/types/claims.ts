@@ -253,6 +253,12 @@ export interface ClaimData {
   /** Specific reason for desk rejection */
   rejectReason?: string
 
+  // ── Email threading fields (from original ingested complaint) ────────────
+  /** RFC822 Message-ID of the original inbound email — used for In-Reply-To */
+  messageId?: string
+  /** Root thread ID of the email chain — used for References header */
+  threadId?: string
+
   // Legacy compatibility
   processingTime?: number
   autoPopulatedFields?: number

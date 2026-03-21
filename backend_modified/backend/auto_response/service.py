@@ -66,7 +66,7 @@ What to do next:
 Once we receive the required information, our team will review your case and
 respond with an outcome within 2 business days.
 
-If you have any difficulty locating these documents, please reply anbkjbj
+If you have any difficulty locating these documents, please reply and we'll
 do our best to assist you.
 
 We apologise for the additional step and appreciate your cooperation.
@@ -259,6 +259,32 @@ Customer Support Team
 Consumer Electronics"""
 
 
+def _build_customer_not_found_body(
+    complaint_id: str,
+) -> str:
+    return f"""Dear Customer,
+
+Thank you for contacting Consumer Electronics Customer Support.
+
+We have received a complaint submission (Reference: {complaint_id}), however we were
+unable to locate a matching customer account in our system.
+
+To process your complaint, we require a verified account with us. Please:
+
+  1. Verify your customer reference number (format: CUST#####) and reply with it, or
+  2. Contact us directly so we can locate your account:
+       Email: support@electronics.com
+       Phone: 1-800-ELEC-HELP  (Monday – Friday, 9am – 6pm)
+  3. If you are a new customer, please register at our support portal before
+     submitting a complaint.
+
+We apologise for the inconvenience and look forward to resolving this for you.
+
+Kind regards,
+Customer Support Team
+Consumer Electronics"""
+
+
 def _build_investigate_body(
     customer_name: str,
     product_name: str,
@@ -299,7 +325,13 @@ Consumer Electronics"""
 
 # ── SMTP sender ──────────────────────────────────────────────────────────────
 
-def _send_email(to_addr: str, subject: str, body: str) -> None:
+def _send_email(
+    to_addr: str,
+    subject: str,
+    body: str,
+    in_reply_to: Optional[str] = None,
+    references: Optional[str] = None,
+) -> None:
     """Send a plain-text email via SMTP using credentials from .env."""
     _load_env()
     sender_email   = os.environ.get("SENDER_EMAIL", "")
@@ -317,6 +349,12 @@ def _send_email(to_addr: str, subject: str, body: str) -> None:
     msg["From"]    = f"Customer Support <{sender_email}>"
     msg["To"]      = to_addr
     msg["Subject"] = subject
+    # Thread reply headers — ensures email lands in the same Gmail thread
+    if in_reply_to:
+        msg["In-Reply-To"] = in_reply_to
+        msg["References"]  = references or in_reply_to
+    elif references:
+        msg["References"] = references
 
     # Plain text version
     msg.attach(MIMEText(body, "plain"))
@@ -344,6 +382,8 @@ def send_auto_response(
     purchase_date: Optional[str] = None,
     next_steps: Optional[List[str]] = None,
     reject_reason: Optional[str] = None,
+    in_reply_to: Optional[str] = None,
+    references: Optional[str] = None,
 ) -> Dict[str, Any]:
     """
     Send the appropriate automated email response based on the decision code.
@@ -383,11 +423,14 @@ def send_auto_response(
 
         elif decision == "DESK_REJECT":
             subject = f"Your Complaint Has Been Reviewed — {complaint_id}"
-            body    = _build_desk_reject_body(
-                customer_name, product_name or "your product",
-                complaint_id, warranty_expiry, purchase_date,
-                reject_reason=reject_reason,
-            )
+            if reject_reason == "customer_not_found":
+                body = _build_customer_not_found_body(complaint_id)
+            else:
+                body = _build_desk_reject_body(
+                    customer_name, product_name or "your product",
+                    complaint_id, warranty_expiry, purchase_date,
+                    reject_reason=reject_reason,
+                )
 
         elif decision in ("APPROVE_REPAIR", "APPROVE_REPLACEMENT"):
             subject = f"Your Complaint Has Been Approved — {complaint_id}"
@@ -402,8 +445,12 @@ def send_auto_response(
                 customer_name, product_name or "your product", complaint_id,
             )
 
-        _send_email(to_addr, subject, body)
-        return {"sent": True, "decision": decision, "to": to_addr, "error": None}
+        sender_email = os.environ.get("SENDER_EMAIL", "")
+        _send_email(to_addr, subject, body, in_reply_to=in_reply_to, references=references)
+        return {
+            "sent": True, "decision": decision, "to": to_addr, "error": None,
+            "subject": subject, "body": body, "sentFrom": sender_email,
+        }
 
     except Exception as exc:
         print(f"Auto-response send failed ({decision} → {to_addr}): {exc}", file=sys.stderr)

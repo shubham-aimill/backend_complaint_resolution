@@ -1,5 +1,396 @@
 [
   {
+    "id": "OUT-1774108593575-230ab3b",
+    "complaintRef": "CUST10004",
+    "from": "arp290825@gmail.com",
+    "to": "arp290825@gmail.com",
+    "subject": "Your Complaint Has Been Reviewed \u2014 CMP-OUT-1774022522138-5353ce3",
+    "emailBody": "Dear Keshav Sharma,\n\nThank you for contacting Consumer Electronics Customer Support regarding your\nSamsung Bespoke 653L Side-by-Side Refrigerator (Complaint Reference: CMP-OUT-1774022522138-5353ce3).\n\nWe have carefully reviewed your complaint. Unfortunately, we are unable to process\nthis complaint through our current channel for the following reason:\n\n  Reason: The product described does not fall within our supported consumer\n  electronics product categories.\n\nOur complaint resolution service covers smartphones, laptops, tablets, earbuds,\nsmartwatches, and cameras. For other product types, please contact the relevant\nmanufacturer or retailer directly.\n\nIf you believe your product falls within our supported categories and this\ndecision has been made in error, please reply within 14 days with your product\nmodel and serial number and we will be happy to re-evaluate.\n\nWe apologise for any inconvenience caused.\n\nKind regards,\nCustomer Support Team\nConsumer Electronics",
+    "attachments": [],
+    "createdAt": "2026-03-21T15:56:33.575Z",
+    "source": "outbound",
+    "direction": "outbound",
+    "threadId": "<CABs85wPKJwVd+p3yamtkDEXJTc__478mH=72eUSXeOzssQ8U5g@mail.gmail.com>",
+    "inReplyTo": "OUT-1774022522138-5353ce3",
+    "emailType": "auto_desk_reject",
+    "rejectionReason": "unsupported_product"
+  },
+  {
+    "id": "ING-1774108582906-25d40f6",
+    "complaintRef": "ERENCE",
+    "from": "Customer Support <arp290825@gmail.com>",
+    "to": "Customer Support <arp290825@gmail.com>",
+    "subject": "Action Required: Documents Needed \u2014 Complaint CMP-ING-1774108146616-7d7822e",
+    "emailBody": "Subject: Action Required: Documents Needed \u2014 Complaint CMP-ING-1774108146616-7d7822e\nFrom: Customer Support <arp290825@gmail.com>\nTo: Customer Support <arp290825@gmail.com>\nDate: March 21, 2026 08:53 AM\n\nDear Emily Johnson,\n\nThank you for getting in touch with Consumer Electronics Customer Support.\n\nWe have received your complaint (Reference: CMP-ING-1774108146616-7d7822e) regarding your Not specified and want to resolve this for you as quickly as possible.\n\nTo progress your complaint, we need the following document(s):\n\n  \u2022 Purchase Invoice\n  \u2022 Product Model\n\nThese documents help us verify your purchase and process your claim efficiently.\n\nWhat to do next:\n  \u2022 Reply to this email with the document(s) attached, or\n  \u2022 Contact us quoting your complaint reference: CMP-ING-1774108146616-7d7822e\n\nOnce we receive the required information, our team will review your case and\nrespond with an outcome within 2 business days.\n\nIf you have any difficulty locating these documents, please reply and we'll\ndo our best to assist you.\n\nWe apologise for the additional step and appreciate your cooperation.\n\nKind regards,\nCustomer Support Team\nConsumer Electronics\n  Email: support@electronics.com  |  Phone: 1-800-ELEC-HELP (Mon\u2013Fri, 9am\u20136pm)",
+    "attachments": [],
+    "createdAt": "2026-03-21T15:56:22.907Z",
+    "source": "imap",
+    "threadId": "<69b44fc1.170a0220.71189.74fa@mx.google.com>",
+    "processingStatus": "pending",
+    "messageId": "<69bebef0.a70a0220.38ac1c.2acf@mx.google.com>",
+    "inReplyTo": "<69bebb9a.170a0220.200423.8025@mx.google.com>",
+    "references": [
+      "<69b44fc1.170a0220.71189.74fa@mx.google.com>"
+    ]
+  },
+  {
+    "id": "OUT-1774108400948-b1ffb32",
+    "complaintRef": "ERENCE",
+    "from": "arp290825@gmail.com",
+    "to": "Customer Support <arp290825@gmail.com>",
+    "subject": "Action Required: Documents Needed \u2014 Complaint CMP-ING-1774108146616-7d7822e",
+    "emailBody": "Dear Emily Johnson,\n\nThank you for getting in touch with Consumer Electronics Customer Support.\n\nWe have received your complaint (Reference: CMP-ING-1774108146616-7d7822e) regarding your Not specified and want to resolve this for you as quickly as possible.\n\nTo progress your complaint, we need the following document(s):\n\n  \u2022 Purchase Invoice\n  \u2022 Product Model\n\nThese documents help us verify your purchase and process your claim efficiently.\n\nWhat to do next:\n  \u2022 Reply to this email with the document(s) attached, or\n  \u2022 Contact us quoting your complaint reference: CMP-ING-1774108146616-7d7822e\n\nOnce we receive the required information, our team will review your case and\nrespond with an outcome within 2 business days.\n\nIf you have any difficulty locating these documents, please reply and we'll\ndo our best to assist you.\n\nWe apologise for the additional step and appreciate your cooperation.\n\nKind regards,\nCustomer Support Team\nConsumer Electronics\n  Email: support@electronics.com  |  Phone: 1-800-ELEC-HELP (Mon\u2013Fri, 9am\u20136pm)",
+    "attachments": [],
+    "createdAt": "2026-03-21T15:53:20.948Z",
+    "source": "outbound",
+    "direction": "outbound",
+    "threadId": "<69b44fc1.170a0220.71189.74fa@mx.google.com>",
+    "inReplyTo": "<69bebb9a.170a0220.200423.8025@mx.google.com>",
+    "emailType": "auto_request_documents"
+  },
+  {
+    "id": "ING-1774108146616-7d7822e",
+    "complaintRef": "ERENCE",
+    "from": "Customer Support <arp290825@gmail.com>",
+    "to": "Customer Support <arp290825@gmail.com>",
+    "subject": "Action Required: Documents Needed \u2014 Complaint CMP-ING-1774106933344-9a41ae0",
+    "emailBody": "Subject: Action Required: Documents Needed \u2014 Complaint CMP-ING-1774106933344-9a41ae0\nFrom: Customer Support <arp290825@gmail.com>\nTo: Customer Support <arp290825@gmail.com>\nDate: March 21, 2026 08:39 AM\n\nDear Emily Johnson,\n\nThank you for getting in touch with Consumer Electronics Customer Support.\n\nWe have received your complaint (Reference: CMP-ING-1774106933344-9a41ae0) regarding your Not specified and want to resolve this for you as quickly as possible.\n\nTo progress your complaint, we need the following document(s):\n\n  \u2022 Purchase Invoice\n  \u2022 Product Model\n\nThese documents help us verify your purchase and process your claim efficiently.\n\nWhat to do next:\n  \u2022 Reply to this email with the document(s) attached, or\n  \u2022 Contact us quoting your complaint reference: CMP-ING-1774106933344-9a41ae0\n\nOnce we receive the required information, our team will review your case and\nrespond with an outcome within 2 business days.\n\nIf you have any difficulty locating these documents, please reply and we'll\ndo our best to assist you.\n\nWe apologise for the additional step and appreciate your cooperation.\n\nKind regards,\nCustomer Support Team\nConsumer Electronics\n  Email: support@electronics.com  |  Phone: 1-800-ELEC-HELP (Mon\u2013Fri, 9am\u20136pm)",
+    "attachments": [],
+    "createdAt": "2026-03-21T15:49:06.617Z",
+    "source": "imap",
+    "threadId": "<69b44fc1.170a0220.71189.74fa@mx.google.com>",
+    "processingStatus": "processed",
+    "messageId": "<69bebb9a.170a0220.200423.8025@mx.google.com>",
+    "inReplyTo": "<6e5813be-2132-a9f7-1c9a-7dafec63844a@gmail.com>",
+    "references": [
+      "<69b44fc1.170a0220.71189.74fa@mx.google.com>"
+    ]
+  },
+  {
+    "id": "ING-1774108145531-e181b01",
+    "complaintRef": "ERENCE",
+    "from": "Customer Support <arp290825@gmail.com>",
+    "to": "Customer Support <arp290825@gmail.com>",
+    "subject": "Action Required: Documents Needed \u2014 Complaint CMP-ING-1774106930189-a6fa9ec",
+    "emailBody": "Subject: Action Required: Documents Needed \u2014 Complaint CMP-ING-1774106930189-a6fa9ec\nFrom: Customer Support <arp290825@gmail.com>\nTo: Customer Support <arp290825@gmail.com>\nDate: March 21, 2026 08:38 AM\n\nDear Emily Johnson,\n\nThank you for getting in touch with Consumer Electronics Customer Support.\n\nWe have received your complaint (Reference: CMP-ING-1774106930189-a6fa9ec) regarding your NovaTech SlimTab 10 Tablet and want to resolve this for you as quickly as possible.\n\nTo progress your complaint, we need the following document(s):\n\n  \u2022 Purchase Invoice\n\nThese documents help us verify your purchase and process your claim efficiently.\n\nWhat to do next:\n  \u2022 Reply to this email with the document(s) attached, or\n  \u2022 Contact us quoting your complaint reference: CMP-ING-1774106930189-a6fa9ec\n\nOnce we receive the required information, our team will review your case and\nrespond with an outcome within 2 business days.\n\nIf you have any difficulty locating these documents, please reply and we'll\ndo our best to assist you.\n\nWe apologise for the additional step and appreciate your cooperation.\n\nKind regards,\nCustomer Support Team\nConsumer Electronics\n  Email: support@electronics.com  |  Phone: 1-800-ELEC-HELP (Mon\u2013Fri, 9am\u20136pm)",
+    "attachments": [],
+    "createdAt": "2026-03-21T15:49:05.531Z",
+    "source": "imap",
+    "threadId": "<69b44fc1.170a0220.71189.74fa@mx.google.com>",
+    "processingStatus": "pending",
+    "messageId": "<69bebb75.170a0220.42cb2.54b5@mx.google.com>",
+    "inReplyTo": "<69beb8d5.a70a0220.10e23a.8380@mx.google.com>",
+    "references": [
+      "<69b44fc1.170a0220.71189.74fa@mx.google.com>"
+    ]
+  },
+  {
+    "id": "OUT-1774107546862-7ac8f36",
+    "complaintRef": null,
+    "from": "arp290825@gmail.com",
+    "to": "Customer Support <arp290825@gmail.com>",
+    "subject": "Action Required: Documents Needed \u2014 Complaint CMP-ING-1774106933344-9a41ae0",
+    "emailBody": "Dear Emily Johnson,\n\nThank you for getting in touch with Consumer Electronics Customer Support.\n\nWe have received your complaint (Reference: CMP-ING-1774106933344-9a41ae0) regarding your Not specified and want to resolve this for you as quickly as possible.\n\nTo progress your complaint, we need the following document(s):\n\n  \u2022 Purchase Invoice\n  \u2022 Product Model\n\nThese documents help us verify your purchase and process your claim efficiently.\n\nWhat to do next:\n  \u2022 Reply to this email with the document(s) attached, or\n  \u2022 Contact us quoting your complaint reference: CMP-ING-1774106933344-9a41ae0\n\nOnce we receive the required information, our team will review your case and\nrespond with an outcome within 2 business days.\n\nIf you have any difficulty locating these documents, please reply and we'll\ndo our best to assist you.\n\nWe apologise for the additional step and appreciate your cooperation.\n\nKind regards,\nCustomer Support Team\nConsumer Electronics\n  Email: support@electronics.com  |  Phone: 1-800-ELEC-HELP (Mon\u2013Fri, 9am\u20136pm)",
+    "attachments": [],
+    "createdAt": "2026-03-21T15:39:06.862Z",
+    "source": "outbound",
+    "direction": "outbound",
+    "threadId": "<69b44fc1.170a0220.71189.74fa@mx.google.com>",
+    "inReplyTo": "<6e5813be-2132-a9f7-1c9a-7dafec63844a@gmail.com>",
+    "emailType": "auto_request_documents"
+  },
+  {
+    "id": "OUT-1774107510402-72c7232",
+    "complaintRef": "ERENCE",
+    "from": "arp290825@gmail.com",
+    "to": "Customer Support <arp290825@gmail.com>",
+    "subject": "Action Required: Documents Needed \u2014 Complaint CMP-ING-1774106930189-a6fa9ec",
+    "emailBody": "Dear Emily Johnson,\n\nThank you for getting in touch with Consumer Electronics Customer Support.\n\nWe have received your complaint (Reference: CMP-ING-1774106930189-a6fa9ec) regarding your NovaTech SlimTab 10 Tablet and want to resolve this for you as quickly as possible.\n\nTo progress your complaint, we need the following document(s):\n\n  \u2022 Purchase Invoice\n\nThese documents help us verify your purchase and process your claim efficiently.\n\nWhat to do next:\n  \u2022 Reply to this email with the document(s) attached, or\n  \u2022 Contact us quoting your complaint reference: CMP-ING-1774106930189-a6fa9ec\n\nOnce we receive the required information, our team will review your case and\nrespond with an outcome within 2 business days.\n\nIf you have any difficulty locating these documents, please reply and we'll\ndo our best to assist you.\n\nWe apologise for the additional step and appreciate your cooperation.\n\nKind regards,\nCustomer Support Team\nConsumer Electronics\n  Email: support@electronics.com  |  Phone: 1-800-ELEC-HELP (Mon\u2013Fri, 9am\u20136pm)",
+    "attachments": [],
+    "createdAt": "2026-03-21T15:38:30.402Z",
+    "source": "outbound",
+    "direction": "outbound",
+    "threadId": "<69b44fc1.170a0220.71189.74fa@mx.google.com>",
+    "inReplyTo": "<69beb8d5.a70a0220.10e23a.8380@mx.google.com>",
+    "emailType": "auto_request_documents"
+  },
+  {
+    "id": "ING-1774106933344-9a41ae0",
+    "complaintRef": null,
+    "from": "Customer Support <arp290825@gmail.com>",
+    "to": "Customer Support <arp290825@gmail.com>",
+    "subject": "Complaint Decision \u2013 CMP-ING-1774030093263-b33656f",
+    "emailBody": "Subject: Complaint Decision \u2013 CMP-ING-1774030093263-b33656f\nFrom: Customer Support <arp290825@gmail.com>\nTo: Customer Support <arp290825@gmail.com>\nDate: March 21, 2026 03:28 PM\n\n21 March 2026\r\n\r\nDear Emily Johnson,\r\n\r\nRE: Complaint Decision \u2013 Reference CMP-ING-1774030093263-b33656f\r\n\r\nWe have reviewed your complaint and regret to inform you that we are unable to process it at this time.\r\n\r\nREASON\r\n  Your product is outside the warranty period.\r\n\r\nYour options:\r\n  1. Out-of-warranty paid repair \u2014 contact repairs@electronics.com\r\n  2. Reply within 14 days with additional evidence for re-evaluation.\r\n\r\nKind regards,\r\nCustomer Support Team\r\nConsumer Electronics",
+    "attachments": [],
+    "createdAt": "2026-03-21T15:28:53.344Z",
+    "source": "imap",
+    "threadId": "<69b44fc1.170a0220.71189.74fa@mx.google.com>",
+    "processingStatus": "processed",
+    "messageId": "<6e5813be-2132-a9f7-1c9a-7dafec63844a@gmail.com>",
+    "inReplyTo": "<69bd8d35.170a0220.24bcf8.1772@mx.google.com>",
+    "references": [
+      "<69b44fc1.170a0220.71189.74fa@mx.google.com>"
+    ]
+  },
+  {
+    "id": "ING-1774106932070-b9f8873",
+    "complaintRef": null,
+    "from": "Customer Support <arp290825@gmail.com>",
+    "to": "Customer Support <arp290825@gmail.com>",
+    "subject": "Complaint Decision \u2013 CMP-ING-1774030093263-b33656f",
+    "emailBody": "Subject: Complaint Decision \u2013 CMP-ING-1774030093263-b33656f\nFrom: Customer Support <arp290825@gmail.com>\nTo: Customer Support <arp290825@gmail.com>\nDate: March 21, 2026 03:28 PM\n\n21 March 2026\r\n\r\nDear Emily Johnson,\r\n\r\nRE: Complaint Decision \u2013 Reference CMP-ING-1774030093263-b33656f\r\n\r\nWe have reviewed your complaint and regret to inform you that we are unable to process it at this time.\r\n\r\nREASON\r\n  Your product is outside the warranty period.\r\n\r\nYour options:\r\n  1. Out-of-warranty paid repair \u2014 contact repairs@electronics.com\r\n  2. Reply within 14 days with additional evidence for re-evaluation.\r\n\r\nKind regards,\r\nCustomer Support Team\r\nConsumer Electronics",
+    "attachments": [],
+    "createdAt": "2026-03-21T15:28:52.070Z",
+    "source": "imap",
+    "threadId": "<69b44fc1.170a0220.71189.74fa@mx.google.com>",
+    "processingStatus": "pending",
+    "messageId": "<6e5813be-2132-a9f7-1c9a-7dafec63844a@gmail.com>",
+    "inReplyTo": "<69bd8d35.170a0220.24bcf8.1772@mx.google.com>",
+    "references": [
+      "<69b44fc1.170a0220.71189.74fa@mx.google.com>"
+    ]
+  },
+  {
+    "id": "ING-1774106930189-a6fa9ec",
+    "complaintRef": "ERENCE",
+    "from": "Customer Support <arp290825@gmail.com>",
+    "to": "Customer Support <arp290825@gmail.com>",
+    "subject": "Action Required: Documents Needed \u2014 Complaint CMP-ING-1774085626036-8c5497a",
+    "emailBody": "Subject: Action Required: Documents Needed \u2014 Complaint CMP-ING-1774085626036-8c5497a\nFrom: Customer Support <arp290825@gmail.com>\nTo: Customer Support <arp290825@gmail.com>\nDate: March 21, 2026 08:27 AM\n\nDear Emily Johnson,\n\nThank you for getting in touch with Consumer Electronics Customer Support.\n\nWe have received your complaint (Reference: CMP-ING-1774085626036-8c5497a) regarding your NovaTech SlimTab 10 Tablet and want to resolve this for you as quickly as possible.\n\nTo progress your complaint, we need the following document(s):\n\n  \u2022 Purchase Invoice\n\nThese documents help us verify your purchase and process your claim efficiently.\n\nWhat to do next:\n  \u2022 Reply to this email with the document(s) attached, or\n  \u2022 Contact us quoting your complaint reference: CMP-ING-1774085626036-8c5497a\n\nOnce we receive the required information, our team will review your case and\nrespond with an outcome within 2 business days.\n\nIf you have any difficulty locating these documents, please reply and we'll\ndo our best to assist you.\n\nWe apologise for the additional step and appreciate your cooperation.\n\nKind regards,\nCustomer Support Team\nConsumer Electronics\n  Email: support@electronics.com  |  Phone: 1-800-ELEC-HELP (Mon\u2013Fri, 9am\u20136pm)",
+    "attachments": [],
+    "createdAt": "2026-03-21T15:28:50.191Z",
+    "source": "imap",
+    "threadId": "<69b44fc1.170a0220.71189.74fa@mx.google.com>",
+    "processingStatus": "processed",
+    "messageId": "<69beb8d5.a70a0220.10e23a.8380@mx.google.com>",
+    "inReplyTo": "<69bd8d35.170a0220.24bcf8.1772@mx.google.com>",
+    "references": [
+      "<69b44fc1.170a0220.71189.74fa@mx.google.com>"
+    ]
+  },
+  {
+    "id": "OUT-1774106893562-237594b",
+    "complaintRef": "ERENCE",
+    "from": "Customer Support <support@electronics.com>",
+    "to": "",
+    "subject": "Complaint Decision \u2013 CMP-ING-1774030093263-b33656f",
+    "emailBody": "21 March 2026\n\nDear Emily Johnson,\n\nRE: Complaint Decision \u2013 Reference CMP-ING-1774030093263-b33656f\n\nWe have reviewed your complaint and regret to inform you that we are unable to process it at this time.\n\nREASON\n  Your product is outside the warranty period.\n\nYour options:\n  1. Out-of-warranty paid repair \u2014 contact repairs@electronics.com\n  2. Reply within 14 days with additional evidence for re-evaluation.\n\nKind regards,\nCustomer Support Team\nConsumer Electronics",
+    "attachments": [],
+    "createdAt": "2026-03-21T15:28:13.562Z",
+    "source": "outbound",
+    "direction": "outbound",
+    "threadId": "<69b44fc1.170a0220.71189.74fa@mx.google.com>",
+    "inReplyTo": "<69bd8d35.170a0220.24bcf8.1772@mx.google.com>"
+  },
+  {
+    "id": "OUT-1774106837920-8c76f85",
+    "complaintRef": "ERENCE",
+    "from": "arp290825@gmail.com",
+    "to": "Customer Support <arp290825@gmail.com>",
+    "subject": "Action Required: Documents Needed \u2014 Complaint CMP-ING-1774085626036-8c5497a",
+    "emailBody": "Dear Emily Johnson,\n\nThank you for getting in touch with Consumer Electronics Customer Support.\n\nWe have received your complaint (Reference: CMP-ING-1774085626036-8c5497a) regarding your NovaTech SlimTab 10 Tablet and want to resolve this for you as quickly as possible.\n\nTo progress your complaint, we need the following document(s):\n\n  \u2022 Purchase Invoice\n\nThese documents help us verify your purchase and process your claim efficiently.\n\nWhat to do next:\n  \u2022 Reply to this email with the document(s) attached, or\n  \u2022 Contact us quoting your complaint reference: CMP-ING-1774085626036-8c5497a\n\nOnce we receive the required information, our team will review your case and\nrespond with an outcome within 2 business days.\n\nIf you have any difficulty locating these documents, please reply and we'll\ndo our best to assist you.\n\nWe apologise for the additional step and appreciate your cooperation.\n\nKind regards,\nCustomer Support Team\nConsumer Electronics\n  Email: support@electronics.com  |  Phone: 1-800-ELEC-HELP (Mon\u2013Fri, 9am\u20136pm)",
+    "attachments": [],
+    "createdAt": "2026-03-21T15:27:17.920Z",
+    "source": "outbound",
+    "direction": "outbound",
+    "threadId": "<69b44fc1.170a0220.71189.74fa@mx.google.com>",
+    "inReplyTo": "<69bd8d35.170a0220.24bcf8.1772@mx.google.com>",
+    "emailType": "auto_request_documents"
+  },
+  {
+    "id": "ING-1774085626036-8c5497a",
+    "complaintRef": "ERENCE",
+    "from": "Customer Support <arp290825@gmail.com>",
+    "to": "Customer Support <arp290825@gmail.com>",
+    "subject": "Action Required: Documents Needed \u2014 Complaint CMP-ING-1774030093263-b33656f",
+    "emailBody": "Subject: Action Required: Documents Needed \u2014 Complaint CMP-ING-1774030093263-b33656f\nFrom: Customer Support <arp290825@gmail.com>\nTo: Customer Support <arp290825@gmail.com>\nDate: March 20, 2026 11:08 AM\n\nDear Emily Johnson,\n\nThank you for getting in touch with Consumer Electronics Customer Support.\n\nWe have received your complaint (Reference: CMP-ING-1774030093263-b33656f) regarding your NovaTech SlimTab 10 Tablet and want to resolve this for you as quickly as possible.\n\nTo progress your complaint, we need the following document(s):\n\n  \u2022 Purchase Invoice\n\nThese documents help us verify your purchase and process your claim efficiently.\n\nWhat to do next:\n  \u2022 Reply to this email with the document(s) attached, or\n  \u2022 Contact us quoting your complaint reference: CMP-ING-1774030093263-b33656f\n\nOnce we receive the required information, our team will review your case and\nrespond with an outcome within 2 business days.\n\nIf you have any difficulty locating these documents, please reply and we'll\ndo our best to assist you.\n\nWe apologise for the additional step and appreciate your cooperation.\n\nKind regards,\nCustomer Support Team\nConsumer Electronics\n  Email: support@electronics.com  |  Phone: 1-800-ELEC-HELP (Mon\u2013Fri, 9am\u20136pm)",
+    "attachments": [],
+    "createdAt": "2026-03-21T09:33:46.037Z",
+    "source": "imap",
+    "threadId": "<69b44fc1.170a0220.71189.74fa@mx.google.com>",
+    "processingStatus": "processed",
+    "messageId": "<69bd8d35.170a0220.24bcf8.1772@mx.google.com>",
+    "inReplyTo": "<69bd860f.050a0220.2469f6.183d@mx.google.com>",
+    "references": [
+      "<69b44fc1.170a0220.71189.74fa@mx.google.com>"
+    ]
+  },
+  {
+    "id": "ING-1774085625452-295a70e",
+    "complaintRef": "ERENCE",
+    "from": "Customer Support <arp290825@gmail.com>",
+    "to": "Customer Support <arp290825@gmail.com>",
+    "subject": "Action Required: Documents Needed \u2014 Complaint CMP-ING-1774030093263-b33656f",
+    "emailBody": "Subject: Action Required: Documents Needed \u2014 Complaint CMP-ING-1774030093263-b33656f\nFrom: Customer Support <arp290825@gmail.com>\nTo: Customer Support <arp290825@gmail.com>\nDate: March 20, 2026 11:08 AM\n\nDear Emily Johnson,\n\nThank you for getting in touch with Consumer Electronics Customer Support.\n\nWe have received your complaint (Reference: CMP-ING-1774030093263-b33656f) regarding your NovaTech SlimTab 10 Tablet and want to resolve this for you as quickly as possible.\n\nTo progress your complaint, we need the following document(s):\n\n  \u2022 Purchase Invoice\n\nThese documents help us verify your purchase and process your claim efficiently.\n\nWhat to do next:\n  \u2022 Reply to this email with the document(s) attached, or\n  \u2022 Contact us quoting your complaint reference: CMP-ING-1774030093263-b33656f\n\nOnce we receive the required information, our team will review your case and\nrespond with an outcome within 2 business days.\n\nIf you have any difficulty locating these documents, please reply and we'll\ndo our best to assist you.\n\nWe apologise for the additional step and appreciate your cooperation.\n\nKind regards,\nCustomer Support Team\nConsumer Electronics\n  Email: support@electronics.com  |  Phone: 1-800-ELEC-HELP (Mon\u2013Fri, 9am\u20136pm)",
+    "attachments": [],
+    "createdAt": "2026-03-21T09:33:45.453Z",
+    "source": "imap",
+    "threadId": "<69b44fc1.170a0220.71189.74fa@mx.google.com>",
+    "processingStatus": "pending",
+    "messageId": "<69bd8d35.170a0220.24bcf8.1772@mx.google.com>",
+    "inReplyTo": "<69bd860f.050a0220.2469f6.183d@mx.google.com>",
+    "references": [
+      "<69b44fc1.170a0220.71189.74fa@mx.google.com>"
+    ]
+  },
+  {
+    "id": "OUT-1774030134340-98ee7f0",
+    "complaintRef": "ERENCE",
+    "from": "arp290825@gmail.com",
+    "to": "Customer Support <arp290825@gmail.com>",
+    "subject": "Action Required: Documents Needed \u2014 Complaint CMP-ING-1774030093263-b33656f",
+    "emailBody": "Dear Emily Johnson,\n\nThank you for getting in touch with Consumer Electronics Customer Support.\n\nWe have received your complaint (Reference: CMP-ING-1774030093263-b33656f) regarding your NovaTech SlimTab 10 Tablet and want to resolve this for you as quickly as possible.\n\nTo progress your complaint, we need the following document(s):\n\n  \u2022 Purchase Invoice\n\nThese documents help us verify your purchase and process your claim efficiently.\n\nWhat to do next:\n  \u2022 Reply to this email with the document(s) attached, or\n  \u2022 Contact us quoting your complaint reference: CMP-ING-1774030093263-b33656f\n\nOnce we receive the required information, our team will review your case and\nrespond with an outcome within 2 business days.\n\nIf you have any difficulty locating these documents, please reply and we'll\ndo our best to assist you.\n\nWe apologise for the additional step and appreciate your cooperation.\n\nKind regards,\nCustomer Support Team\nConsumer Electronics\n  Email: support@electronics.com  |  Phone: 1-800-ELEC-HELP (Mon\u2013Fri, 9am\u20136pm)",
+    "attachments": [],
+    "createdAt": "2026-03-20T18:08:54.340Z",
+    "source": "outbound",
+    "direction": "outbound",
+    "threadId": "<69b44fc1.170a0220.71189.74fa@mx.google.com>",
+    "inReplyTo": "<69bd860f.050a0220.2469f6.183d@mx.google.com>",
+    "emailType": "auto_request_documents"
+  },
+  {
+    "id": "ING-1774030093263-b33656f",
+    "complaintRef": "ERENCE",
+    "from": "Customer Support <arp290825@gmail.com>",
+    "to": "arp290825@gmail.com",
+    "subject": "Action Required: Documents Needed \u2014 Complaint CMP-OUT-1774026908374-82ee1ea",
+    "emailBody": "Subject: Action Required: Documents Needed \u2014 Complaint CMP-OUT-1774026908374-82ee1ea\nFrom: Customer Support <arp290825@gmail.com>\nTo: arp290825@gmail.com\nDate: March 20, 2026 10:38 AM\n\nDear Emily Johnson,\n\nThank you for getting in touch with Consumer Electronics Customer Support.\n\nWe have received your complaint (Reference: CMP-OUT-1774026908374-82ee1ea) regarding your NovaTech SlimTab 10 Tablet and want to resolve this for you as quickly as possible.\n\nTo progress your complaint, we need the following document(s):\n\n  \u2022 Purchase Invoice\n\nThese documents help us verify your purchase and process your claim efficiently.\n\nWhat to do next:\n  \u2022 Reply to this email with the document(s) attached, or\n  \u2022 Contact us quoting your complaint reference: CMP-OUT-1774026908374-82ee1ea\n\nOnce we receive the required information, our team will review your case and\nrespond with an outcome within 2 business days.\n\nIf you have any difficulty locating these documents, please reply and we'll\ndo our best to assist you.\n\nWe apologise for the additional step and appreciate your cooperation.\n\nKind regards,\nCustomer Support Team\nConsumer Electronics\n  Email: support@electronics.com  |  Phone: 1-800-ELEC-HELP (Mon\u2013Fri, 9am\u20136pm)",
+    "attachments": [],
+    "createdAt": "2026-03-20T18:08:13.264Z",
+    "source": "imap",
+    "threadId": "<69b44fc1.170a0220.71189.74fa@mx.google.com>",
+    "processingStatus": "processed",
+    "messageId": "<69bd860f.050a0220.2469f6.183d@mx.google.com>",
+    "references": [
+      "<69b44fc1.170a0220.71189.74fa@mx.google.com>"
+    ]
+  },
+  {
+    "id": "OUT-1774028305053-e536e81",
+    "complaintRef": "ERENCE",
+    "from": "arp290825@gmail.com",
+    "to": "arp290825@gmail.com",
+    "subject": "Action Required: Documents Needed \u2014 Complaint CMP-OUT-1774026908374-82ee1ea",
+    "emailBody": "Dear Emily Johnson,\n\nThank you for getting in touch with Consumer Electronics Customer Support.\n\nWe have received your complaint (Reference: CMP-OUT-1774026908374-82ee1ea) regarding your NovaTech SlimTab 10 Tablet and want to resolve this for you as quickly as possible.\n\nTo progress your complaint, we need the following document(s):\n\n  \u2022 Purchase Invoice\n\nThese documents help us verify your purchase and process your claim efficiently.\n\nWhat to do next:\n  \u2022 Reply to this email with the document(s) attached, or\n  \u2022 Contact us quoting your complaint reference: CMP-OUT-1774026908374-82ee1ea\n\nOnce we receive the required information, our team will review your case and\nrespond with an outcome within 2 business days.\n\nIf you have any difficulty locating these documents, please reply and we'll\ndo our best to assist you.\n\nWe apologise for the additional step and appreciate your cooperation.\n\nKind regards,\nCustomer Support Team\nConsumer Electronics\n  Email: support@electronics.com  |  Phone: 1-800-ELEC-HELP (Mon\u2013Fri, 9am\u20136pm)",
+    "attachments": [],
+    "createdAt": "2026-03-20T17:38:25.053Z",
+    "source": "outbound",
+    "direction": "outbound",
+    "threadId": "<69b44fc1.170a0220.71189.74fa@mx.google.com>",
+    "inReplyTo": "OUT-1774026908374-82ee1ea",
+    "emailType": "auto_request_documents"
+  },
+  {
+    "id": "OUT-1774026908374-82ee1ea",
+    "complaintRef": "ERENCE",
+    "from": "arp290825@gmail.com",
+    "to": "Customer Support <support@electronics.com>",
+    "subject": "Action Required: Documents Needed \u2014 Complaint CMP-OUT-1774026773475-93818a5",
+    "emailBody": "Dear Emily Johnson,\n\nThank you for getting in touch with Consumer Electronics Customer Support.\n\nWe have received your complaint (Reference: CMP-OUT-1774026773475-93818a5) regarding your NovaTech SlimTab 10 Tablet and want to resolve this for you as quickly as possible.\n\nTo progress your complaint, we need the following document(s):\n\n  \u2022 Purchase Invoice\n\nThese documents help us verify your purchase and process your claim efficiently.\n\nWhat to do next:\n  \u2022 Reply to this email with the document(s) attached, or\n  \u2022 Contact us quoting your complaint reference: CMP-OUT-1774026773475-93818a5\n\nOnce we receive the required information, our team will review your case and\nrespond with an outcome within 2 business days.\n\nIf you have any difficulty locating these documents, please reply and we'll\ndo our best to assist you.\n\nWe apologise for the additional step and appreciate your cooperation.\n\nKind regards,\nCustomer Support Team\nConsumer Electronics\n  Email: support@electronics.com  |  Phone: 1-800-ELEC-HELP (Mon\u2013Fri, 9am\u20136pm)",
+    "attachments": [],
+    "createdAt": "2026-03-20T17:15:08.375Z",
+    "source": "outbound",
+    "direction": "outbound",
+    "threadId": "<69b44fc1.170a0220.71189.74fa@mx.google.com>",
+    "inReplyTo": "OUT-1774026773475-93818a5",
+    "emailType": "auto_request_documents",
+    "processingStatus": "processed"
+  },
+  {
+    "id": "OUT-1774026773475-93818a5",
+    "complaintRef": "ERENCE",
+    "from": "Customer Support <support@electronics.com>",
+    "to": "",
+    "subject": "Complaint Decision \u2013 Reference CMP-ING-1773423500615-dd94df7",
+    "emailBody": "20 March 2026\n\nDear Emily Johnson,\n\nRE: Complaint Decision \u2013 Reference CMP-ING-1773423500615-dd94df7\n\nThank you for contacting Consumer Electronics Customer Support regarding your NovaTech SlimTab 10 Tablet.\n\nAfter reviewing your complaint, we were unable to locate a matching customer record in our system. As a result, we are unable to process your complaint at this time.\n\nREASON\n  Your complaint could not be verified against our customer records.\n\nYOUR OPTIONS\n  1. If you believe this is an error, please reply with your customer ID or order reference.\n  2. For new customer registration, please visit our website.\n\nWe apologise for any inconvenience.\n\nKind regards,\nCustomer Support Team\nConsumer Electronics",
+    "attachments": [],
+    "createdAt": "2026-03-20T17:12:53.475Z",
+    "source": "outbound",
+    "direction": "outbound",
+    "threadId": "<69b44fc1.170a0220.71189.74fa@mx.google.com>",
+    "inReplyTo": "<CABs85wPL995BeEikuYw0uG7zfMN7ry300DbZ5N6pBjCy__Q65w@mail.gmail.com>",
+    "processingStatus": "processed"
+  },
+  {
+    "id": "OUT-1774026613509-f652fa9",
+    "complaintRef": "ERENCE",
+    "from": "arp290825@gmail.com",
+    "to": "Shubham Sahu <shubhh2003@gmail.com>",
+    "subject": "Your Complaint Has Been Reviewed \u2014 CMP-ING-1773853334959-95995ca",
+    "emailBody": "Dear Customer,\n\nThank you for contacting Consumer Electronics Customer Support.\n\nWe have received a complaint submission (Reference: CMP-ING-1773853334959-95995ca), however we were\nunable to locate a matching customer account in our system.\n\nTo process your complaint, we require a verified account with us. Please:\n\n  1. Verify your customer reference number (format: CUST#####) and reply with it, or\n  2. Contact us directly so we can locate your account:\n       Email: support@electronics.com\n       Phone: 1-800-ELEC-HELP  (Monday \u2013 Friday, 9am \u2013 6pm)\n  3. If you are a new customer, please register at our support portal before\n     submitting a complaint.\n\nWe apologise for the inconvenience and look forward to resolving this for you.\n\nKind regards,\nCustomer Support Team\nConsumer Electronics",
+    "attachments": [],
+    "createdAt": "2026-03-20T17:10:13.509Z",
+    "source": "outbound",
+    "direction": "outbound",
+    "threadId": "<69b44fc1.170a0220.71189.74fa@mx.google.com>",
+    "inReplyTo": "<CABs85wPL995BeEikuYw0uG7zfMN7ry300DbZ5N6pBjCy__Q65w@mail.gmail.com>",
+    "emailType": "auto_desk_reject",
+    "rejectionReason": "customer_not_found"
+  },
+  {
+    "id": "OUT-1774026498374-2397149",
+    "complaintRef": "CUST10001",
+    "from": "arp290825@gmail.com",
+    "to": "Shubham Sahu <shubhh2003@gmail.com>",
+    "subject": "Your Complaint Has Been Approved \u2014 CMP-ING-1773853328013-6db9ce0",
+    "emailBody": "Dear Ananya Sharma,\n\nWe have good news regarding your complaint (Reference: CMP-ING-1773853328013-6db9ce0) about your\nNovaTech ProMax X15 Smartphone.\n\nAfter reviewing the details of your case, we are pleased to confirm that your\ncomplaint has been approved and we will be arranging a repair for you.\n\nWhat happens next:\n  1. Our technical team will contact you within 48 hours to arrange the repair.\n  2. Please have your product and proof of purchase ready.\n  3. If a courier collection is required, we will arrange this at no cost to you.\n\nPlease keep this email for your records and quote your reference number\n(CMP-ING-1773853328013-6db9ce0) in any future correspondence.\n\nIf you have any questions at any point during this process, our team is here to help:\n  Email: support@electronics.com\n  Phone: 1-800-ELEC-HELP  (Monday \u2013 Friday, 9am \u2013 6pm)\n\nThank you for bringing this to our attention. We are sorry for the inconvenience\ncaused and look forward to getting this resolved for you promptly.\n\nKind regards,\nCustomer Support Team\nConsumer Electronics",
+    "attachments": [],
+    "createdAt": "2026-03-20T17:08:18.374Z",
+    "source": "outbound",
+    "direction": "outbound",
+    "threadId": "<CABs85wNYB6CLpBGWdHpQ5TF2HTsPfnOi3UrLRqxFTszQw61mXw@mail.gmail.com>",
+    "inReplyTo": "<CABs85wNYB6CLpBGWdHpQ5TF2HTsPfnOi3UrLRqxFTszQw61mXw@mail.gmail.com>",
+    "emailType": "auto_approve_repair"
+  },
+  {
+    "id": "OUT-1774024030415-22e50d6",
+    "complaintRef": "CUST10001",
+    "from": "arp290825@gmail.com",
+    "to": "Shubham Sahu <shubhh2003@gmail.com>",
+    "subject": "Your Complaint Has Been Reviewed \u2014 CMP-ING-1773853318691-71fee3d",
+    "emailBody": "Dear Customer,\n\nThank you for contacting Consumer Electronics Customer Support.\n\nWe have received a complaint submission (Reference: CMP-ING-1773853318691-71fee3d), however we were\nunable to locate a matching customer account in our system.\n\nTo process your complaint, we require a verified account with us. Please:\n\n  1. Verify your customer reference number (format: CUST#####) and reply with it, or\n  2. Contact us directly so we can locate your account:\n       Email: support@electronics.com\n       Phone: 1-800-ELEC-HELP  (Monday \u2013 Friday, 9am \u2013 6pm)\n  3. If you are a new customer, please register at our support portal before\n     submitting a complaint.\n\nWe apologise for the inconvenience and look forward to resolving this for you.\n\nKind regards,\nCustomer Support Team\nConsumer Electronics",
+    "attachments": [],
+    "createdAt": "2026-03-20T16:27:10.416Z",
+    "source": "outbound",
+    "direction": "outbound",
+    "threadId": "<CABs85wM+cfSuHme-VhgUfcF3vp4sqJ2riLQ24JtwWfceqdFq2g@mail.gmail.com>",
+    "inReplyTo": "<CABs85wM+cfSuHme-VhgUfcF3vp4sqJ2riLQ24JtwWfceqdFq2g@mail.gmail.com>",
+    "emailType": "auto_desk_reject",
+    "rejectionReason": "customer_not_found"
+  },
+  {
+    "id": "OUT-1774022640371-af10e28",
+    "complaintRef": "CUST10009",
+    "from": "arp290825@gmail.com",
+    "to": "Shubham Sahu <shubhh2003@gmail.com>",
+    "subject": "Your Complaint Has Been Approved \u2014 CMP-ING-1773853330222-8d4647d",
+    "emailBody": "Dear Emily Johnson,\n\nWe have good news regarding your complaint (Reference: CMP-ING-1773853330222-8d4647d) about your\nNovaTech SlimTab 10 Tablet.\n\nAfter reviewing the details of your case, we are pleased to confirm that your\ncomplaint has been approved and we will be arranging a replacement for you.\n\nWhat happens next:\n  1. Our technical team will contact you within 48 hours to arrange the replacement.\n  2. Please have your product and proof of purchase ready.\n  3. If a courier collection is required, we will arrange this at no cost to you.\n\nPlease keep this email for your records and quote your reference number\n(CMP-ING-1773853330222-8d4647d) in any future correspondence.\n\nIf you have any questions at any point during this process, our team is here to help:\n  Email: support@electronics.com\n  Phone: 1-800-ELEC-HELP  (Monday \u2013 Friday, 9am \u2013 6pm)\n\nThank you for bringing this to our attention. We are sorry for the inconvenience\ncaused and look forward to getting this resolved for you promptly.\n\nKind regards,\nCustomer Support Team\nConsumer Electronics",
+    "attachments": [],
+    "createdAt": "2026-03-20T16:04:00.371Z",
+    "source": "outbound",
+    "direction": "outbound",
+    "threadId": "<CABs85wNOs7NB3AGYBBeXd-ig1O+-yNwc+cTU5r07Hn2=LMg+WA@mail.gmail.com>",
+    "inReplyTo": "<CABs85wNOs7NB3AGYBBeXd-ig1O+-yNwc+cTU5r07Hn2=LMg+WA@mail.gmail.com>",
+    "emailType": "auto_approve_replacement"
+  },
+  {
+    "id": "OUT-1774022522138-5353ce3",
+    "complaintRef": "CUST10004",
+    "from": "arp290825@gmail.com",
+    "to": "Shubham Sahu <shubhh2003@gmail.com>",
+    "subject": "Your Complaint Has Been Reviewed \u2014 CMP-ING-1774010988065-14da1a6",
+    "emailBody": "Dear Keshav Sharma,\n\nThank you for contacting Consumer Electronics Customer Support regarding your\nSamsung Bespoke 653L Side-by-Side Refrigerator (Complaint Reference: CMP-ING-1774010988065-14da1a6).\n\nWe have carefully reviewed your complaint. Unfortunately, we are unable to process\nthis complaint through our current channel for the following reason:\n\n  Reason: The product described does not fall within our supported consumer\n  electronics product categories.\n\nOur complaint resolution service covers smartphones, laptops, tablets, earbuds,\nsmartwatches, and cameras. For other product types, please contact the relevant\nmanufacturer or retailer directly.\n\nIf you believe your product falls within our supported categories and this\ndecision has been made in error, please reply within 14 days with your product\nmodel and serial number and we will be happy to re-evaluate.\n\nWe apologise for any inconvenience caused.\n\nKind regards,\nCustomer Support Team\nConsumer Electronics",
+    "attachments": [],
+    "createdAt": "2026-03-20T16:02:02.138Z",
+    "source": "outbound",
+    "direction": "outbound",
+    "threadId": "<CABs85wPKJwVd+p3yamtkDEXJTc__478mH=72eUSXeOzssQ8U5g@mail.gmail.com>",
+    "inReplyTo": "<CABs85wPKJwVd+p3yamtkDEXJTc__478mH=72eUSXeOzssQ8U5g@mail.gmail.com>",
+    "emailType": "auto_desk_reject",
+    "rejectionReason": "unsupported_product",
+    "processingStatus": "processed"
+  },
+  {
     "id": "ING-1774010988065-14da1a6",
     "complaintRef": "CUST10004",
     "from": "Shubham Sahu <shubhh2003@gmail.com>",
@@ -10,7 +401,8 @@
     "createdAt": "2026-03-20T12:49:48.068Z",
     "source": "imap",
     "threadId": "<CABs85wPKJwVd+p3yamtkDEXJTc__478mH=72eUSXeOzssQ8U5g@mail.gmail.com>",
-    "messageId": "<CABs85wPKJwVd+p3yamtkDEXJTc__478mH=72eUSXeOzssQ8U5g@mail.gmail.com>"
+    "messageId": "<CABs85wPKJwVd+p3yamtkDEXJTc__478mH=72eUSXeOzssQ8U5g@mail.gmail.com>",
+    "processingStatus": "processed"
   },
   {
     "id": "ING-1774010987906-e9f8d4a",
@@ -47,7 +439,8 @@
     "inReplyTo": "<69b44fc1.170a0220.71189.74fa@mx.google.com>",
     "references": [
       "<69b44fc1.170a0220.71189.74fa@mx.google.com>"
-    ]
+    ],
+    "processingStatus": "processed"
   },
   {
     "id": "ING-1773853333381-1a51304",
@@ -97,7 +490,8 @@
     "createdAt": "2026-03-18T17:02:10.223Z",
     "source": "imap",
     "threadId": "<CABs85wNOs7NB3AGYBBeXd-ig1O+-yNwc+cTU5r07Hn2=LMg+WA@mail.gmail.com>",
-    "messageId": "<CABs85wNOs7NB3AGYBBeXd-ig1O+-yNwc+cTU5r07Hn2=LMg+WA@mail.gmail.com>"
+    "messageId": "<CABs85wNOs7NB3AGYBBeXd-ig1O+-yNwc+cTU5r07Hn2=LMg+WA@mail.gmail.com>",
+    "processingStatus": "processed"
   },
   {
     "id": "ING-1773853328013-6db9ce0",
@@ -117,7 +511,8 @@
     "createdAt": "2026-03-18T17:02:08.014Z",
     "source": "imap",
     "threadId": "<CABs85wNYB6CLpBGWdHpQ5TF2HTsPfnOi3UrLRqxFTszQw61mXw@mail.gmail.com>",
-    "messageId": "<CABs85wNYB6CLpBGWdHpQ5TF2HTsPfnOi3UrLRqxFTszQw61mXw@mail.gmail.com>"
+    "messageId": "<CABs85wNYB6CLpBGWdHpQ5TF2HTsPfnOi3UrLRqxFTszQw61mXw@mail.gmail.com>",
+    "processingStatus": "processed"
   },
   {
     "id": "ING-1773853318691-71fee3d",
@@ -143,6 +538,7 @@
     "createdAt": "2026-03-18T17:01:58.693Z",
     "source": "imap",
     "threadId": "<CABs85wM+cfSuHme-VhgUfcF3vp4sqJ2riLQ24JtwWfceqdFq2g@mail.gmail.com>",
-    "messageId": "<CABs85wM+cfSuHme-VhgUfcF3vp4sqJ2riLQ24JtwWfceqdFq2g@mail.gmail.com>"
+    "messageId": "<CABs85wM+cfSuHme-VhgUfcF3vp4sqJ2riLQ24JtwWfceqdFq2g@mail.gmail.com>",
+    "processingStatus": "processed"
   }
 ]
