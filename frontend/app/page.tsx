@@ -48,6 +48,10 @@ export default function Home() {
     if ((stage === 'review' || stage === 'decision') && !claimData) {
       return
     }
+    // Desk-rejected complaints cannot proceed to the Decision/Resolution stage
+    if (stage === 'decision' && claimData?.autoDecision === 'DESK_REJECT') {
+      return
+    }
     setCurrentStage(stage)
   }
 
@@ -126,7 +130,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] relative">
-      <Header currentStage={currentStage} onStageChange={handleStageChange} />
+      <Header currentStage={currentStage} onStageChange={handleStageChange} claimData={claimData} />
       <main className="relative z-10">
         <AnimatePresence mode="wait">
           <motion.div

@@ -1,15 +1,16 @@
 'use client'
 
 import React, { useState } from 'react'
-import { ProcessingStage } from '@/types/claims'
+import { ProcessingStage, ClaimData } from '@/types/claims'
 import { motion } from 'framer-motion'
-import { Inbox, ScanSearch, GitMerge, LayoutDashboard, LogOut, Check } from 'lucide-react'
+import { Inbox, ScanSearch, GitMerge, LayoutDashboard, LogOut, Check, Ban } from 'lucide-react'
 import ConfigModal from './ConfigModal'
 import { useAuth } from '@/lib/auth/AuthContext'
 
 interface HeaderProps {
   currentStage: ProcessingStage
   onStageChange: (stage: ProcessingStage) => void
+  claimData?: ClaimData | null
 }
 
 const stages = [
@@ -21,11 +22,12 @@ const stages = [
 
 const ORDER: ProcessingStage[] = ['home', 'review', 'decision', 'dashboard']
 
-export default function Header({ currentStage, onStageChange }: HeaderProps) {
+export default function Header({ currentStage, onStageChange, claimData }: HeaderProps) {
   const [showConfig, setShowConfig] = useState(false)
   const { user, logout } = useAuth()
 
   const currentIdx = ORDER.indexOf(currentStage)
+  const isDeskReject = claimData?.autoDecision === 'DESK_REJECT'
 
   return (
     <>
@@ -48,7 +50,9 @@ export default function Header({ currentStage, onStageChange }: HeaderProps) {
                 const Icon = stage.icon
                 const isActive  = currentStage === stage.id
                 const isDone    = currentIdx > idx
-                const isLocked  = (stage.id === 'review' || stage.id === 'decision') && currentIdx < idx && currentIdx === 0
+                const isLocked  = ((stage.id === 'review' || stage.id === 'decision') && currentIdx < idx && currentIdx === 0)
+                  || (stage.id === 'decision' && isDeskReject)
+                const isRejected = stage.id === 'decision' && isDeskReject
 
                 return (
                   <React.Fragment key={stage.id}>
@@ -64,7 +68,7 @@ export default function Header({ currentStage, onStageChange }: HeaderProps) {
                       {/* Circle */}
                       <motion.div
                         animate={{
-                          backgroundColor: isDone ? '#059669' : isActive ? '#991B1B' : '#E5E7EB',
+                          backgroundColor: isDone ? '#059669' : isActive ? '#991B1B' : isRejected ? '#DC2626' : '#E5E7EB',
                           scale: isActive ? 1.08 : 1,
                         }}
                         transition={{ type: 'spring', stiffness: 400, damping: 28 }}
@@ -72,6 +76,8 @@ export default function Header({ currentStage, onStageChange }: HeaderProps) {
                       >
                         {isDone ? (
                           <Check className="w-3.5 h-3.5 text-white" strokeWidth={2.5} />
+                        ) : isRejected ? (
+                          <Ban className="w-3.5 h-3.5 text-white" strokeWidth={2} />
                         ) : (
                           <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-white' : 'text-[#9CA3AF]'}`} strokeWidth={2} />
                         )}
@@ -79,10 +85,12 @@ export default function Header({ currentStage, onStageChange }: HeaderProps) {
 
                       {/* Label */}
                       <div className="hidden lg:block">
-                        <p className={`text-[12px] font-semibold leading-none ${isActive ? 'text-[#991B1B]' : isDone ? 'text-[#059669]' : 'text-[#374151]'}`}>
+                        <p className={`text-[12px] font-semibold leading-none ${isActive ? 'text-[#991B1B]' : isDone ? 'text-[#059669]' : isRejected ? 'text-[#DC2626]' : 'text-[#374151]'}`}>
                           {stage.label}
                         </p>
-                        <p className="text-[10px] text-[#9CA3AF] leading-none mt-0.5 font-medium">{stage.sub}</p>
+                        <p className="text-[10px] text-[#9CA3AF] leading-none mt-0.5 font-medium">
+                          {isRejected ? 'Desk Rejected' : stage.sub}
+                        </p>
                       </div>
                     </button>
 

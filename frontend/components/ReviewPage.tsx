@@ -351,6 +351,8 @@ export default function ReviewPage({ claimData, onNextStage, onPreviousStage, on
     return 'bg-[#FFFBEB] text-[#B45309]'
   }
 
+  const isDeskReject = claimData.autoDecision === 'DESK_REJECT'
+
   return (
     <div className="max-w-[1920px] mx-auto">
       <ClaimSummaryBar
@@ -358,9 +360,33 @@ export default function ReviewPage({ claimData, onNextStage, onPreviousStage, on
         onBack={onPreviousStage}
         onContinue={onNextStage}
         continueLabel="Continue"
+        continueDisabled={isDeskReject}
+        continueTooltip="This complaint has been desk rejected and cannot proceed to resolution"
         showClaimDropdown
         onClaimSelect={onLoadClaim}
       />
+
+      {/* Desk Reject Banner */}
+      {isDeskReject && (
+        <div className="mx-4 mb-4 flex items-start gap-3 p-4 rounded-xl bg-rose-50 border-2 border-rose-300">
+          <AlertTriangle className="w-5 h-5 text-rose-600 flex-shrink-0 mt-0.5" />
+          <div>
+            <p className="text-sm font-semibold text-rose-800">Complaint Desk Rejected — Cannot Proceed</p>
+            <p className="text-xs text-rose-600 mt-0.5">
+              {claimData.rejectReason === 'customer_not_found'
+                ? 'Customer record not found in CRM. This complaint cannot be processed without a verified account.'
+                : claimData.rejectReason === 'physical_damage'
+                  ? 'Physical or accidental damage is not covered under the standard warranty.'
+                  : claimData.rejectReason === 'unauthorized_repair'
+                    ? 'Product was repaired by an unauthorised third party, voiding the warranty.'
+                    : claimData.rejectReason === 'unsupported_product'
+                      ? 'Product type is not supported through this complaint channel.'
+                      : 'Product is outside its warranty period. This complaint has been automatically rejected.'}
+            </p>
+            <p className="text-xs text-rose-500 mt-1">The "Continue to Resolution" button is disabled. You may go back to the inbox.</p>
+          </div>
+        </div>
+      )}
 
       {/* Main Content - Two Column Layout */}
       <div className="px-4 py-8">
@@ -1481,66 +1507,6 @@ export default function ReviewPage({ claimData, onNextStage, onPreviousStage, on
               </div>
             )}
 
-            {/* Email Thread */}
-            <motion.div
-              className="card p-5 mt-6"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-            >
-              <button
-                onClick={async () => {
-                  if (!showMailChain) await mailChainHook.fetch()
-                  setShowMailChain(v => !v)
-                }}
-                className="w-full flex items-center justify-between text-left"
-              >
-                <div className="flex items-center gap-2">
-                  <Mail className="w-4 h-4 text-[#3B82F6]" />
-                  <span className="text-sm font-semibold text-[#111827]">Email Thread</span>
-                  {mailChainHook.chain.length > 0 && (
-                    <span className="text-[10px] font-semibold bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded-full">
-                      {mailChainHook.chain.length}
-                    </span>
-                  )}
-                </div>
-                {showMailChain
-                  ? <ChevronUp className="w-4 h-4 text-[#6B7280]" />
-                  : <ChevronDown className="w-4 h-4 text-[#6B7280]" />}
-              </button>
-
-              {showMailChain && (
-                <div className="mt-4">
-                  {mailChainHook.loading ? (
-                    <div className="flex items-center justify-center py-6 gap-2 text-[#9CA3AF]">
-                      <Clock className="w-4 h-4 animate-spin" />
-                      <span className="text-xs">Loading thread…</span>
-                    </div>
-                  ) : mailChainHook.chain.length === 0 ? (
-                    <p className="text-xs text-[#9CA3AF] text-center py-4">No emails in thread yet.</p>
-                  ) : (
-                    <div className="space-y-2">
-                      {mailChainHook.chain.map((msg, i) => (
-                        <div key={msg.id ?? i} className="rounded-lg border border-[#E5E7EB] bg-[#F9FAFB] p-3">
-                          <div className="flex items-center justify-between mb-1 gap-2">
-                            <span className="text-xs font-semibold text-[#111827] truncate">
-                              {msg.from?.replace(/<.*>/, '').trim() || 'Unknown'}
-                            </span>
-                            <span className="text-[10px] text-[#9CA3AF] flex-shrink-0">
-                              {msg.createdAt ? new Date(msg.createdAt).toLocaleDateString('en-GB') : ''}
-                            </span>
-                          </div>
-                          <p className="text-[11px] text-[#374151] font-medium truncate">{msg.subject}</p>
-                          {msg.emailBody && (
-                            <p className="text-[11px] text-[#6B7280] mt-1 line-clamp-2">{msg.emailBody}</p>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )}
-            </motion.div>
           </div>
         </div>
       </div>

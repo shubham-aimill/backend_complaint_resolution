@@ -61,6 +61,7 @@ interface PolicyOption {
   subject: string
   processingStatus?: string
   from?: string
+  inReplyTo?: string
 }
 
 const CACHE_KEYS = {
@@ -145,12 +146,13 @@ export default function HomePage({ onProcessClaim, isProcessing, setIsProcessing
               seen.add(key)
               return true
             })
-            .map((c: { id: string; complaintRef?: string; policyNumber?: string; subject?: string; processingStatus?: string; from?: string }) => ({
+            .map((c: { id: string; complaintRef?: string; policyNumber?: string; subject?: string; processingStatus?: string; from?: string; inReplyTo?: string }) => ({
               id: c.id,
               policyNumber: c.policyNumber ?? c.complaintRef ?? c.id,
               subject: c.subject ?? '',
               processingStatus: c.processingStatus ?? 'pending',
               from: c.from ?? '',
+              inReplyTo: c.inReplyTo,
             }))
         : []
       setPolicyOptions(options)
@@ -328,8 +330,9 @@ export default function HomePage({ onProcessClaim, isProcessing, setIsProcessing
     })
   }
 
-  const pendingCount   = policyOptions.filter(o => o.processingStatus !== 'processed').length
-  const processedCount = policyOptions.filter(o => o.processingStatus === 'processed').length
+  const complaintOptions = policyOptions.filter(o => !o.inReplyTo)
+  const pendingCount   = complaintOptions.filter(o => o.processingStatus !== 'processed').length
+  const processedCount = complaintOptions.filter(o => o.processingStatus === 'processed').length
 
   // Use thread if loaded, otherwise fall back to the single claim as a thread of 1
   const displayThread: ThreadMessage[] = thread.length > 0
@@ -350,7 +353,7 @@ export default function HomePage({ onProcessClaim, isProcessing, setIsProcessing
           <div>
             <h1 className="text-sm font-bold text-[#111827]">Complaint Inbox</h1>
             <p className="text-[11px] text-[#9CA3AF] font-medium">
-              {loadingPolicies ? 'Loading…' : `${policyOptions.length} complaints · ${pendingCount} pending · ${processedCount} processed`}
+              {loadingPolicies ? 'Loading…' : `${complaintOptions.length} complaints · ${pendingCount} pending · ${processedCount} processed`}
             </p>
           </div>
         </div>

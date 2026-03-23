@@ -598,41 +598,11 @@ export default function DecisionPage({ claimData, onNextStage, onPreviousStage }
         <div className="w-[260px] flex-shrink-0 border-l border-[#E5E7EB] bg-white flex flex-col overflow-y-auto">
           <div className="p-4 space-y-3">
 
-            {/* Primary decision actions */}
-            <div>
-              <p className="text-[10px] font-semibold text-[#9CA3AF] uppercase tracking-wider mb-2">Decision</p>
-              {decisionHook.status === 'pending' ? (
-                <div className="grid grid-cols-2 gap-2">
-                  <button
-                    onClick={() => { setPendingDecision('accept'); setRejectionReason(''); setShowDecisionModal(true) }}
-                    className="flex items-center justify-center gap-1.5 py-2.5 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl transition-colors shadow-sm"
-                  >
-                    <Check className="w-3.5 h-3.5" />Accept
-                  </button>
-                  <button
-                    onClick={() => { setPendingDecision('reject'); setRejectionReason(''); setShowDecisionModal(true) }}
-                    className="flex items-center justify-center gap-1.5 py-2.5 text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 rounded-xl transition-colors shadow-sm"
-                  >
-                    <X className="w-3.5 h-3.5" />Reject
-                  </button>
-                </div>
-              ) : (
-                <div className={`flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-semibold ${decisionHook.status === 'accepted' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-200'}`}>
-                  {decisionHook.status === 'accepted' ? <CheckCircle className="w-4 h-4" /> : <X className="w-4 h-4" />}
-                  {decisionHook.status === 'accepted' ? 'Complaint Accepted' : 'Complaint Rejected'}
-                </div>
-              )}
-              {decisionHook.error && <p className="text-[11px] text-rose-600 mt-1.5">{decisionHook.error}</p>}
-            </div>
-
-            <div className="border-t border-[#F3F4F6]" />
-
             {/* Email actions */}
             <div>
               <p className="text-[10px] font-semibold text-[#9CA3AF] uppercase tracking-wider mb-2">Email Templates</p>
               <div className="space-y-1.5">
                 {[
-                  { label: 'Acknowledgment',    type: 'acknowledgment' as const, sent: emailDraftHook.sent.acknowledgment },
                   { label: 'Request Documents', type: 'moreInfo' as const,       sent: emailDraftHook.sent.moreInfo },
                   ...(decisionHook.status === 'accepted' ? [{ label: 'Resolution Letter', type: 'acceptance' as const, sent: emailDraftHook.sent.acceptance }] : []),
                   ...(decisionHook.status === 'rejected' ? [{ label: 'Rejection Letter',  type: 'rejection' as const,  sent: emailDraftHook.sent.rejection  }] : []),
@@ -671,7 +641,14 @@ export default function DecisionPage({ claimData, onNextStage, onPreviousStage }
                     recipient, `Engineer Visit Request – ${complaintRef}`, claimData.messageId, claimData.threadId)}
                   className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium bg-[#F9FAFB] text-[#374151] hover:bg-[#F3F4F6] transition-colors"
                 >
-                  <span>Draft Engineer Visit</span>
+                  <span className="flex items-center gap-1.5">
+                    Draft Engineer Visit
+                    {claimData.warrantyStatus === 'WITHIN_WARRANTY'
+                      ? <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded-full">Free</span>
+                      : claimData.warrantyStatus === 'OUT_OF_WARRANTY'
+                        ? <span className="text-[10px] font-semibold text-amber-700 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded-full">Charges Applied</span>
+                      : null}
+                  </span>
                   <User className="w-3.5 h-3.5 text-[#9CA3AF]" />
                 </button>
                 <button
@@ -712,16 +689,6 @@ export default function DecisionPage({ claimData, onNextStage, onPreviousStage }
             <div>
               <p className="text-[10px] font-semibold text-[#9CA3AF] uppercase tracking-wider mb-2">System</p>
               <div className="space-y-1.5">
-                <button
-                  onClick={handleCreateDraft}
-                  disabled={isCreatingDraft || draftCreated}
-                  className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium transition-colors ${draftCreated ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-[#F9FAFB] text-[#374151] hover:bg-[#F3F4F6]'} disabled:opacity-60`}
-                >
-                  <span>{draftCreated ? 'Draft Created' : isCreatingDraft ? 'Creating…' : 'Create Draft in Core'}</span>
-                  {draftCreated ? <Check className="w-3.5 h-3.5" /> : <BarChart2 className="w-3.5 h-3.5 text-[#9CA3AF]" />}
-                </button>
-                {draftError && <p className="text-[11px] text-rose-600">{draftError}</p>}
-
                 <button
                   onClick={handleDownload}
                   disabled={isDownloading}
