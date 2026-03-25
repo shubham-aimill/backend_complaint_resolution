@@ -1,0 +1,271 @@
+{
+  "complaintId": "CMP-ING-1774376541664-9282c6e",
+  "ingestedComplaintId": "ING-1774376541664-9282c6e",
+  "sourceEmailFrom": "Customer Support <arp290825@gmail.com>",
+  "warrantyStatus": "WITHIN_WARRANTY",
+  "productCategory": null,
+  "autoDecision": "DESK_REJECT",
+  "decisionConfidence": 1.0,
+  "recommendedNextStep": "Send DESK_REJECT email (customer not found). Ask customer to verify account details.",
+  "rejectReason": "customer_not_found",
+  "decisionPack": {
+    "id": "DP-1774376561374",
+    "complaintDraft": {
+      "id": "DRAFT-1774376561374",
+      "complaintRef": "CMP-ING-1774106933344-9a41ae0",
+      "customerName": "Emily Johnson",
+      "customerEmail": "ar***@gmail.com",
+      "customerPhone": "Not found",
+      "complaintDate": "2026-03-21",
+      "complaintType": "Other",
+      "productOrService": "Not specified",
+      "description": "Complaint submitted via email",
+      "desiredResolution": "Not specified",
+      "estimatedAmount": 0.0,
+      "attachments": [],
+      "customerVerified": false,
+      "createdAt": "2026-03-24T18:22:41.374Z",
+      "source": "information_extraction",
+      "confidence": 1.0
+    },
+    "evidence": [
+      {
+        "field": "customerName",
+        "fieldName": "Customer Name",
+        "value": "Emily Johnson",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "customerEmail",
+        "fieldName": "Customer Email",
+        "value": "arp290825@gmail.com",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "complaintRef",
+        "fieldName": "Complaint Reference",
+        "value": "CMP-ING-1774106933344-9a41ae0",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "complaintDate",
+        "fieldName": "Complaint Date",
+        "value": "2026-03-21",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      }
+    ],
+    "documents": [
+      {
+        "id": "doc_email",
+        "name": "Customer Email",
+        "mimeType": "text/plain",
+        "type": "CorrespondenceRecord",
+        "content": "Subject: Action Required: Documents Needed \u2014 Complaint CMP-ING-1774106933344-9a41ae0\nFrom: Customer Support <arp290825@gmail.com>\nTo: Customer Support <arp290825@gmail.com>\nDate: March 21, 2026 08:39 AM\n\nDear Emily Johnson,\n\nThank you for getting in touch with Consumer Electronics Customer Support.\n\nWe have received your complaint (Reference: CMP-ING-1774106933344-9a41ae0) regarding your Not specified and want to resolve this for you as quickly as possible.\n\nTo progress your complaint, we need the following document(s):\n\n  \u2022 Purchase Invoice\n  \u2022 Product Model\n\nThese documents help us verify your purchase and process your claim efficiently.\n\nWhat to do next:\n  \u2022 Reply to this email with the document(s) attached, or\n  \u2022 Contact us quoting your complaint reference: CMP-ING-1774106933344-9a41ae0\n\nOnce we receive the required information, our team will review your case and\nrespond with an outcome within 2 business days.\n\nIf you have any difficulty locating these documents, please reply and we'll\ndo our best to assist you.\n\nWe apologise for the additional step and appreciate your cooperation.\n\nKind regards,\nCustomer Support Team\nConsumer Electronics\n  Email: support@electronics.com  |  Phone: 1-800-ELEC-HELP (Mon\u2013Fri, 9am\u20136pm)",
+        "confidence": 0.95,
+        "metadata": {
+          "source": "email_body"
+        },
+        "keyFields": {
+          "customerName": "Emily Johnson",
+          "customerEmail": "arp290825@gmail.com",
+          "complaintRef": "CMP-ING-1774106933344-9a41ae0",
+          "complaintDate": "2026-03-21"
+        }
+      }
+    ],
+    "customerGrounding": [
+      {
+        "recordId": "CUSTOMER-NOT-FOUND",
+        "title": "Customer Not Found",
+        "snippet": "No customer record found for the provided customer details.",
+        "content": "Customer could not be matched using complaintRef, customerEmail, or customerName. Please verify the customer details.",
+        "section": "Customer Verification",
+        "score": 0.0,
+        "confidence_score": 0.0,
+        "recommendation": "INVESTIGATE",
+        "action": "Verify the customer reference number provided in the complaint.",
+        "sourceDocument": "customers.json (Consumer Electronics CRM)",
+        "customer_verified": false
+      }
+    ],
+    "customerInfo": null,
+    "validationResults": [
+      {
+        "check": "customer_product_mapping",
+        "passed": false,
+        "customerRef": "CMP-ING-1774106933344-9A41AE0",
+        "customerFound": false,
+        "productId": null,
+        "productOwnedByCustomer": null,
+        "rejectReason": "customer_not_found",
+        "autoDecision": "DESK_REJECT",
+        "notes": "No matching customer found using complaintRef/customerEmail/customerName."
+      },
+      {
+        "check": "eligibility_validation",
+        "passed": true,
+        "rejectReason": null,
+        "autoDecision": null,
+        "notes": "No eligibility issues detected."
+      },
+      {
+        "check": "warranty_validation",
+        "passed": true,
+        "status": "WITHIN_WARRANTY",
+        "warrantyMonths": 12,
+        "purchaseDate": "2026-03-21",
+        "purchaseDateSource": "email_body",
+        "expiryDate": "2027-03-21",
+        "autoDecision": null,
+        "notes": "Product purchased on 2026-03-21. Warranty of 12 months expires on 2027-03-21. Product is within warranty period."
+      },
+      {
+        "check": "document_validation",
+        "passed": false,
+        "presentDocuments": [],
+        "missingDocuments": [
+          "purchase_invoice",
+          "product_model"
+        ],
+        "serialNumber": null,
+        "autoDecision": "REQUEST_DOCUMENTS",
+        "notes": "Documents present: none. Missing: purchase_invoice, product_model. Purchase invoice is REQUIRED \u2014 requesting documents."
+      },
+      {
+        "check": "product_validation",
+        "passed": false,
+        "productCategory": null,
+        "matchedProductId": null,
+        "matchedProductName": null,
+        "brandName": null,
+        "modelNumber": null,
+        "warrantyMonths": null,
+        "price": null,
+        "categorySupported": false,
+        "authorizedSellers": [],
+        "autoDecision": null,
+        "notes": "Product '' not found in product catalogue. Category not recognised \u2014 manual review advised."
+      }
+    ],
+    "warrantyStatus": "WITHIN_WARRANTY",
+    "productCategory": null,
+    "matchedProduct": null,
+    "autoDecision": "DESK_REJECT",
+    "decisionConfidence": 1.0,
+    "decisionRationale": "Customer record was not found in the CRM database. Complaint cannot be processed without a verified account.",
+    "recommendedNextStep": "Send DESK_REJECT email (customer not found). Ask customer to verify account details.",
+    "rejectReason": "customer_not_found",
+    "audit": [
+      {
+        "step": "Information Extraction",
+        "timestamp": "2026-03-24T18:22:41.373Z",
+        "duration": 3266,
+        "agent": "ExtractionService",
+        "status": "completed",
+        "details": {
+          "documentsProcessed": 1,
+          "errors": []
+        }
+      },
+      {
+        "step": "Validation Engine",
+        "timestamp": "2026-03-24T18:22:41.373Z",
+        "duration": 5,
+        "agent": "ValidationService",
+        "status": "completed",
+        "details": {
+          "warrantyStatus": "WITHIN_WARRANTY",
+          "allChecksPassed": false,
+          "autoDecision": "DESK_REJECT"
+        }
+      },
+      {
+        "step": "Customer & Product Grounding",
+        "timestamp": "2026-03-24T18:22:41.373Z",
+        "duration": 0,
+        "agent": "CustomerGroundingService",
+        "status": "completed",
+        "details": {
+          "recordsFound": 1,
+          "customerVerified": false
+        }
+      },
+      {
+        "step": "Decision Engine",
+        "timestamp": "2026-03-24T18:22:41.373Z",
+        "duration": 0,
+        "agent": "DecisionService",
+        "status": "completed",
+        "details": {
+          "autoDecision": "DESK_REJECT",
+          "decisionConfidence": 1.0
+        }
+      }
+    ],
+    "evidenceSummary": {
+      "totalFields": 4,
+      "highConfidenceFields": 4,
+      "lowConfidenceFields": 0,
+      "avgConfidence": 1.0
+    },
+    "documentAnalysis": {
+      "totalDocuments": 1,
+      "documentTypes": [
+        "CorrespondenceRecord"
+      ],
+      "avgDocumentConfidence": 0.95,
+      "missingDocuments": [
+        "purchase_invoice",
+        "product_model"
+      ],
+      "presentDocuments": []
+    },
+    "resolutionAssessment": {
+      "recordsFound": 1,
+      "customerVerified": false,
+      "topMatchScore": 0.0,
+      "recommendation": "CUSTOMER_NOT_FOUND",
+      "autoDecision": "DESK_REJECT",
+      "decisionConfidence": 1.0,
+      "recommendedActions": [
+        "Send DESK_REJECT email (customer not found). Ask customer to verify account details."
+      ]
+    },
+    "processingSummary": {
+      "stepsCompleted": 4,
+      "stepsWithErrors": 0
+    },
+    "createdAt": "2026-03-24T18:22:41.373Z"
+  },
+  "processingMetrics": {
+    "fieldsAutoPopulated": 4,
+    "stepsCompleted": 4,
+    "stepsFailed": 0,
+    "totalProcessingTime": 6587,
+    "averageHandleTime": 6.587,
+    "extractionTime": 3266,
+    "validationTime": 5
+  },
+  "createdAt": "2026-03-24T18:22:41.373Z",
+  "status": "draft",
+  "autoEmailResponse": {
+    "sent": true,
+    "decision": "DESK_REJECT",
+    "to": "Customer Support <arp290825@gmail.com>",
+    "error": null,
+    "subject": "Your Complaint Has Been Reviewed \u2014 CMP-ING-1774376541664-9282c6e",
+    "body": "Dear Customer,\n\nThank you for contacting Consumer Electronics Customer Support.\n\nWe have received a complaint submission (Reference: CMP-ING-1774376541664-9282c6e), however we were\nunable to locate a matching customer account in our system.\n\nTo process your complaint, we require a verified account with us. Please:\n\n  1. Verify your customer reference number (format: CUST#####) and reply with it, or\n  2. Contact us directly so we can locate your account:\n       Email: support@electronics.com\n       Phone: 1-800-ELEC-HELP  (Monday \u2013 Friday, 9am \u2013 6pm)\n  3. If you are a new customer, please register at our support portal before\n     submitting a complaint.\n\nWe apologise for the inconvenience and look forward to resolving this for you.\n\nKind regards,\nCustomer Support Team\nConsumer Electronics",
+    "sentFrom": "arp290825@gmail.com"
+  },
+  "messageId": "<69bebb9a.170a0220.200423.8025@mx.google.com>",
+  "threadId": "<69b44fc1.170a0220.71189.74fa@mx.google.com>",
+  "processingTime": 6587
+}

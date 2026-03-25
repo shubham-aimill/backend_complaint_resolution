@@ -62,6 +62,8 @@ interface PolicyOption {
   processingStatus?: string
   from?: string
   inReplyTo?: string
+  threadId?: string
+  createdAt?: string
 }
 
 const CACHE_KEYS = {
@@ -138,21 +140,24 @@ export default function HomePage({ onProcessClaim, isProcessing, setIsProcessing
       const options: PolicyOption[] = Array.isArray(data)
         ? data
             // Drop outbound sent-email records — they appear in the thread view only
-            .filter((c: { id?: string }) => !c.id?.includes('-OUT-'))
+            .filter((c: { id?: string }) => !(c.id?.startsWith('OUT-') || c.id?.includes('-OUT-')))
             // Deduplicate by subject+from so the same email never appears twice
-            .filter((c: { subject?: string; from?: string }) => {
-              const key = `${(c.subject ?? '').trim().toLowerCase()}|${(c.from ?? '').trim().toLowerCase()}`
+            .filter((c: { threadId?: string; subject?: string; from?: string }) => {
+              const key = (c.threadId ?? '').trim().toLowerCase()
+                || `${(c.subject ?? '').trim().toLowerCase()}|${(c.from ?? '').trim().toLowerCase()}`
               if (seen.has(key)) return false
               seen.add(key)
               return true
             })
-            .map((c: { id: string; complaintRef?: string; policyNumber?: string; subject?: string; processingStatus?: string; from?: string; inReplyTo?: string }) => ({
+            .map((c: { id: string; complaintRef?: string; policyNumber?: string; subject?: string; processingStatus?: string; from?: string; inReplyTo?: string; threadId?: string; createdAt?: string }) => ({
               id: c.id,
               policyNumber: c.policyNumber ?? c.complaintRef ?? c.id,
               subject: c.subject ?? '',
               processingStatus: c.processingStatus ?? 'pending',
               from: c.from ?? '',
               inReplyTo: c.inReplyTo,
+              threadId: c.threadId,
+              createdAt: c.createdAt,
             }))
         : []
       setPolicyOptions(options)
@@ -669,9 +674,13 @@ export default function HomePage({ onProcessClaim, isProcessing, setIsProcessing
                                       </div>
                                       <div className="grid sm:grid-cols-2 gap-2">
                                         {msg.attachments.map((att) => (
-                                          <div
+                                          <a
                                             key={att.name}
-                                            className="flex items-center gap-2.5 p-2.5 bg-white rounded-lg border border-[#E5E7EB] hover:border-[#CBD5E1] transition-colors"
+                                            href={`/api/ingested-claims/${encodeURIComponent(msg.id)}/attachments?name=${encodeURIComponent(att.name)}`}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            className="flex items-center gap-2.5 p-2.5 bg-white rounded-lg border border-[#E5E7EB] hover:border-[#CBD5E1] hover:bg-[#F9FAFB] transition-colors"
+                                            title={`Open ${att.name}`}
                                           >
                                             <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0
                                               ${att.mimeType?.startsWith('image/') ? 'bg-[#FEF2F2]' : 'bg-[#F3F4F6]'}`}>
@@ -683,7 +692,7 @@ export default function HomePage({ onProcessClaim, isProcessing, setIsProcessing
                                               <p className="text-[12px] font-semibold text-[#111827] truncate">{att.name}</p>
                                               <p className="text-[11px] text-[#9CA3AF]">{att.size ? `${(att.size / 1024).toFixed(1)} KB` : ''} {att.mimeType?.split('/')[1]?.toUpperCase()}</p>
                                             </div>
-                                          </div>
+                                          </a>
                                         ))}
                                       </div>
                                     </div>

@@ -1,6 +1,6 @@
 /**
- * GET /api/ingested-claims/[id]/attachments?name=filename.jpg
- * Fetches the ingested complaint from FastAPI, then reads the attachment from disk.
+ * GET /api/ingested-claims/[id]/attachments?name=filename.ext
+ * Fetches the ingested complaint from FastAPI, then serves the attachment file.
  */
 import { NextRequest, NextResponse } from 'next/server'
 import { getApiUrl } from '@/lib/api-config'
@@ -47,17 +47,21 @@ export async function GET(
       return NextResponse.json({ error: 'Attachment file not found' }, { status: 404 })
     }
 
-    const ext = path.extname(att.name).toLowerCase()
-    const imageExts = ['.jpg', '.jpeg', '.png', '.gif', '.webp']
-    const isImage = imageExts.includes(ext) || (att.mimeType || '').startsWith('image/')
-    if (!isImage) {
-      return NextResponse.json({ error: 'Not an image attachment' }, { status: 400 })
+    const backendDataDir = path.join(backendModified, 'data')
+    const normalizedDataDir = path.resolve(backendDataDir)
+    const normalizedFilePath = path.resolve(filePath)
+    if (!normalizedFilePath.startsWith(normalizedDataDir + path.sep)) {
+      return NextResponse.json({ error: 'Invalid attachment path' }, { status: 400 })
     }
 
     const buffer = fs.readFileSync(filePath)
+    const mime = att.mimeType || 'application/octet-stream'
+    const isInline = mime.startsWith('image/') || mime === 'application/pdf' || mime.startsWith('text/')
+
     return new NextResponse(buffer, {
       headers: {
-        'Content-Type': att.mimeType || 'image/jpeg',
+        'Content-Type': mime,
+        'Content-Disposition': `${isInline ? 'inline' : 'attachment'}; filename="${att.name}"`,
         'Cache-Control': 'public, max-age=3600',
       },
     })

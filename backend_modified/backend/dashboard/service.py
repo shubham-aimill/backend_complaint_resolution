@@ -120,8 +120,8 @@ def save_processed_complaint(complaint: Dict[str, Any]) -> None:
     _save_index(index)
 
 
-def get_processed_complaint_summaries() -> List[Dict[str, Any]]:
-    return [
+def get_processed_complaint_summaries(include_desk_rejected: bool = False) -> List[Dict[str, Any]]:
+    rows = [
         {
             "complaintId":         e.get("complaintId"),
             "ingestedComplaintId": e.get("ingestedComplaintId"),
@@ -136,6 +136,9 @@ def get_processed_complaint_summaries() -> List[Dict[str, Any]]:
         }
         for e in _get_index()
     ]
+    if include_desk_rejected:
+        return rows
+    return [r for r in rows if (r.get("autoDecision") or "").upper() != "DESK_REJECT"]
 
 
 def _resolve_file_path(raw: str) -> Path:

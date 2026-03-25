@@ -69,12 +69,47 @@ def _derive_auto_decision(
     # Hard-stop decisions from validation
     if validation_auto == "DESK_REJECT":
         # Determine the specific reject reason for tailored rationale
+        mapping_result = next(
+            (r for r in validation.get("validationResults", [])
+             if r.get("check") == "customer_product_mapping"),
+            {}
+        )
         eligibility_result = next(
             (r for r in validation.get("validationResults", [])
              if r.get("check") == "eligibility_validation"),
             {}
         )
-        reject_reason = eligibility_result.get("rejectReason")
+        reject_reason = mapping_result.get("rejectReason") or eligibility_result.get("rejectReason")
+
+        if reject_reason == "customer_not_found":
+            return {
+                "autoDecision":        "DESK_REJECT",
+                "decisionConfidence":  1.0,
+                "decisionRationale":   (
+                    "Customer record was not found in the CRM database. "
+                    "Complaint cannot be processed without a verified account."
+                ),
+                "recommendedNextStep": (
+                    "Send DESK_REJECT email (customer not found). "
+                    "Ask customer to verify account details."
+                ),
+                "rejectReason": "customer_not_found",
+            }
+
+        if reject_reason == "product_not_registered":
+            return {
+                "autoDecision":        "DESK_REJECT",
+                "decisionConfidence":  0.97,
+                "decisionRationale":   (
+                    "The customer account was found, but the complained product is not "
+                    "registered under that customer."
+                ),
+                "recommendedNextStep": (
+                    "Send DESK_REJECT email (product not registered). "
+                    "Ask customer to confirm product ownership details."
+                ),
+                "rejectReason": "product_not_registered",
+            }
 
         if reject_reason == "physical_damage":
             return {

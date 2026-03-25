@@ -180,10 +180,10 @@ async def clear_ingested_complaints_endpoint() -> Dict[str, Any]:
 
 
 @app.get("/api/complaints")
-async def list_processed_complaints() -> List[Dict[str, Any]]:
-    """List all processed complaint summaries."""
+async def list_processed_complaints(includeDeskRejected: bool = False) -> List[Dict[str, Any]]:
+    """List processed complaint summaries (desk-rejected hidden by default)."""
     try:
-        return get_processed_complaint_summaries()
+        return get_processed_complaint_summaries(include_desk_rejected=includeDeskRejected)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

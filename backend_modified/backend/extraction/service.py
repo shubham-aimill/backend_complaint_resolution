@@ -9,10 +9,12 @@ purchase date and electronics-specific complaint types.
 """
 
 import base64
+import html
 import json
 import os
 import re
 import sys
+import zipfile
 from pathlib import Path
 from typing import Any, Dict, List
 
@@ -73,12 +75,53 @@ def _is_image_file(file_path: str, mime_type: str) -> bool:
     return (mime_type or "").lower().startswith("image/")
 
 
+def _looks_binary(data: bytes) -> bool:
+    if not data:
+        return False
+    if b"\x00" in data:
+        return True
+    sample = data[:4096]
+    text_bytes = set(b"\n\r\t\f\b") | set(range(32, 127))
+    non_text = sum(1 for b in sample if b not in text_bytes)
+    return (non_text / max(1, len(sample))) > 0.30
+
+
+def _extract_docx_text(p: Path) -> str:
+    """Extract readable text from a .docx file without extra dependencies."""
+    try:
+        with zipfile.ZipFile(p) as zf:
+            xml = zf.read("word/document.xml").decode("utf-8", errors="replace")
+    except Exception:
+        return ""
+
+    # Preserve rough paragraph/line boundaries before stripping tags.
+    xml = (
+        xml.replace("</w:p>", "\n")
+           .replace("<w:br/>", "\n")
+           .replace("<w:br />", "\n")
+           .replace("</w:tr>", "\n")
+           .replace("</w:tc>", " ")
+    )
+    text = re.sub(r"<[^>]+>", " ", xml)
+    text = html.unescape(text)
+    lines = [re.sub(r"\s+", " ", line).strip() for line in text.splitlines()]
+    return "\n".join(line for line in lines if line)
+
+
 def _read_text_file(file_path: str) -> str:
     p = Path(file_path)
     if not p.exists():
         return ""
     try:
-        return p.read_text(encoding="utf-8", errors="replace")
+        ext = p.suffix.lower()
+        if ext == ".docx":
+            return _extract_docx_text(p)
+
+        raw = p.read_bytes()
+        if _looks_binary(raw):
+            return ""
+
+        return raw.decode("utf-8", errors="replace")
     except Exception:
         return ""
 

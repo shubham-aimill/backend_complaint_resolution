@@ -25,7 +25,7 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-from backend.common.config import DATA_DIR
+from backend.common.config import DATA_DIR, CUSTOMERS_FILE
 
 # ── Constants ──────────────────────────────────────────────────────────────
 
@@ -53,6 +53,77 @@ def _load_products() -> List[Dict[str, Any]]:
         return json.loads(products_file.read_text(encoding="utf-8"))
     except Exception:
         return []
+
+
+def _load_customers() -> List[Dict[str, Any]]:
+    """Load customers from customers.json."""
+    if not CUSTOMERS_FILE.exists():
+        return []
+    try:
+        return json.loads(CUSTOMERS_FILE.read_text(encoding="utf-8"))
+    except Exception:
+        return []
+
+
+def _normalize_email(raw: Optional[str]) -> str:
+    if not raw:
+        return ""
+    s = str(raw).strip().lower()
+    m = re.search(r"<([^>]+@[^>]+)>", s)
+    if m:
+        return m.group(1).strip()
+    # fallback for plain email text
+    return s
+
+
+def _normalize_name(raw: Optional[str]) -> str:
+    if not raw:
+        return ""
+    return " ".join(str(raw).strip().lower().split())
+
+
+def _find_customer_record(
+    extracted_fields: Dict[str, Any],
+    customers: List[Dict[str, Any]],
+) -> Tuple[Optional[Dict[str, Any]], str]:
+    """
+    Resolve customer using strongest available keys:
+      1) complaintRef as customer_id
+      2) customerEmail
+      3) customerName (first + last)
+    Returns (customer, source).
+    """
+    customer_ref = (extracted_fields.get("complaintRef") or "").strip().upper()
+    if customer_ref:
+        by_id = next(
+            (c for c in customers if str(c.get("customer_id", "")).strip().upper() == customer_ref),
+            None,
+        )
+        if by_id:
+            return by_id, "customer_id"
+
+    email = _normalize_email(extracted_fields.get("customerEmail"))
+    if email:
+        by_email = next(
+            (c for c in customers if _normalize_email(c.get("email_id")) == email),
+            None,
+        )
+        if by_email:
+            return by_email, "email_id"
+
+    full_name = _normalize_name(extracted_fields.get("customerName"))
+    if full_name:
+        by_name = next(
+            (
+                c for c in customers
+                if _normalize_name(f"{c.get('first_name', '')} {c.get('last_name', '')}") == full_name
+            ),
+            None,
+        )
+        if by_name:
+            return by_name, "full_name"
+
+    return None, "not_found"
 
 
 def _parse_date(date_str: Optional[str]) -> Optional[datetime]:
@@ -358,6 +429,100 @@ def validate_product(
     }
 
 
+# ── Customer ↔ Product ownership mapping ───────────────────────────────────
+
+def validate_customer_product_mapping(
+    extracted_fields: Dict[str, Any],
+    matched_product: Optional[Dict[str, Any]],
+    customers: List[Dict[str, Any]],
+) -> Dict[str, Any]:
+    """
+    Enforce strict mapping:
+      1) Customer must exist
+      2) If product is matched, it must be registered to that customer
+
+    Returns DESK_REJECT on mapping failures.
+    """
+    customer, match_source = _find_customer_record(extracted_fields, customers)
+    customer_ref = str((customer or {}).get("customer_id") or extracted_fields.get("complaintRef") or "").strip().upper() or None
+    if not customer:
+        return {
+            "check": "customer_product_mapping",
+            "passed": False,
+            "customerRef": customer_ref,
+            "customerFound": False,
+            "productId": matched_product.get("product_id") if matched_product else None,
+            "productOwnedByCustomer": None,
+            "rejectReason": "customer_not_found",
+            "autoDecision": "DESK_REJECT",
+            "notes": (
+                "No matching customer found using complaintRef/customerEmail/customerName."
+            ),
+        }
+
+    # If product is unknown from extraction/catalogue, keep this check non-blocking.
+    if not matched_product:
+        return {
+            "check": "customer_product_mapping",
+            "passed": True,
+            "customerRef": customer_ref,
+            "customerFound": True,
+            "customerMatchSource": match_source,
+            "productId": None,
+            "productOwnedByCustomer": None,
+            "rejectReason": None,
+            "autoDecision": None,
+            "notes": (
+                "Customer found. Product could not be reliably matched in catalogue; "
+                "ownership mapping skipped for this complaint."
+            ),
+        }
+
+    product_id = matched_product.get("product_id")
+    registered = customer.get("registered_products", []) or []
+    is_owned = bool(product_id and product_id in registered)
+
+    purchase_dates = customer.get("product_purchase_dates", {}) or {}
+    registered_purchase_date = purchase_dates.get(product_id) if product_id else None
+
+    if not is_owned:
+        return {
+            "check": "customer_product_mapping",
+            "passed": False,
+            "customerRef": customer_ref,
+            "customerFound": True,
+            "customerMatchSource": match_source,
+            "productId": product_id,
+            "productOwnedByCustomer": False,
+            "registeredProducts": registered,
+            "registeredPurchaseDate": registered_purchase_date,
+            "rejectReason": "product_not_registered",
+            "autoDecision": "DESK_REJECT",
+            "notes": (
+                f"Customer '{customer_ref}' exists, but product '{product_id}' is not "
+                "registered under this customer."
+            ),
+        }
+
+    return {
+        "check": "customer_product_mapping",
+        "passed": True,
+        "customerRef": customer_ref,
+        "customerFound": True,
+        "customerMatchSource": match_source,
+        "productId": product_id,
+        "productOwnedByCustomer": True,
+        "registeredProducts": registered,
+        "registeredPurchaseDate": registered_purchase_date,
+        "rejectReason": None,
+        "autoDecision": None,
+        "notes": (
+            f"Customer '{customer_ref}' verified and owns product '{product_id}'. "
+            "Proceeding to warranty and other checks."
+        ),
+    }
+
+
 # ── Eligibility checks (non-warranty desk-reject scenarios) ───────────────
 
 def validate_eligibility(
@@ -480,6 +645,7 @@ def run_validation(
         }
     """
     products = _load_products()
+    customers = _load_customers()
 
     # Product validation first so we can pass matched product to warranty check
     product_result = validate_product(extracted_fields, documents, products)
@@ -490,11 +656,12 @@ def run_validation(
             None,
         )
 
+    mapping_result     = validate_customer_product_mapping(extracted_fields, matched_product, customers)
     eligibility_result = validate_eligibility(extracted_fields, documents)
     warranty_result    = validate_warranty(extracted_fields, documents, matched_product)
     document_result    = validate_documents(extracted_fields, documents)
 
-    results = [eligibility_result, warranty_result, document_result, product_result]
+    results = [mapping_result, eligibility_result, warranty_result, document_result, product_result]
 
     # Priority order for auto-decision: DESK_REJECT > REQUEST_DOCUMENTS > None
     # Eligibility check takes precedence over warranty (covers additional reject scenarios)

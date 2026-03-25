@@ -48,6 +48,10 @@ def process_complaint(ingested_complaint_id: str) -> Dict[str, Any]:
     complaint = get_ingested_complaint_by_id(ingested_complaint_id)
     if not complaint:
         raise ValueError(f"Complaint not found: {ingested_complaint_id}")
+    if complaint.get("source") == "outbound":
+        raise ValueError(
+            f"Complaint {ingested_complaint_id} is an outbound thread email and cannot be processed"
+        )
 
     # ── Guard: skip re-processing already-processed complaints ────────────
     if complaint.get("processingStatus") == "processed":

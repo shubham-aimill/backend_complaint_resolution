@@ -182,6 +182,29 @@ Kind regards,
 Customer Support Team
 Consumer Electronics"""
 
+    if reject_reason == "product_not_registered":
+        return f"""Dear {name},
+
+Thank you for contacting Consumer Electronics Customer Support regarding your
+{product} (Complaint Reference: {complaint_id}).
+
+We have reviewed your complaint and verified your customer account. However,
+the product in this complaint is not registered under your account details.
+
+  Reason: Product ownership could not be mapped to your customer record.
+
+To help us proceed, please reply with one of the following:
+  1. Purchase invoice showing your name and product model/serial number
+  2. Proof of product registration under your account
+  3. Correct customer ID if a different account was used at purchase
+
+Once these details are provided, we can re-verify and continue processing your
+complaint.
+
+Kind regards,
+Customer Support Team
+Consumer Electronics"""
+
     # Default: out of warranty
     warranty_info = ""
     if purchase_date and warranty_expiry:

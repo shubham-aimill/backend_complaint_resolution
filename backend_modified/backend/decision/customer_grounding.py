@@ -13,6 +13,7 @@ Data files used (all under data/):
 
 import json
 import os
+import re
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -62,6 +63,44 @@ def find_customer(customer_id: str) -> Optional[Dict[str, Any]]:
     _load_data()
     cid = customer_id.strip().upper()
     return next((c for c in _customers_cache if c.get("customer_id", "").upper() == cid), None)
+
+
+def _normalize_email(raw: Optional[str]) -> str:
+    if not raw:
+        return ""
+    s = str(raw).strip().lower()
+    m = re.search(r"<([^>]+@[^>]+)>", s)
+    if m:
+        return m.group(1).strip()
+    return s
+
+
+def _normalize_name(raw: Optional[str]) -> str:
+    if not raw:
+        return ""
+    return " ".join(str(raw).strip().lower().split())
+
+
+def find_customer_by_email(email: str) -> Optional[Dict[str, Any]]:
+    _load_data()
+    target = _normalize_email(email)
+    if not target:
+        return None
+    return next((c for c in _customers_cache if _normalize_email(c.get("email_id")) == target), None)
+
+
+def find_customer_by_name(full_name: str) -> Optional[Dict[str, Any]]:
+    _load_data()
+    target = _normalize_name(full_name)
+    if not target:
+        return None
+    return next(
+        (
+            c for c in _customers_cache
+            if _normalize_name(f"{c.get('first_name', '')} {c.get('last_name', '')}") == target
+        ),
+        None,
+    )
 
 
 def get_customer_complaints(customer_id: str) -> List[Dict[str, Any]]:
@@ -130,17 +169,29 @@ def get_customer_grounding(extracted_fields: Dict[str, Any]) -> List[Dict[str, A
     _load_data()
 
     customer_ref = str(extracted_fields.get("complaintRef", "") or "").strip().upper()
-    if not customer_ref:
+    customer_email = str(extracted_fields.get("customerEmail", "") or "").strip()
+    customer_name_field = str(extracted_fields.get("customerName", "") or "").strip()
+
+    if not customer_ref and not customer_email and not customer_name_field:
         return []
 
     # ── Step 1: Customer lookup ───────────────────────────────────────────
-    customer = find_customer(customer_ref)
+    customer = find_customer(customer_ref) if customer_ref else None
+    if not customer and customer_email:
+        customer = find_customer_by_email(customer_email)
+    if not customer and customer_name_field:
+        customer = find_customer_by_name(customer_name_field)
+
+    resolved_ref = customer_ref or (str(customer.get("customer_id", "")).strip().upper() if customer else "")
     if not customer:
         return [{
             "recordId":          "CUSTOMER-NOT-FOUND",
             "title":             "Customer Not Found",
-            "snippet":           f"No customer record found for ID: {customer_ref}",
-            "content":           f"Customer ID '{customer_ref}' was not found. Please verify the reference number.",
+            "snippet":           "No customer record found for the provided customer details.",
+            "content":           (
+                "Customer could not be matched using complaintRef, customerEmail, or customerName. "
+                "Please verify the customer details."
+            ),
             "section":           "Customer Verification",
             "score":             0.0,
             "confidence_score":  0.0,
@@ -154,15 +205,15 @@ def get_customer_grounding(extracted_fields: Dict[str, Any]) -> List[Dict[str, A
     customer_status = customer.get("customer_status", "UNKNOWN")
 
     # ── Step 2: Complaint history ─────────────────────────────────────────
-    past_complaints = get_customer_complaints(customer_ref)
+    past_complaints = get_customer_complaints(resolved_ref)
 
     if not past_complaints:
         score = _confidence_score(True, False, False)
         rec   = _recommendation(score, False, "NORMAL")
         return [{
-            "recordId":          f"NEW-{customer_ref}",
+            "recordId":          f"NEW-{resolved_ref}",
             "title":             f"New Complaint — {customer_name}",
-            "snippet":           f"Customer {customer_ref} verified. No prior complaint history.",
+            "snippet":           f"Customer {resolved_ref} verified. No prior complaint history.",
             "content":           (
                 f"Customer: {customer_name} | Status: {customer_status} | "
                 f"Loyalty: {customer.get('loyalty_tier', 'N/A')} | "
@@ -203,7 +254,7 @@ def get_customer_grounding(extracted_fields: Dict[str, Any]) -> List[Dict[str, A
         comp_total   = float(complaint.get("compensation_total") or 0)
 
         content = (
-            f"Customer: {customer_name} ({customer_ref}) | "
+            f"Customer: {customer_name} ({resolved_ref}) | "
             f"Account status: {customer_status} | "
             f"Loyalty tier: {customer.get('loyalty_tier', 'N/A')} | "
             f"Complaint ID: {complaint_id} | "
@@ -228,7 +279,7 @@ def get_customer_grounding(extracted_fields: Dict[str, Any]) -> List[Dict[str, A
             content += f" | Latest action: {latest_action.get('action_description', 'N/A')}"
 
         results.append({
-            "recordId":          complaint_id or f"CMP-{customer_ref}",
+            "recordId":          complaint_id or f"CMP-{resolved_ref}",
             "title":             f"{complaint.get('complaint_type', 'Complaint')} — {product.get('product_name', 'N/A') if product else 'N/A'}",
             "snippet":           f"{complaint.get('complaint_type', 'Complaint')} — {complaint.get('complaint_subcategory', complaint.get('description', '')[:80])}",
             "content":           content,

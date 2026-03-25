@@ -10,7 +10,7 @@ import type { ClaimData } from '@/types/claims'
 export async function GET() {
   try {
     // Proxy to FastAPI server (backend uses complaints)
-    const response = await fetch(getApiUrl('api/complaints'), {
+    const response = await fetch(getApiUrl('api/complaints?includeDeskRejected=true'), {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     })

@@ -180,6 +180,8 @@ def save_ingested_complaint(
 def get_all_ingested_complaints() -> List[Dict[str, Any]]:
     """Return all ingested complaints (real emails only if available)."""
     complaints = _load_complaints()
+    # Outbound thread entries are not new complaints and must never be processable.
+    complaints = [c for c in complaints if c.get("source") != "outbound"]
     has_real = any(c.get("source") in ("imap", "sendgrid") for c in complaints)
     if has_real:
         return [c for c in complaints if c.get("source") != "demo"]
@@ -220,6 +222,8 @@ def get_thread_by_complaint_id(complaint_id: str) -> List[Dict[str, Any]]:
 def get_complaint_references() -> List[Dict[str, str]]:
     """Return lightweight reference list for frontend dropdown."""
     complaints = _load_complaints()
+    # Exclude outbound thread entries to prevent re-processing sent emails.
+    complaints = [c for c in complaints if c.get("source") != "outbound"]
     has_real = any(c.get("source") in ("imap", "sendgrid") for c in complaints)
     to_show = [c for c in complaints if c.get("source") != "demo"] if has_real else complaints
     return [
@@ -228,6 +232,10 @@ def get_complaint_references() -> List[Dict[str, str]]:
             "complaintRef":     c.get("complaintRef", c["id"]),
             "subject":          c.get("subject", ""),
             "processingStatus": c.get("processingStatus", "pending"),
+            "from":             c.get("from", ""),
+            "to":               c.get("to", ""),
+            "threadId":         c.get("threadId", ""),
+            "createdAt":        c.get("createdAt", ""),
         }
         for c in to_show
     ]
@@ -278,6 +286,7 @@ def add_email_to_thread(
         "createdAt":    _iso_now(),
         "source":       "outbound",
         "direction":    direction,
+        "processingStatus": "thread_only",
         "threadId":     target.get("threadId", complaint_id),
         "inReplyTo":    in_reply_to or target.get("messageId") or complaint_id,
     }
