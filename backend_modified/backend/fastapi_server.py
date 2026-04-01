@@ -41,6 +41,7 @@ from backend.ingested_complaints.service import (
 )
 from backend.process_complaint.orchestrator import process_complaint
 from backend.appointments.service import book_appointment, get_appointments, get_appointment_by_id
+from backend.faq_resolution.service import get_all_faqs, get_all_faq_emails, clear_faq_emails
 from backend.common.config import ENV_FILE
 from backend.common.models import (
     ProcessComplaintRequest,
@@ -351,6 +352,37 @@ async def get_appointment_endpoint(appointment_id: str) -> Dict[str, Any]:
     if result is None:
         raise HTTPException(status_code=404, detail="Appointment not found")
     return result
+
+
+@app.get("/api/faq")
+async def list_faqs() -> List[Dict[str, str]]:
+    """Return all FAQ entries from FAQ.csv."""
+    try:
+        return get_all_faqs()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/faq/emails")
+async def get_faq_related_emails() -> List[Dict[str, Any]]:
+    """
+    Return emails stored as FAQ queries during inbox sync.
+    No LLM calls — reads from faq-emails.json directly.
+    """
+    try:
+        return get_all_faq_emails()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/faq/emails/clear")
+async def clear_faq_emails_endpoint() -> Dict[str, Any]:
+    """Clear all stored FAQ emails."""
+    try:
+        clear_faq_emails()
+        return {"success": True}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.get("/")

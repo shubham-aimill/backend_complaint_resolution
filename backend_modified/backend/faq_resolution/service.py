@@ -11,6 +11,7 @@ import json
 import os
 import re
 import sys
+import uuid
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -298,3 +299,84 @@ def process_faq_email(
         }
     except Exception as e:
         return {"is_faq": True, "answered": False, "answer": None, "error": str(e)}
+
+
+def get_all_faqs() -> List[Dict[str, str]]:
+    """Return all FAQ entries from FAQ.csv."""
+    return _load_faq_data()
+
+
+# ── FAQ email storage (populated during inbox sync) ────────────────────────
+
+def _load_faq_emails_store() -> List[Dict[str, Any]]:
+    from backend.common.config import FAQ_EMAILS_FILE, ensure_data_dir
+    ensure_data_dir()
+    if not FAQ_EMAILS_FILE.exists():
+        return []
+    try:
+        return json.loads(FAQ_EMAILS_FILE.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return []
+
+
+def _save_faq_emails_store(records: List[Dict[str, Any]]) -> None:
+    from backend.common.config import FAQ_EMAILS_FILE, ensure_data_dir
+    ensure_data_dir()
+    FAQ_EMAILS_FILE.write_text(json.dumps(records, indent=2), encoding="utf-8")
+
+
+def _faq_iso_now() -> str:
+    import datetime, time as _time
+    dt = datetime.datetime.utcfromtimestamp(_time.time())
+    return dt.strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z"
+
+
+def save_faq_email(
+    from_addr: str,
+    to_addr: str,
+    subject: str,
+    email_body: str,
+    matched_faq: Optional[Dict[str, str]] = None,
+) -> Dict[str, Any]:
+    """Persist an FAQ email to the FAQ emails store (called during inbox sync)."""
+    import time as _time
+    record: Dict[str, Any] = {
+        "id":         f"FAQ-{int(_time.time() * 1000)}-{uuid.uuid4().hex[:7]}",
+        "from":       from_addr,
+        "to":         to_addr,
+        "subject":    subject,
+        "emailBody":  email_body,
+        "createdAt":  _faq_iso_now(),
+        "matchedFaq": matched_faq,
+    }
+    records = _load_faq_emails_store()
+    records.insert(0, record)
+    _save_faq_emails_store(records)
+    return record
+
+
+def get_all_faq_emails() -> List[Dict[str, Any]]:
+    """Return all stored FAQ emails (no LLM calls)."""
+    return _load_faq_emails_store()
+
+
+def clear_faq_emails() -> None:
+    """Clear all stored FAQ emails."""
+    _save_faq_emails_store([])
+
+
+def get_faq_emails(emails: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """Filter a list of email dicts to FAQ queries (runs LLM — prefer get_all_faq_emails for stored data)."""
+    faqs = _load_faq_data()
+    results: List[Dict[str, Any]] = []
+    for email in emails:
+        subject = email.get("subject", "")
+        body = email.get("emailBody", "")
+        if not _is_faq_query(subject, body):
+            continue
+        question_text = f"{subject} {body[:500]}"
+        matched = _find_faq_answer(question_text, faqs)
+        entry = dict(email)
+        entry["matchedFaq"] = matched
+        results.append(entry)
+    return results

@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import { ProcessingStage, ClaimData } from '@/types/claims'
 import { motion } from 'framer-motion'
-import { Inbox, ScanSearch, GitMerge, LayoutDashboard, LogOut, Check, Ban } from 'lucide-react'
+import { Inbox, ScanSearch, GitMerge, LayoutDashboard, LogOut, Check, Ban, HelpCircle } from 'lucide-react'
 import ConfigModal from './ConfigModal'
 import { useAuth } from '@/lib/auth/AuthContext'
 
@@ -15,12 +15,13 @@ interface HeaderProps {
 
 const stages = [
   { id: 'home',      label: 'Inbox',      sub: 'Ingest & select',    icon: Inbox },
+  { id: 'faq',       label: 'FAQ',        sub: 'FAQ queries',        icon: HelpCircle },
   { id: 'review',    label: 'Review',     sub: 'Extract & validate', icon: ScanSearch },
   { id: 'decision',  label: 'Resolution', sub: 'Decide & respond',   icon: GitMerge },
   { id: 'dashboard', label: 'Dashboard',  sub: 'KPIs & metrics',     icon: LayoutDashboard },
 ] as const
 
-const ORDER: ProcessingStage[] = ['home', 'review', 'decision', 'dashboard']
+const ORDER: ProcessingStage[] = ['home', 'faq', 'review', 'decision', 'dashboard']
 
 export default function Header({ currentStage, onStageChange, claimData }: HeaderProps) {
   const [showConfig, setShowConfig] = useState(false)
@@ -50,7 +51,7 @@ export default function Header({ currentStage, onStageChange, claimData }: Heade
                 const Icon = stage.icon
                 const isActive  = currentStage === stage.id
                 const isDone    = currentIdx > idx
-                const isLocked  = ((stage.id === 'review' || stage.id === 'decision') && currentIdx < idx && currentIdx === 0)
+                const isLocked  = ((stage.id === 'review' || stage.id === 'decision') && !claimData)
                   || (stage.id === 'decision' && isDeskReject)
                 const isRejected = stage.id === 'decision' && isDeskReject
 

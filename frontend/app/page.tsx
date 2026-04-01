@@ -8,6 +8,7 @@ import HomePage from '@/components/HomePage'
 import ReviewPage from '@/components/ReviewPage'
 import DecisionPage from '@/components/DecisionPage'
 import DashboardPage from '@/components/DashboardPage'
+import FAQPage from '@/components/FAQPage'
 import { ClaimData, ProcessingStage } from '@/types/claims'
 import { useAuth } from '@/lib/auth/AuthContext'
 import { getCached, setCached } from '@/lib/clientCache'
@@ -44,14 +45,8 @@ export default function Home() {
   }
 
   const handleStageChange = (stage: ProcessingStage) => {
-    // Review and Decision require a loaded/processed claim; Dashboard can show global metrics without one
-    if ((stage === 'review' || stage === 'decision') && !claimData) {
-      return
-    }
-    // Desk-rejected complaints cannot proceed to the Decision/Resolution stage
-    if (stage === 'decision' && claimData?.autoDecision === 'DESK_REJECT') {
-      return
-    }
+    if ((stage === 'review' || stage === 'decision') && !claimData) return
+    if (stage === 'decision' && claimData?.autoDecision === 'DESK_REJECT') return
     setCurrentStage(stage)
   }
 
@@ -123,6 +118,8 @@ export default function Home() {
             />
           </div>
         )
+      case 'faq':
+        return <FAQPage />
       default:
         return <HomePage onProcessClaim={handleClaimProcessed} isProcessing={isProcessing} setIsProcessing={setIsProcessing} />
     }

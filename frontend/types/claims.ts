@@ -1,4 +1,4 @@
-export type ProcessingStage = 'home' | 'review' | 'decision' | 'dashboard'
+export type ProcessingStage = 'home' | 'review' | 'decision' | 'dashboard' | 'faq'
 
 export interface ProcessedClaimSummary {
   claimId: string

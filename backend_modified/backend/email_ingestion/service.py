@@ -19,7 +19,7 @@ from typing import Any, Callable, Dict, List, Optional, Tuple
 import imaplib
 
 from backend.common.config import ENV_FILE, IMAP_SYNC_CACHE_FILE
-from backend.faq_resolution.service import process_faq_email
+from backend.faq_resolution.service import process_faq_email, save_faq_email
 from backend.ingested_complaints.service import (
     add_dedup_keys_to_set,
     get_existing_message_ids,
@@ -502,10 +502,18 @@ def sync_inbox(
 
                 body_text = _extract_body_text(msg)
 
-                # FAQ check — answer and skip ingestion
+                # FAQ check — answer, store, and skip complaint ingestion
                 try:
                     faq_result = process_faq_email(from_addr, to_addr, subject, body_text)
                     if faq_result.get("is_faq"):
+                        matched_faq = None
+                        if faq_result.get("faq_question"):
+                            matched_faq = {
+                                "question": faq_result["faq_question"],
+                                "answer":   faq_result.get("answer", ""),
+                                "category": "",
+                            }
+                        save_faq_email(from_addr, to_addr, subject, body_text, matched_faq)
                         if faq_result.get("answered"):
                             result["faqAnswered"] += 1
                         else:

@@ -74,6 +74,9 @@ COMPLAINTS_HISTORY_CSV: Path = PROCESSED_COMPLAINTS_DIR / "complaints-history.cs
 # Engineer appointments
 APPOINTMENTS_FILE: Path = DATA_DIR / "appointments.json"
 
+# FAQ emails (emails classified as FAQ queries during inbox sync)
+FAQ_EMAILS_FILE: Path = DATA_DIR / "faq-emails.json"
+
 # ── Utility ───────────────────────────────────────────────────────────────
 
 def ensure_data_dir() -> None:
