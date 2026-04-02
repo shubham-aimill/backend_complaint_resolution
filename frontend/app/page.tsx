@@ -55,6 +55,35 @@ export default function Home() {
     setCurrentStage('review')
   }
 
+  const handleViewResolved = async (claimId: string, stage: 'review' | 'decision') => {
+    const cacheKey = `cache:processed-claims:detail:${claimId}`
+    const ttlMs = 5 * 60 * 1000
+
+    // If cached, set both states synchronously so React batches them in one render
+    const cached = getCached<ClaimData>(cacheKey)
+    if (cached) {
+      setClaimData(cached)
+      setCurrentStage(stage)
+      // Refresh cache silently in background
+      handleLoadClaim(claimId)
+      return
+    }
+
+    // No cache — fetch, then set both states in the same synchronous block
+    try {
+      const res = await fetch(`/api/claims/${encodeURIComponent(claimId)}`)
+      if (res.ok) {
+        const data: ClaimData = await res.json()
+        setCached(cacheKey, data, ttlMs)
+        // These two calls are synchronous here, so React 18 batches them
+        setClaimData(data)
+        setCurrentStage(stage)
+      }
+    } catch (err) {
+      console.error('Failed to load resolved claim:', err)
+    }
+  }
+
   const handleLoadClaim = async (claimId: string) => {
     const cacheKey = `cache:processed-claims:detail:${claimId}`
     const ttlMs = 5 * 60 * 1000
@@ -82,6 +111,7 @@ export default function Home() {
             onProcessClaim={handleClaimProcessed}
             isProcessing={isProcessing}
             setIsProcessing={setIsProcessing}
+            onViewResolved={handleViewResolved}
           />
         )
       case 'review':
@@ -121,7 +151,7 @@ export default function Home() {
       case 'faq':
         return <FAQPage />
       default:
-        return <HomePage onProcessClaim={handleClaimProcessed} isProcessing={isProcessing} setIsProcessing={setIsProcessing} />
+        return <HomePage onProcessClaim={handleClaimProcessed} isProcessing={isProcessing} setIsProcessing={setIsProcessing} onViewResolved={handleViewResolved} />
     }
   }
 

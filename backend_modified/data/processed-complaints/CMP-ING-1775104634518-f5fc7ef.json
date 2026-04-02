@@ -1,0 +1,443 @@
+{
+  "complaintId": "CMP-ING-1775104634518-f5fc7ef",
+  "ingestedComplaintId": "ING-1775104634518-f5fc7ef",
+  "sourceEmailFrom": "Shubham Sahu <shubhh2003@gmail.com>",
+  "warrantyStatus": "OUT_OF_WARRANTY",
+  "productCategory": "Smartphone",
+  "autoDecision": "DESK_REJECT",
+  "decisionConfidence": 0.95,
+  "recommendedNextStep": "Send DESK_REJECT email. Offer out-of-warranty paid repair if applicable.",
+  "rejectReason": "out_of_warranty",
+  "decisionPack": {
+    "id": "DP-1775106046369",
+    "complaintDraft": {
+      "id": "DRAFT-1775106046369",
+      "complaintRef": "CUST10001",
+      "customerName": "Shubham Sahu",
+      "customerEmail": "sh***@gmail.com",
+      "customerPhone": "+91-*8765-*3210",
+      "complaintDate": "2026-04-02",
+      "complaintType": "Connectivity",
+      "productOrService": "Samsung Galaxy S26 Ultra",
+      "description": "Since the last week of March 2026, my device has been experiencing persistent WiFi connectivity drops. The phone disconnects from the network every few hours and requires a manual reconnect. I have already tried the following troubleshooting steps without success: - Restarted the router and the device - Forgotten and re-added the WiFi network - Reset network settings on the device",
+      "desiredResolution": "I would like the device to be repaired under warranty, as it is clearly a hardware or firmware defect and the product is well within its 12-month warranty period.",
+      "estimatedAmount": 0.0,
+      "attachments": [
+        {
+          "id": "doc_0",
+          "name": "Samsung_Galaxy_S26_Ultra_Invoice.pdf",
+          "type": "CorrespondenceRecord",
+          "mimeType": "application/pdf",
+          "confidence": 0.95
+        }
+      ],
+      "customerVerified": true,
+      "createdAt": "2026-04-02T05:00:46.369Z",
+      "source": "information_extraction",
+      "confidence": 0.9888888888888889
+    },
+    "evidence": [
+      {
+        "field": "customerName",
+        "fieldName": "Customer Name",
+        "value": "Shubham Sahu",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "customerEmail",
+        "fieldName": "Customer Email",
+        "value": "shubhh2003@gmail.com",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "customerPhone",
+        "fieldName": "Customer Phone",
+        "value": "+91-98765-43210",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "complaintRef",
+        "fieldName": "Complaint Reference",
+        "value": "CUST10001",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "purchaseDate",
+        "fieldName": "Purchase Date",
+        "value": "2024-11-15",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "complaintType",
+        "fieldName": "Complaint Type",
+        "value": "Connectivity",
+        "confidence": 0.9,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "productOrService",
+        "fieldName": "Product / Service",
+        "value": "Samsung Galaxy S26 Ultra",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "productModel",
+        "fieldName": "Product Model Number",
+        "value": "SM-S938B",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "description",
+        "fieldName": "Description",
+        "value": "Since the last week of March 2026, my device has been experiencing persistent WiFi connectivity drops. The phone disconnects from the network every few hours and requires a manual reconnect. I have already tried the following troubleshooting steps without success: - Restarted the router and the device - Forgotten and re-added the WiFi network - Reset network settings on the device",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      }
+    ],
+    "documents": [
+      {
+        "id": "doc_email",
+        "name": "Customer Email",
+        "mimeType": "text/plain",
+        "type": "CorrespondenceRecord",
+        "content": "Dear Customer Support Team,\r\n\r\nI am writing to formally raise a complaint regarding my Samsung Galaxy S26\r\nUltra (Model: SM-S938B), which I purchased on 15th November 2024.\r\n\r\nMy Customer ID is CUST10001.\r\n\r\nIssue Description:\r\nSince the last week of March 2026, my device has been experiencing\r\npersistent WiFi connectivity drops. The phone disconnects from the network\r\nevery few hours and requires a manual reconnect. I have already tried the\r\nfollowing troubleshooting steps without success:\r\n\r\n- Restarted the router and the device\r\n- Forgotten and re-added the WiFi network\r\n- Reset network settings on the device\r\n\r\nThe issue continues to occur and is significantly affecting my day-to-day\r\nwork as a Software Engineer, as I rely on stable internet connectivity.\r\n\r\nDesired Resolution:\r\nI would like the device to be repaired under warranty, as it is clearly a\r\nhardware or firmware defect and the product is well within its 12-month\r\nwarranty period.\r\n\r\nI have attached a copy of my purchase invoice for your reference.\r\n\r\nPlease acknowledge this complaint and advise on the next steps at your\r\nearliest convenience.\r\n\r\nThank you,\r\nShubham Sahu\r\nCustomer ID: CUST10001\r\nPhone: +91-98765-43210\r\nEmail: shubhh2003@gmail.com\r\nCity: Dehradun, Uttarakhand",
+        "confidence": 0.95,
+        "metadata": {
+          "source": "email_body"
+        },
+        "keyFields": {
+          "customerName": "Shubham Sahu",
+          "customerEmail": "shubhh2003@gmail.com",
+          "customerPhone": "+91-98765-43210",
+          "complaintRef": "CUST10001",
+          "purchaseDate": "2024-11-15",
+          "complaintType": "Connectivity",
+          "productOrService": "Samsung Galaxy S26 Ultra",
+          "productModel": "SM-S938B",
+          "description": "Since the last week of March 2026, my device has been experiencing persistent WiFi connectivity drops. The phone disconnects from the network every few hours and requires a manual reconnect. I have already tried the following troubleshooting steps without success: - Restarted the router and the device - Forgotten and re-added the WiFi network - Reset network settings on the device",
+          "desiredResolution": "I would like the device to be repaired under warranty, as it is clearly a hardware or firmware defect and the product is well within its 12-month warranty period."
+        }
+      },
+      {
+        "id": "doc_0",
+        "name": "Samsung_Galaxy_S26_Ultra_Invoice.pdf",
+        "mimeType": "application/pdf",
+        "type": "Invoice",
+        "content": "%PDF-1.4\n%\ufffd\ufffd\ufffd\ufffd ReportLab Generated PDF document (opensource)\n1 0 obj\n<<\n/F1 2 0 R /F2 3 0 R\n>>\nendobj\n2 0 obj\n<<\n/BaseFont /Helvetica /Encoding /WinAnsiEncoding /Name /F1 /Subtype /Type1 /Type /Font\n>>\nendobj\n3 0 obj\n<<\n/BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding /Name /F2 /Subtype /Type1 /Type /Font\n>>\nendobj\n4 0 obj\n<<\n/Contents 8 0 R /MediaBox [ 0 0 595.2756 841.8898 ] /Parent 7 0 R /Resources <<\n/Font 1 0 R /ProcSet [ /PDF /Text /ImageB /ImageC /ImageI ]\n>> /Rotate 0 /Trans <<\n\n>> \n  /Type /Page\n>>\nendobj\n5 0 obj\n<<\n/PageMode /UseNone /Pages 7 0 R /Type /Catalog\n>>\nendobj\n6 0 obj\n<<\n/Author (anonymous) /CreationDate (D:20260402033643+00'00') /Creator (anonymous) /Keywords () /ModDate (D:20260402033643+00'00') /Producer (ReportLab PDF Library - \\(opensource\\)) \n  /Subject (unspecified) /Title (untitled) /Trapped /False\n>>\nendobj\n7 0 obj\n<<\n/Count 1 /Kids [ 4 0 R ] /Type /Pages\n>>\nendobj\n8 0 obj\n<<\n/Filter [ /ASCII85Decode /FlateDecode ] /Length 2809\n>>\nstream\nGatm=l#YQL(B;ZenZ'$pG*7QfqNAGg.GuGE`aBR$1:*6!MNEfE+>Gpin^d^0qcXUn0Sd!CP7\",An,DuA\\g^bVLZ\\V_COj5@cE8Tm#4m27Jd@b$^t$(b/4U\"AJP^&2Rffp`,:&!<TbAWLXX)<(!Ml$73RS*]EQ+(R@NY$qGE=-3]5mu]Qu)tF8m!MBf4h4B?pmn0CN(7f,]dqj)Le7M8$fhta*06;'B\\aV&u2MQ<OIY:W`lDl*(qd#!7fH=&uG*\\6DR>?`8B`Egi\\d6%rerI]ekbd^e8&P/clh9O\"#XLF?pfPll&<X;2%kVmkK\\]`8PaWW-SDe(lgi<%PP!AbV7\".5u#77j5;'dh%e^80at?85AnOeg,@oDh+qQTP`7m;m!_\\oG/B9$V%9E.M;qD;ef?1rEMREPXZB?X,,dfJG\"kT;h5(CRS2XMkZ,c00CUVIo'd^%u9b:l='IrOL=L\"pTTj$u$?)tA57rU;?ZGp(%MMcajKibohA[gOMfN9XUWjl,25PLMr=`t#<4+uc]Ykttb(53`2H69@Fb-koNJrKhc/IGkp_oF1pHl-M^Dlm.1V.;Ir&u40V]Q@*P'V2(W&5&2n>PKpHrHgd&6gk_ge-no#SWch(VmRVD0_3\\(ZtKN)>3IW'FkWJ\\OZVnGl<#BI3BM[-J*p_lkqS*Q*i7:^q\\?64S%bR/`mLQ\">RH5'.GC);VO+hmMGedWbuG;5Fb2p&9,FkJ#ZA0Oirsi/p!`$q\"Us2Uqq$$dLE/CX^pHIFmO5<9!B4W^FhMC[Cg3:[=\"nt9*]^&bd2b2qSBZh!e9^8\\<drh%GopbLkFZ?r\\;1n*!*,.<>s2?$#iOnfB%^e&H9+gSo'mMTNnlC;Jr(QSD[&YH,Umb)djIi`qh'eE'hf/%^[ut,CXT(UPf2@.2-O4^W1%V792dcm^G\"Ei!6C=Y_GF+=>_D$*;4&sL\\<!CB9X<;T]#h9@ES=4#ASkdOQC*d*4HUHAgRChQr39HKT6^?*O0Vgk<XI#!D\\`9)g5T%Lc[T3pb*W9tr\\AX5=kL+N'o/P\"c6[JK(9UMlH%fWo].eC-ggldB,BqPk-[dX(CcURB>;ODb@)>mJDUHCm@UhDd=L<'WcbYbt!bobBBMKCCKhEf:..kjE+.DmOQT^92AR)k_<3#!57*8n^Es)#<3.on^i<6p/&S<M$/]]KLDbG9`1O#8#&NhO'%<MmBOF;$R'0#pIKc0T\\fYPZC3NWUD/Vq!B%iQf42'L?QW)ep1H\\+&\"+9QHuZk.5bG(\\=*,fXgsAm,&LK39@(Zp);0HY/coMBH8:8K+_9!Y6s1iSn`5VcMQ4UU*RP<R.k3[]o<G^_jPcIFgkqmUHJk(5KsnE-k?f,[?5>jjSlE<h\\^6p=j-@a]6IVk\"-OE1,$T[T6P@[8V?6BTkDds=u+VT+(9_*R2g7_O%c5hQ#7961He\\UQ\"a4^Nf:R]]8oN'*9upEE/8O&Rg@IKef(Q;3E0f?jVTXd8%!W,\\uU7C<[3,7#9DQ==<0XH\"K_Mo&\\t0dcjSON?<?nP@%`cWQH.q!RB(ndgq544+5N4ZisB<W38^jdfEJfu']+E)nPo-S0%Xb>Icen3Zp,&Y^G$0r2[luL%'ZZ+NXM0k%[\"*Vk_'BbV][VYK%Y*b2*;,(br4\\l/KFC7*_0`FZSS[;;gImpZ`a1Xhemn;3ZQ><oc\\%[Eg6=SK2ZFD\"gP('89=AZ+eWpYnH2b@$/$W!G*gqZA?jj8CnC1^>':]<ip5e)H8o:lY;33t3Yhfk(&D5LMehaJ1\\/ZhQ<WJ?NCO0:XJ3\\)A`$CL\">G2t5J.^3bTuRQk9rMD5?SgO>I8\\ENRQXL^_IW&M\\Urg,ejk_J,)=9G)1cVH]+HB)H><do$+RSk%[8MpM@%b]#h,'>.hDs-r.pjo=GDD0?V0(kERrlS9CB)Y-[r/?J8C9:.dP*<@<J]`6*l2rE[CI(3aOC[^SYC1\\:NfhS4X@kk8mV5B7QcCs'W\"cGA;d@XBMGS;bs[[\\t[\\64qtL`D'lmD;k[a#[a<NOduI$5k#Cp*!9rY8+TB?d\"`S,G[VBcJGCtC'%?_QZ]4E$E#Z7R#*+`GV^D=>3jUip'uI`XVpkWirW`kPf=04+Im1Lc^U7jFBFO\\-AWX^)lm2,%(HqW\"^ORjl=*)oJM\\UYK/s/V@R,,A\\R`0aRpB7M.%s(0ue,Hp5mAET!(-(NI99i43q&efXCXm\\*'[XEn6+%ci<NsR?T#9uU>2BunS,FFu+SHK(-<f.6N'F^`S:@KrAjg\"$3WIrVoN#k6::fYX0LaH+Vdu8k'W3>cLSCBEHKB2MQ61n8Nj?XUGCYVnK*8gEUnBJqb?5CJ,mEffV6%\\4>+)mV&;ah[(;YUIngOl-GBN%o?Eiod;ZR^&g3rJ&YR:BPcuIh?U,H0<B'D(.K*7qhq\\qJM'CsSAA^mcPCN`nEh/%,mRakYX.ud\\=&;s.Nek!`o/t03)A>p[F*rOBG&OHjfqS`oM3Js*tZ&cnuE49ig,f)k3)K_.kSaME-7]9#f6RD%imtG[D3@`3#IqSu\"=DrcL^l>LB.,^8@,-pF%nclqcYhYWi>6!0O>0G%c_D7`PF'N%f*53f%nt[\\Obd:M,c!*=bFfJ(B-7kmFd,ccPYpPH>pdJZiCeYM=N\\LF*JOK<c=06]fJTZuN`,N+2'TVB(rY;>WALe;UW\\qd-N+U/13,O^F/T88\\F_\\%Y?'XPV:=&>!ni)g9c=mt+K-4/WEOI>Bg1#,&7G%_N<rnQ3=4?.$nETR))Y;!CBCB%O*\\aFM;9`peL\"rq;3@rHJirI&#q,W^rchb.YqX1BVZ3-Zt!Its4MZ~>endstream\nendobj\nxref\n0 9\n0000000000 65535 f \n0000000061 00000 n \n0000000102 00000 n \n0000000209 00000 n \n0000000321 00000 n \n0000000524 00000 n \n0000000592 00000 n \n0000000853 00000 n \n0000000912 00000 n \ntrailer\n<<\n/ID \n[<db52d8e5f725d1a1cd4f45ecace80fce><db52d8e5f725d1a1cd4f45ecace80fce>]\n% ReportLab generated PDF document -- digest (opensource)\n\n/Info 6 0 R\n/Root 5 0 R\n/Size 9\n>>\nstartxref\n3812\n%%EOF\n",
+        "confidence": 0.9,
+        "metadata": {},
+        "keyFields": {
+          "invoiceNumber": null,
+          "vendor": "Samsung",
+          "customer": null,
+          "lineItems": null,
+          "total": null,
+          "purchaseDate": null,
+          "productModel": "Galaxy S26 Ultra",
+          "serialNumber": null
+        }
+      }
+    ],
+    "customerGrounding": [
+      {
+        "recordId": "CMP-20251101-001",
+        "title": "CONNECTIVITY_ISSUE \u2014 Samsung Galaxy S26 Ultra",
+        "snippet": "CONNECTIVITY_ISSUE \u2014 WiFi Dropout",
+        "content": "Customer: Shubham Sahu (CUST10001) | Account status: ACTIVE | Loyalty tier: GOLD | Complaint ID: CMP-20251101-001 | Type: CONNECTIVITY_ISSUE | Category: Connectivity | Sub-category: WiFi Dropout | Current status: IN_PROGRESS | Priority: HIGH | Severity: MODERATE | Escalated: No | SLA: 48h | Refund issued: $0.00 | Compensation: $0.00 | Product: Samsung Galaxy S26 Ultra (Samsung) | Warranty: 12 months | Price: $1299.99",
+        "section": "Connectivity",
+        "score": 1.0,
+        "confidence_score": 1.0,
+        "recommendation": "AUTO_APPROVE",
+        "action": "Customer and product verified \u2014 proceed with resolution per SLA",
+        "sourceDocument": "complaints.json + product_service.json (Consumer Electronics)",
+        "customer_verified": true,
+        "customer_name": "Shubham Sahu",
+        "customer_status": "ACTIVE",
+        "loyalty_tier": "GOLD",
+        "open_complaints": 1,
+        "total_complaints": 2,
+        "complaint_id": "CMP-20251101-001",
+        "complaint_type": "CONNECTIVITY_ISSUE",
+        "complaint_category": "Connectivity",
+        "current_status": "IN_PROGRESS",
+        "priority_level": "HIGH",
+        "severity_level": "MODERATE",
+        "is_escalated": false,
+        "assigned_team": "TECHNICAL",
+        "sla_hours": 48,
+        "refund_total": 0.0,
+        "compensation_total": 0.0,
+        "product_id": "PROD-SM-S938",
+        "product_name": "Samsung Galaxy S26 Ultra",
+        "product_category": "Smartphone",
+        "warranty_months": 12,
+        "actions_count": 0,
+        "latest_action": null
+      },
+      {
+        "recordId": "CMP-20251105-002",
+        "title": "PRODUCT_DEFECT \u2014 Samsung Bespoke AI WindFree AC",
+        "snippet": "PRODUCT_DEFECT \u2014 Not Cooling",
+        "content": "Customer: Shubham Sahu (CUST10001) | Account status: ACTIVE | Loyalty tier: GOLD | Complaint ID: CMP-20251105-002 | Type: PRODUCT_DEFECT | Category: Hardware Issue | Sub-category: Not Cooling | Current status: IN_PROGRESS | Priority: HIGH | Severity: SEVERE | Escalated: No | SLA: 24h | Refund issued: $0.00 | Compensation: $0.00 | Product: Samsung Bespoke AI WindFree AC (Samsung) | Warranty: 12 months | Price: $1199.99",
+        "section": "Hardware Issue",
+        "score": 1.0,
+        "confidence_score": 1.0,
+        "recommendation": "AUTO_APPROVE",
+        "action": "Customer and product verified \u2014 proceed with resolution per SLA",
+        "sourceDocument": "complaints.json + product_service.json (Consumer Electronics)",
+        "customer_verified": true,
+        "customer_name": "Shubham Sahu",
+        "customer_status": "ACTIVE",
+        "loyalty_tier": "GOLD",
+        "open_complaints": 1,
+        "total_complaints": 2,
+        "complaint_id": "CMP-20251105-002",
+        "complaint_type": "PRODUCT_DEFECT",
+        "complaint_category": "Hardware Issue",
+        "current_status": "IN_PROGRESS",
+        "priority_level": "HIGH",
+        "severity_level": "SEVERE",
+        "is_escalated": false,
+        "assigned_team": "TECHNICAL",
+        "sla_hours": 24,
+        "refund_total": 0.0,
+        "compensation_total": 0.0,
+        "product_id": "PROD-AC-WFAI",
+        "product_name": "Samsung Bespoke AI WindFree AC",
+        "product_category": "Air Conditioner",
+        "warranty_months": 12,
+        "actions_count": 0,
+        "latest_action": null
+      }
+    ],
+    "customerInfo": {
+      "customer_id": "CUST10001",
+      "first_name": "Shubham",
+      "last_name": "Sahu",
+      "full_name": "Shubham Sahu",
+      "email_id": "shubhh2003@gmail.com",
+      "phone_number": "+91-98765-43210",
+      "address_line1": "42 Tech Park, Sector 5",
+      "address_line2": null,
+      "city": "Dehradun",
+      "state": "Uttarakhand",
+      "postal_code": "248001",
+      "country": "India",
+      "customer_since": "2023-01-10",
+      "customer_status": "ACTIVE",
+      "loyalty_tier": "GOLD",
+      "total_complaints": 2,
+      "open_complaints": 1,
+      "preferred_contact": "EMAIL",
+      "complaint_ref": "CUST10001",
+      "complaint_id": "CMP-20251105-002",
+      "product_id": "PROD-AC-WFAI",
+      "complaint_type": "PRODUCT_DEFECT",
+      "current_status": "IN_PROGRESS",
+      "priority_level": "HIGH",
+      "severity_level": "SEVERE",
+      "is_escalated": false,
+      "assigned_team": "TECHNICAL",
+      "sla_hours": 24
+    },
+    "validationResults": [
+      {
+        "check": "customer_product_mapping",
+        "passed": true,
+        "customerRef": "CUST10001",
+        "customerFound": true,
+        "customerMatchSource": "customer_id",
+        "productId": "PROD-SM-S938",
+        "productOwnedByCustomer": true,
+        "registeredProducts": [
+          "PROD-SM-S938",
+          "PROD-AC-WFAI"
+        ],
+        "registeredPurchaseDate": null,
+        "rejectReason": null,
+        "autoDecision": null,
+        "notes": "Customer 'CUST10001' verified and owns product 'PROD-SM-S938'. Proceeding to warranty and other checks."
+      },
+      {
+        "check": "eligibility_validation",
+        "passed": true,
+        "rejectReason": null,
+        "autoDecision": null,
+        "notes": "No eligibility issues detected."
+      },
+      {
+        "check": "warranty_validation",
+        "passed": false,
+        "status": "OUT_OF_WARRANTY",
+        "warrantyMonths": 12,
+        "purchaseDate": "2024-11-15",
+        "purchaseDateSource": "document:Customer Email",
+        "expiryDate": "2025-11-15",
+        "autoDecision": "DESK_REJECT",
+        "notes": "Product purchased on 2024-11-15. Warranty of 12 months expires on 2025-11-15. Product is OUT of warranty \u2014 DESK REJECT."
+      },
+      {
+        "check": "document_validation",
+        "passed": true,
+        "presentDocuments": [
+          "purchase_invoice",
+          "product_model"
+        ],
+        "missingDocuments": [],
+        "serialNumber": null,
+        "autoDecision": null,
+        "notes": "Documents present: purchase_invoice, product_model. Missing: none."
+      },
+      {
+        "check": "product_validation",
+        "passed": true,
+        "productCategory": "Smartphone",
+        "matchedProductId": "PROD-SM-S938",
+        "matchedProductName": "Samsung Galaxy S26 Ultra",
+        "brandName": "Samsung",
+        "modelNumber": "SM-S938B",
+        "warrantyMonths": 12,
+        "price": 1299.99,
+        "categorySupported": true,
+        "authorizedSellers": [],
+        "autoDecision": null,
+        "notes": "Product matched: Samsung Galaxy S26 Ultra (Model: SM-S938B, Category: Smartphone). Category is supported."
+      }
+    ],
+    "warrantyStatus": "OUT_OF_WARRANTY",
+    "productCategory": "Smartphone",
+    "matchedProduct": {
+      "productId": "PROD-SM-S938",
+      "productName": "Samsung Galaxy S26 Ultra",
+      "brandName": "Samsung",
+      "modelNumber": "SM-S938B",
+      "price": 1299.99
+    },
+    "autoDecision": "DESK_REJECT",
+    "decisionConfidence": 0.95,
+    "decisionRationale": "Product is outside its warranty period.",
+    "recommendedNextStep": "Send DESK_REJECT email. Offer out-of-warranty paid repair if applicable.",
+    "rejectReason": "out_of_warranty",
+    "audit": [
+      {
+        "step": "Information Extraction",
+        "timestamp": "2026-04-02T05:00:46.369Z",
+        "duration": 6483,
+        "agent": "ExtractionService",
+        "status": "completed",
+        "details": {
+          "documentsProcessed": 2,
+          "errors": []
+        }
+      },
+      {
+        "step": "Validation Engine",
+        "timestamp": "2026-04-02T05:00:46.369Z",
+        "duration": 7,
+        "agent": "ValidationService",
+        "status": "completed",
+        "details": {
+          "warrantyStatus": "OUT_OF_WARRANTY",
+          "allChecksPassed": false,
+          "autoDecision": "DESK_REJECT"
+        }
+      },
+      {
+        "step": "Customer & Product Grounding",
+        "timestamp": "2026-04-02T05:00:46.369Z",
+        "duration": 0,
+        "agent": "CustomerGroundingService",
+        "status": "completed",
+        "details": {
+          "recordsFound": 2,
+          "customerVerified": true
+        }
+      },
+      {
+        "step": "Decision Engine",
+        "timestamp": "2026-04-02T05:00:46.369Z",
+        "duration": 0,
+        "agent": "DecisionService",
+        "status": "completed",
+        "details": {
+          "autoDecision": "DESK_REJECT",
+          "decisionConfidence": 0.95
+        }
+      }
+    ],
+    "evidenceSummary": {
+      "totalFields": 9,
+      "highConfidenceFields": 9,
+      "lowConfidenceFields": 0,
+      "avgConfidence": 0.9888888888888889
+    },
+    "documentAnalysis": {
+      "totalDocuments": 2,
+      "documentTypes": [
+        "CorrespondenceRecord",
+        "Invoice"
+      ],
+      "avgDocumentConfidence": 0.925,
+      "missingDocuments": [],
+      "presentDocuments": [
+        "purchase_invoice",
+        "product_model"
+      ]
+    },
+    "resolutionAssessment": {
+      "recordsFound": 2,
+      "customerVerified": true,
+      "topMatchScore": 1.0,
+      "recommendation": "AUTO_APPROVE",
+      "autoDecision": "DESK_REJECT",
+      "decisionConfidence": 0.95,
+      "recommendedActions": [
+        "Send DESK_REJECT email. Offer out-of-warranty paid repair if applicable."
+      ]
+    },
+    "processingSummary": {
+      "stepsCompleted": 4,
+      "stepsWithErrors": 0
+    },
+    "createdAt": "2026-04-02T05:00:46.369Z"
+  },
+  "processingMetrics": {
+    "fieldsAutoPopulated": 9,
+    "stepsCompleted": 4,
+    "stepsFailed": 0,
+    "totalProcessingTime": 10046,
+    "averageHandleTime": 10.046,
+    "extractionTime": 6483,
+    "validationTime": 7
+  },
+  "createdAt": "2026-04-02T05:00:46.369Z",
+  "status": "draft",
+  "autoEmailResponse": {
+    "sent": true,
+    "decision": "DESK_REJECT",
+    "to": "Shubham Sahu <shubhh2003@gmail.com>",
+    "error": null,
+    "subject": "Your Complaint Has Been Reviewed \u2014 CMP-ING-1775104634518-f5fc7ef",
+    "body": "Dear Shubham Sahu,\n\nThank you for contacting Consumer Electronics Customer Support regarding your\nSamsung Galaxy S26 Ultra (Complaint Reference: CMP-ING-1775104634518-f5fc7ef).\n\nWe have carefully reviewed your complaint. Unfortunately, we are unable to process\nthis complaint under our warranty or guarantee scheme for the following reason:\n\n  Reason: The product is outside its manufacturer's warranty period.\n\nOur records (or the documents provided) indicate that your product was purchased on 2024-11-15, and the manufacturer's warranty expired on 2025-11-15.\n\nOptions available to you:\n  1. Out-of-warranty repair service \u2014 we can provide a paid repair quote.\n     Please contact our service centre at: repairs@electronics.com\n  2. Extended warranty \u2014 if you purchased an extended warranty, please provide\n     your extended warranty certificate number.\n  3. Consumer rights \u2014 depending on your jurisdiction, statutory consumer rights\n     may still apply. Please contact your local consumer authority for guidance.\n\nIf you believe this decision has been made in error, or if you have additional\nevidence (e.g. a different purchase date or extended warranty), please reply to\nthis email within 14 days and we will be happy to re-evaluate your case.\n\nWe apologise for any inconvenience caused.\n\nKind regards,\nCustomer Support Team\nConsumer Electronics",
+    "sentFrom": "arp290825@gmail.com"
+  },
+  "messageId": "<CABs85wOYyq9mUu1USxtVUKmoBxXmTtjM0O5pfqRmCGwAy284BA@mail.gmail.com>",
+  "threadId": "<CABs85wOYyq9mUu1USxtVUKmoBxXmTtjM0O5pfqRmCGwAy284BA@mail.gmail.com>",
+  "processingTime": 10046
+}

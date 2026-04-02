@@ -1,12 +1,12 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   CheckCircle, FileText, Send, Download, Clock, ArrowRight, ArrowLeft,
   AlertTriangle, Check, X, ChevronDown, ChevronUp, ChevronRight, Mail, Calendar,
-  User, MessageSquare, Wrench, RefreshCw, BookOpen,
-  Zap, FileCheck, Activity, BarChart2, PenLine, Tag,
+  User, MessageSquare, Wrench, RefreshCw,
+  Zap, FileCheck, Activity, BarChart2, PenLine, Tag, CheckCircle2,
 } from 'lucide-react'
 import { ClaimData } from '@/types/claims'
 import { CONFIDENCE } from '@/lib/confidence'
@@ -15,6 +15,8 @@ import { useMailChain } from '@/lib/hooks/useMailChain'
 import { useComplaintDecision } from '@/lib/hooks/useComplaintDecision'
 import { useAppointment } from '@/lib/hooks/useAppointment'
 import { useEmailDraft } from '@/lib/hooks/useEmailDraft'
+import { formatEmailBodyForDisplay } from '@/lib/emailDisplay'
+import { MailMetaPanel } from '@/components/MailMetaPanel'
 
 interface DecisionPageProps {
   claimData: ClaimData
@@ -52,12 +54,35 @@ export default function DecisionPage({ claimData, onNextStage, onPreviousStage }
   const mailChainHook  = useMailChain(ingestedId)
   const decisionHook   = useComplaintDecision(claimData, ingestedId)
   const appointmentHook = useAppointment()
-  const emailDraftHook  = useEmailDraft()
+
+  // After any email is sent: record it in the thread then refresh the mail chain
+  const handleEmailSent = useCallback(async (sent: { type: string; recipient: string; subject: string; body: string; inReplyTo?: string }) => {
+    if (ingestedId) {
+      try {
+        await fetch(`/api/ingested-claims/${encodeURIComponent(ingestedId)}/thread`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            from_addr: `Customer Support <${process.env.NEXT_PUBLIC_SENDER_EMAIL ?? 'support@electronics.com'}>`,
+            to_addr: sent.recipient,
+            subject: sent.subject,
+            email_body: sent.body,
+            direction: 'outbound',
+            email_type: sent.type,
+            in_reply_to: sent.inReplyTo,
+          }),
+        })
+      } catch {
+        // Non-fatal — thread record failure should not block the UI
+      }
+      await mailChainHook.fetch()
+    }
+  }, [ingestedId, mailChainHook])
+
+  const emailDraftHook  = useEmailDraft(handleEmailSent)
 
   // UI state
   const [expandedMailIds, setExpandedMailIds]     = useState<Set<string>>(new Set())
-  const [expandedPolicyIds, setExpandedPolicyIds] = useState<Set<string>>(new Set())
-  const [showPolicyGrounding, setShowPolicyGrounding] = useState(false)
   const [showAudit, setShowAudit]                 = useState(false)
   const [isCreatingDraft, setIsCreatingDraft]     = useState(false)
   const [draftCreated, setDraftCreated]           = useState(false)
@@ -102,7 +127,7 @@ export default function DecisionPage({ claimData, onNextStage, onPreviousStage }
   }
 
   const { decisionPack } = claimData
-  const { evidence = [], documents = [], policyGrounding = [], audit = [] } = decisionPack || {}
+  const { evidence = [], documents = [], audit = [] } = decisionPack || {}
   const claimDraft = getClaimDraft(decisionPack as unknown as Record<string, unknown>)
   const d = (claimDraft as Record<string, unknown>) || {}
 
@@ -187,7 +212,13 @@ export default function DecisionPage({ claimData, onNextStage, onPreviousStage }
   }
 
   const isOutbound = (msg: Record<string, unknown>) => msg['source'] === 'outbound' || msg['direction'] === 'outbound'
-  const cleanBody = (body: string) => body.split('\n').map(l => l.replace(/^>+\s?/, '')).join('\n').trim()
+
+  const formatDateLong = (iso?: string) => {
+    if (!iso) return ''
+    return new Date(iso).toLocaleString('en-GB', {
+      weekday: 'short', day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit',
+    })
+  }
 
   return (
     <div className="flex flex-col h-[calc(100vh-68px)] overflow-hidden bg-[#F8FAFC]">
@@ -334,56 +365,6 @@ export default function DecisionPage({ claimData, onNextStage, onPreviousStage }
               </div>
             </div>
 
-            {/* Policy grounding toggle */}
-            {policyGrounding.length > 0 && (
-              <div className="rounded-xl border border-[#E5E7EB] overflow-hidden">
-                <button
-                  onClick={() => setShowPolicyGrounding(v => !v)}
-                  className="w-full flex items-center justify-between px-3.5 py-2.5 text-xs font-semibold text-[#374151] hover:bg-[#F9FAFB] transition-colors"
-                >
-                  <div className="flex items-center gap-1.5">
-                    <BookOpen className="w-3.5 h-3.5 text-[#991B1B]" />
-                    Policy Grounding
-                    <span className="text-[10px] bg-[#F3F4F6] text-[#6B7280] px-1.5 py-0.5 rounded-full">{policyGrounding.length}</span>
-                  </div>
-                  {showPolicyGrounding ? <ChevronUp className="w-3.5 h-3.5 text-[#9CA3AF]" /> : <ChevronDown className="w-3.5 h-3.5 text-[#9CA3AF]" />}
-                </button>
-                {showPolicyGrounding && (
-                  <div className="border-t border-[#F3F4F6] p-2 space-y-1.5">
-                    {policyGrounding.map((p, pi) => {
-                      const score = Number(p.score ?? p.similarity ?? 0)
-                      const isExp = expandedPolicyIds.has(p.clauseId ?? String(pi))
-                      return (
-                        <div key={p.clauseId ?? pi} className="rounded-lg border border-[#F3F4F6] bg-[#FAFAFA]">
-                          <button
-                            onClick={() => setExpandedPolicyIds(prev => { const n = new Set(prev); n.has(p.clauseId ?? String(pi)) ? n.delete(p.clauseId ?? String(pi)) : n.add(p.clauseId ?? String(pi)); return n })}
-                            className="w-full text-left px-2.5 py-2 flex items-start justify-between gap-2"
-                          >
-                            <div className="min-w-0 flex-1">
-                              <div className="flex items-center gap-1.5 mb-0.5">
-                                <span className="text-[10px] font-bold text-[#7F1D1D] truncate">{p.clauseId}</span>
-                                <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded ${score >= 0.8 ? 'bg-emerald-50 text-emerald-700' : score >= 0.6 ? 'bg-blue-50 text-blue-700' : 'bg-gray-100 text-gray-500'}`}>
-                                  {Math.round(score * 100)}%
-                                </span>
-                              </div>
-                              <p className="text-[11px] text-[#374151] font-medium truncate">{p.title}</p>
-                            </div>
-                            {isExp ? <ChevronUp className="w-3 h-3 text-[#9CA3AF] flex-shrink-0 mt-0.5" /> : <ChevronDown className="w-3 h-3 text-[#9CA3AF] flex-shrink-0 mt-0.5" />}
-                          </button>
-                          {isExp && (
-                            <div className="px-2.5 pb-2 border-t border-[#F3F4F6]">
-                              <p className="text-[11px] text-[#6B7280] mt-1.5 leading-relaxed">{p.snippet || p.content}</p>
-                              {p.rationale && <p className="text-[11px] text-[#991B1B] mt-1 italic">{p.rationale}</p>}
-                            </div>
-                          )}
-                        </div>
-                      )
-                    })}
-                  </div>
-                )}
-              </div>
-            )}
-
             {/* Audit trail toggle */}
             {audit.length > 0 && (
               <div className="rounded-xl border border-[#E5E7EB] overflow-hidden">
@@ -459,10 +440,11 @@ export default function DecisionPage({ claimData, onNextStage, onPreviousStage }
               mailChainHook.chain.map((msg, idx) => {
                 const isLast     = idx === mailChainHook.chain.length - 1
                 const isOut      = isOutbound(msg)
+                const isAck      = isOut && msg['emailType'] === 'acknowledgement'
                 const isExp      = expandedMailIds.has(msg.id)
                 const senderName = isOut ? 'Support Team' : (msg.from?.replace(/<.*>/, '').trim() || 'Unknown')
                 const initial    = isOut ? 'S' : (senderName.charAt(0).toUpperCase())
-                const snippet    = cleanBody(msg.emailBody || '').replace(/\s+/g, ' ').trim().slice(0, 100)
+                const snippet    = formatEmailBodyForDisplay(msg.emailBody || '').replace(/\s+/g, ' ').trim().slice(0, 100)
                 const dateStr    = msg.createdAt ? new Date(msg.createdAt).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : ''
 
                 return (
@@ -483,7 +465,12 @@ export default function DecisionPage({ claimData, onNextStage, onPreviousStage }
                           <div>
                             <div className="flex items-center gap-2 flex-wrap">
                               <span className="text-[13px] font-semibold text-[#111827]">{senderName}</span>
-                              {isOut && <span className="text-[10px] font-semibold bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded-full">Sent</span>}
+                              {isAck && (
+                                <span className="text-[10px] font-semibold bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded-full flex items-center gap-1">
+                                  <CheckCircle2 className="w-2.5 h-2.5" />ACK
+                                </span>
+                              )}
+                              {isOut && !isAck && <span className="text-[10px] font-semibold bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded-full">Sent</span>}
                               {isLast && !isOut && <span className="text-[10px] font-semibold bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded-full">Latest</span>}
                             </div>
                             <p className="text-[11px] text-[#9CA3AF] mt-0.5">{isOut ? `to ${msg.to || '—'}` : msg.from} · {dateStr}</p>
@@ -491,6 +478,11 @@ export default function DecisionPage({ claimData, onNextStage, onPreviousStage }
                         ) : (
                           <div className="flex items-center gap-2 min-w-0">
                             <span className="text-[13px] font-semibold text-[#374151] flex-shrink-0">{senderName}</span>
+                            {isAck && (
+                              <span className="text-[10px] font-semibold bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded-full flex-shrink-0 flex items-center gap-1">
+                                <CheckCircle2 className="w-2.5 h-2.5" />ACK
+                              </span>
+                            )}
                             <span className="text-[12px] text-[#9CA3AF] truncate">{snippet}</span>
                           </div>
                         )}
@@ -506,9 +498,22 @@ export default function DecisionPage({ claimData, onNextStage, onPreviousStage }
                       {isExp && (
                         <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.16 }} className="overflow-hidden">
                           <div className="px-5 pb-4 border-t border-[#F3F4F6]">
-                            <pre className="text-[13px] text-[#374151] whitespace-pre-wrap font-sans leading-relaxed pt-4">
-                              {cleanBody(msg.emailBody || '') || '(no content)'}
-                            </pre>
+                            <div className="pt-4">
+                              <MailMetaPanel
+                                subject={msg.subject}
+                                from={msg.from}
+                                to={msg.to}
+                                dateLabel={isOut ? 'Sent' : msg.emailDate ? 'Date' : 'Logged'}
+                                dateValue={
+                                  isOut
+                                    ? formatDateLong(msg.createdAt)
+                                    : msg.emailDate || formatDateLong(msg.createdAt)
+                                }
+                              />
+                              <pre className="text-[13px] text-[#374151] whitespace-pre-wrap font-sans leading-relaxed">
+                                {formatEmailBodyForDisplay(msg.emailBody || '') || '(no content)'}
+                              </pre>
+                            </div>
                           </div>
                         </motion.div>
                       )}

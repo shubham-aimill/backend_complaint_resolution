@@ -21,7 +21,16 @@ type SentState = {
   [key: string]: boolean
 }
 
-export function useEmailDraft() {
+interface SentDraft {
+  type: DraftType
+  recipient: string
+  subject: string
+  body: string
+  inReplyTo?: string
+  references?: string
+}
+
+export function useEmailDraft(onSent?: (sent: SentDraft) => void) {
   const [draft, setDraft] = useState<Draft | null>(null)
   const [sent, setSent] = useState<SentState>({
     acknowledgment: false,
@@ -68,14 +77,16 @@ export function useEmailDraft() {
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Failed to send email')
+      const sentDraft: SentDraft = { ...draft }
       setSent(prev => ({ ...prev, [draft.type]: true }))
       setDraft(null)
+      onSent?.(sentDraft)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to send email')
     } finally {
       setSending(false)
     }
-  }, [draft])
+  }, [draft, onSent])
 
   return { draft, sent, sending, error, open, close, send, updateBody, updateRecipient }
 }

@@ -5,8 +5,10 @@ import { useState, useCallback } from 'react'
 export interface MailMessage {
   id: string
   from?: string
+  to?: string
   subject?: string
   emailBody?: string
+  emailDate?: string
   createdAt?: string
   inReplyTo?: string
   [key: string]: unknown

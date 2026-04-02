@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
-import { Zap, Mail, Lock, AlertCircle, Eye, EyeOff, Loader2, User } from 'lucide-react'
+import { Zap, Mail, Lock, AlertCircle, Eye, EyeOff, Loader2 } from 'lucide-react'
 import { useAuth } from '@/lib/auth/AuthContext'
 
 export default function LoginPage() {
@@ -61,27 +61,6 @@ export default function LoginPage() {
       }
     } catch (err) { // changed variable name to avoid conflict with state
       console.error('Login error:', err)
-      setError('Connection refused. Please check your internet.')
-      setLoading(false)
-    }
-  }
-
-  /** Auto-login as test user (first user from credentials) */
-  const handleTestUserLogin = async () => {
-    setError('')
-    setLoading(true)
-    const testEmail = 'james.wilson@aimill-support.com'
-    const testPassword = 'ExecSecure2024!'
-    try {
-      const result = await login(testEmail, testPassword)
-      if (result.success) {
-        router.push('/')
-      } else {
-        setError(result.error || 'Test login failed')
-        setLoading(false)
-      }
-    } catch (err) {
-      console.error('Test login error:', err)
       setError('Connection refused. Please check your internet.')
       setLoading(false)
     }
@@ -242,17 +221,6 @@ export default function LoginPage() {
               )}
             </button>
 
-            {/* Test user quick login */}
-            <button
-              type="button"
-              onClick={handleTestUserLogin}
-              disabled={loading}
-              className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-600 hover:text-slate-800 text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:ring-offset-2"
-              title="Login as test user (James Wilson)"
-            >
-              <User className="w-4 h-4" />
-              <span>Login as test user</span>
-            </button>
           </form>
         </motion.div>
 

@@ -25,7 +25,7 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-from backend.common.config import DATA_DIR, CUSTOMERS_FILE
+from backend.common.config import DATA_DIR, CUSTOMERS_FILE, COMPLAINTS_FILE
 
 # ── Constants ──────────────────────────────────────────────────────────────
 
@@ -61,6 +61,17 @@ def _load_customers() -> List[Dict[str, Any]]:
         return []
     try:
         return json.loads(CUSTOMERS_FILE.read_text(encoding="utf-8"))
+    except Exception:
+        return []
+
+
+def _load_complaints() -> List[Dict[str, Any]]:
+    """Load complaint history from complaints.json."""
+    if not COMPLAINTS_FILE.exists():
+        return []
+    try:
+        data = json.loads(COMPLAINTS_FILE.read_text(encoding="utf-8"))
+        return data if isinstance(data, list) else []
     except Exception:
         return []
 
@@ -173,25 +184,85 @@ def _extract_purchase_date(
     return None, "not_found"
 
 
+def _tokenize(s: str) -> set:
+    """Lower-case, strip punctuation, split, keep tokens of length > 1."""
+    return {t for t in re.sub(r"[^a-z0-9\s]", " ", s.lower()).split() if len(t) > 1}
+
+
+def _product_score(search_raw: str, search_tokens: set, p: Dict[str, Any]) -> float:
+    """
+    Return a match score in [0, 1] between the extracted product string and a
+    catalogue entry.  Scoring priority:
+
+      1.0   Exact match on product_name or model_number (case-insensitive)
+      0.9+  Model-number substring (longer models score higher)
+      F1    Token-overlap F1 on product_name tokens, penalised when overlap
+            is only one generic word (e.g. "Samsung" alone).
+    """
+    name  = (p.get("product_name")  or "").strip()
+    model = (p.get("model_number")  or "").strip()
+    name_lower  = name.lower()
+    model_lower = model.lower()
+
+    # Exact match
+    if search_raw == name_lower or (model_lower and search_raw == model_lower):
+        return 1.0
+
+    # Model substring (high-confidence signal)
+    model_score = 0.0
+    if model_lower and (model_lower in search_raw or search_raw in model_lower):
+        model_score = 0.9 + len(model_lower) / (len(search_raw) + len(model_lower) + 1)
+
+    # Token-overlap F1 on product name
+    name_tokens = _tokenize(name_lower)
+    token_score = 0.0
+    if name_tokens and search_tokens:
+        overlap   = len(search_tokens & name_tokens)
+        precision = overlap / len(search_tokens)
+        recall    = overlap / len(name_tokens)
+        if precision + recall > 0:
+            token_score = 2 * precision * recall / (precision + recall)
+        # Penalise single-token overlap on large product names (e.g. brand-only match)
+        if overlap <= 1 and len(name_tokens) > 2:
+            token_score *= 0.25
+
+    return max(model_score, token_score)
+
+
 def _find_product(
     product_or_service: Optional[str],
     products: List[Dict[str, Any]],
+    min_score: float = 0.45,
 ) -> Optional[Dict[str, Any]]:
     """
-    Try to match the extracted product/service name against the product catalogue.
-    Uses case-insensitive substring matching on product_name and model_number.
+    Match the extracted product/service name against the product catalogue.
+
+    Uses scored token-overlap (F1) + model-number matching rather than
+    first-match substring so that specificity is rewarded and short generic
+    strings (e.g. brand names alone) cannot spuriously match the first entry.
+
+    Returns the catalogue entry with the highest score above *min_score*, or
+    None if no entry meets the threshold.
     """
     if not product_or_service:
         return None
-    search = product_or_service.strip().lower()
+
+    search_raw    = product_or_service.strip().lower()
+    search_tokens = _tokenize(search_raw)
+
+    best_product: Optional[Dict[str, Any]] = None
+    best_score: float = -1.0
+
     for p in products:
-        if (
-            search in (p.get("product_name") or "").lower()
-            or search in (p.get("model_number") or "").lower()
-            or (p.get("product_name") or "").lower() in search
-            or (p.get("model_number") or "").lower() in search
-        ):
-            return p
+        score = _product_score(search_raw, search_tokens, p)
+        if score == 1.0:
+            return p  # perfect match — short-circuit
+        if score > best_score:
+            best_score   = score
+            best_product = p
+
+    if best_product is not None and best_score >= min_score:
+        return best_product
     return None
 
 
@@ -485,6 +556,20 @@ def validate_customer_product_mapping(
     purchase_dates = customer.get("product_purchase_dates", {}) or {}
     registered_purchase_date = purchase_dates.get(product_id) if product_id else None
 
+    # Fallback: accept ownership if the customer has prior complaint history for this product
+    # (covers products bought before the registered_products list was maintained)
+    ownership_source = "registered_products" if is_owned else None
+    if not is_owned and product_id and customer_ref:
+        history_complaints = _load_complaints()
+        has_history = any(
+            c.get("customer_id", "").strip().upper() == customer_ref
+            and c.get("product_id") == product_id
+            for c in history_complaints
+        )
+        if has_history:
+            is_owned = True
+            ownership_source = "complaint_history"
+
     if not is_owned:
         return {
             "check": "customer_product_mapping",
@@ -500,7 +585,7 @@ def validate_customer_product_mapping(
             "autoDecision": "DESK_REJECT",
             "notes": (
                 f"Customer '{customer_ref}' exists, but product '{product_id}' is not "
-                "registered under this customer."
+                "registered under this customer and has no prior complaint history."
             ),
         }
 
@@ -512,12 +597,14 @@ def validate_customer_product_mapping(
         "customerMatchSource": match_source,
         "productId": product_id,
         "productOwnedByCustomer": True,
+        "ownershipSource": ownership_source,
         "registeredProducts": registered,
         "registeredPurchaseDate": registered_purchase_date,
         "rejectReason": None,
         "autoDecision": None,
         "notes": (
-            f"Customer '{customer_ref}' verified and owns product '{product_id}'. "
+            f"Customer '{customer_ref}' verified and owns product '{product_id}' "
+            f"(ownership confirmed via {ownership_source}). "
             "Proceeding to warranty and other checks."
         ),
     }

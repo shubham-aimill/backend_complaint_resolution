@@ -1,0 +1,13 @@
+[
+  {
+    "appointmentId": "APT-1775114752290",
+    "complaintId": "CMP-ING-1775114587751-ffb3c04",
+    "date": "2026-04-03",
+    "time": "12:00–15:00",
+    "engineerName": "Arpan",
+    "location": "Kolkata",
+    "notes": "",
+    "status": "confirmed",
+    "createdAt": "2026-04-02T07:25:52.290216Z"
+  }
+]

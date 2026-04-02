@@ -55,7 +55,7 @@ def _load_env() -> None:
                 line = line.strip()
                 if line and not line.startswith("#") and "=" in line:
                     key, _, val = line.partition("=")
-                    os.environ.setdefault(key.strip(), val.strip().strip("'\""))
+                    os.environ[key.strip()] = val.strip().strip("'\"")
 
 
 def _get_openai_client() -> Any:
@@ -108,6 +108,26 @@ def _extract_docx_text(p: Path) -> str:
     return "\n".join(line for line in lines if line)
 
 
+def _extract_pdf_text(p: Path) -> str:
+    """Extract text from a PDF using pypdf (pure-Python, no external binaries)."""
+    try:
+        import pypdf  # type: ignore
+        reader = pypdf.PdfReader(str(p))
+        pages: list[str] = []
+        for page in reader.pages:
+            try:
+                text = page.extract_text() or ""
+                if text.strip():
+                    pages.append(text)
+            except Exception:
+                pass
+        return "\n\n".join(pages)
+    except ImportError:
+        return ""
+    except Exception:
+        return ""
+
+
 def _read_text_file(file_path: str) -> str:
     p = Path(file_path)
     if not p.exists():
@@ -116,6 +136,8 @@ def _read_text_file(file_path: str) -> str:
         ext = p.suffix.lower()
         if ext == ".docx":
             return _extract_docx_text(p)
+        if ext == ".pdf":
+            return _extract_pdf_text(p)
 
         raw = p.read_bytes()
         if _looks_binary(raw):
@@ -432,14 +454,23 @@ def extract_claim_information(
                 doc_entry["confidence"] = float(img_conf) if isinstance(img_conf, (int, float)) else 0.85
         else:
             content = _read_text_file(path)
-            if content:
-                classification      = extract_from_document(name, content, client)
+            if content and content.strip():
+                classification          = extract_from_document(name, content, client)
                 doc_entry["type"]       = classification.get("type", "Other")
                 doc_entry["content"]    = content
                 doc_entry["confidence"] = classification.get("confidence", 0.7)
                 doc_entry["keyFields"]  = classification.get("keyFields", {})
             else:
-                doc_entry["content"] = f"[Binary/non-text: {name}]"
+                # No text extracted — try Vision API (handles scanned PDFs rendered
+                # as images, or any other binary attachment that may be viewable).
+                ext = Path(path).suffix.lower()
+                if ext == ".pdf":
+                    doc_entry["content"]  = "[Scanned / image-only PDF — no text layer found]"
+                    doc_entry["metadata"]["parseNote"] = "PDF contained no extractable text. Re-upload as image for Vision analysis."
+                    doc_entry["confidence"] = 0.3
+                else:
+                    doc_entry["content"] = f"[Unable to extract text from: {name}]"
+                    doc_entry["confidence"] = 0.2
 
         result["documents"].append(doc_entry)
 

@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import { ProcessingStage, ClaimData } from '@/types/claims'
 import { motion } from 'framer-motion'
-import { Inbox, ScanSearch, GitMerge, LayoutDashboard, LogOut, Check, Ban, HelpCircle } from 'lucide-react'
+import { Inbox, ScanSearch, GitMerge, LayoutDashboard, LogOut, Check, Ban, MessageCircle } from 'lucide-react'
 import ConfigModal from './ConfigModal'
 import { useAuth } from '@/lib/auth/AuthContext'
 
@@ -13,51 +13,78 @@ interface HeaderProps {
   claimData?: ClaimData | null
 }
 
-const stages = [
+// FAQ is a standalone module (first in nav), not part of the sequential workflow.
+// Workflow steps are: home → review → decision → dashboard
+const workflowStages = [
   { id: 'home',      label: 'Inbox',      sub: 'Ingest & select',    icon: Inbox },
-  { id: 'faq',       label: 'FAQ',        sub: 'FAQ queries',        icon: HelpCircle },
   { id: 'review',    label: 'Review',     sub: 'Extract & validate', icon: ScanSearch },
   { id: 'decision',  label: 'Resolution', sub: 'Decide & respond',   icon: GitMerge },
   { id: 'dashboard', label: 'Dashboard',  sub: 'KPIs & metrics',     icon: LayoutDashboard },
 ] as const
 
-const ORDER: ProcessingStage[] = ['home', 'faq', 'review', 'decision', 'dashboard']
+const WORKFLOW_ORDER: ProcessingStage[] = ['home', 'review', 'decision', 'dashboard']
 
 export default function Header({ currentStage, onStageChange, claimData }: HeaderProps) {
   const [showConfig, setShowConfig] = useState(false)
   const { user, logout } = useAuth()
 
-  const currentIdx = ORDER.indexOf(currentStage)
+  const isFaqActive = currentStage === 'faq'
+  const workflowIdx = WORKFLOW_ORDER.indexOf(currentStage as typeof WORKFLOW_ORDER[number])
   const isDeskReject = claimData?.autoDecision === 'DESK_REJECT'
 
   return (
     <>
       <header className="bg-white border-b border-[#E5E7EB] sticky top-0 z-50 shadow-sm">
         <div className="max-w-screen-2xl mx-auto px-6">
-          <div className="flex items-center justify-between h-[68px] gap-6">
+          <div className="flex items-center justify-between h-[68px] gap-4">
 
             {/* Logo */}
             <div className="flex items-center gap-3 min-w-fit">
               <img src="/image.png" alt="Logo" className="h-8 w-auto object-contain" />
               <div className="hidden sm:block">
-                <p className="text-[13px] font-bold text-[#111827] leading-none tracking-tight">AI Mill</p>
-                <p className="text-[11px] text-[#9CA3AF] leading-none mt-0.5 font-medium">After-Sales Portal</p>
+                <p className="text-[14px] font-bold text-[#111827] leading-none tracking-tight">Complaint Resolution Portal</p>
+                <p className="text-[10px] text-[#9CA3AF] leading-none mt-0.5 font-medium">By AI Mill</p>
               </div>
             </div>
 
-            {/* Stepper nav */}
-            <nav className="flex items-center gap-0 flex-1 max-w-2xl mx-auto">
-              {stages.map((stage, idx) => {
+            {/* Navigation */}
+            <nav className="flex items-center gap-1 flex-1 justify-center">
+
+              {/* FAQ Auto Resolution — standalone module tab */}
+              <button
+                onClick={() => onStageChange('faq')}
+                className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-left transition-all
+                  ${isFaqActive
+                    ? 'bg-[#991B1B] text-white shadow-sm'
+                    : 'text-[#6B7280] hover:bg-[#F9FAFB] hover:text-[#374151]'}
+                `}
+              >
+                <MessageCircle className={`w-4 h-4 flex-shrink-0 ${isFaqActive ? 'text-white' : 'text-[#9CA3AF]'}`} strokeWidth={2} />
+                <div className="hidden lg:block">
+                  <p className={`text-[12px] font-semibold leading-none whitespace-nowrap ${isFaqActive ? 'text-white' : 'text-[#374151]'}`}>
+                    FAQ Auto Resolution
+                  </p>
+                  <p className={`text-[10px] leading-none mt-0.5 font-medium ${isFaqActive ? 'text-red-200' : 'text-[#9CA3AF]'}`}>
+                    Auto-resolved queries
+                  </p>
+                </div>
+              </button>
+
+              {/* Separator between FAQ module and workflow */}
+              <div className="w-px h-7 bg-[#E5E7EB] mx-1 flex-shrink-0" />
+
+              {/* Workflow stepper: Inbox → Review → Resolution → Dashboard */}
+              {workflowStages.map((stage, idx) => {
                 const Icon = stage.icon
-                const isActive  = currentStage === stage.id
-                const isDone    = currentIdx > idx
-                const isLocked  = ((stage.id === 'review' || stage.id === 'decision') && !claimData)
+                const isActive   = currentStage === stage.id
+                const wIdx       = WORKFLOW_ORDER.indexOf(stage.id as typeof WORKFLOW_ORDER[number])
+                const isDone     = workflowIdx > wIdx && !isFaqActive
+                const isLocked   = ((stage.id === 'review' || stage.id === 'decision') && !claimData)
                   || (stage.id === 'decision' && isDeskReject)
                 const isRejected = stage.id === 'decision' && isDeskReject
 
                 return (
                   <React.Fragment key={stage.id}>
-                    {/* Step */}
                     <button
                       onClick={() => !isLocked && onStageChange(stage.id as ProcessingStage)}
                       disabled={!!isLocked}
@@ -66,7 +93,7 @@ export default function Header({ currentStage, onStageChange, claimData }: Heade
                         ${isLocked  ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer hover:bg-[#F9FAFB]'}
                       `}
                     >
-                      {/* Circle */}
+                      {/* Progress circle */}
                       <motion.div
                         animate={{
                           backgroundColor: isDone ? '#059669' : isActive ? '#991B1B' : isRejected ? '#DC2626' : '#E5E7EB',
@@ -95,14 +122,14 @@ export default function Header({ currentStage, onStageChange, claimData }: Heade
                       </div>
                     </button>
 
-                    {/* Connector line */}
-                    {idx < stages.length - 1 && (
-                      <div className="flex-1 mx-1 h-px relative overflow-hidden rounded-full min-w-[20px] max-w-[60px]">
+                    {/* Connector between workflow steps */}
+                    {idx < workflowStages.length - 1 && (
+                      <div className="flex-1 mx-1 h-px relative overflow-hidden rounded-full min-w-[16px] max-w-[48px]">
                         <div className="absolute inset-0 bg-[#E5E7EB]" />
                         <motion.div
                           className="absolute inset-0 origin-left bg-gradient-to-r from-[#991B1B] to-[#B91C1C]"
                           initial={{ scaleX: 0 }}
-                          animate={{ scaleX: currentIdx > idx ? 1 : 0 }}
+                          animate={{ scaleX: (workflowIdx > wIdx && !isFaqActive) ? 1 : 0 }}
                           transition={{ duration: 0.35, ease: 'easeOut' }}
                         />
                       </div>
@@ -112,7 +139,7 @@ export default function Header({ currentStage, onStageChange, claimData }: Heade
               })}
             </nav>
 
-            {/* User */}
+            {/* User area */}
             <div className="flex items-center gap-2 min-w-fit">
               {user && (
                 <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#F9FAFB] border border-[#E5E7EB]">

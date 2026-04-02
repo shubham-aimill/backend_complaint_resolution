@@ -20,7 +20,6 @@ import {
   ChevronDown,
   ChevronUp,
   BookOpen,
-  Tag,
   Activity,
   Info,
   Package,
@@ -41,27 +40,25 @@ import { getClaimDraft } from '@/lib/normalizeClaim'
 import { useMailChain } from '@/lib/hooks/useMailChain'
 import { useComplaintDecision } from '@/lib/hooks/useComplaintDecision'
 
-/** Image preview with graceful "unavailable" fallback when the file can't be served */
+/** Image preview with graceful fallback */
 function ImagePreview({ src, alt }: { src: string; alt: string }) {
   const [state, setState] = React.useState<'loading' | 'ok' | 'error'>('loading')
   return (
-    <div className="rounded-lg overflow-hidden bg-[#F3F4F6] flex items-center justify-center min-h-[100px]">
+    <div className="rounded-xl overflow-hidden bg-[#F3F4F6] flex items-center justify-center min-h-[120px] border border-[#E5E7EB]">
       {state !== 'error' && (
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src={src}
           alt={alt}
-          className={`max-w-full max-h-48 object-contain ${state === 'loading' ? 'opacity-0 absolute' : ''}`}
+          className={`max-w-full max-h-56 object-contain ${state === 'loading' ? 'opacity-0 absolute' : ''}`}
           onLoad={() => setState('ok')}
           onError={() => setState('error')}
         />
       )}
-      {state === 'loading' && (
-        <span className="text-xs text-[#9CA3AF]">Loading image…</span>
-      )}
+      {state === 'loading' && <span className="text-xs text-[#9CA3AF]">Loading image…</span>}
       {state === 'error' && (
-        <div className="flex flex-col items-center gap-1 py-4 text-[#9CA3AF]">
-          <FileImage className="w-8 h-8" />
+        <div className="flex flex-col items-center gap-2 py-6 text-[#9CA3AF]">
+          <FileImage className="w-10 h-10" />
           <span className="text-xs">Image not available on this machine</span>
         </div>
       )}
@@ -69,49 +66,38 @@ function ImagePreview({ src, alt }: { src: string; alt: string }) {
   )
 }
 
-/** Render flat KPI key-values (e.g. from damage photos, water leakage images) */
-function ImageKpiContent({ keyFields }: { keyFields: Record<string, unknown> }) {
-  const formatLabel = (key: string) =>
-    key.replace(/_/g, ' ').replace(/([A-Z])/g, ' $1').replace(/^./, (s) => s.toUpperCase()).trim()
-  const entries = Object.entries(keyFields).filter(
-    ([k, v]) => !String(k).startsWith('_') && v != null && v !== ''
-  )
-  if (entries.length === 0) return null
-  return (
-    <div className="grid gap-x-4 gap-y-2 text-xs" style={{ gridTemplateColumns: 'auto 1fr' }}>
-      {entries.map(([k, v]) => (
-        <React.Fragment key={k}>
-          <span className="font-medium text-[#6B7280]">{formatLabel(k)}:</span>
-          <span className="text-[#374151] break-words">{String(v)}</span>
-        </React.Fragment>
-      ))}
-    </div>
-  )
+/** Doc-type icon + accent colours */
+function docTypeConfig(type: string, isImage: boolean): { icon: React.ElementType; accent: string; bg: string; badge: string } {
+  if (isImage)              return { icon: FileImage,  accent: 'text-[#991B1B]', bg: 'bg-[#FEF2F2]', badge: 'bg-[#FEF2F2] text-[#991B1B] border-[#FECACA]' }
+  if (type === 'Invoice')   return { icon: Receipt,    accent: 'text-[#047857]', bg: 'bg-[#ECFDF5]', badge: 'bg-[#ECFDF5] text-[#047857] border-[#A7F3D0]' }
+  if (type === 'Receipt')   return { icon: Receipt,    accent: 'text-[#047857]', bg: 'bg-[#ECFDF5]', badge: 'bg-[#ECFDF5] text-[#047857] border-[#A7F3D0]' }
+  if (type === 'CorrespondenceRecord') return { icon: Mail, accent: 'text-[#1D4ED8]', bg: 'bg-[#EFF6FF]', badge: 'bg-[#EFF6FF] text-[#1D4ED8] border-[#BFDBFE]' }
+  if (type === 'ContractOrAgreement') return { icon: FileCheck, accent: 'text-[#7C3AED]', bg: 'bg-[#F5F3FF]', badge: 'bg-[#F5F3FF] text-[#7C3AED] border-[#DDD6FE]' }
+  if (type === 'Screenshot') return { icon: ImageIcon, accent: 'text-[#0369A1]', bg: 'bg-[#F0F9FF]', badge: 'bg-[#F0F9FF] text-[#0369A1] border-[#BAE6FD]' }
+  return { icon: FileText, accent: 'text-[#6B7280]', bg: 'bg-[#F3F4F6]', badge: 'bg-[#F3F4F6] text-[#6B7280] border-[#E5E7EB]' }
 }
 
-/** Render structured keyFields for any document type (Invoice, Police Report, Repair Estimate, etc.) */
-function StructuredDocContent({ doc }: { doc: Document }) {
-  const keyFields = doc.keyFields as Record<string, unknown> | undefined
-  if (!keyFields || Object.keys(keyFields).length === 0) return null
+const formatLabel = (key: string) =>
+  key.replace(/_/g, ' ').replace(/([A-Z])/g, ' $1').replace(/^./, (s) => s.toUpperCase()).trim()
 
-  const formatLabel = (key: string) =>
-    key.replace(/_/g, ' ').replace(/([A-Z])/g, ' $1').replace(/^./, (s) => s.toUpperCase()).trim()
-
-  const renderValue = (val: unknown): React.ReactNode => {
-    if (val == null || val === '') return '—'
-    if (typeof val === 'string') return val
+/** Flat key-value property grid used inside doc detail panels */
+function PropGrid({ entries, accent = 'text-[#991B1B]' }: { entries: [string, unknown][]; accent?: string }) {
+  const renderVal = (val: unknown): React.ReactNode => {
+    if (val == null || val === '') return <span className="text-[#9CA3AF] italic">—</span>
+    if (typeof val === 'boolean') return val ? 'Yes' : 'No'
     if (typeof val === 'number') return String(val)
+    if (typeof val === 'string') return val
     if (Array.isArray(val)) {
-      if (val.length === 0) return '—'
+      if (val.length === 0) return <span className="text-[#9CA3AF] italic">—</span>
       return (
-        <ul className="list-disc list-inside space-y-0.5 mt-1">
+        <ul className="list-disc list-inside space-y-0.5 mt-0.5">
           {val.map((item, i) => (
             <li key={i} className="text-[#374151]">
               {typeof item === 'object' && item !== null && !Array.isArray(item)
                 ? Object.entries(item as Record<string, unknown>).map(([k, v]) => (
                     <span key={k} className="mr-2">
                       <span className="font-medium text-[#6B7280]">{formatLabel(k)}:</span>{' '}
-                      {String(v)}
+                      {String(v ?? '—')}
                     </span>
                   ))
                 : String(item)}
@@ -122,11 +108,11 @@ function StructuredDocContent({ doc }: { doc: Document }) {
     }
     if (typeof val === 'object' && val !== null) {
       return (
-        <div className="mt-1 space-y-1 pl-2 border-l-2 border-[#E5E7EB]">
+        <div className="mt-1 space-y-0.5 pl-2 border-l-2 border-[#E5E7EB]">
           {Object.entries(val as Record<string, unknown>).map(([k, v]) => (
             <div key={k} className="text-xs">
               <span className="font-medium text-[#6B7280]">{formatLabel(k)}:</span>{' '}
-              <span className="text-[#374151]">{renderValue(v)}</span>
+              {renderVal(v)}
             </div>
           ))}
         </div>
@@ -135,80 +121,225 @@ function StructuredDocContent({ doc }: { doc: Document }) {
     return String(val)
   }
 
-  const renderSection = (sectionKey: string, sectionVal: unknown) => {
-    const title = formatLabel(sectionKey)
-    if (Array.isArray(sectionVal) && sectionVal.length > 0) {
-      const first = sectionVal[0]
-      const isTable =
-        typeof first === 'object' && first !== null && !Array.isArray(first)
-      if (isTable) {
-        const keys = Object.keys(first as Record<string, unknown>)
-        return (
-          <div key={sectionKey}>
-            <div className="text-xs font-semibold text-[#991B1B] uppercase tracking-wider mb-2">
-              {title}
-            </div>
-            <div className="bg-[#F9FAFB] rounded-lg overflow-hidden">
-              <table className="w-full text-xs">
-                <thead>
-                  <tr className="bg-[#FEF2F2]">
-                    {keys.map((k) => (
-                      <th
-                        key={k}
-                        className="px-3 py-2 text-left font-semibold text-[#991B1B]"
-                      >
-                        {formatLabel(k)}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {sectionVal.map((row: unknown, i: number) => (
-                    <tr key={i} className="border-t border-[#E5E7EB]">
-                      {keys.map((k) => (
-                        <td key={k} className="px-3 py-2 text-[#374151]">
-                          {renderValue((row as Record<string, unknown>)[k])}
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )
-      }
-    }
-    return (
-      <div key={sectionKey}>
-        <div className="text-xs font-semibold text-[#991B1B] uppercase tracking-wider mb-2">
-          {title}
+  const clean = entries.filter(([k, v]) => !String(k).startsWith('_') && v != null && v !== '')
+  if (clean.length === 0) return null
+  return (
+    <div className="divide-y divide-[#F3F4F6]">
+      {clean.map(([k, v]) => (
+        <div key={k} className="flex items-start gap-3 py-2 px-1">
+          <span className={`text-[11px] font-semibold uppercase tracking-wide ${accent} min-w-[110px] flex-shrink-0 pt-0.5`}>
+            {formatLabel(k)}
+          </span>
+          <span className="text-xs text-[#374151] break-words flex-1">{renderVal(v)}</span>
         </div>
-        <div className="bg-[#F9FAFB] rounded-lg p-3 text-xs">
-          {typeof sectionVal === 'object' && sectionVal !== null && !Array.isArray(sectionVal) ? (
-            <div className="grid gap-x-4 gap-y-2" style={{ gridTemplateColumns: 'auto 1fr' }}>
-              {Object.entries(sectionVal as Record<string, unknown>).map(([k, v]) => (
-                <React.Fragment key={k}>
-                  <span className="font-medium text-[#6B7280] min-w-0">
-                    {formatLabel(k)}:
-                  </span>
-                  <span className="text-[#374151] break-words">{renderValue(v)}</span>
-                </React.Fragment>
+      ))}
+    </div>
+  )
+}
+
+/** Array-of-objects → HTML table */
+function KeyFieldsTable({ rows, keys }: { rows: Record<string, unknown>[]; keys: string[] }) {
+  return (
+    <div className="overflow-x-auto rounded-lg border border-[#E5E7EB]" style={{ scrollbarWidth: 'thin' }}>
+      <table className="w-full text-xs">
+        <thead>
+          <tr className="bg-[#F9FAFB]">
+            {keys.map(k => (
+              <th key={k} className="px-3 py-2 text-left font-semibold text-[#374151] border-b border-[#E5E7EB] whitespace-nowrap">
+                {formatLabel(k)}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row, i) => (
+            <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-[#F9FAFB]'}>
+              {keys.map(k => (
+                <td key={k} className="px-3 py-2 text-[#374151] border-b border-[#F3F4F6]">
+                  {String(row[k] ?? '—')}
+                </td>
               ))}
-            </div>
-          ) : (
-            <span className="text-[#374151]">{renderValue(sectionVal)}</span>
-          )}
-        </div>
-      </div>
-    )
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
+/** Full structured document detail panel — adapts to doc type */
+function DocDetailPanel({
+  doc,
+  imageUrl,
+  expandedDocId,
+  setExpandedDocId,
+}: {
+  doc: Document
+  imageUrl: string | false
+  expandedDocId: string | null
+  setExpandedDocId: (id: string | null) => void
+}) {
+  const isImage = doc.type === 'DamagePhoto' || doc.type === 'PhotoEvidence' || (doc.mimeType ?? '').startsWith('image/')
+  const { accent, bg, badge } = docTypeConfig(doc.type, isImage)
+  const keyFields = doc.keyFields as Record<string, unknown> | undefined
+  const meta = doc.metadata as Record<string, unknown> | undefined
+  const analysisError = meta?.analysisError as string | undefined
+  const parseNote = meta?.parseNote as string | undefined
+  const content = typeof doc.content === 'string' ? doc.content.trim() : ''
+  const isExpanded = expandedDocId === doc.id
+  const PREVIEW_LEN = 400
+
+  // Separate array-of-object fields (tables) from scalar/object fields
+  const tableFields: { key: string; rows: Record<string, unknown>[]; keys: string[] }[] = []
+  const scalarFields: [string, unknown][] = []
+  if (keyFields) {
+    Object.entries(keyFields).forEach(([k, v]) => {
+      if (String(k).startsWith('_')) return
+      if (Array.isArray(v) && v.length > 0 && typeof v[0] === 'object' && v[0] !== null) {
+        tableFields.push({ key: k, rows: v as Record<string, unknown>[], keys: Object.keys(v[0] as object) })
+      } else {
+        scalarFields.push([k, v])
+      }
+    })
   }
 
+  const hasKeyFields = scalarFields.length > 0 || tableFields.length > 0
+
   return (
-    <div className="space-y-4 max-h-[400px] overflow-y-auto">
-      {Object.entries(keyFields).map(([sectionKey, sectionVal]) =>
-        renderSection(sectionKey, sectionVal)
-      )}
+    <div className={`mt-3 rounded-xl border border-[#E5E7EB] overflow-hidden`}>
+      {/* Panel header */}
+      <div className={`${bg} px-4 py-2.5 flex items-center gap-2 border-b border-[#E5E7EB]`}>
+        <FileText className={`w-3.5 h-3.5 ${accent} flex-shrink-0`} />
+        <span className={`text-xs font-bold ${accent} truncate flex-1`}>{doc.name}</span>
+        <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${badge} flex-shrink-0`}>
+          {doc.type === 'CorrespondenceRecord' ? 'Email' : doc.type}
+        </span>
+        <span className="text-[10px] text-[#6B7280] flex-shrink-0">{Math.round(doc.confidence * 100)}%</span>
+      </div>
+
+      <div className="bg-white p-4 space-y-4">
+        {/* ── IMAGE DOCUMENTS ─────────────────────────────── */}
+        {isImage && (
+          <>
+            {imageUrl && <ImagePreview src={imageUrl as string} alt={doc.name} />}
+            {analysisError ? (
+              <div className="flex items-start gap-2 bg-[#FFFBEB] border border-[#FDE68A] rounded-lg p-3">
+                <AlertTriangle className="w-4 h-4 text-[#B45309] flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-xs font-semibold text-[#B45309]">Vision Analysis Unavailable</p>
+                  <p className="text-xs text-[#92400E] mt-0.5">Image file not found on this machine — it may have been processed on a different device.</p>
+                </div>
+              </div>
+            ) : (
+              <>
+                {content && (
+                  <div>
+                    <div className={`flex items-center gap-1.5 mb-2`}>
+                      <Info className={`w-3.5 h-3.5 ${accent}`} />
+                      <span className={`text-[11px] font-bold uppercase tracking-wider ${accent}`}>AI Vision Analysis</span>
+                    </div>
+                    <div className="bg-[#F9FAFB] border border-[#E5E7EB] rounded-lg p-3">
+                      <p className="text-xs text-[#1C1917] leading-relaxed whitespace-pre-wrap">{content}</p>
+                    </div>
+                  </div>
+                )}
+                {hasKeyFields && (
+                  <div>
+                    <div className="flex items-center gap-1.5 mb-2">
+                      <Activity className={`w-3.5 h-3.5 ${accent}`} />
+                      <span className={`text-[11px] font-bold uppercase tracking-wider ${accent}`}>Extracted Findings</span>
+                    </div>
+                    <div className="bg-[#F9FAFB] border border-[#E5E7EB] rounded-lg overflow-hidden">
+                      <PropGrid entries={scalarFields} accent={accent} />
+                    </div>
+                  </div>
+                )}
+                {!content && !hasKeyFields && (
+                  <p className="text-xs text-[#9CA3AF] italic text-center py-2">No analysis data available</p>
+                )}
+              </>
+            )}
+          </>
+        )}
+
+        {/* ── TEXT / PDF / DOC DOCUMENTS ──────────────────── */}
+        {!isImage && (
+          <>
+            {/* Parse note for scanned PDFs */}
+            {parseNote && (
+              <div className="flex items-start gap-2 bg-[#FFFBEB] border border-[#FDE68A] rounded-lg p-3">
+                <AlertTriangle className="w-3.5 h-3.5 text-[#B45309] flex-shrink-0 mt-0.5" />
+                <p className="text-xs text-[#92400E]">{parseNote}</p>
+              </div>
+            )}
+
+            {/* Extracted / structured key fields */}
+            {hasKeyFields && (
+              <div>
+                <div className="flex items-center gap-1.5 mb-2">
+                  <FileCheck className={`w-3.5 h-3.5 ${accent}`} />
+                  <span className={`text-[11px] font-bold uppercase tracking-wider ${accent}`}>
+                    {doc.type === 'CorrespondenceRecord' ? 'Extracted Fields' : 'Structured Data'}
+                  </span>
+                </div>
+                {scalarFields.length > 0 && (
+                  <div className="bg-[#F9FAFB] border border-[#E5E7EB] rounded-lg overflow-hidden mb-3">
+                    <PropGrid entries={scalarFields} accent={accent} />
+                  </div>
+                )}
+                {tableFields.map(({ key, rows, keys }) => (
+                  <div key={key} className="mb-3">
+                    <p className={`text-[10px] font-bold uppercase tracking-wider ${accent} mb-1.5`}>{formatLabel(key)}</p>
+                    <KeyFieldsTable rows={rows} keys={keys} />
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Raw content block */}
+            {content && !content.startsWith('[') && (
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-1.5">
+                    <FileText className="w-3.5 h-3.5 text-[#6B7280]" />
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-[#6B7280]">
+                      {doc.type === 'CorrespondenceRecord' ? 'Email Body' : 'Document Text'}
+                    </span>
+                  </div>
+                  {content.length > PREVIEW_LEN && (
+                    <button
+                      type="button"
+                      onClick={e => { e.stopPropagation(); setExpandedDocId(isExpanded ? null : doc.id) }}
+                      className="text-[11px] font-medium text-[#1D4ED8] hover:underline flex items-center gap-0.5"
+                    >
+                      {isExpanded ? <><ChevronUp className="w-3 h-3" />Show less</> : <><ChevronDown className="w-3 h-3" />Show full</>}
+                    </button>
+                  )}
+                </div>
+                <div className={`bg-[#F9FAFB] border border-[#E5E7EB] rounded-lg p-3 ${doc.type === 'CorrespondenceRecord' ? 'bg-[#EFF6FF] border-[#BFDBFE]' : ''}`}>
+                  <p className="text-xs text-[#374151] leading-relaxed whitespace-pre-wrap font-mono">
+                    {isExpanded || content.length <= PREVIEW_LEN
+                      ? content
+                      : `${content.slice(0, PREVIEW_LEN).trim()}…`}
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Scanned PDF placeholder */}
+            {content.startsWith('[') && (
+              <div className="flex items-center gap-2 bg-[#F9FAFB] border border-[#E5E7EB] rounded-lg p-3">
+                <Info className="w-4 h-4 text-[#6B7280] flex-shrink-0" />
+                <p className="text-xs text-[#6B7280]">{content}</p>
+              </div>
+            )}
+
+            {!hasKeyFields && !content && (
+              <p className="text-xs text-[#9CA3AF] italic text-center py-2">No content extracted from this document</p>
+            )}
+          </>
+        )}
+      </div>
     </div>
   )
 }
@@ -254,7 +385,6 @@ const categorizeFields = (evidence: FieldEvidence[]) => {
   return grouped
 }
 
-const SUMMARY_PREVIEW_LENGTH = 280
 
 export default function ReviewPage({ claimData, onNextStage, onPreviousStage, onLoadClaim }: ReviewPageProps) {
   const [selectedField, setSelectedField] = useState<string | null>(null)
@@ -391,13 +521,14 @@ export default function ReviewPage({ claimData, onNextStage, onPreviousStage, on
       {/* Main Content - Two Column Layout */}
       <div className="px-4 py-8">
         <div className="grid grid-cols-12 gap-6">
-          {/* Left Column - Source Documents (Compact) */}
+          {/* Left Column - Source Documents */}
           <div className="col-span-12 lg:col-span-4">
             <motion.div
               className="card p-5 h-fit sticky top-[88px]"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
             >
+              {/* Header */}
               <div className="flex items-center space-x-2 mb-4">
                 <FileText className="w-4 h-4 text-[#991B1B]" />
                 <h2 className="text-sm font-bold text-[#111827] uppercase tracking-wider">
@@ -408,228 +539,80 @@ export default function ReviewPage({ claimData, onNextStage, onPreviousStage, on
                 </span>
               </div>
 
-              <div className="space-y-2">
+              {/* Document tiles */}
+              <div className="space-y-1.5">
                 {sourceDocuments.map(doc => {
-                  const isSelected = selectedDoc === doc.id;
+                  const isSelected = selectedDoc === doc.id
                   const isImageDoc =
                     doc.type === 'DamagePhoto' ||
-                    doc.mimeType?.startsWith('image/');
-                  const imageUrl =
-                    isImageDoc &&
-                    ingestedClaimId &&
-                    `/api/ingested-claims/${ingestedClaimId}/attachments?name=${encodeURIComponent(doc.name)}`;
+                    doc.type === 'PhotoEvidence' ||
+                    (doc.mimeType ?? '').startsWith('image/')
+                  const { icon: DocIcon, accent, badge } = docTypeConfig(doc.type, isImageDoc)
+                  const confPct = Math.round(doc.confidence * 100)
 
                   return (
-                    <div
+                    <button
                       key={doc.id}
-                      className={`rounded-lg border cursor-pointer transition-all overflow-hidden ${
+                      type="button"
+                      onClick={() => setSelectedDoc(isSelected ? null : doc.id)}
+                      className={`w-full text-left rounded-lg border px-3 py-2.5 transition-all flex items-center gap-3 ${
                         isSelected
                           ? 'border-[#991B1B] bg-[#FEF2F2] shadow-sm'
-                          : 'border-[#E5E7EB] hover:border-[#CBD5E1] hover:bg-[#F9FAFB] bg-white'
+                          : 'border-[#E5E7EB] bg-white hover:border-[#CBD5E1] hover:bg-[#F9FAFB]'
                       }`}
-                      onClick={() => setSelectedDoc(isSelected ? null : doc.id)}
                     >
-                      <div className="p-3">
-                        <div className="flex items-start justify-between mb-2 gap-2">
-                          <div
-                            className="flex items-center space-x-2 flex-1 min-w-0 overflow-x-auto"
-                            style={{ scrollbarWidth: 'thin' }}
-                          >
-                            {isImageDoc ? (
-                              <FileImage className="w-4 h-4 text-[#991B1B] flex-shrink-0" />
-                            ) : doc.type === 'CorrespondenceRecord' ? (
-                              <Mail className="w-4 h-4 text-[#3B82F6] flex-shrink-0" />
-                            ) : doc.type === 'Invoice' ||
-                              doc.type === 'Receipt' ? (
-                              <Receipt className="w-4 h-4 text-[#10B981] flex-shrink-0" />
-                            ) : (
-                              <FileText className="w-4 h-4 text-[#6B7280] flex-shrink-0" />
-                            )}
-                            <span className="text-xs font-semibold text-[#111827] whitespace-nowrap">
-                              {doc.name}
-                            </span>
-                          </div>
-                          <span
-                            className={`text-xs font-medium px-1.5 py-0.5 rounded flex-shrink-0 ${
-                              doc.type === 'CorrespondenceRecord'
-                                ? 'bg-[#EFF6FF] text-[#1D4ED8]'
-                                : doc.type === 'Invoice' ||
-                                    doc.type === 'Receipt'
-                                  ? 'bg-[#ECFDF5] text-[#047857]'
-                                  : isImageDoc
-                                    ? 'bg-[#FEF2F2] text-[#991B1B]'
-                                    : 'bg-[#F3F4F6] text-[#6B7280]'
-                            }`}
-                          >
-                            {doc.type === 'CorrespondenceRecord'
-                              ? 'Email'
-                              : doc.type}
+                      <DocIcon className={`w-4 h-4 ${accent} flex-shrink-0`} />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs font-semibold text-[#111827] truncate">{doc.name}</p>
+                        <div className="flex items-center gap-2 mt-0.5">
+                          <span className={`text-[10px] font-medium px-1.5 py-0 rounded border ${badge}`}>
+                            {doc.type === 'CorrespondenceRecord' ? 'Email' : doc.type}
                           </span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-1">
-                            <div
-                              className={`w-1.5 h-1.5 rounded-full ${
-                                doc.confidence >= CONFIDENCE.THRESHOLD_HIGH
-                                  ? 'bg-[#10B981]'
-                                  : doc.confidence >=
-                                      CONFIDENCE.THRESHOLD_MEDIUM
-                                    ? 'bg-[#3B82F6]'
-                                    : 'bg-[#F59E0B]'
-                              }`}
-                            />
-                            <span className="text-xs text-[#6B7280]">
-                              {Math.round(doc.confidence * 100)}%
-                            </span>
+                          {/* Confidence bar */}
+                          <div className="flex items-center gap-1 flex-1">
+                            <div className="flex-1 h-1 bg-[#E5E7EB] rounded-full overflow-hidden">
+                              <div
+                                className={`h-full rounded-full ${
+                                  confPct >= 80 ? 'bg-[#10B981]' : confPct >= 60 ? 'bg-[#3B82F6]' : 'bg-[#F59E0B]'
+                                }`}
+                                style={{ width: `${confPct}%` }}
+                              />
+                            </div>
+                            <span className="text-[10px] text-[#6B7280] tabular-nums">{confPct}%</span>
                           </div>
                         </div>
                       </div>
-                      {/* Image preview + detailed summary + extracted KPIs for image documents */}
-                      {isImageDoc &&
-                        isSelected &&
-                        (() => {
-                          const analysisError = (
-                            doc.metadata as Record<string, unknown>
-                          )?.analysisError as string | undefined;
-                          return (
-                            <div className="border-t border-[#E5E7EB] bg-white/80 p-3 space-y-3">
-                              {/* Image preview */}
-                              {imageUrl ? (
-                                <ImagePreview
-                                  src={imageUrl as string}
-                                  alt={doc.name}
-                                />
-                              ) : null}
-                              {/* Analysis error state */}
-                              {analysisError ? (
-                                <div className="bg-[#FFFBEB] border border-[#FDE68A] rounded-lg p-3 flex items-start gap-2">
-                                  <AlertTriangle className="w-4 h-4 text-[#B45309] flex-shrink-0 mt-0.5" />
-                                  <div>
-                                    <div className="text-xs font-semibold text-[#B45309] mb-1">
-                                      Image Analysis Unavailable
-                                    </div>
-                                    <div className="text-xs text-[#92400E]">
-                                      The original image file could not be found
-                                      on this machine. It may have been
-                                      processed on a different computer.
-                                    </div>
-                                  </div>
-                                </div>
-                              ) : doc.content &&
-                                typeof doc.content === 'string' &&
-                                doc.content.trim() ? (
-                                /* Detailed Summary */
-                                <div className="bg-[#FEF2F2] border border-[#FECACA] rounded-lg p-3">
-                                  <div className="text-xs font-semibold text-[#991B1B] uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                                    <FileText className="w-3.5 h-3.5" />
-                                    Image Analysis Summary
-                                  </div>
-                                  <div className="text-xs text-[#1C1917] leading-relaxed whitespace-pre-wrap">
-                                    {doc.content}
-                                  </div>
-                                </div>
-                              ) : null}
-                              {/* Extracted KPIs */}
-                              {doc.keyFields &&
-                              Object.keys(doc.keyFields as object).length >
-                                0 ? (
-                                <div>
-                                  <div className="text-xs font-semibold text-[#6B7280] uppercase tracking-wider mb-2">
-                                    Extracted KPIs
-                                  </div>
-                                  <ImageKpiContent
-                                    keyFields={
-                                      doc.keyFields as Record<string, unknown>
-                                    }
-                                  />
-                                </div>
-                              ) : null}
-                              {/* No data at all */}
-                              {!analysisError &&
-                                !doc.content &&
-                                (!doc.keyFields ||
-                                  Object.keys(doc.keyFields as object)
-                                    .length === 0) && (
-                                  <p className="text-xs text-[#6B7280] italic">
-                                    No analysis data extracted
-                                  </p>
-                                )}
-                            </div>
-                          );
-                        })()}
-                      {/* Text document content when selected */}
-                      {!isImageDoc && isSelected && (
-                        <div className="border-t border-[#E5E7EB] bg-white/80 p-3 space-y-3">
-                          {/* Extracted fields (keyFields) */}
-                          {doc.keyFields &&
-                          Object.keys(doc.keyFields as object).length > 0 ? (
-                            <>
-                              <div className="text-xs font-semibold text-[#6B7280] uppercase tracking-wider">
-                                {doc.type === 'CorrespondenceRecord'
-                                  ? 'Extracted Fields'
-                                  : 'Structured Content'}
-                              </div>
-                              <div
-                                className="overflow-x-auto"
-                                style={{ scrollbarWidth: 'thin' }}
-                              >
-                                <StructuredDocContent doc={doc} />
-                              </div>
-                            </>
-                          ) : null}
-                          {/* Raw content / email body */}
-                          {doc.content &&
-                          typeof doc.content === 'string' &&
-                          doc.content.trim() ? (
-                            <>
-                              <div className="text-xs font-semibold text-[#6B7280] uppercase tracking-wider">
-                                {doc.type === 'CorrespondenceRecord'
-                                  ? 'Email Body'
-                                  : 'Content'}
-                              </div>
-                              <div
-                                className={`rounded-lg p-3 ${doc.type === 'CorrespondenceRecord' ? 'bg-[#EFF6FF] border border-[#BFDBFE]' : 'bg-[#F9FAFB]'}`}
-                              >
-                                <p className="text-xs text-[#374151] leading-relaxed whitespace-pre-wrap">
-                                  {expandedDocId === doc.id
-                                    ? doc.content
-                                    : doc.content.length >
-                                        SUMMARY_PREVIEW_LENGTH
-                                      ? `${doc.content.slice(0, SUMMARY_PREVIEW_LENGTH).trim()}...`
-                                      : doc.content}
-                                </p>
-                                {doc.content.length >
-                                  SUMMARY_PREVIEW_LENGTH && (
-                                  <button
-                                    type="button"
-                                    onClick={e => {
-                                      e.stopPropagation();
-                                      setExpandedDocId(
-                                        expandedDocId === doc.id ? null : doc.id
-                                      );
-                                    }}
-                                    className="mt-2 text-xs font-medium text-[#1D4ED8] hover:underline"
-                                  >
-                                    {expandedDocId === doc.id
-                                      ? 'View less'
-                                      : 'View full email'}
-                                  </button>
-                                )}
-                              </div>
-                            </>
-                          ) : !doc.keyFields ||
-                            Object.keys(doc.keyFields as object).length ===
-                              0 ? (
-                            <p className="text-xs text-[#6B7280] italic">
-                              No structured content extracted
-                            </p>
-                          ) : null}
-                        </div>
-                      )}
-                    </div>
-                  );
+                      <ChevronDown className={`w-3.5 h-3.5 text-[#9CA3AF] flex-shrink-0 transition-transform ${isSelected ? 'rotate-180' : ''}`} />
+                    </button>
+                  )
                 })}
+
+                {sourceDocuments.length === 0 && (
+                  <p className="text-xs text-[#9CA3AF] italic text-center py-4">No source documents</p>
+                )}
               </div>
+
+              {/* Detail panel — shown below tiles when a doc is selected */}
+              {selectedDoc && (() => {
+                const doc = sourceDocuments.find(d => d.id === selectedDoc)
+                if (!doc) return null
+                const isImageDoc =
+                  doc.type === 'DamagePhoto' ||
+                  doc.type === 'PhotoEvidence' ||
+                  (doc.mimeType ?? '').startsWith('image/')
+                const imageUrl: string | false =
+                  isImageDoc && ingestedClaimId
+                    ? `/api/ingested-claims/${ingestedClaimId}/attachments?name=${encodeURIComponent(doc.name)}`
+                    : false
+                return (
+                  <DocDetailPanel
+                    doc={doc}
+                    imageUrl={imageUrl}
+                    expandedDocId={expandedDocId}
+                    setExpandedDocId={setExpandedDocId}
+                  />
+                )
+              })()}
             </motion.div>
           </div>
 
@@ -750,9 +733,7 @@ export default function ReviewPage({ claimData, onNextStage, onPreviousStage, on
               {(decisionPack?.policyHolderInfo ||
                 decisionPack?.warrantyStatus ||
                 decisionPack?.matchedProduct ||
-                decisionPack?.productCategory ||
-                (decisionPack?.policyGrounding &&
-                  decisionPack.policyGrounding.length > 0)) && (
+                decisionPack?.productCategory) && (
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -764,15 +745,6 @@ export default function ReviewPage({ claimData, onNextStage, onPreviousStage, on
                     <h2 className="text-base font-bold text-[#111827] uppercase tracking-wider">
                       Complaint Grounding
                     </h2>
-                    {decisionPack?.policyGrounding &&
-                      decisionPack.policyGrounding.length > 0 && (
-                        <span className="ml-auto text-xs font-medium text-[#6B7280] bg-[#F3F4F6] px-2 py-0.5 rounded">
-                          {decisionPack.policyGrounding.length} match
-                          {decisionPack.policyGrounding.length !== 1
-                            ? 'es'
-                            : ''}
-                        </span>
-                      )}
                   </div>
 
                   <div className="space-y-4">
@@ -1332,98 +1304,6 @@ export default function ReviewPage({ claimData, onNextStage, onPreviousStage, on
                       );
                     })()}
 
-                    {/* Grounding Matches */}
-                    {decisionPack?.policyGrounding &&
-                      decisionPack.policyGrounding.length > 0 && (
-                        <div className="bg-white rounded-xl border border-[#E5E7EB] p-5">
-                          <h3 className="text-xs font-semibold text-[#991B1B] uppercase tracking-wider mb-3 flex items-center space-x-1.5">
-                            <Tag className="w-3.5 h-3.5" />
-                            <span>Matched Resolution Rules</span>
-                          </h3>
-                          <div className="space-y-3">
-                            {decisionPack.policyGrounding.map((hit, idx) => {
-                              const score = Number(
-                                hit.score ?? hit.similarity ?? 0
-                              );
-                              const isCustomerRecord = !String(
-                                hit.clauseId ?? ''
-                              ).startsWith('RES-');
-                              const recommendation = String(
-                                hit.rationale ?? ''
-                              );
-                              return (
-                                <div
-                                  key={hit.clauseId ?? idx}
-                                  className="rounded-lg border border-[#E5E7EB] bg-[#F9FAFB] p-4"
-                                >
-                                  <div className="flex items-start justify-between gap-3 mb-2">
-                                    <div className="flex items-center space-x-2 flex-1 min-w-0">
-                                      {isCustomerRecord ? (
-                                        <User className="w-3.5 h-3.5 text-[#3B82F6] flex-shrink-0" />
-                                      ) : (
-                                        <BookOpen className="w-3.5 h-3.5 text-[#991B1B] flex-shrink-0" />
-                                      )}
-                                      <span className="text-sm font-semibold text-[#111827] truncate">
-                                        {hit.title || hit.clauseId}
-                                      </span>
-                                    </div>
-                                    <div className="flex items-center space-x-2 flex-shrink-0">
-                                      {hit.section && (
-                                        <span className="text-xs text-[#6B7280] bg-[#F3F4F6] px-2 py-0.5 rounded">
-                                          {hit.section}
-                                        </span>
-                                      )}
-                                      <span
-                                        className={`text-xs font-medium px-2 py-0.5 rounded ${
-                                          score >= 0.8
-                                            ? 'bg-[#ECFDF5] text-[#047857] border border-[#A7F3D0]'
-                                            : score >= 0.6
-                                              ? 'bg-[#EFF6FF] text-[#1D4ED8] border border-[#BFDBFE]'
-                                              : 'bg-[#F3F4F6] text-[#6B7280] border border-[#E5E7EB]'
-                                        }`}
-                                      >
-                                        {Math.round(score * 100)}%
-                                      </span>
-                                    </div>
-                                  </div>
-                                  {hit.snippet && (
-                                    <p className="text-xs text-[#6B7280] leading-relaxed mb-2 line-clamp-3">
-                                      {hit.snippet}
-                                    </p>
-                                  )}
-                                  {recommendation && (
-                                    <div className="flex items-start space-x-1.5 mt-2 pt-2 border-t border-[#E5E7EB]">
-                                      <Info className="w-3 h-3 text-[#991B1B] flex-shrink-0 mt-0.5" />
-                                      <span className="text-xs text-[#374151]">
-                                        {recommendation}
-                                      </span>
-                                    </div>
-                                  )}
-                                  {/* Desk Reject button for Customer Not Found entries */}
-                                  {isCustomerRecord && (hit.title === 'Customer Not Found' || score === 0) && (
-                                    <div className="mt-3 pt-3 border-t border-[#E5E7EB]">
-                                      {deskRejectDone ? (
-                                        <div className="flex items-center gap-2 text-xs font-semibold text-rose-700 bg-rose-50 border border-rose-200 px-3 py-2 rounded-lg">
-                                          <CheckCircle className="w-3.5 h-3.5" />
-                                          Complaint Desk Rejected
-                                        </div>
-                                      ) : (
-                                        <button
-                                          onClick={() => setShowDeskRejectConfirm(true)}
-                                          className="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-semibold text-white bg-rose-600 hover:bg-rose-700 rounded-lg transition-colors"
-                                        >
-                                          <X className="w-3.5 h-3.5" />
-                                          Desk Reject
-                                        </button>
-                                      )}
-                                    </div>
-                                  )}
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      )}
                   </div>
                 </motion.div>
               )}

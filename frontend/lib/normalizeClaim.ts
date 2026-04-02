@@ -14,6 +14,14 @@
  *   decisionPack.audit    → top-level auditTrail
  *   processingMetrics     → filled with defaults for insurance-era fields
  *   processingSummary     → filled with defaults for missing fields
+ *
+ * Name reconciliation:
+ *   customerName / claimantName is resolved in priority order:
+ *     1. customerGrounding[0].customer_name  — CRM-verified identity (highest trust)
+ *     2. customerInfo.full_name              — CRM full record
+ *     3. complaintDraft.customerName         — LLM extraction (fallback only)
+ *   This ensures all views (DecisionPage, ReviewPage, email drafts) always
+ *   display the authoritative CRM name rather than whatever the LLM extracted.
  */
 
 export type RecordLike = Record<string, unknown>
@@ -116,6 +124,22 @@ export function normalizeClaimResponse<T extends RecordLike>(data: T): T {
       ? mapCustomerInfo(dp.policyHolderInfo as RecordLike)
       : mapCustomerInfo(dp.customerInfo as RecordLike | undefined)
 
+  // ── Name reconciliation ─────────────────────────────────────────────────
+  // Priority: CRM grounding record > CRM customerInfo > LLM extraction.
+  // Prevents LLM hallucinations or email aliases from appearing as the
+  // customer name in letters, email drafts, and the customer card.
+  const crmNameFromGrounding = (
+    (policyGrounding[0] as RecordLike | undefined)?.customer_name
+  ) as string | undefined
+  const crmNameFromInfo = (
+    (policyHolderInfo as RecordLike | null)?.full_name ??
+    (dp.customerInfo as RecordLike | undefined)?.full_name
+  ) as string | undefined
+  const reconciledName = (crmNameFromGrounding || crmNameFromInfo || '').trim() || undefined
+  const claimDraftReconciled: RecordLike = reconciledName
+    ? { ...claimDraft, claimantName: reconciledName, customerName: reconciledName }
+    : claimDraft
+
   // policyAssessment ← resolutionAssessment
   const policyAssessment =
     dp.policyAssessment != null
@@ -161,7 +185,7 @@ export function normalizeClaimResponse<T extends RecordLike>(data: T): T {
     processingMetrics,
     decisionPack: {
       ...dp,
-      claimDraft: Object.keys(claimDraft).length ? claimDraft : dp.claimDraft ?? complaintDraft ?? {},
+      claimDraft: Object.keys(claimDraftReconciled).length ? claimDraftReconciled : dp.claimDraft ?? complaintDraft ?? {},
       policyGrounding,
       policyHolderInfo,
       policyAssessment,

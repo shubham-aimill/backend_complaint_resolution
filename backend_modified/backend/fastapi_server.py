@@ -29,7 +29,7 @@ from backend.dashboard.service import (
     get_processed_complaint_summaries,
     save_processed_complaint,
 )
-from backend.email_ingestion.service import sync_inbox
+from backend.email_ingestion.service import sync_faq_inbox, sync_inbox
 from backend.ingested_complaints.service import (
     add_email_to_thread,
     clear_all_ingested_complaints,
@@ -63,7 +63,7 @@ def _load_env_at_startup() -> None:
                     key, _, val = line.partition("=")
                     k = key.strip()
                     v = val.strip().strip("'\"")
-                    if k and not os.environ.get(k):
+                    if k:
                         os.environ[k] = v
 
 
@@ -373,6 +373,53 @@ async def get_faq_related_emails() -> List[Dict[str, Any]]:
         return get_all_faq_emails()
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/sync-faq")
+async def sync_faq_endpoint() -> Dict[str, Any]:
+    """Run an independent FAQ-only inbox scan (does not affect complaint queue)."""
+    try:
+        return sync_faq_inbox()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+def _sync_faq_stream_generator():
+    """Yield SSE events for a FAQ-only inbox scan."""
+    q: queue.Queue = queue.Queue()
+
+    def on_progress(p: Dict[str, Any]) -> None:
+        q.put(("progress", p))
+
+    def run() -> None:
+        try:
+            result = sync_faq_inbox(progress_callback=on_progress)
+            q.put(("done", result))
+        except Exception as e:
+            q.put(("error", {"errors": [str(e)]}))
+
+    threading.Thread(target=run).start()
+
+    while True:
+        kind, data = q.get()
+        if kind == "progress":
+            yield f"event: progress\ndata: {json.dumps(data)}\n\n"
+        elif kind == "done":
+            yield f"event: done\ndata: {json.dumps(data)}\n\n"
+            break
+        else:
+            yield f"event: error\ndata: {json.dumps(data)}\n\n"
+            break
+
+
+@app.get("/api/sync-faq/stream")
+def sync_faq_stream_endpoint():
+    """Stream FAQ-only inbox scan progress as SSE."""
+    return StreamingResponse(
+        _sync_faq_stream_generator(),
+        media_type="text/event-stream",
+        headers={"Cache-Control": "no-cache", "Connection": "keep-alive", "X-Accel-Buffering": "no"},
+    )
 
 
 @app.post("/api/faq/emails/clear")

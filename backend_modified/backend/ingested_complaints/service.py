@@ -7,6 +7,7 @@ Handles CRUD, deduplication, and attachment file storage.
 
 import json
 import re
+import threading
 import time
 import uuid
 from pathlib import Path
@@ -20,41 +21,118 @@ from backend.common.config import (
 )
 
 
+# Serialises all writes to ingested-complaints.json.  Prevents two concurrent
+# IMAP sync threads from both passing the in-memory dedup check and then both
+# writing the same complaint to disk.
+_WRITE_LOCK = threading.Lock()
+
+
 # ── Deduplication helpers ──────────────────────────────────────────────────
 
 def _normalize(s: str) -> str:
     return s.strip().lower()
 
+def _strip_brackets(mid: str) -> str:
+    return mid.replace("<", "").replace(">", "").strip()
+
 def _subject_from_key(subject: str, from_addr: str) -> str:
     return _normalize(f"{subject}|{from_addr}")
 
 def get_existing_message_ids() -> Set[str]:
+    """
+    Build the full deduplication set from every record in the store.
+
+    For each record we add:
+      - subject|from  (catches re-sends of the same email)
+      - messageId  (canonical RFC 5322 ID, with and without angle-brackets)
+      - inReplyTo   (outbound OUT-... entries store the inbound message's ID here;
+                     adding it means any incoming email whose Message-ID matches
+                     an already-replied-to ID is recognised as known)
+      - references[]  (thread chain; any ID already in the chain is known)
+
+    This covers the case where an outbound auto-reply is stored but has no
+    messageId of its own — its inReplyTo still points to the original inbound
+    complaint's messageId, so re-scans of that original email are caught.
+    """
     complaints = _load_complaints()
     ids: Set[str] = set()
     for c in complaints:
+        # subject|from dedup (works even when Message-ID is absent)
         ids.add(_subject_from_key(c.get("subject", ""), c.get("from", "")))
+
+        # Own messageId
         mid = c.get("messageId", "")
         if mid:
             ids.add(_normalize(mid))
-            ids.add(_normalize(mid.replace("<", "").replace(">", "").strip()))
+            ids.add(_normalize(_strip_brackets(mid)))
+
+        # inReplyTo — critical for outbound (OUT-...) entries:
+        # their inReplyTo == the original inbound complaint's messageId.
+        # Adding it means a duplicate scan of that inbound email is caught.
+        irt = c.get("inReplyTo", "")
+        if irt:
+            ids.add(_normalize(irt))
+            ids.add(_normalize(_strip_brackets(irt)))
+
+        # references — full thread chain; every ID in it is "already seen"
+        for ref in c.get("references", []):
+            if ref:
+                ids.add(_normalize(ref))
+                ids.add(_normalize(_strip_brackets(ref)))
+
     return ids
 
 def add_dedup_keys_to_set(ids: Set[str], subject: str, from_addr: str, message_id: str, dedup_key: str) -> None:
     ids.add(_subject_from_key(subject, from_addr))
     ids.add(_normalize(dedup_key))
     if message_id:
-        ids.add(_normalize(message_id.replace("<", "").replace(">", "").strip()))
+        ids.add(_normalize(_strip_brackets(message_id)))
 
-def is_duplicate_email(subject: str, from_addr: str, message_id: str, date_header: str, existing_ids: Set[str]) -> bool:
+def is_duplicate_email(
+    subject: str,
+    from_addr: str,
+    message_id: str,
+    date_header: str,
+    existing_ids: Set[str],
+    in_reply_to: Optional[str] = None,
+    references: Optional[List[str]] = None,
+) -> bool:
+    """
+    Return True if this email is already known — either as a stored complaint,
+    a FAQ email, or a reply in an already-processed thread.
+
+    Checks (in order):
+      1. subject|from  — exact re-send
+      2. messageId     — canonical RFC 5322 match
+      3. in_reply_to   — this email replies to something we already have
+      4. references    — any ancestor in the thread chain is already known
+    """
+    # 1. subject + sender match
     if _subject_from_key(subject, from_addr) in existing_ids:
         return True
+
+    # 2. own messageId
     dedup_key = message_id or f"{subject}|{from_addr}|{date_header}"
     if _normalize(dedup_key) in existing_ids:
         return True
     if message_id:
-        inner = message_id.replace("<", "").replace(">", "").strip()
+        inner = _strip_brackets(message_id)
         if inner and _normalize(inner) in existing_ids:
             return True
+
+    # 3. In-Reply-To points to a known message — this is a thread reply
+    if in_reply_to:
+        irt_n = _normalize(_strip_brackets(in_reply_to))
+        if irt_n and irt_n in existing_ids:
+            return True
+
+    # 4. Any References ancestor is already known — thread member
+    if references:
+        for ref in references:
+            ref_n = _normalize(_strip_brackets(ref))
+            if ref_n and ref_n in existing_ids:
+                return True
+
     return False
 
 
@@ -117,6 +195,7 @@ def save_ingested_complaint(
     email_message_id_for_display: Optional[str] = None,
     in_reply_to: Optional[str] = None,
     references: Optional[List[str]] = None,
+    email_date_display: Optional[str] = None,
 ) -> Dict[str, Any]:
     """Save a raw complaint from email to the ingested complaints store."""
     complaint_id = f"ING-{int(time.time() * 1000)}-{uuid.uuid4().hex[:7]}"
@@ -165,13 +244,32 @@ def save_ingested_complaint(
         complaint["inReplyTo"] = in_reply_to
     if refs:
         complaint["references"] = refs
+    if email_date_display:
+        complaint["emailDate"] = email_date_display
 
-    complaints = _load_complaints()
-    # Remove demo records once real emails arrive
-    if source in ("imap", "sendgrid"):
-        complaints = [c for c in complaints if c.get("source") != "demo"]
-    complaints.insert(0, complaint)
-    _save_complaints(complaints)
+    with _WRITE_LOCK:
+        complaints = _load_complaints()
+        # Last-chance dedup: re-check against the freshly-loaded file so that
+        # two threads that both passed the in-memory check don't both write the
+        # same email.  We compare on messageId (with and without angle-brackets)
+        # and on the subject|from key.
+        if message_id:
+            mid_norm  = _normalize(message_id)
+            mid_inner = _normalize(_strip_brackets(message_id))
+            for c in complaints:
+                stored = c.get("messageId", "")
+                if stored and (_normalize(stored) == mid_norm or _normalize(_strip_brackets(stored)) == mid_inner):
+                    return c  # already present — return the existing record
+        subj_from = _subject_from_key(subject, from_addr)
+        for c in complaints:
+            if _subject_from_key(c.get("subject", ""), c.get("from", "")) == subj_from:
+                return c  # already present — return the existing record
+
+        # Remove demo records once real emails arrive
+        if source in ("imap", "sendgrid"):
+            complaints = [c for c in complaints if c.get("source") != "demo"]
+        complaints.insert(0, complaint)
+        _save_complaints(complaints)
     return complaint
 
 # Alias for email_ingestion/service.py compatibility
@@ -301,6 +399,34 @@ def add_email_to_thread(
     complaints.insert(0, entry)
     _save_complaints(complaints)
     return entry
+
+
+def claim_ack_slot(complaint_id: str) -> bool:
+    """
+    Atomically check-and-set the ``ackSent`` flag on an ingested complaint.
+
+    Acquires ``_WRITE_LOCK``, reads the file fresh, and — if the flag is not
+    already set — writes ``ackSent: True`` before returning.
+
+    Returns:
+        True  — caller may proceed to send the acknowledgement email.
+        False — flag was already set; caller must skip sending.
+
+    This prevents duplicate acknowledgements caused by:
+      * SMTP success followed by a JSON-write failure in ``add_email_to_thread``
+      * Two concurrent sync threads both passing the in-memory guard
+      * Backend restarts between the SMTP call and the thread-record write
+    """
+    with _WRITE_LOCK:
+        complaints = _load_complaints()
+        for c in complaints:
+            if c.get("id") == complaint_id:
+                if c.get("ackSent"):
+                    return False  # already claimed by a previous run
+                c["ackSent"] = True
+                _save_complaints(complaints)
+                return True
+    return False  # complaint not found — do not send
 
 
 def mark_ingested_complaint_processed(complaint_id: str) -> bool:

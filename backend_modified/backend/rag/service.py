@@ -45,7 +45,7 @@ def _load_env() -> None:
             line = line.strip()
             if line and not line.startswith("#") and "=" in line:
                 k, _, v = line.partition("=")
-                os.environ.setdefault(k.strip(), v.strip().strip("'\""))
+                os.environ[k.strip()] = v.strip().strip("'\"")
 
 
 def _get_openai():

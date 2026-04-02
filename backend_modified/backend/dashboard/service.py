@@ -153,7 +153,16 @@ def _resolve_file_path(raw: str) -> Path:
 
 
 def get_processed_complaint_by_id(complaint_id: str) -> Optional[Dict[str, Any]]:
-    entry = next((e for e in _get_index() if e.get("complaintId") == complaint_id), None)
+    # Match on complaintId ("CMP-ING-...") OR ingestedComplaintId ("ING-...")
+    # so callers can pass either the processed ID or the raw inbox ID.
+    entry = next(
+        (
+            e for e in _get_index()
+            if e.get("complaintId") == complaint_id
+            or e.get("ingestedComplaintId") == complaint_id
+        ),
+        None,
+    )
     if not entry:
         return None
     file_path = _resolve_file_path(entry["filePath"])

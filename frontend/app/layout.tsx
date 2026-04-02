@@ -6,8 +6,9 @@ import { AuthProvider } from '@/lib/auth/AuthContext'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Complaint Portal - AI-Powered Complaint Management',
-  description: 'Manage and resolve complaints with our AI-powered complaint system. End-to-end workflow from submission to resolution.',
+  title: 'Complaint Resolution Portal | By AI Mill',
+  description:
+    'Complaint Resolution Portal by AI Mill: enterprise complaint intake, validation, AI-assisted decisions, and FAQ auto-resolution in one workflow.',
 }
 
 export default function RootLayout({

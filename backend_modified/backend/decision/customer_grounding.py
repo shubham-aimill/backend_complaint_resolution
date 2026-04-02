@@ -122,6 +122,64 @@ def get_product(product_id: str) -> Optional[Dict[str, Any]]:
     return next((p for p in _products_cache if p.get("product_id") == product_id), None)
 
 
+def _tokenize_cg(s: str) -> set:
+    """Tokenise for product-name matching (length > 1, alphanumeric only)."""
+    return {t for t in re.sub(r"[^a-z0-9\s]", " ", s.lower()).split() if len(t) > 1}
+
+
+def _find_product_id_by_name(product_name: str) -> Optional[str]:
+    """
+    Return the product_id from the catalogue that best matches *product_name*
+    using scored token-overlap (F1).  Returns None when no entry meets the
+    minimum confidence threshold, preventing spurious matches on generic terms
+    like a brand name alone.
+    """
+    _load_data()
+    if not product_name or not _products_cache:
+        return None
+
+    search_raw    = product_name.strip().lower()
+    search_tokens = _tokenize_cg(search_raw)
+    MIN_SCORE     = 0.45
+
+    best_id:    Optional[str]   = None
+    best_score: float           = -1.0
+
+    for p in _products_cache:
+        name  = (p.get("product_name")  or "").strip()
+        model = (p.get("model_number")  or "").strip()
+        name_lower  = name.lower()
+        model_lower = model.lower()
+
+        # Exact match — return immediately
+        if search_raw == name_lower or (model_lower and search_raw == model_lower):
+            return p.get("product_id")
+
+        # Model substring
+        model_score = 0.0
+        if model_lower and (model_lower in search_raw or search_raw in model_lower):
+            model_score = 0.9 + len(model_lower) / (len(search_raw) + len(model_lower) + 1)
+
+        # Token-overlap F1
+        name_tokens = _tokenize_cg(name_lower)
+        token_score = 0.0
+        if name_tokens and search_tokens:
+            overlap   = len(search_tokens & name_tokens)
+            precision = overlap / len(search_tokens)
+            recall    = overlap / len(name_tokens)
+            if precision + recall > 0:
+                token_score = 2 * precision * recall / (precision + recall)
+            if overlap <= 1 and len(name_tokens) > 2:
+                token_score *= 0.25
+
+        score = max(model_score, token_score)
+        if score > best_score:
+            best_score = score
+            best_id    = p.get("product_id")
+
+    return best_id if best_score >= MIN_SCORE else None
+
+
 # ── Confidence scoring ─────────────────────────────────────────────────────
 
 def _confidence_score(customer_found: bool, has_history: bool, product_found: bool) -> float:
@@ -205,7 +263,20 @@ def get_customer_grounding(extracted_fields: Dict[str, Any]) -> List[Dict[str, A
     customer_status = customer.get("customer_status", "UNKNOWN")
 
     # ── Step 2: Complaint history ─────────────────────────────────────────
-    past_complaints = get_customer_complaints(resolved_ref)
+    all_past_complaints = get_customer_complaints(resolved_ref)
+
+    # Narrow history to the product mentioned in the current complaint so that
+    # complaint records from *other* products the customer owns don't pollute
+    # the "Matched Resolution Rules" panel.
+    current_product_name = str(extracted_fields.get("productOrService") or "").strip()
+    current_product_id   = _find_product_id_by_name(current_product_name) if current_product_name else None
+
+    if current_product_id:
+        relevant = [c for c in all_past_complaints if c.get("product_id") == current_product_id]
+        # Fall back to full history if the specific product has no prior complaints
+        past_complaints = relevant if relevant else all_past_complaints
+    else:
+        past_complaints = all_past_complaints
 
     if not past_complaints:
         score = _confidence_score(True, False, False)
@@ -319,7 +390,7 @@ def get_customer_grounding(extracted_fields: Dict[str, Any]) -> List[Dict[str, A
         })
 
     results.sort(key=lambda x: x["confidence_score"], reverse=True)
-    return results[:10]
+    return results[:5]
 
 
 def get_full_customer_info(customer_ref: str) -> Dict[str, Any]:

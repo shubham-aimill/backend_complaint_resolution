@@ -32,10 +32,13 @@ if __name__ == "__main__":
             if isinstance(content, str):  content = base64.b64decode(content)
             elif content is None:         content = b""
             attachment_files.append((name, content, a.get("mimeType", "application/octet-stream")))
+        ed = payload.get("emailDate")
+        email_date = ed.strip() if isinstance(ed, str) and ed.strip() else None
         result = save_ingested_complaint(
             payload.get("from", ""), payload.get("to", ""),
             payload.get("subject", ""), payload.get("emailBody", ""),
             attachment_files, "sendgrid",
+            email_date_display=email_date,
         )
         print(json.dumps({"success": True, "complaintId": result["id"], "complaintRef": result["complaintRef"]}))
         sys.exit(0)

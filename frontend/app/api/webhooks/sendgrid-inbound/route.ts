@@ -21,6 +21,10 @@ export async function POST(request: NextRequest) {
     const from = (formData.get('from') as string) || ''
     const to = (formData.get('to') as string) || ''
     const subject = (formData.get('subject') as string) || ''
+    const dateHeader =
+      (formData.get('date') as string) ||
+      (formData.get('Date') as string) ||
+      ''
     const text = (formData.get('text') as string) || ''
     const html = (formData.get('html') as string) || ''
     const emailBody = text || (html ? stripHtml(html) : '')
@@ -46,6 +50,7 @@ export async function POST(request: NextRequest) {
       subject,
       emailBody,
       attachmentFiles,
+      ...(dateHeader.trim() ? { emailDate: dateHeader.trim() } : {}),
     })
 
     const stdout = await runPython('backend.ingested_complaints', ['save-webhook'], payload)

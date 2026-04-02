@@ -1,0 +1,373 @@
+{
+  "complaintId": "CMP-ING-1775112514219-023a1bd",
+  "ingestedComplaintId": "ING-1775112514219-023a1bd",
+  "sourceEmailFrom": "Shubham Sahu <shubhh2003@gmail.com>",
+  "warrantyStatus": "WITHIN_WARRANTY",
+  "productCategory": "Air Conditioner",
+  "autoDecision": "INVESTIGATE",
+  "decisionConfidence": 0.6,
+  "recommendedNextStep": "Send acknowledgement email. Assign to complaints team for review.",
+  "rejectReason": null,
+  "decisionPack": {
+    "id": "DP-1775113438500",
+    "complaintDraft": {
+      "id": "DRAFT-1775113438500",
+      "complaintRef": "Not found",
+      "customerName": "Shubham Sahu",
+      "customerEmail": "sh***@gmail.com",
+      "customerPhone": "Not found",
+      "complaintDate": "2026-04-02",
+      "complaintType": "Hardware Defect",
+      "productOrService": "Samsung Bespoke AI WindFree Air Conditioner",
+      "description": "The unit is currently not cooling at all, even though it is running normally. Despite regular usage and proper maintenance, the room temperature remains unchanged, which is causing significant inconvenience.",
+      "desiredResolution": "technician visit or suitable resolution",
+      "estimatedAmount": 0.0,
+      "attachments": [
+        {
+          "id": "doc_0",
+          "name": "Samsung_Bespoke_AI_AC_Invoice.docx",
+          "type": "CorrespondenceRecord",
+          "mimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+          "confidence": 0.95
+        },
+        {
+          "id": "doc_1",
+          "name": "bespoke.png",
+          "type": "Invoice",
+          "mimeType": "image/png",
+          "confidence": 0.95
+        }
+      ],
+      "customerVerified": false,
+      "createdAt": "2026-04-02T07:03:58.500Z",
+      "source": "information_extraction",
+      "confidence": 0.9800000000000001
+    },
+    "evidence": [
+      {
+        "field": "customerName",
+        "fieldName": "Customer Name",
+        "value": "Shubham Sahu",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "customerEmail",
+        "fieldName": "Customer Email",
+        "value": "shubhh2003@gmail.com",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "complaintType",
+        "fieldName": "Complaint Type",
+        "value": "Hardware Defect",
+        "confidence": 0.9,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "productOrService",
+        "fieldName": "Product / Service",
+        "value": "Samsung Bespoke AI WindFree Air Conditioner",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "description",
+        "fieldName": "Description",
+        "value": "The unit is currently not cooling at all, even though it is running normally. Despite regular usage and proper maintenance, the room temperature remains unchanged, which is causing significant inconvenience.",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      }
+    ],
+    "documents": [
+      {
+        "id": "doc_email",
+        "name": "Customer Email",
+        "mimeType": "text/plain",
+        "type": "CorrespondenceRecord",
+        "content": "Dear Sir/Madam,\r\n\r\nI am writing to report an issue with my Samsung Bespoke AI WindFree Air\r\nConditioner. The unit is currently not cooling at all, even though it is\r\nrunning normally.\r\n\r\nDespite regular usage and proper maintenance, the room temperature remains\r\nunchanged, which is causing significant inconvenience. The product was\r\npurchased recently and is still under warranty.\r\n\r\nI request you to kindly arrange for a technician visit or provide a\r\nsuitable resolution at the earliest.\r\n\r\nLooking forward to your prompt response.\r\n\r\nThank you.\r\n\r\nSincerely,\r\nShubham Sahu\r\nEmail: shubhh2003@gmail.com",
+        "confidence": 0.95,
+        "metadata": {
+          "source": "email_body"
+        },
+        "keyFields": {
+          "customerName": "Shubham Sahu",
+          "customerEmail": "shubhh2003@gmail.com",
+          "complaintType": "Hardware Defect",
+          "productOrService": "Samsung Bespoke AI WindFree Air Conditioner",
+          "description": "The unit is currently not cooling at all, even though it is running normally. Despite regular usage and proper maintenance, the room temperature remains unchanged, which is causing significant inconvenience.",
+          "desiredResolution": "technician visit or suitable resolution"
+        }
+      },
+      {
+        "id": "doc_0",
+        "name": "Samsung_Bespoke_AI_AC_Invoice.docx",
+        "mimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "type": "Invoice",
+        "content": "TAX INVOICE\nSeller:\nSamsung India Electronics Pvt Ltd\nAddress: 6th Floor, DLF Centre, Sansad Marg, New Delhi - 110001\nGSTIN: 07AABCS1234F1Z5\nBill To:\nPranay Nath\nKolkata, West Bengal\nGSTIN: N/A\nInvoice No: INV-SAMSUNG-2026-001\nInvoice Date: 23-03-2026\nItem\nDescription\nQty\nUnit Price (\u20b9)\nAmount (\u20b9)\nSamsung Bespoke AI AC\n1 Ton 5 Star Inverter Split AC with AI Energy Mode\n1\n35990\n35990\nSubtotal: \u20b935990.00\nCGST (9%): \u20b93239.10\nSGST (9%): \u20b93239.10\nTotal Amount Payable: \u20b942468.20\nPayment Terms: Due on receipt\nAuthorized Signatory\nSamsung India Electronics Pvt Ltd",
+        "confidence": 0.95,
+        "metadata": {},
+        "keyFields": {
+          "invoiceNumber": "INV-SAMSUNG-2026-001",
+          "vendor": "Samsung India Electronics Pvt Ltd",
+          "customer": "Pranay Nath",
+          "lineItems": [
+            {
+              "description": "Samsung Bespoke AI AC - 1 Ton 5 Star Inverter Split AC with AI Energy Mode",
+              "quantity": 1,
+              "unitPrice": 35990,
+              "amount": 35990
+            }
+          ],
+          "total": 42468.2,
+          "purchaseDate": "23-03-2026",
+          "productModel": "Samsung Bespoke AI AC",
+          "serialNumber": null
+        }
+      },
+      {
+        "id": "doc_1",
+        "name": "bespoke.png",
+        "mimeType": "image/png",
+        "type": "PhotoEvidence",
+        "content": "The image shows a Samsung BESPOKE AI WindFree air conditioning unit with a 5-year complete protection label. There are no visible defects or damage on the product. The image does not provide any serial numbers, purchase dates, or model numbers. The evidence quality is high as the image is clear, but it does not directly support any specific complaint about defects or issues with the product. There is no visible damage or defect, so the severity assessment for electronics defect is not applicable. The image does not provide sufficient information to support or relate to a specific complaint about product defects or billing issues. Recommended next steps include requesting additional evidence or details from the customer to clarify the nature of the complaint.",
+        "confidence": 0.9,
+        "metadata": {},
+        "keyFields": {
+          "evidence_type": "product_image",
+          "supports_complaint": "No",
+          "severity": null
+        }
+      }
+    ],
+    "customerGrounding": [
+      {
+        "recordId": "CMP-20251105-002",
+        "title": "PRODUCT_DEFECT \u2014 Samsung Bespoke AI WindFree AC",
+        "snippet": "PRODUCT_DEFECT \u2014 Not Cooling",
+        "content": "Customer: Shubham Sahu (CUST10001) | Account status: ACTIVE | Loyalty tier: GOLD | Complaint ID: CMP-20251105-002 | Type: PRODUCT_DEFECT | Category: Hardware Issue | Sub-category: Not Cooling | Current status: IN_PROGRESS | Priority: HIGH | Severity: SEVERE | Escalated: No | SLA: 24h | Refund issued: $0.00 | Compensation: $0.00 | Product: Samsung Bespoke AI WindFree AC (Samsung) | Warranty: 12 months | Price: $35990.00",
+        "section": "Hardware Issue",
+        "score": 1.0,
+        "confidence_score": 1.0,
+        "recommendation": "AUTO_APPROVE",
+        "action": "Customer and product verified \u2014 proceed with resolution per SLA",
+        "sourceDocument": "complaints.json + product_service.json (Consumer Electronics)",
+        "customer_verified": true,
+        "customer_name": "Shubham Sahu",
+        "customer_status": "ACTIVE",
+        "loyalty_tier": "GOLD",
+        "open_complaints": 1,
+        "total_complaints": 2,
+        "complaint_id": "CMP-20251105-002",
+        "complaint_type": "PRODUCT_DEFECT",
+        "complaint_category": "Hardware Issue",
+        "current_status": "IN_PROGRESS",
+        "priority_level": "HIGH",
+        "severity_level": "SEVERE",
+        "is_escalated": false,
+        "assigned_team": "TECHNICAL",
+        "sla_hours": 24,
+        "refund_total": 0.0,
+        "compensation_total": 0.0,
+        "product_id": "PROD-AC-WFAI",
+        "product_name": "Samsung Bespoke AI WindFree AC",
+        "product_category": "Air Conditioner",
+        "warranty_months": 12,
+        "actions_count": 0,
+        "latest_action": null
+      }
+    ],
+    "customerInfo": null,
+    "validationResults": [
+      {
+        "check": "customer_product_mapping",
+        "passed": true,
+        "customerRef": "CUST10001",
+        "customerFound": true,
+        "customerMatchSource": "email_id",
+        "productId": "PROD-AC-WFAI",
+        "productOwnedByCustomer": true,
+        "ownershipSource": "registered_products",
+        "registeredProducts": [
+          "PROD-SM-S938",
+          "PROD-AC-WFAI"
+        ],
+        "registeredPurchaseDate": null,
+        "rejectReason": null,
+        "autoDecision": null,
+        "notes": "Customer 'CUST10001' verified and owns product 'PROD-AC-WFAI' (ownership confirmed via registered_products). Proceeding to warranty and other checks."
+      },
+      {
+        "check": "eligibility_validation",
+        "passed": true,
+        "rejectReason": null,
+        "autoDecision": null,
+        "notes": "No eligibility issues detected."
+      },
+      {
+        "check": "warranty_validation",
+        "passed": true,
+        "status": "WITHIN_WARRANTY",
+        "warrantyMonths": 12,
+        "purchaseDate": "2026-03-23",
+        "purchaseDateSource": "document:Samsung_Bespoke_AI_AC_Invoice.docx",
+        "expiryDate": "2027-03-23",
+        "autoDecision": null,
+        "notes": "Product purchased on 2026-03-23. Warranty of 12 months expires on 2027-03-23. Product is within warranty period."
+      },
+      {
+        "check": "document_validation",
+        "passed": true,
+        "presentDocuments": [
+          "purchase_invoice",
+          "product_model"
+        ],
+        "missingDocuments": [],
+        "serialNumber": null,
+        "autoDecision": null,
+        "notes": "Documents present: purchase_invoice, product_model. Missing: none."
+      },
+      {
+        "check": "product_validation",
+        "passed": true,
+        "productCategory": "Air Conditioner",
+        "matchedProductId": "PROD-AC-WFAI",
+        "matchedProductName": "Samsung Bespoke AI WindFree AC",
+        "brandName": "Samsung",
+        "modelNumber": "AR18CXFAAWKNNA",
+        "warrantyMonths": 12,
+        "price": 35990,
+        "categorySupported": false,
+        "authorizedSellers": [],
+        "autoDecision": null,
+        "notes": "Product matched: Samsung Bespoke AI WindFree AC (Model: AR18CXFAAWKNNA, Category: Air Conditioner). WARNING: Category not in supported electronics list."
+      }
+    ],
+    "warrantyStatus": "WITHIN_WARRANTY",
+    "productCategory": "Air Conditioner",
+    "matchedProduct": {
+      "productId": "PROD-AC-WFAI",
+      "productName": "Samsung Bespoke AI WindFree AC",
+      "brandName": "Samsung",
+      "modelNumber": "AR18CXFAAWKNNA",
+      "price": 35990
+    },
+    "autoDecision": "INVESTIGATE",
+    "decisionConfidence": 0.6,
+    "decisionRationale": "Insufficient verified data. Manual review required before proceeding.",
+    "recommendedNextStep": "Send acknowledgement email. Assign to complaints team for review.",
+    "rejectReason": null,
+    "audit": [
+      {
+        "step": "Information Extraction",
+        "timestamp": "2026-04-02T07:03:58.500Z",
+        "duration": 12422,
+        "agent": "ExtractionService",
+        "status": "completed",
+        "details": {
+          "documentsProcessed": 3,
+          "errors": []
+        }
+      },
+      {
+        "step": "Validation Engine",
+        "timestamp": "2026-04-02T07:03:58.500Z",
+        "duration": 3,
+        "agent": "ValidationService",
+        "status": "completed",
+        "details": {
+          "warrantyStatus": "WITHIN_WARRANTY",
+          "allChecksPassed": true,
+          "autoDecision": null
+        }
+      },
+      {
+        "step": "Customer & Product Grounding",
+        "timestamp": "2026-04-02T07:03:58.500Z",
+        "duration": 0,
+        "agent": "CustomerGroundingService",
+        "status": "completed",
+        "details": {
+          "recordsFound": 1,
+          "customerVerified": false
+        }
+      },
+      {
+        "step": "Decision Engine",
+        "timestamp": "2026-04-02T07:03:58.500Z",
+        "duration": 0,
+        "agent": "DecisionService",
+        "status": "completed",
+        "details": {
+          "autoDecision": "INVESTIGATE",
+          "decisionConfidence": 0.6
+        }
+      }
+    ],
+    "evidenceSummary": {
+      "totalFields": 5,
+      "highConfidenceFields": 5,
+      "lowConfidenceFields": 0,
+      "avgConfidence": 0.9800000000000001
+    },
+    "documentAnalysis": {
+      "totalDocuments": 3,
+      "documentTypes": [
+        "CorrespondenceRecord",
+        "Invoice",
+        "PhotoEvidence"
+      ],
+      "avgDocumentConfidence": 0.9333333333333332,
+      "missingDocuments": [],
+      "presentDocuments": [
+        "purchase_invoice",
+        "product_model"
+      ]
+    },
+    "resolutionAssessment": {
+      "recordsFound": 1,
+      "customerVerified": false,
+      "topMatchScore": 1.0,
+      "recommendation": "AUTO_APPROVE",
+      "autoDecision": "INVESTIGATE",
+      "decisionConfidence": 0.6,
+      "recommendedActions": [
+        "Send acknowledgement email. Assign to complaints team for review."
+      ]
+    },
+    "processingSummary": {
+      "stepsCompleted": 4,
+      "stepsWithErrors": 0
+    },
+    "createdAt": "2026-04-02T07:03:58.500Z"
+  },
+  "processingMetrics": {
+    "fieldsAutoPopulated": 5,
+    "stepsCompleted": 4,
+    "stepsFailed": 0,
+    "totalProcessingTime": 15959,
+    "averageHandleTime": 15.959,
+    "extractionTime": 12422,
+    "validationTime": 3
+  },
+  "createdAt": "2026-04-02T07:03:58.500Z",
+  "status": "draft",
+  "autoEmailResponse": {
+    "sent": true,
+    "decision": "INVESTIGATE",
+    "to": "Shubham Sahu <shubhh2003@gmail.com>",
+    "error": null,
+    "subject": "We Have Received Your Complaint \u2014 CMP-ING-1775112514219-023a1bd",
+    "body": "Dear Shubham Sahu,\n\nThank you for contacting Consumer Electronics Customer Support.\n\nWe have received your complaint (Reference: CMP-ING-1775112514219-023a1bd) regarding your Samsung Bespoke AI WindFree Air Conditioner and want to assure you that we take all customer\nconcerns seriously.\n\nYour case has been assigned to our specialist team who will carry out a\nthorough review of all the details you have provided.\n\nWhat happens next:\n  1. Our team will carefully review your complaint and any documents provided\n     within 2 business days.\n  2. We may reach out if we need any additional information from you.\n  3. You will receive a written outcome with our findings and proposed resolution\n     within 5 business days.\n\nYour complaint reference is: CMP-ING-1775112514219-023a1bd\nPlease quote this in any future correspondence with us.\n\nIf you have any questions in the meantime, please do not hesitate to contact us:\n  Email: support@electronics.com\n  Phone: 1-800-ELEC-HELP  (Monday \u2013 Friday, 9am \u2013 6pm)\n\nWe appreciate your patience and are committed to resolving this matter fairly\nand as quickly as possible.\n\nKind regards,\nCustomer Support Team\nConsumer Electronics",
+    "sentFrom": "arp290825@gmail.com"
+  },
+  "messageId": "<CABs85wMREXTWkAiCJq8ANHkQ5AFOeoZzb5FanM9AFeK6TfQAqA@mail.gmail.com>",
+  "threadId": "<CABs85wMREXTWkAiCJq8ANHkQ5AFOeoZzb5FanM9AFeK6TfQAqA@mail.gmail.com>",
+  "processingTime": 15959
+}

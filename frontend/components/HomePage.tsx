@@ -19,15 +19,20 @@ import {
   ArrowLeft,
   ArrowRight,
   Send,
+  BookOpen,
+  Gavel,
 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ClaimData } from '@/types/claims'
 import { getCached, removeCachedByPrefix, setCached } from '@/lib/clientCache'
+import { formatEmailBodyForDisplay } from '@/lib/emailDisplay'
+import { MailMetaPanel } from '@/components/MailMetaPanel'
 
 interface HomePageProps {
   onProcessClaim: (data: ClaimData) => void
   isProcessing: boolean
   setIsProcessing: (processing: boolean) => void
+  onViewResolved?: (claimId: string, stage: 'review' | 'decision') => void
 }
 
 interface IngestedClaim {
@@ -37,6 +42,7 @@ interface IngestedClaim {
   to: string
   subject: string
   emailBody: string
+  emailDate?: string
   attachments: Array<{ name: string; path: string; size: number; mimeType: string }>
   createdAt: string
   source: 'sendgrid' | 'demo' | 'imap'
@@ -49,9 +55,11 @@ interface ThreadMessage {
   to?: string
   subject?: string
   emailBody?: string
+  emailDate?: string
   createdAt?: string
   source?: string
   direction?: string
+  emailType?: string
   attachments?: Array<{ name: string; path: string; size: number; mimeType: string }>
 }
 
@@ -73,10 +81,6 @@ const CACHE_KEYS = {
 const TTL = {
   OPTIONS_MS: 2 * 60 * 1000,
   DETAIL_MS: 10 * 60 * 1000,
-}
-
-function cleanBody(body: string): string {
-  return body.split('\n').map(l => l.replace(/^>+\s?/, '')).join('\n').trim()
 }
 
 function avatarInitial(str?: string): string {
@@ -109,7 +113,7 @@ function formatDateLong(iso?: string): string {
   return new Date(iso).toLocaleString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })
 }
 
-export default function HomePage({ onProcessClaim, isProcessing, setIsProcessing }: HomePageProps) {
+export default function HomePage({ onProcessClaim, isProcessing, setIsProcessing, onViewResolved }: HomePageProps) {
   const [policyOptions, setPolicyOptions] = useState<PolicyOption[]>([])
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [selectedClaim, setSelectedClaim] = useState<IngestedClaim | null>(null)
@@ -343,7 +347,7 @@ export default function HomePage({ onProcessClaim, isProcessing, setIsProcessing
   const displayThread: ThreadMessage[] = thread.length > 0
     ? thread
     : selectedClaim
-      ? [{ id: selectedClaim.id, from: selectedClaim.from, to: selectedClaim.to, subject: selectedClaim.subject, emailBody: selectedClaim.emailBody, createdAt: selectedClaim.createdAt, source: selectedClaim.source, attachments: selectedClaim.attachments }]
+      ? [{ id: selectedClaim.id, from: selectedClaim.from, to: selectedClaim.to, subject: selectedClaim.subject, emailBody: selectedClaim.emailBody, emailDate: selectedClaim.emailDate, createdAt: selectedClaim.createdAt, source: selectedClaim.source, attachments: selectedClaim.attachments, emailType: undefined }]
       : []
 
   return (
@@ -451,7 +455,7 @@ export default function HomePage({ onProcessClaim, isProcessing, setIsProcessing
                             <span className={`inline-flex items-center gap-1 text-[10px] font-semibold flex-shrink-0 px-1.5 py-0.5 rounded-full
                               ${isProcessed ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'}`}>
                               {isProcessed
-                                ? <><CheckCircle2 className="w-2.5 h-2.5" />Done</>
+                                ? <><CheckCircle2 className="w-2.5 h-2.5" />Resolved</>
                                 : <><Clock3 className="w-2.5 h-2.5" />Pending</>}
                             </span>
                           </div>
@@ -542,20 +546,35 @@ export default function HomePage({ onProcessClaim, isProcessing, setIsProcessing
                       </div>
                     </div>
 
-                    {/* Process button */}
-                    <button
-                      onClick={handleProcessClaim}
-                      disabled={isProcessing || selectedClaim.processingStatus === 'processed'}
-                      className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#991B1B] to-[#B91C1C] hover:from-[#7F1D1D] hover:to-[#991B1B] text-white text-sm font-bold rounded-xl shadow-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
-                    >
-                      {isProcessing ? (
-                        <><RefreshCw className="w-4 h-4 animate-spin" />Processing…</>
-                      ) : selectedClaim.processingStatus === 'processed' ? (
-                        <><CheckCircle2 className="w-4 h-4" />Processed</>
-                      ) : (
-                        <><Play className="w-4 h-4" />Process<ChevronRight className="w-4 h-4" /></>
-                      )}
-                    </button>
+                    {/* Process / View buttons */}
+                    {selectedClaim.processingStatus === 'processed' ? (
+                      <div className="flex items-center gap-2 flex-shrink-0">
+                        <button
+                          onClick={() => onViewResolved?.(selectedClaim.id, 'review')}
+                          className="flex items-center gap-1.5 px-3.5 py-2 bg-[#EFF6FF] hover:bg-[#DBEAFE] text-[#1D4ED8] text-xs font-bold rounded-xl border border-[#BFDBFE] transition-all"
+                        >
+                          <BookOpen className="w-3.5 h-3.5" />Review
+                        </button>
+                        <button
+                          onClick={() => onViewResolved?.(selectedClaim.id, 'decision')}
+                          className="flex items-center gap-1.5 px-3.5 py-2 bg-[#ECFDF5] hover:bg-[#D1FAE5] text-[#047857] text-xs font-bold rounded-xl border border-[#A7F3D0] transition-all"
+                        >
+                          <Gavel className="w-3.5 h-3.5" />Decision
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={handleProcessClaim}
+                        disabled={isProcessing}
+                        className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#991B1B] to-[#B91C1C] hover:from-[#7F1D1D] hover:to-[#991B1B] text-white text-sm font-bold rounded-xl shadow-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
+                      >
+                        {isProcessing ? (
+                          <><RefreshCw className="w-4 h-4 animate-spin" />Processing…</>
+                        ) : (
+                          <><Play className="w-4 h-4" />Process<ChevronRight className="w-4 h-4" /></>
+                        )}
+                      </button>
+                    )}
                   </div>
                 </div>
 
@@ -574,9 +593,10 @@ export default function HomePage({ onProcessClaim, isProcessing, setIsProcessing
                       const isLast    = idx === displayThread.length - 1
                       const isExpanded = expandedMsgIds.has(msg.id)
                       const isOutbound = msg.source === 'outbound' || msg.direction === 'outbound'
+                      const isAck = isOutbound && msg.emailType === 'acknowledgement'
                       const senderDisplay = displayName(msg.from)
                       const initial = avatarInitial(msg.from)
-                      const snippet = cleanBody(msg.emailBody || '').replace(/\s+/g, ' ').trim().slice(0, 120)
+                      const snippet = formatEmailBodyForDisplay(msg.emailBody || '').replace(/\s+/g, ' ').trim().slice(0, 120)
 
                       return (
                         <motion.div
@@ -609,7 +629,12 @@ export default function HomePage({ onProcessClaim, isProcessing, setIsProcessing
                                     <span className="text-[13px] font-semibold text-[#111827]">
                                       {isOutbound ? 'Support Team' : senderDisplay}
                                     </span>
-                                    {isOutbound && (
+                                    {isAck && (
+                                      <span className="text-[10px] font-semibold bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded-full flex items-center gap-1">
+                                        <CheckCircle2 className="w-2.5 h-2.5" />ACK
+                                      </span>
+                                    )}
+                                    {isOutbound && !isAck && (
                                       <span className="text-[10px] font-semibold bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded-full flex items-center gap-1">
                                         <Send className="w-2.5 h-2.5" />Sent
                                       </span>
@@ -628,6 +653,11 @@ export default function HomePage({ onProcessClaim, isProcessing, setIsProcessing
                                   <span className="text-[13px] font-semibold text-[#374151] flex-shrink-0">
                                     {isOutbound ? 'Support Team' : senderDisplay}
                                   </span>
+                                  {isAck && (
+                                    <span className="text-[10px] font-semibold bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded-full flex-shrink-0 flex items-center gap-1">
+                                      <CheckCircle2 className="w-2.5 h-2.5" />ACK
+                                    </span>
+                                  )}
                                   <span className="text-[12px] text-[#9CA3AF] truncate">{snippet}</span>
                                 </div>
                               )}
@@ -656,10 +686,20 @@ export default function HomePage({ onProcessClaim, isProcessing, setIsProcessing
                                 className="overflow-hidden"
                               >
                                 <div className="px-5 pb-4 border-t border-[#F3F4F6]">
-                                  {/* Email body */}
                                   <div className="pt-4">
+                                    <MailMetaPanel
+                                      subject={msg.subject}
+                                      from={msg.from}
+                                      to={msg.to}
+                                      dateLabel={isOutbound ? 'Sent' : msg.emailDate ? 'Date' : 'Logged'}
+                                      dateValue={
+                                        isOutbound
+                                          ? formatDateLong(msg.createdAt)
+                                          : msg.emailDate || formatDateLong(msg.createdAt)
+                                      }
+                                    />
                                     <pre className="text-[13px] text-[#374151] whitespace-pre-wrap font-sans leading-relaxed">
-                                      {cleanBody(msg.emailBody || '') || '(no content)'}
+                                      {formatEmailBodyForDisplay(msg.emailBody || '') || '(no content)'}
                                     </pre>
                                   </div>
 
@@ -698,22 +738,37 @@ export default function HomePage({ onProcessClaim, isProcessing, setIsProcessing
                                     </div>
                                   )}
 
-                                  {/* Navigate to review for latest inbound */}
+                                  {/* Action bar at bottom of last inbound message */}
                                   {isLast && !isOutbound && (
-                                    <div className="mt-4 pt-3 border-t border-[#F3F4F6] flex items-center gap-3">
-                                      <button
-                                        onClick={handleProcessClaim}
-                                        disabled={isProcessing || selectedClaim.processingStatus === 'processed'}
-                                        className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-gradient-to-r from-[#991B1B] to-[#B91C1C] hover:from-[#7F1D1D] hover:to-[#991B1B] rounded-lg transition-all disabled:opacity-50"
-                                      >
-                                        {isProcessing ? (
-                                          <><RefreshCw className="w-3.5 h-3.5 animate-spin" />Processing…</>
-                                        ) : selectedClaim.processingStatus === 'processed' ? (
-                                          <><CheckCircle2 className="w-3.5 h-3.5" />Already Processed</>
-                                        ) : (
-                                          <><Play className="w-3.5 h-3.5" />Process this complaint<ArrowRight className="w-3.5 h-3.5" /></>
-                                        )}
-                                      </button>
+                                    <div className="mt-4 pt-3 border-t border-[#F3F4F6] flex items-center gap-3 flex-wrap">
+                                      {selectedClaim.processingStatus === 'processed' ? (
+                                        <>
+                                          <button
+                                            onClick={() => onViewResolved?.(selectedClaim.id, 'review')}
+                                            className="flex items-center gap-1.5 px-3.5 py-2 bg-[#EFF6FF] hover:bg-[#DBEAFE] text-[#1D4ED8] text-xs font-bold rounded-lg border border-[#BFDBFE] transition-all"
+                                          >
+                                            <BookOpen className="w-3.5 h-3.5" />View Review
+                                          </button>
+                                          <button
+                                            onClick={() => onViewResolved?.(selectedClaim.id, 'decision')}
+                                            className="flex items-center gap-1.5 px-3.5 py-2 bg-[#ECFDF5] hover:bg-[#D1FAE5] text-[#047857] text-xs font-bold rounded-lg border border-[#A7F3D0] transition-all"
+                                          >
+                                            <Gavel className="w-3.5 h-3.5" />View Decision
+                                          </button>
+                                        </>
+                                      ) : (
+                                        <button
+                                          onClick={handleProcessClaim}
+                                          disabled={isProcessing}
+                                          className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-gradient-to-r from-[#991B1B] to-[#B91C1C] hover:from-[#7F1D1D] hover:to-[#991B1B] rounded-lg transition-all disabled:opacity-50"
+                                        >
+                                          {isProcessing ? (
+                                            <><RefreshCw className="w-3.5 h-3.5 animate-spin" />Processing…</>
+                                          ) : (
+                                            <><Play className="w-3.5 h-3.5" />Process this complaint<ArrowRight className="w-3.5 h-3.5" /></>
+                                          )}
+                                        </button>
+                                      )}
                                       {displayThread.length > 1 && (
                                         <span className="text-[11px] text-[#9CA3AF]">
                                           <ArrowLeft className="w-3 h-3 inline mr-1" />

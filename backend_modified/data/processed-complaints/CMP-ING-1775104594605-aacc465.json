@@ -1,0 +1,349 @@
+{
+  "complaintId": "CMP-ING-1775104594605-aacc465",
+  "ingestedComplaintId": "ING-1775104594605-aacc465",
+  "sourceEmailFrom": "Shubham Sahu <shubhh2003@gmail.com>",
+  "warrantyStatus": "WITHIN_WARRANTY",
+  "productCategory": "Tablet",
+  "autoDecision": "DESK_REJECT",
+  "decisionConfidence": 1.0,
+  "recommendedNextStep": "Send DESK_REJECT email (customer not found). Ask customer to verify account details.",
+  "rejectReason": "customer_not_found",
+  "decisionPack": {
+    "id": "DP-1775112031557",
+    "complaintDraft": {
+      "id": "DRAFT-1775112031557",
+      "complaintRef": "ORD-20251120-014",
+      "customerName": "Emily Johnson",
+      "customerEmail": "Not found",
+      "customerPhone": "Not found",
+      "complaintDate": "2026-04-02",
+      "complaintType": "Dead on Arrival",
+      "productOrService": "NovaTech SlimTab 10 Tablet",
+      "description": "The tablet I received does not power on at all. I tried multiple chargers over 48 hours. The box seal was completely intact when I opened it. This is a Dead on Arrival unit \u2014 I have never been able to use it.",
+      "desiredResolution": "Immediate replacement.",
+      "estimatedAmount": 0.0,
+      "attachments": [
+        {
+          "id": "doc_0",
+          "name": "invoice_emily.txt.txt",
+          "type": "CorrespondenceRecord",
+          "mimeType": "text/plain",
+          "confidence": 0.95
+        }
+      ],
+      "customerVerified": false,
+      "createdAt": "2026-04-02T06:40:31.557Z",
+      "source": "information_extraction",
+      "confidence": 1.0
+    },
+    "evidence": [
+      {
+        "field": "customerName",
+        "fieldName": "Customer Name",
+        "value": "Emily Johnson",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "complaintRef",
+        "fieldName": "Complaint Reference",
+        "value": "ORD-20251120-014",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "purchaseDate",
+        "fieldName": "Purchase Date",
+        "value": "2025-11-20",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "complaintType",
+        "fieldName": "Complaint Type",
+        "value": "Dead on Arrival",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "productOrService",
+        "fieldName": "Product / Service",
+        "value": "NovaTech SlimTab 10 Tablet",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "productModel",
+        "fieldName": "Product Model Number",
+        "value": "NT-ST10-64",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "serialNumber",
+        "fieldName": "Serial / IMEI Number",
+        "value": "NT2025TB-00912",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "description",
+        "fieldName": "Description",
+        "value": "The tablet I received does not power on at all. I tried multiple chargers over 48 hours. The box seal was completely intact when I opened it. This is a Dead on Arrival unit \u2014 I have never been able to use it.",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      }
+    ],
+    "documents": [
+      {
+        "id": "doc_email",
+        "name": "Customer Email",
+        "mimeType": "text/plain",
+        "type": "CorrespondenceRecord",
+        "content": "Dear Support Team,\r\n\r\nI am filing a complaint for a Dead on Arrival product.\r\n\r\nCustomer ID   : CUST10009\r\nCustomer Name : Emily Johnson\r\nProduct       : NovaTech SlimTab 10 Tablet\r\nModel Number  : NT-ST10-64\r\nSerial Number : NT2025TB-00912\r\nPurchase Date : 2025-11-20\r\nOrder Ref     : ORD-20251120-014\r\n\r\nIssue:\r\nThe tablet I received does not power on at all. I tried multiple chargers\r\nover 48 hours. The box seal was completely intact when I opened it.\r\nThis is a Dead on Arrival unit \u2014 I have never been able to use it.\r\n\r\nDesired Resolution: Immediate replacement.\r\n\r\nEmily Johnson\r\nCustomer ID: CUST10009",
+        "confidence": 0.95,
+        "metadata": {
+          "source": "email_body"
+        },
+        "keyFields": {
+          "customerName": "Emily Johnson",
+          "complaintRef": "ORD-20251120-014",
+          "purchaseDate": "2025-11-20",
+          "complaintType": "Dead on Arrival",
+          "productOrService": "NovaTech SlimTab 10 Tablet",
+          "productModel": "NT-ST10-64",
+          "serialNumber": "NT2025TB-00912",
+          "description": "The tablet I received does not power on at all. I tried multiple chargers over 48 hours. The box seal was completely intact when I opened it. This is a Dead on Arrival unit \u2014 I have never been able to use it.",
+          "desiredResolution": "Immediate replacement."
+        }
+      },
+      {
+        "id": "doc_0",
+        "name": "invoice_emily.txt.txt",
+        "mimeType": "text/plain",
+        "type": "Invoice",
+        "content": "================================================\r\n     TECHZONE ELECTRONICS - PURCHASE INVOICE\r\n================================================\r\nInvoice Number : INV-2025-1120-014\r\nInvoice Date   : 2025-11-20\r\n================================================\r\n\r\nBill To:\r\n  Name    : Emily Johnson\r\n  Email   : emily.johnson@email.com\r\n  Phone   : +1-555-934-7823\r\n  Address : 14 Elm Street, Boston, MA 02101\r\n\r\n------------------------------------------------\r\nItem Description              Qty   Unit Price\r\n------------------------------------------------\r\nNovaTech SlimTab 10 Tablet     1     $449.99\r\n(NT-ST10-64)\r\nSerial: NT2025TB-00912\r\n------------------------------------------------\r\nSubtotal                             $449.99\r\nTax (8%)                              $36.00\r\n------------------------------------------------\r\nTOTAL PAID                           $485.99\r\n------------------------------------------------\r\nPayment Method : Debit Card\r\nPayment Status : PAID\r\n\r\nSold By:\r\n  TechZone Electronics\r\n  456 Tech Plaza, Boston, MA\r\n  support@techzone.com\r\n================================================",
+        "confidence": 1.0,
+        "metadata": {},
+        "keyFields": {
+          "invoiceNumber": "INV-2025-1120-014",
+          "vendor": "TechZone Electronics",
+          "customer": {
+            "name": "Emily Johnson",
+            "email": "emily.johnson@email.com",
+            "phone": "+1-555-934-7823",
+            "address": "14 Elm Street, Boston, MA 02101"
+          },
+          "lineItems": [
+            {
+              "description": "NovaTech SlimTab 10 Tablet",
+              "quantity": 1,
+              "unitPrice": 449.99
+            }
+          ],
+          "total": 485.99,
+          "purchaseDate": "2025-11-20",
+          "productModel": "NT-ST10-64",
+          "serialNumber": "NT2025TB-00912"
+        }
+      }
+    ],
+    "customerGrounding": [
+      {
+        "recordId": "CUSTOMER-NOT-FOUND",
+        "title": "Customer Not Found",
+        "snippet": "No customer record found for the provided customer details.",
+        "content": "Customer could not be matched using complaintRef, customerEmail, or customerName. Please verify the customer details.",
+        "section": "Customer Verification",
+        "score": 0.0,
+        "confidence_score": 0.0,
+        "recommendation": "INVESTIGATE",
+        "action": "Verify the customer reference number provided in the complaint.",
+        "sourceDocument": "customers.json (Consumer Electronics CRM)",
+        "customer_verified": false
+      }
+    ],
+    "customerInfo": null,
+    "validationResults": [
+      {
+        "check": "customer_product_mapping",
+        "passed": false,
+        "customerRef": "ORD-20251120-014",
+        "customerFound": false,
+        "productId": null,
+        "productOwnedByCustomer": null,
+        "rejectReason": "customer_not_found",
+        "autoDecision": "DESK_REJECT",
+        "notes": "No matching customer found using complaintRef/customerEmail/customerName."
+      },
+      {
+        "check": "eligibility_validation",
+        "passed": true,
+        "rejectReason": null,
+        "autoDecision": null,
+        "notes": "No eligibility issues detected."
+      },
+      {
+        "check": "warranty_validation",
+        "passed": true,
+        "status": "WITHIN_WARRANTY",
+        "warrantyMonths": 12,
+        "purchaseDate": "2025-11-20",
+        "purchaseDateSource": "document:Customer Email",
+        "expiryDate": "2026-11-20",
+        "autoDecision": null,
+        "notes": "Product purchased on 2025-11-20. Warranty of 12 months expires on 2026-11-20. Product is within warranty period."
+      },
+      {
+        "check": "document_validation",
+        "passed": true,
+        "presentDocuments": [
+          "purchase_invoice",
+          "product_model",
+          "serial_number"
+        ],
+        "missingDocuments": [],
+        "serialNumber": "NT2025TB-00912",
+        "autoDecision": null,
+        "notes": "Documents present: purchase_invoice, product_model, serial_number. Missing: none."
+      },
+      {
+        "check": "product_validation",
+        "passed": true,
+        "productCategory": "Tablet",
+        "matchedProductId": null,
+        "matchedProductName": null,
+        "brandName": null,
+        "modelNumber": null,
+        "warrantyMonths": null,
+        "price": null,
+        "categorySupported": true,
+        "authorizedSellers": [],
+        "autoDecision": null,
+        "notes": "Product 'NovaTech SlimTab 10 Tablet' not found in product catalogue. Category 'tablet' is recognised as supported."
+      }
+    ],
+    "warrantyStatus": "WITHIN_WARRANTY",
+    "productCategory": "Tablet",
+    "matchedProduct": null,
+    "autoDecision": "DESK_REJECT",
+    "decisionConfidence": 1.0,
+    "decisionRationale": "Customer record was not found in the CRM database. Complaint cannot be processed without a verified account.",
+    "recommendedNextStep": "Send DESK_REJECT email (customer not found). Ask customer to verify account details.",
+    "rejectReason": "customer_not_found",
+    "audit": [
+      {
+        "step": "Information Extraction",
+        "timestamp": "2026-04-02T06:40:31.556Z",
+        "duration": 5913,
+        "agent": "ExtractionService",
+        "status": "completed",
+        "details": {
+          "documentsProcessed": 2,
+          "errors": []
+        }
+      },
+      {
+        "step": "Validation Engine",
+        "timestamp": "2026-04-02T06:40:31.556Z",
+        "duration": 2,
+        "agent": "ValidationService",
+        "status": "completed",
+        "details": {
+          "warrantyStatus": "WITHIN_WARRANTY",
+          "allChecksPassed": false,
+          "autoDecision": "DESK_REJECT"
+        }
+      },
+      {
+        "step": "Customer & Product Grounding",
+        "timestamp": "2026-04-02T06:40:31.556Z",
+        "duration": 0,
+        "agent": "CustomerGroundingService",
+        "status": "completed",
+        "details": {
+          "recordsFound": 1,
+          "customerVerified": false
+        }
+      },
+      {
+        "step": "Decision Engine",
+        "timestamp": "2026-04-02T06:40:31.556Z",
+        "duration": 0,
+        "agent": "DecisionService",
+        "status": "completed",
+        "details": {
+          "autoDecision": "DESK_REJECT",
+          "decisionConfidence": 1.0
+        }
+      }
+    ],
+    "evidenceSummary": {
+      "totalFields": 8,
+      "highConfidenceFields": 8,
+      "lowConfidenceFields": 0,
+      "avgConfidence": 1.0
+    },
+    "documentAnalysis": {
+      "totalDocuments": 2,
+      "documentTypes": [
+        "CorrespondenceRecord",
+        "Invoice"
+      ],
+      "avgDocumentConfidence": 0.975,
+      "missingDocuments": [],
+      "presentDocuments": [
+        "purchase_invoice",
+        "product_model",
+        "serial_number"
+      ]
+    },
+    "resolutionAssessment": {
+      "recordsFound": 1,
+      "customerVerified": false,
+      "topMatchScore": 0.0,
+      "recommendation": "CUSTOMER_NOT_FOUND",
+      "autoDecision": "DESK_REJECT",
+      "decisionConfidence": 1.0,
+      "recommendedActions": [
+        "Send DESK_REJECT email (customer not found). Ask customer to verify account details."
+      ]
+    },
+    "processingSummary": {
+      "stepsCompleted": 4,
+      "stepsWithErrors": 0
+    },
+    "createdAt": "2026-04-02T06:40:31.556Z"
+  },
+  "processingMetrics": {
+    "fieldsAutoPopulated": 8,
+    "stepsCompleted": 4,
+    "stepsFailed": 0,
+    "totalProcessingTime": 9612,
+    "averageHandleTime": 9.612,
+    "extractionTime": 5913,
+    "validationTime": 2
+  },
+  "createdAt": "2026-04-02T06:40:31.556Z",
+  "status": "draft",
+  "autoEmailResponse": {
+    "sent": true,
+    "decision": "DESK_REJECT",
+    "to": "Shubham Sahu <shubhh2003@gmail.com>",
+    "error": null,
+    "subject": "Your Complaint Has Been Reviewed \u2014 CMP-ING-1775104594605-aacc465",
+    "body": "Dear Customer,\n\nThank you for contacting Consumer Electronics Customer Support.\n\nWe have received a complaint submission (Reference: CMP-ING-1775104594605-aacc465), however we were\nunable to locate a matching customer account in our system.\n\nTo process your complaint, we require a verified account with us. Please:\n\n  1. Verify your customer reference number (format: CUST#####) and reply with it, or\n  2. Contact us directly so we can locate your account:\n       Email: support@electronics.com\n       Phone: 1-800-ELEC-HELP  (Monday \u2013 Friday, 9am \u2013 6pm)\n  3. If you are a new customer, please register at our support portal before\n     submitting a complaint.\n\nWe apologise for the inconvenience and look forward to resolving this for you.\n\nKind regards,\nCustomer Support Team\nConsumer Electronics",
+    "sentFrom": "arp290825@gmail.com"
+  },
+  "messageId": "<CABs85wNOs7NB3AGYBBeXd-ig1O+-yNwc+cTU5r07Hn2=LMg+WA@mail.gmail.com>",
+  "threadId": "<CABs85wNOs7NB3AGYBBeXd-ig1O+-yNwc+cTU5r07Hn2=LMg+WA@mail.gmail.com>",
+  "processingTime": 9612
+}
