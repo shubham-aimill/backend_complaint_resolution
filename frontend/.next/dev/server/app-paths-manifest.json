@@ -1,0 +1,8 @@
+{
+  "/api/faq/emails/route": "app/api/faq/emails/route.js",
+  "/api/ingested-claims/route": "app/api/ingested-claims/route.js",
+  "/api/sync-faq/stream/route": "app/api/sync-faq/stream/route.js",
+  "/api/sync-inbox/stream/route": "app/api/sync-inbox/stream/route.js",
+  "/login/page": "app/login/page.js",
+  "/page": "app/page.js"
+}

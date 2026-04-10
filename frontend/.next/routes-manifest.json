@@ -1,0 +1,211 @@
+{
+  "version": 3,
+  "pages404": true,
+  "appType": "app",
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "internal": true,
+      "priority": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    }
+  ],
+  "headers": [],
+  "rewrites": {
+    "beforeFiles": [],
+    "afterFiles": [],
+    "fallback": []
+  },
+  "dynamicRoutes": [
+    {
+      "page": "/api/claims/[claimId]",
+      "regex": "^/api/claims/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPclaimId": "nxtPclaimId"
+      },
+      "namedRegex": "^/api/claims/(?<nxtPclaimId>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/complaints/[id]/status",
+      "regex": "^/api/complaints/([^/]+?)/status(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/complaints/(?<nxtPid>[^/]+?)/status(?:/)?$"
+    },
+    {
+      "page": "/api/ingested-claims/[id]",
+      "regex": "^/api/ingested\\-claims/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/ingested\\-claims/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/ingested-claims/[id]/attachments",
+      "regex": "^/api/ingested\\-claims/([^/]+?)/attachments(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/ingested\\-claims/(?<nxtPid>[^/]+?)/attachments(?:/)?$"
+    },
+    {
+      "page": "/api/ingested-claims/[id]/thread",
+      "regex": "^/api/ingested\\-claims/([^/]+?)/thread(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/ingested\\-claims/(?<nxtPid>[^/]+?)/thread(?:/)?$"
+    }
+  ],
+  "staticRoutes": [
+    {
+      "page": "/",
+      "regex": "^/(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/(?:/)?$"
+    },
+    {
+      "page": "/_global-error",
+      "regex": "^/_global\\-error(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_global\\-error(?:/)?$"
+    },
+    {
+      "page": "/_not-found",
+      "regex": "^/_not\\-found(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/api/appointments",
+      "regex": "^/api/appointments(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/appointments(?:/)?$"
+    },
+    {
+      "page": "/api/auth/login",
+      "regex": "^/api/auth/login(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/auth/login(?:/)?$"
+    },
+    {
+      "page": "/api/claims",
+      "regex": "^/api/claims(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/claims(?:/)?$"
+    },
+    {
+      "page": "/api/claims/export",
+      "regex": "^/api/claims/export(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/claims/export(?:/)?$"
+    },
+    {
+      "page": "/api/dashboard/kpis",
+      "regex": "^/api/dashboard/kpis(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/dashboard/kpis(?:/)?$"
+    },
+    {
+      "page": "/api/decision-pack/pdf",
+      "regex": "^/api/decision\\-pack/pdf(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/decision\\-pack/pdf(?:/)?$"
+    },
+    {
+      "page": "/api/drafts",
+      "regex": "^/api/drafts(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/drafts(?:/)?$"
+    },
+    {
+      "page": "/api/faq",
+      "regex": "^/api/faq(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/faq(?:/)?$"
+    },
+    {
+      "page": "/api/faq/emails",
+      "regex": "^/api/faq/emails(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/faq/emails(?:/)?$"
+    },
+    {
+      "page": "/api/faq/emails/clear",
+      "regex": "^/api/faq/emails/clear(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/faq/emails/clear(?:/)?$"
+    },
+    {
+      "page": "/api/ingested-claims",
+      "regex": "^/api/ingested\\-claims(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/ingested\\-claims(?:/)?$"
+    },
+    {
+      "page": "/api/ingested-claims/clear",
+      "regex": "^/api/ingested\\-claims/clear(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/ingested\\-claims/clear(?:/)?$"
+    },
+    {
+      "page": "/api/process-claim",
+      "regex": "^/api/process\\-claim(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/process\\-claim(?:/)?$"
+    },
+    {
+      "page": "/api/send-email",
+      "regex": "^/api/send\\-email(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/send\\-email(?:/)?$"
+    },
+    {
+      "page": "/api/sync-inbox",
+      "regex": "^/api/sync\\-inbox(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/sync\\-inbox(?:/)?$"
+    },
+    {
+      "page": "/api/sync-inbox/stream",
+      "regex": "^/api/sync\\-inbox/stream(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/sync\\-inbox/stream(?:/)?$"
+    },
+    {
+      "page": "/api/webhooks/sendgrid-inbound",
+      "regex": "^/api/webhooks/sendgrid\\-inbound(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/webhooks/sendgrid\\-inbound(?:/)?$"
+    },
+    {
+      "page": "/login",
+      "regex": "^/login(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/login(?:/)?$"
+    }
+  ],
+  "dataRoutes": [],
+  "rsc": {
+    "header": "rsc",
+    "varyHeader": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+    "prefetchHeader": "next-router-prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSegmentHeader": "next-router-segment-prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments",
+    "clientParamParsing": false,
+    "dynamicRSCPrerender": false
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  }
+}

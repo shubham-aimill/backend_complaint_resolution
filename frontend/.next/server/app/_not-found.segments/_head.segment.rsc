@@ -1,0 +1,5 @@
+1:"$Sreact.fragment"
+2:I[97367,["/_next/static/chunks/f38a7c2b256e3324.js","/_next/static/chunks/74f1b9da08b28ae5.js"],"ViewportBoundary"]
+3:I[97367,["/_next/static/chunks/f38a7c2b256e3324.js","/_next/static/chunks/74f1b9da08b28ae5.js"],"MetadataBoundary"]
+4:"$Sreact.suspense"
+0:{"buildId":"Fs5qAtVpm6PTmqn-qW1xZ","rsc":["$","$1","h",{"children":[["$","meta",null,{"name":"robots","content":"noindex"}],["$","$L2",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","div",null,{"hidden":true,"children":["$","$L3",null,{"children":["$","$4",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Complaint Resolution Portal | By AI Mill"}],["$","meta","1",{"name":"description","content":"Complaint Resolution Portal by AI Mill: enterprise complaint intake, validation, AI-assisted decisions, and FAQ auto-resolution in one workflow."}]]}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"loading":null,"isPartial":false}
