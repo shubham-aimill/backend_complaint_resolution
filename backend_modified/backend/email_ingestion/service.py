@@ -26,8 +26,10 @@ from backend.ingested_complaints.service import (
     add_email_to_thread,
     claim_ack_slot,
     get_existing_message_ids,
+    get_stale_pending_complaints,
     get_thread_by_complaint_id,
     is_duplicate_email,
+    mark_complaint_auto_closed,
     save_ingested_complaint,
 )
 
@@ -384,6 +386,29 @@ def _save_sync_cache(cache: Dict[str, Any]) -> None:
 
 def _cache_key(account: str, mailbox: str) -> str:
     return f"{account.lower()}:{mailbox}"
+
+
+def reset_sync_cache(faq_only: bool = False) -> None:
+    """
+    Reset the IMAP UID cursor so the next sync re-fetches all emails from scratch.
+
+    faq_only=False  → wipes both the complaint cursor AND the FAQ cursor.
+    faq_only=True   → wipes only the FAQ cursor (```:faq``` suffix keys).
+
+    Call this whenever stored data is cleared so the UI reflects all historic
+    emails on the very next Refresh / Sync FAQ.
+    """
+    try:
+        cache = _load_sync_cache()
+        keys_to_remove = [
+            k for k in list(cache.keys())
+            if faq_only is False or k.endswith(":faq")
+        ]
+        for k in keys_to_remove:
+            del cache[k]
+        _save_sync_cache(cache)
+    except Exception as e:
+        print(f"Warning: could not reset IMAP sync cache: {e}", file=sys.stderr)
 
 
 def _get_last_uid(cache: Dict[str, Any], account: str, mailbox: str) -> Optional[int]:
@@ -865,6 +890,13 @@ def _sync_inbox_impl(
     except Exception as e:
         result["errors"].append(str(e))
 
+    # Auto-closure check — runs after every sync when ENABLE_AUTO_CLOSURE=true.
+    # Wrapped in its own try/except so a closure failure never breaks sync reporting.
+    try:
+        check_and_send_auto_closures(result)
+    except Exception as ac_err:
+        print(f"Auto-closure runner failed: {ac_err}", file=sys.stderr)
+
     return result
 
 
@@ -1144,6 +1176,95 @@ def _sync_faq_inbox_impl(
         result["errors"].append(str(e))
 
     return result
+
+
+def check_and_send_auto_closures(result: Dict[str, Any]) -> None:
+    """
+    Send auto-closure emails to pending complaints that have had no activity
+    for AUTO_CLOSURE_DAYS days (default 7).
+
+    Controlled by the ``ENABLE_AUTO_CLOSURE`` environment variable.
+    Set it to ``true`` / ``1`` / ``yes`` to enable; default is ``false``.
+
+    For each stale complaint this function:
+      1. Sends a polite closure email to the original sender.
+      2. Appends the sent email as an outbound entry in the complaint thread.
+      3. Sets processingStatus = "auto_closed" and autoClosureSent = True so
+         the same complaint is never auto-closed twice.
+
+    Auto-closure counts are added to the ``result`` dict under ``autoClosed``.
+    """
+    _load_env()
+
+    enabled = os.environ.get("ENABLE_AUTO_CLOSURE", "false").strip().lower() in ("true", "1", "yes")
+    if not enabled:
+        return
+
+    days = int(os.environ.get("AUTO_CLOSURE_DAYS", "7"))
+    sender_email = os.environ.get("SENDER_EMAIL", "")
+
+    from backend.auto_response.service import send_auto_response
+
+    try:
+        stale = get_stale_pending_complaints(days=days)
+    except Exception as e:
+        print(f"Auto-closure: failed to fetch stale complaints: {e}", file=sys.stderr)
+        return
+
+    auto_closed_count = 0
+    for complaint in stale:
+        complaint_id = complaint.get("id", "")
+        raw_from     = complaint.get("from", "")
+        # Extract bare email address from "Name <email@example.com>" format
+        customer_email = _extract_email_address(raw_from) if raw_from else ""
+        # Derive a display name from the From field
+        if "<" in raw_from:
+            customer_name = raw_from.split("<")[0].strip().strip('"')
+        else:
+            customer_name = raw_from.split("@")[0].replace(".", " ").replace("_", " ").title()
+
+        if not customer_email or "@" not in customer_email:
+            print(f"Auto-closure: skipping {complaint_id} — no valid recipient email", file=sys.stderr)
+            continue
+
+        try:
+            email_result = send_auto_response(
+                to_addr       = customer_email,
+                customer_name = customer_name,
+                complaint_id  = complaint_id,
+                decision      = "AUTO_CLOSE",
+                in_reply_to   = complaint.get("messageId"),
+                references    = complaint.get("threadId"),
+                inactivity_days = days,
+            )
+
+            if email_result.get("sent"):
+                try:
+                    add_email_to_thread(
+                        complaint_id = complaint_id,
+                        from_addr    = f"Customer Support <{sender_email}>",
+                        to_addr      = customer_email,
+                        subject      = email_result.get("subject", f"Re: {complaint.get('subject', '')}"),
+                        email_body   = email_result.get("body", ""),
+                        direction    = "outbound",
+                        email_type   = "auto_closure",
+                        in_reply_to  = complaint.get("messageId"),
+                    )
+                except Exception as thread_err:
+                    print(f"Auto-closure: thread append failed for {complaint_id}: {thread_err}", file=sys.stderr)
+
+                mark_complaint_auto_closed(complaint_id)
+                auto_closed_count += 1
+                print(f"Auto-closure: sent to {customer_email} for {complaint_id}", file=sys.stderr)
+            else:
+                err = email_result.get("error", "unknown")
+                print(f"Auto-closure: email not sent for {complaint_id}: {err}", file=sys.stderr)
+
+        except Exception as e:
+            print(f"Auto-closure: error processing {complaint_id}: {e}", file=sys.stderr)
+
+    if auto_closed_count:
+        result["autoClosed"] = result.get("autoClosed", 0) + auto_closed_count
 
 
 def main() -> int:

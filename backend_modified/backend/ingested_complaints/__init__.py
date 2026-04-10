@@ -10,6 +10,8 @@ from backend.ingested_complaints.service import (
     get_all_ingested_complaints,
     get_complaint_references,
     get_ingested_complaint_by_id,
+    get_stale_pending_complaints,
+    mark_complaint_auto_closed,
     save_ingested_complaint,
 )
 
@@ -19,5 +21,7 @@ __all__ = [
     "get_all_ingested_complaints",
     "get_complaint_references",
     "get_ingested_complaint_by_id",
+    "get_stale_pending_complaints",
+    "mark_complaint_auto_closed",
     "save_ingested_complaint",
 ]

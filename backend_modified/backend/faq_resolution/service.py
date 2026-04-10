@@ -367,11 +367,32 @@ def _faq_iso_now() -> str:
     return dt.strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z"
 
 
-def save_faq_email(record: Dict[str, Any]) -> None:
+def save_faq_email(
+    from_addr: str,
+    to_addr: str,
+    subject: str,
+    body_text: str,
+    matched_faq: Optional[Dict[str, Any]],
+    message_id: Optional[str] = None,
+) -> None:
+    """Save a FAQ email record to faq-emails.json with camelCase field names matching the frontend FaqEmail interface."""
+    now = _faq_iso_now()
+    # Composite dedup key for emails without a Message-ID header
+    dedup_subject_from = f"{subject.strip().lower()}|{from_addr.strip().lower()}"
+    record: Dict[str, Any] = {
+        "id":               str(uuid.uuid4()),
+        "from":             from_addr,
+        "to":               to_addr,
+        "subject":          subject,
+        "emailBody":        body_text,
+        "createdAt":        now,
+        "matchedFaq":       matched_faq,
+        # Dedup keys stored so get_faq_dedup_ids can rebuild the full set on restart
+        "messageId":        message_id,
+        "dedupSubjectFrom": dedup_subject_from,
+    }
     with _FAQ_WRITE_LOCK:
         store = _load_faq_emails_store()
-        record.setdefault("id", str(uuid.uuid4()))
-        record.setdefault("saved_at", _faq_iso_now())
         store.append(record)
         _save_faq_emails_store(store)
 
@@ -389,10 +410,14 @@ def clear_faq_emails() -> int:
 
 
 def get_faq_dedup_ids() -> Set[str]:
+    """Return the full dedup set from disk: both messageId and subject|from composite keys."""
     store = _load_faq_emails_store()
     ids: Set[str] = set()
     for r in store:
-        mid = r.get("message_id")
+        mid = r.get("messageId") or r.get("message_id")
         if mid:
-            ids.add(mid)
+            ids.add(mid.strip().lower())
+        sf = r.get("dedupSubjectFrom")
+        if sf:
+            ids.add(sf)
     return ids

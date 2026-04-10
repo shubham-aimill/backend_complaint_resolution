@@ -118,7 +118,12 @@ def process_complaint(ingested_complaint_id: str) -> Dict[str, Any]:
         return complaint_data
 
     # ── Step 1: AI Extraction ──────────────────────────────────────────────
+    from datetime import datetime, timezone
+    def _iso_now() -> str:
+        return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z"
+
     extraction_start = time.time()
+    extraction_start_ts = _iso_now()
     extraction = extract_claim_information(
         claim_id=ingested_complaint_id,
         email_body=complaint.get("emailBody", ""),
@@ -128,6 +133,7 @@ def process_complaint(ingested_complaint_id: str) -> Dict[str, Any]:
 
     # ── Step 2: Validation Engine ──────────────────────────────────────────
     validation_start = time.time()
+    validation_start_ts = _iso_now()
     fields    = extraction.get("extractedFields") or {}
     documents = extraction.get("documents") or []
 
@@ -145,6 +151,8 @@ def process_complaint(ingested_complaint_id: str) -> Dict[str, Any]:
         extraction_duration_ms=extraction_duration_ms,
         validation=validation,
         validation_duration_ms=validation_duration_ms,
+        extraction_start_ts=extraction_start_ts,
+        validation_start_ts=validation_start_ts,
     )
 
     # ── Step 4: Auto Email Response ────────────────────────────────────────
@@ -231,7 +239,8 @@ def process_complaint(ingested_complaint_id: str) -> Dict[str, Any]:
             reject_reason=reject_reason,
             in_reply_to=complaint.get("messageId"),
             references=complaint.get("threadId"),
-            troubleshooting_steps=rag_troubleshooting_steps, # <-- PASSING YOUR GENERATED DB RAG STEPS
+            troubleshooting_steps=rag_troubleshooting_steps,
+            warranty_status=validation.get("warrantyStatus"),
         )
         if auto_email_result.get("sent"):
             try:

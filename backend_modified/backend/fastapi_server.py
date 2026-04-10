@@ -31,7 +31,7 @@ from backend.dashboard.service import (
     get_processed_complaint_summaries,
     save_processed_complaint,
 )
-from backend.email_ingestion.service import sync_faq_inbox, sync_inbox
+from backend.email_ingestion.service import sync_faq_inbox, sync_inbox, reset_sync_cache
 from backend.ingested_complaints.service import (
     add_email_to_thread,
     clear_all_ingested_complaints,
@@ -170,9 +170,10 @@ async def add_to_ingested_complaint_thread(complaint_id: str, request: AddThread
 
 @app.post("/api/ingested-complaints/clear")
 async def clear_ingested_complaints_endpoint() -> Dict[str, Any]:
-    """Delete all ingested complaints and their attachment files."""
+    """Delete all ingested complaints, attachments, and reset the IMAP UID cursor."""
     try:
         clear_all_ingested_complaints()
+        reset_sync_cache(faq_only=False)
         return {"success": True}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -412,9 +413,10 @@ def sync_faq_stream_endpoint():
 
 @app.post("/api/faq/emails/clear")
 async def clear_faq_emails_endpoint() -> Dict[str, Any]:
-    """Clear FAQ email history."""
+    """Clear FAQ email history and reset the FAQ IMAP UID cursor."""
     try:
         clear_faq_emails()
+        reset_sync_cache(faq_only=True)
         return {"success": True}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -446,14 +448,14 @@ async def get_troubleshooting_steps(req: TroubleshootRequest) -> Dict[str, Any]:
         chunks = semantic_search(query_text, top_k=4, product_id=p_id)
 
         if chunks:
-            # 3. Generate Answer using GPT-4o
+            # 3. Generate Answer using GPT-4o with RAG context
             res = generate_answer(
                 question=req.complaint_description,
                 chunks=chunks,
                 product_id=p_id,
                 product_name=p_name
             )
-            
+
             return {
                 "success": True,
                 "product": p_name,
@@ -461,11 +463,30 @@ async def get_troubleshooting_steps(req: TroubleshootRequest) -> Dict[str, Any]:
                 "sources": res.get("sources", []),
                 "rag_used": True,
             }
-        
+
+        # No manual chunks found — ask the LLM to craft product-specific steps from general knowledge
+        from backend.common.config import OPENAI_API_KEY
+        from openai import OpenAI
+        llm_client = OpenAI(api_key=OPENAI_API_KEY)
+        prompt = (
+            f"You are a helpful customer support agent for consumer electronics.\n"
+            f"A customer is experiencing the following issue with their {p_name}:\n"
+            f"{req.complaint_description}\n\n"
+            f"Write clear, numbered troubleshooting steps tailored specifically to the {p_name} "
+            f"and the reported issue. Do not mention that you lack a manual or database — "
+            f"just provide practical, product-appropriate guidance."
+        )
+        completion = llm_client.chat.completions.create(
+            model="gpt-4o",
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.4,
+            max_tokens=600,
+        )
+        llm_steps = completion.choices[0].message.content.strip()
         return {
-            "success": False,
-            "product": req.product_name,
-            "steps": "No specific manual instructions were found in the database for this issue.",
+            "success": True,
+            "product": p_name,
+            "steps": llm_steps,
             "sources": [],
             "rag_used": False,
         }

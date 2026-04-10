@@ -496,7 +496,7 @@ export default function ReviewPage({ claimData, onNextStage, onPreviousStage, on
         onClaimSelect={onLoadClaim}
       />
 
-      {/* Desk Reject Banner */}
+      {/* Desk Reject Banner — hard ineligibility only */}
       {isDeskReject && (
         <div className="mx-4 mb-4 flex items-start gap-3 p-4 rounded-xl bg-rose-50 border-2 border-rose-300">
           <AlertTriangle className="w-5 h-5 text-rose-600 flex-shrink-0 mt-0.5" />
@@ -511,9 +511,25 @@ export default function ReviewPage({ claimData, onNextStage, onPreviousStage, on
                     ? 'Product was repaired by an unauthorised third party, voiding the warranty.'
                     : claimData.rejectReason === 'unsupported_product'
                       ? 'Product type is not supported through this complaint channel.'
-                      : 'Product is outside its warranty period. This complaint has been automatically rejected.'}
+                      : claimData.rejectReason === 'product_not_registered'
+                        ? 'Product is not registered under this customer account.'
+                        : 'This complaint has been automatically rejected due to an eligibility issue.'}
             </p>
             <p className="text-xs text-rose-500 mt-1">The "Continue to Resolution" button is disabled. You may go back to the inbox.</p>
+          </div>
+        </div>
+      )}
+
+      {/* Out-of-Warranty Info Banner — complaint proceeds as paid service */}
+      {!isDeskReject && claimData.warrantyStatus === 'OUT_OF_WARRANTY' && (
+        <div className="mx-4 mb-4 flex items-start gap-3 p-4 rounded-xl bg-amber-50 border-2 border-amber-300">
+          <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+          <div>
+            <p className="text-sm font-semibold text-amber-800">Product Out of Warranty — Paid Service Applies</p>
+            <p className="text-xs text-amber-700 mt-0.5">
+              This product is outside its manufacturer warranty period. The complaint will proceed to the Resolution page,
+              but any engineer visit or repair will be on a <span className="font-semibold">paid basis</span>. Charges will be communicated to the customer before work begins.
+            </p>
           </div>
         </div>
       )}

@@ -1,5 +1,18 @@
 [
   {
+    "complaintId": "CMP-ING-1775845056743-fee4688",
+    "ingestedComplaintId": "ING-1775845056743-fee4688",
+    "customerRef": "CUST10001",
+    "customerName": "Shubham",
+    "complaintType": "Software / Firmware",
+    "createdAt": "2026-04-10T18:20:57.278Z",
+    "filePath": "CMP-ING-1775845056743-fee4688.json",
+    "warrantyStatus": "WITHIN_WARRANTY",
+    "productCategory": "Smartphone",
+    "autoDecision": "TROUBLESHOOTING_REQUIRED",
+    "decisionConfidence": 0.9
+  },
+  {
     "complaintId": "CMP-ING-1775767440175-5b3d2c6",
     "ingestedComplaintId": "ING-1775767440175-5b3d2c6",
     "customerRef": "CUST10001",

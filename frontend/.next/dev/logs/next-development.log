@@ -1,2 +1,8 @@
-[00:00:02.179] Server  LOG     ✓ Ready in 2s
-[00:00:04.699] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+{"timestamp":"00:00:00.734","source":"Server","level":"LOG","message":""}
+{"timestamp":"00:00:04.670","source":"Browser","level":"INFO","message":"%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"}
+{"timestamp":"00:00:04.849","source":"Server","level":"ERROR","message":"Error fetching ingested claims: TypeError: fetch failed"}
+{"timestamp":"00:00:04.902","source":"Server","level":"ERROR","message":"Error fetching ingested claims: TypeError: fetch failed"}
+{"timestamp":"00:00:04.950","source":"Server","level":"ERROR","message":"Sync stream error: TypeError: fetch failed"}
+{"timestamp":"00:00:04.994","source":"Server","level":"ERROR","message":"Sync stream error: TypeError: fetch failed"}
+{"timestamp":"00:00:21.766","source":"Browser","level":"INFO","message":"%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"}
+{"timestamp":"00:31:56.501","source":"Server","level":"LOG","message":"✓ Compiled in 773ms"}

@@ -38,6 +38,53 @@ def _load_env() -> None:
                     os.environ[key.strip()] = val.strip().strip("'\"")
 
 
+# ── Markdown → plain text converter ─────────────────────────────────────────
+
+def _strip_markdown(text: str) -> str:
+    """
+    Convert LLM-generated markdown to clean plain text suitable for email.
+
+    Handles the most common patterns produced by GPT-style models:
+      **bold**  *italic*  `code`  ### headings  - / * bullet  > blockquote
+    Numbered lists are preserved as-is (they are already plain text).
+    Indented sub-bullets using spaces + dash/asterisk are kept with their
+    leading spaces so the step hierarchy is preserved.
+    """
+    import re
+
+    # Remove horizontal rules
+    text = re.sub(r'^[ \t]*[-*_]{3,}[ \t]*$', '', text, flags=re.MULTILINE)
+
+    # ATX headings (#, ##, ###) → plain line (keep text, drop the #s)
+    text = re.sub(r'^#{1,6}\s+', '', text, flags=re.MULTILINE)
+
+    # Bold+italic combinations first (order matters)
+    text = re.sub(r'\*{3}(.+?)\*{3}', r'\1', text)
+    text = re.sub(r'_{3}(.+?)_{3}', r'\1', text)
+
+    # Bold
+    text = re.sub(r'\*{2}(.+?)\*{2}', r'\1', text)
+    text = re.sub(r'_{2}(.+?)_{2}', r'\1', text)
+
+    # Italic
+    text = re.sub(r'\*(.+?)\*', r'\1', text)
+    text = re.sub(r'_(.+?)_', r'\1', text)
+
+    # Inline code
+    text = re.sub(r'`(.+?)`', r'\1', text)
+
+    # Blockquotes
+    text = re.sub(r'^>\s?', '', text, flags=re.MULTILINE)
+
+    # Unordered bullet markers at the start of a line (keep indentation)
+    text = re.sub(r'^([ \t]*)[-*+]\s+', r'\1', text, flags=re.MULTILINE)
+
+    # Collapse 3+ consecutive blank lines to 2
+    text = re.sub(r'\n{3,}', '\n\n', text)
+
+    return text.strip()
+
+
 # ── Email body builders ──────────────────────────────────────────────────────
 
 def _build_troubleshooting_body(
@@ -46,24 +93,25 @@ def _build_troubleshooting_body(
     complaint_id: str,
     troubleshooting_steps: str,
 ) -> str:
+    steps = _strip_markdown(troubleshooting_steps)
     return f"""Dear {customer_name or 'Valued Customer'},
 
 Thank you for contacting Consumer Electronics Customer Support. We have received your query regarding your {product_name or 'product'} (Reference: {complaint_id}).
 
 To help resolve this issue quickly, please try the following troubleshooting steps directly from the official product manual:
 
-{troubleshooting_steps}
+{steps}
 
 What to do next:
-  • If these steps resolve your issue, no further action is needed.
-  • If the issue persists after trying these steps, please reply directly to this email and our technical team will arrange a further investigation or repair.
+  If these steps resolve your issue, no further action is needed.
+  If the issue persists after trying these steps, please reply directly to this email and our technical team will arrange a further investigation or repair.
 
 We appreciate your cooperation and look forward to getting your device working perfectly again.
 
 Kind regards,
 Customer Support Team
 Consumer Electronics
-  Email: support@electronics.com  |  Phone: 1-800-ELEC-HELP (Mon–Fri, 9am–6pm)"""
+  Email: support@electronics.com  |  Phone: 1-800-ELEC-HELP (Mon-Fri, 9am-6pm)"""
 
 
 def _build_request_documents_body(
@@ -226,20 +274,37 @@ def _build_approval_body(
     complaint_id: str,
     decision: str,
     next_steps: List[str],
+    out_of_warranty: bool = False,
 ) -> str:
     action_label = "repair" if decision == "APPROVE_REPAIR" else "replacement"
-    steps = "\n".join(f"  {i+1}. {step}" for i, step in enumerate(next_steps)) if next_steps else (
-        f"  1. Our technical team will contact you within 48 hours to arrange the {action_label}.\n"
-        f"  2. Please have your product and proof of purchase ready.\n"
-        f"  3. If a courier collection is required, we will arrange this at no cost to you."
-    )
+
+    if out_of_warranty:
+        default_steps = (
+            f"  1. Our service team will contact you within 48 hours with a cost estimate for the {action_label}.\n"
+            f"  2. Please confirm your acceptance of the quote before we proceed.\n"
+            f"  3. Payment will be collected before the {action_label} is carried out.\n"
+            f"  4. Please have your product and proof of purchase ready."
+        )
+        paid_notice = (
+            f"\nPlease note: as your product is outside its manufacturer warranty period, "
+            f"this {action_label} will be carried out on a paid basis. "
+            f"A cost estimate will be provided before any work begins."
+        )
+    else:
+        default_steps = (
+            f"  1. Our technical team will contact you within 48 hours to arrange the {action_label}.\n"
+            f"  2. Please have your product and proof of purchase ready.\n"
+            f"  3. If a courier collection is required, we will arrange this at no cost to you."
+        )
+        paid_notice = ""
+
+    steps = "\n".join(f"  {i+1}. {step}" for i, step in enumerate(next_steps)) if next_steps else default_steps
+
     return f"""Dear {customer_name or 'Valued Customer'},
 
-We have good news regarding your complaint (Reference: {complaint_id}) about your
-{product_name or 'product'}.
-
-After reviewing the details of your case, we are pleased to confirm that your
-complaint has been approved and we will be arranging a {action_label} for you.
+We have reviewed your complaint (Reference: {complaint_id}) regarding your
+{product_name or 'product'} and are pleased to confirm that we will be arranging a {action_label} for you.
+{paid_notice}
 
 What happens next:
 {steps}
@@ -294,6 +359,34 @@ What happens next:
   2. We may reach out if we need any additional information from you.
   3. You will receive a written outcome with our findings and proposed resolution
      within 5 business days.
+
+Kind regards,
+Customer Support Team
+Consumer Electronics"""
+
+
+def _build_auto_closure_body(
+    customer_name: str,
+    complaint_id: str,
+    inactivity_days: int = 7,
+) -> str:
+    return f"""Dear {customer_name or 'Valued Customer'},
+
+We are writing to inform you that your complaint (Reference: {complaint_id}) has been
+automatically closed due to {inactivity_days} days of inactivity.
+
+As we have not received any further communication from you during this period, we have
+assumed that the matter has been resolved to your satisfaction, or that no further
+action is required.
+
+If your issue remains unresolved, or if you would like to re-open this complaint,
+please do not hesitate to contact us:
+  Email: support@electronics.com
+  Phone: 1-800-ELEC-HELP (Mon-Fri, 9am-6pm)
+
+When contacting us, please quote your original complaint reference: {complaint_id}
+
+We apologise for any inconvenience and thank you for choosing Consumer Electronics.
 
 Kind regards,
 Customer Support Team
@@ -361,7 +454,9 @@ def send_auto_response(
     reject_reason: Optional[str] = None,
     in_reply_to: Optional[str] = None,
     references: Optional[str] = None,
-    troubleshooting_steps: Optional[str] = None, # <--- Added support for RAG
+    troubleshooting_steps: Optional[str] = None,
+    warranty_status: Optional[str] = None,
+    inactivity_days: int = 7,
 ) -> Dict[str, Any]:
     """
     Send the appropriate automated email response based on the decision code.
@@ -408,6 +503,13 @@ def send_auto_response(
             body    = _build_approval_body(
                 customer_name, product_name or "your product",
                 complaint_id, decision, next_steps or [],
+                out_of_warranty=(warranty_status == "OUT_OF_WARRANTY"),
+            )
+
+        elif decision == "AUTO_CLOSE":
+            subject = f"Your Complaint Has Been Closed — {complaint_id}"
+            body    = _build_auto_closure_body(
+                customer_name, complaint_id, inactivity_days=inactivity_days,
             )
 
         else:  # INVESTIGATE or any other fallback

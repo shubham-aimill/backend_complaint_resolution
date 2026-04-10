@@ -440,6 +440,72 @@ def mark_ingested_complaint_processed(complaint_id: str) -> bool:
     return False
 
 
+def get_stale_pending_complaints(days: int = 7) -> List[Dict[str, Any]]:
+    """
+    Return pending inbound complaints that have had no activity for at least
+    ``days`` days and have not already received an auto-closure email.
+
+    "Last activity" = the most recent ``createdAt`` across every record that
+    shares the complaint's ``threadId`` (inbound + outbound entries).
+    """
+    from datetime import datetime, timedelta
+
+    cutoff = datetime.utcnow() - timedelta(days=days)
+
+    all_records = _load_complaints()
+
+    # Build threadId → max createdAt across ALL records (inbound + outbound)
+    thread_max: Dict[str, str] = {}
+    for rec in all_records:
+        tid = rec.get("threadId") or rec.get("id")
+        cat = rec.get("createdAt", "")
+        if tid and cat and cat > thread_max.get(tid, ""):
+            thread_max[tid] = cat
+
+    stale: List[Dict[str, Any]] = []
+    for rec in all_records:
+        # Only pending inbound complaints
+        if rec.get("source") == "outbound":
+            continue
+        status = rec.get("processingStatus", "pending")
+        if status not in ("pending", None, ""):
+            continue
+        if rec.get("autoClosureSent"):
+            continue
+
+        tid = rec.get("threadId") or rec.get("id")
+        last_activity_str = thread_max.get(tid) or rec.get("createdAt", "")
+        if not last_activity_str:
+            continue
+
+        try:
+            last_dt = datetime.fromisoformat(last_activity_str.replace("Z", "+00:00"))
+            last_dt = last_dt.replace(tzinfo=None)  # convert to naive UTC for comparison
+        except (ValueError, AttributeError):
+            continue
+
+        if last_dt < cutoff:
+            stale.append(rec)
+
+    return stale
+
+
+def mark_complaint_auto_closed(complaint_id: str) -> bool:
+    """
+    Mark an ingested complaint as auto-closed and flag that the closure email
+    has been sent so subsequent syncs do not re-send it.
+    """
+    with _WRITE_LOCK:
+        complaints = _load_complaints()
+        for c in complaints:
+            if c.get("id") == complaint_id:
+                c["processingStatus"] = "auto_closed"
+                c["autoClosureSent"] = True
+                _save_complaints(complaints)
+                return True
+    return False
+
+
 def update_complaint_status(complaint_id: str, status: str, rejection_reason: Optional[str] = None, rejection_details: Optional[str] = None) -> bool:
     """Update the status field of a processed complaint by ID."""
     from backend.dashboard.service import get_processed_complaint_by_id, save_processed_complaint

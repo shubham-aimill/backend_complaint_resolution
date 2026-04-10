@@ -361,11 +361,15 @@ def validate_warranty(
         "purchaseDate": purchase_date.strftime("%Y-%m-%d"),
         "purchaseDateSource": date_source,
         "expiryDate": expiry_date.strftime("%Y-%m-%d"),
-        "autoDecision": None if within else "DESK_REJECT",
+        # Out-of-warranty complaints are NOT desk-rejected — they proceed to the
+        # Decision page as paid-service cases.  Only hard ineligibility (physical
+        # damage, unauthorised repair, unsupported product, unknown customer)
+        # results in a DESK_REJECT.
+        "autoDecision": None,
         "notes": (
             f"Product purchased on {purchase_date.strftime('%Y-%m-%d')}. "
             f"Warranty of {warranty_months} months expires on {expiry_date.strftime('%Y-%m-%d')}. "
-            + ("Product is within warranty period." if within else "Product is OUT of warranty — DESK REJECT.")
+            + ("Product is within warranty period." if within else "Product is OUT of warranty — paid service applies.")
         ),
     }
 

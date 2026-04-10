@@ -1,8 +1,13 @@
 {
+  "/api/claims/route": "app/api/claims/route.js",
   "/api/faq/emails/route": "app/api/faq/emails/route.js",
+  "/api/ingested-claims/[id]/route": "app/api/ingested-claims/[id]/route.js",
+  "/api/ingested-claims/[id]/thread/route": "app/api/ingested-claims/[id]/thread/route.js",
   "/api/ingested-claims/route": "app/api/ingested-claims/route.js",
+  "/api/process-claim/route": "app/api/process-claim/route.js",
+  "/api/send-email/route": "app/api/send-email/route.js",
   "/api/sync-faq/stream/route": "app/api/sync-faq/stream/route.js",
   "/api/sync-inbox/stream/route": "app/api/sync-inbox/stream/route.js",
-  "/login/page": "app/login/page.js",
+  "/api/troubleshoot/route": "app/api/troubleshoot/route.js",
   "/page": "app/page.js"
 }

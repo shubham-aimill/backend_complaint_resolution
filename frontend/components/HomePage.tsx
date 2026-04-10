@@ -208,7 +208,7 @@ export default function HomePage({ onProcessClaim, isProcessing, setIsProcessing
                   if (data.skippedDuplicate > 0) parts.push(`${data.skippedDuplicate} duplicate(s) skipped`)
                   setSyncMessage(parts.join('. '))
                 } else if (data.scanned === 0) {
-                  setSyncMessage(data.hint || 'No new emails')
+                  setSyncMessage(data.hint || data.note || 'No new emails')
                 } else {
                   setSyncMessage('Inbox up to date')
                 }

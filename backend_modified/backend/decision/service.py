@@ -53,6 +53,9 @@ def _derive_auto_decision(
     validation_auto = validation.get("autoDecision")
 
     # 1. HARD STOP: DESK REJECTS
+    # Only genuine ineligibility reasons cause a desk reject.
+    # Out-of-warranty complaints are NOT rejected here — they proceed to
+    # standard routing as paid-service cases.
     if validation_auto == "DESK_REJECT":
         mapping_result = next((r for r in validation.get("validationResults", []) if r.get("check") == "customer_product_mapping"), {})
         eligibility_result = next((r for r in validation.get("validationResults", []) if r.get("check") == "eligibility_validation"), {})
@@ -98,13 +101,9 @@ def _derive_auto_decision(
                 "recommendedNextStep": "Send DESK_REJECT email (unsupported product).",
                 "rejectReason": "unsupported_product",
             }
-        return {
-            "autoDecision":        "DESK_REJECT",
-            "decisionConfidence":  0.95,
-            "decisionRationale":   "Product is outside its warranty period.",
-            "recommendedNextStep": "Send DESK_REJECT email.",
-            "rejectReason": "out_of_warranty",
-        }
+        # Any remaining DESK_REJECT from validation falls through to standard
+        # routing rather than hard-stopping — avoids incorrectly blocking
+        # out-of-warranty complaints if the validation merge ever sets this.
 
     # 2. MISSING DOCUMENTS OVERRIDE
     if validation_auto == "REQUEST_DOCUMENTS":
@@ -175,15 +174,21 @@ def _derive_auto_decision(
             "recommendedNextStep": "Assign to senior agent.",
         }
 
+    is_out_of_warranty = validation.get("warrantyStatus") == "OUT_OF_WARRANTY"
+
     if grounding_recommendation in ("AUTO_APPROVE",) and customer_verified:
         if wants_replacement:
             return {
                 "autoDecision":        "APPROVE_REPLACEMENT",
                 "decisionConfidence":  0.88,
-                "decisionRationale":   "Customer and product verified. Replacement indicators present.",
+                "decisionRationale":   (
+                    "Customer and product verified. Replacement approved — charges apply (out of warranty)."
+                    if is_out_of_warranty else
+                    "Customer and product verified. Replacement approved within warranty."
+                ),
                 "recommendedNextStep": "Send APPROVE_REPLACEMENT email.",
             }
-            
+
         if needs_troubleshooting:
             return {
                 "autoDecision":        "TROUBLESHOOTING_REQUIRED",
@@ -191,11 +196,15 @@ def _derive_auto_decision(
                 "decisionRationale":   "Customer and product verified. Issue related to software or settings.",
                 "recommendedNextStep": "Trigger RAG manual lookup. Send automated troubleshooting guide.",
             }
-            
+
         return {
             "autoDecision":        "APPROVE_REPAIR",
             "decisionConfidence":  0.85,
-            "decisionRationale":   "Customer and product verified. Repair approved within warranty.",
+            "decisionRationale":   (
+                "Customer and product verified. Repair approved — charges apply (out of warranty)."
+                if is_out_of_warranty else
+                "Customer and product verified. Repair approved within warranty."
+            ),
             "recommendedNextStep": "Send APPROVE_REPAIR email.",
         }
 
@@ -292,12 +301,15 @@ def build_decision_pack(
     extraction_duration_ms: int = 0,
     validation: Optional[Dict[str, Any]] = None,
     validation_duration_ms: int = 0,
+    extraction_start_ts: Optional[str] = None,
+    validation_start_ts: Optional[str] = None,
 ) -> Dict[str, Any]:
     now = _iso_now()
     complaint_id = f"CMP-{ingested_claim_id}"
     fields = extraction.get("extractedFields") or {}
 
     grounding_start = time.time()
+    grounding_ts = _iso_now()
     grounding = get_customer_grounding(fields)
     if not grounding:
         grounding = get_resolution_rules(fields)
@@ -333,16 +345,21 @@ def build_decision_pack(
         top_rec = "CUSTOMER_NOT_FOUND"
 
     validation = validation or {}
+    decision_start = time.time()
+    decision_ts = _iso_now()
     decision_block = _derive_auto_decision(validation, top_rec, customer_verified, fields)
+    decision_ms = int((time.time() - decision_start) * 1000)
 
     warranty_result = next((r for r in validation.get("validationResults", []) if r.get("check") == "warranty_validation"), {})
     doc_result = next((r for r in validation.get("validationResults", []) if r.get("check") == "document_validation"), {})
 
+    # Reconstruct per-step start timestamps from pipeline_start (now) working backwards
+    # extraction ran first, then validation, then grounding, then decision
     audit = [
-        {"step": "Information Extraction", "timestamp": now, "duration": extraction_duration_ms, "agent": "ExtractionService", "status": "completed", "details": {"documentsProcessed": len(docs), "errors": extraction.get("errors", [])}},
-        {"step": "Validation Engine", "timestamp": now, "duration": validation_duration_ms, "agent": "ValidationService", "status": "completed", "details": {"warrantyStatus": validation.get("warrantyStatus"), "allChecksPassed": validation.get("allChecksPassed"), "autoDecision": validation.get("autoDecision")}},
-        {"step": "Customer & Product Grounding", "timestamp": now, "duration": grounding_ms, "agent": "CustomerGroundingService", "status": "completed", "details": {"recordsFound": len(grounding), "customerVerified": customer_verified}},
-        {"step": "Decision Engine", "timestamp": now, "duration": 0, "agent": "DecisionService", "status": "completed", "details": {"autoDecision": decision_block["autoDecision"], "decisionConfidence": decision_block["decisionConfidence"]}},
+        {"step": "Information Extraction",      "timestamp": extraction_start_ts or now, "duration": extraction_duration_ms, "success": True, "agent": "ExtractionService",       "status": "completed", "details": {"documentsProcessed": len(docs), "errors": extraction.get("errors", [])}},
+        {"step": "Validation Engine",           "timestamp": validation_start_ts or now, "duration": validation_duration_ms, "success": True, "agent": "ValidationService",        "status": "completed", "details": {"warrantyStatus": validation.get("warrantyStatus"), "allChecksPassed": validation.get("allChecksPassed"), "autoDecision": validation.get("autoDecision")}},
+        {"step": "Customer & Product Grounding","timestamp": grounding_ts,  "duration": grounding_ms,           "success": True, "agent": "CustomerGroundingService", "status": "completed", "details": {"recordsFound": len(grounding), "customerVerified": customer_verified}},
+        {"step": "Decision Engine",             "timestamp": decision_ts,   "duration": decision_ms,            "success": True, "agent": "DecisionService",          "status": "completed", "details": {"autoDecision": decision_block["autoDecision"], "decisionConfidence": decision_block["decisionConfidence"]}},
     ]
 
     return {

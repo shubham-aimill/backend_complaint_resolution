@@ -34,11 +34,12 @@ const APPOINTMENT_SLOTS = [
 function DecisionBadge({ decision }: { decision?: string }) {
   if (!decision) return null
   const cfg: Record<string, { label: string; cls: string; icon: React.ReactNode }> = {
-    APPROVE_REPAIR:       { label: 'Approve Repair',       cls: 'bg-emerald-50 text-emerald-700 border-emerald-200', icon: <Wrench className="w-3.5 h-3.5" /> },
-    APPROVE_REPLACEMENT:  { label: 'Approve Replacement',  cls: 'bg-emerald-50 text-emerald-700 border-emerald-200', icon: <Check className="w-3.5 h-3.5" /> },
-    DESK_REJECT:          { label: 'Desk Reject',          cls: 'bg-rose-50 text-rose-700 border-rose-200',           icon: <X className="w-3.5 h-3.5" /> },
-    REQUEST_DOCUMENTS:    { label: 'Request Documents',    cls: 'bg-amber-50 text-amber-700 border-amber-200',         icon: <FileCheck className="w-3.5 h-3.5" /> },
-    INVESTIGATE:          { label: 'Investigate',          cls: 'bg-blue-50 text-blue-700 border-blue-200',            icon: <Activity className="w-3.5 h-3.5" /> },
+    APPROVE_REPAIR:          { label: 'Approve Repair',      cls: 'bg-emerald-50 text-emerald-700 border-emerald-200', icon: <Wrench className="w-3.5 h-3.5" /> },
+    APPROVE_REPLACEMENT:     { label: 'Approve Replacement', cls: 'bg-emerald-50 text-emerald-700 border-emerald-200', icon: <Check className="w-3.5 h-3.5" /> },
+    DESK_REJECT:             { label: 'Desk Reject',         cls: 'bg-rose-50 text-rose-700 border-rose-200',          icon: <X className="w-3.5 h-3.5" /> },
+    REQUEST_DOCUMENTS:       { label: 'Request Documents',   cls: 'bg-amber-50 text-amber-700 border-amber-200',       icon: <FileCheck className="w-3.5 h-3.5" /> },
+    INVESTIGATE:             { label: 'Investigate',         cls: 'bg-blue-50 text-blue-700 border-blue-200',          icon: <Activity className="w-3.5 h-3.5" /> },
+    TROUBLESHOOTING_REQUIRED:{ label: 'Troubleshooting',     cls: 'bg-violet-50 text-violet-700 border-violet-200',    icon: <Zap className="w-3.5 h-3.5" /> },
   }
   const c = cfg[decision] ?? { label: decision, cls: 'bg-gray-100 text-gray-700 border-gray-200', icon: <Tag className="w-3.5 h-3.5" /> }
   return (
@@ -298,9 +299,9 @@ export default function DecisionPage({ claimData, onNextStage, onPreviousStage }
               <p className="text-[10px] font-semibold text-[#9CA3AF] uppercase tracking-wider">AI Assessment</p>
 
               {/* Decision */}
-              <div className="flex items-center justify-between">
-                <span className="text-xs text-[#6B7280]">Decision</span>
-                <DecisionBadge decision={claimData.autoDecision} />
+              <div className="flex items-center justify-between gap-2 min-w-0">
+                <span className="text-xs text-[#6B7280] flex-shrink-0">Decision</span>
+                <div className="flex-shrink-0"><DecisionBadge decision={claimData.autoDecision} /></div>
               </div>
 
               {/* Confidence bar */}
@@ -640,7 +641,6 @@ export default function DecisionPage({ claimData, onNextStage, onPreviousStage }
                     btn.disabled = true
 
                     let stepsBody = ''
-                    let sourceNote = ''
                     const description = (claimData.decisionPack as any)?.complaintDraft?.description || complaintType
 
                     try {
@@ -656,14 +656,8 @@ export default function DecisionPage({ claimData, onNextStage, onPreviousStage }
                       const data = await res.json()
                       if (data.success && data.steps) {
                         stepsBody = data.steps
-                        if (data.sources?.length > 0) {
-                          const srcLines = (data.sources as Array<{product: string; page_num: number}>)
-                            .map(s => `  • ${s.product} Manual — Page ${s.page_num}`)
-                            .join('\n')
-                          sourceNote = `\n\nSource: ${product} Manual\n${srcLines}`
-                        }
                       } else {
-                        stepsBody = `Please try the following steps for your ${product}:\n\n  1. Power off and restart after 30 seconds.\n  2. Check all cables and connections.\n  3. Ensure firmware is up to date.\n  4. Perform a factory reset if the issue persists.\n\n(Connect product manuals to the RAG system for device-specific steps.)`
+                        stepsBody = `Please try the following steps for your ${product}:\n\n  1. Power off and restart after 30 seconds.\n  2. Check all cables and connections.\n  3. Ensure firmware is up to date.\n  4. Perform a factory reset if the issue persists.`
                       }
                     } catch {
                       stepsBody = `Please try the following steps for your ${product}:\n\n  1. Power off and restart after 30 seconds.\n  2. Check all cables and connections.\n  3. Ensure firmware is up to date.\n  4. Perform a factory reset if the issue persists.`
@@ -671,7 +665,7 @@ export default function DecisionPage({ claimData, onNextStage, onPreviousStage }
 
                     emailDraftHook.open(
                       'moreInfo',
-                      `Dear ${customerName},\n\nRE: Troubleshooting Assistance – Reference ${complaintRef}\n\n${stepsBody}${sourceNote}\n\nPlease try these steps and reply with the outcome. If the issue persists, we will arrange the next steps.\n\nKind regards,\nCustomer Support Team`,
+                      `Dear ${customerName},\n\nRE: Troubleshooting Assistance – Reference ${complaintRef}\n\n${stepsBody}\n\nPlease try these steps and reply with the outcome. If the issue persists, we will arrange the next steps.\n\nKind regards,\nCustomer Support Team`,
                       recipient,
                       `Troubleshooting Assistance – ${complaintRef}`,
                       claimData.messageId,
@@ -749,14 +743,6 @@ export default function DecisionPage({ claimData, onNextStage, onPreviousStage }
                   <Download className="w-3.5 h-3.5 text-[#9CA3AF]" />
                 </button>
                 {downloadError && <p className="text-[11px] text-rose-600">{downloadError}</p>}
-
-                <button
-                  onClick={async () => { if (claimData.claimId) { await fetch(`/api/complaints/${claimData.claimId}/status`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status: 'closed' }) }); decisionHook.reset() } }}
-                  className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium bg-[#F9FAFB] text-[#374151] hover:bg-[#F3F4F6] transition-colors"
-                >
-                  <span>Close Complaint</span>
-                  <CheckCircle className="w-3.5 h-3.5 text-[#9CA3AF]" />
-                </button>
               </div>
             </div>
           </div>

@@ -1,0 +1,28 @@
+# INVOICE
+
+**Samsung Electronics Retail** 123 Tech Boulevard, Innovation City  
+support@samsung-demo.com | 1-800-SAMSUNG  
+
+---
+
+**INVOICE NUMBER:** INV-2026-0215-001  
+**DATE OF ISSUE:** 2026-02-15  
+
+### BILL TO:  
+**Customer Name:** Shubham  
+**Customer ID:** CUST10001  
+
+---
+
+### ORDER DETAILS:  
+
+| Description | Model Number | Quantity | Unit Price (Demo) | Total |
+| :--- | :--- | :--- | :--- | :--- |
+| Samsung Galaxy S26 Ultra (256GB) | SM-S938B | 1 | $1,199.00 | $1,199.00 |
+
+---
+
+**Subtotal:** $1,199.00  
+**Tax (8%):** $95.92  
+**TOTAL PAID:** **$1,294.92** ---
+*Thank you for your purchase. This document serves as your official proof of purchase for warranty and service claims.*
