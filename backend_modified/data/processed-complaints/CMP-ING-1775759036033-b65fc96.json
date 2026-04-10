@@ -1,0 +1,365 @@
+{
+  "complaintId": "CMP-ING-1775759036033-b65fc96",
+  "ingestedComplaintId": "ING-1775759036033-b65fc96",
+  "sourceEmailFrom": "Shubham Sahu <shubhh2003@gmail.com>",
+  "warrantyStatus": "WITHIN_WARRANTY",
+  "productCategory": "Smartphone",
+  "autoDecision": "REQUEST_DOCUMENTS",
+  "decisionConfidence": 0.9,
+  "recommendedNextStep": "Send REQUEST_DOCUMENTS email to customer listing missing items.",
+  "rejectReason": null,
+  "decisionPack": {
+    "id": "DP-1775759079774",
+    "complaintDraft": {
+      "id": "DRAFT-1775759079774",
+      "complaintRef": "CUST10001",
+      "customerName": "Shubham Sahu",
+      "customerEmail": "Not found",
+      "customerPhone": "Not found",
+      "complaintDate": "2026-04-09",
+      "complaintType": "Battery / Charging",
+      "productOrService": "Samsung Galaxy S26 Ultra",
+      "description": "My Samsung Galaxy S26 Ultra battery drains extremely fast. It goes from 100% to 15% within 3-4 hours even with minimal usage. The phone also gets very hot while charging. I have not installed any new apps recently.",
+      "desiredResolution": "investigated and repaired under warranty",
+      "estimatedAmount": 0.0,
+      "attachments": [],
+      "customerVerified": true,
+      "createdAt": "2026-04-09T18:24:39.774Z",
+      "source": "information_extraction",
+      "confidence": 1.0
+    },
+    "evidence": [
+      {
+        "field": "customerName",
+        "fieldName": "Customer Name",
+        "value": "Shubham Sahu",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "complaintRef",
+        "fieldName": "Complaint Reference",
+        "value": "CUST10001",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "purchaseDate",
+        "fieldName": "Purchase Date",
+        "value": "2025-10-15",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "complaintType",
+        "fieldName": "Complaint Type",
+        "value": "Battery / Charging",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "productOrService",
+        "fieldName": "Product / Service",
+        "value": "Samsung Galaxy S26 Ultra",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "productModel",
+        "fieldName": "Product Model Number",
+        "value": "SM-S938B",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "description",
+        "fieldName": "Description",
+        "value": "My Samsung Galaxy S26 Ultra battery drains extremely fast. It goes from 100% to 15% within 3-4 hours even with minimal usage. The phone also gets very hot while charging. I have not installed any new apps recently.",
+        "confidence": 1.0,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      }
+    ],
+    "documents": [
+      {
+        "id": "doc_email",
+        "name": "Customer Email",
+        "mimeType": "text/plain",
+        "type": "CorrespondenceRecord",
+        "content": "Dear Samsung Support,\r\n\r\nCustomer ID   : CUST10001\r\nCustomer Name : Shubham Sahu\r\nProduct       : Samsung Galaxy S26 Ultra\r\nModel Number  : SM-S938B\r\nPurchase Date : 2025-10-15\r\n\r\nIssue:\r\nMy Samsung Galaxy S26 Ultra battery drains extremely fast. It goes from\r\n100% to 15% within 3-4 hours even with minimal usage. The phone also\r\ngets very hot while charging. I have not installed any new apps recently.\r\n\r\nI would like this investigated and repaired under warranty.\r\n\r\nRegards,\r\nShubham Sahu\r\nCustomer ID: CUST10001",
+        "confidence": 0.95,
+        "metadata": {
+          "source": "email_body"
+        },
+        "keyFields": {
+          "customerName": "Shubham Sahu",
+          "complaintRef": "CUST10001",
+          "purchaseDate": "2025-10-15",
+          "complaintType": "Battery / Charging",
+          "productOrService": "Samsung Galaxy S26 Ultra",
+          "productModel": "SM-S938B",
+          "description": "My Samsung Galaxy S26 Ultra battery drains extremely fast. It goes from 100% to 15% within 3-4 hours even with minimal usage. The phone also gets very hot while charging. I have not installed any new apps recently.",
+          "desiredResolution": "investigated and repaired under warranty"
+        }
+      }
+    ],
+    "customerGrounding": [
+      {
+        "recordId": "CMP-20251101-001",
+        "title": "CONNECTIVITY_ISSUE \u2014 Samsung Galaxy S26 Ultra",
+        "snippet": "CONNECTIVITY_ISSUE \u2014 WiFi Dropout",
+        "content": "Customer: Shubham Sahu (CUST10001) | Account status: ACTIVE | Loyalty tier: GOLD | Complaint ID: CMP-20251101-001 | Type: CONNECTIVITY_ISSUE | Category: Connectivity | Sub-category: WiFi Dropout | Current status: IN_PROGRESS | Priority: HIGH | Severity: MODERATE | Escalated: No | SLA: 48h | Refund issued: $0.00 | Compensation: $0.00 | Product: Samsung Galaxy S26 Ultra (Samsung) | Warranty: 12 months | Price: $106000.00",
+        "section": "Connectivity",
+        "score": 1.0,
+        "confidence_score": 1.0,
+        "recommendation": "AUTO_APPROVE",
+        "action": "Customer and product verified \u2014 proceed with resolution per SLA",
+        "sourceDocument": "complaints.json + product_service.json (Consumer Electronics)",
+        "customer_verified": true,
+        "customer_name": "Shubham Sahu",
+        "customer_status": "ACTIVE",
+        "loyalty_tier": "GOLD",
+        "open_complaints": 1,
+        "total_complaints": 2,
+        "complaint_id": "CMP-20251101-001",
+        "complaint_type": "CONNECTIVITY_ISSUE",
+        "complaint_category": "Connectivity",
+        "current_status": "IN_PROGRESS",
+        "priority_level": "HIGH",
+        "severity_level": "MODERATE",
+        "is_escalated": false,
+        "assigned_team": "TECHNICAL",
+        "sla_hours": 48,
+        "refund_total": 0.0,
+        "compensation_total": 0.0,
+        "product_id": "PROD-SM-S938",
+        "product_name": "Samsung Galaxy S26 Ultra",
+        "product_category": "Smartphone",
+        "warranty_months": 12,
+        "actions_count": 0,
+        "latest_action": null
+      }
+    ],
+    "customerInfo": {
+      "customer_id": "CUST10001",
+      "first_name": "Shubham",
+      "last_name": "Sahu",
+      "full_name": "Shubham Sahu",
+      "email_id": "shubhh2003@gmail.com",
+      "phone_number": "+91-98765-43210",
+      "address_line1": "42 Tech Park, Sector 5",
+      "address_line2": null,
+      "city": "Dehradun",
+      "state": "Uttarakhand",
+      "postal_code": "248001",
+      "country": "India",
+      "customer_since": "2023-01-10",
+      "customer_status": "ACTIVE",
+      "loyalty_tier": "GOLD",
+      "total_complaints": 2,
+      "open_complaints": 1,
+      "preferred_contact": "EMAIL",
+      "complaint_ref": "CUST10001",
+      "complaint_id": "CMP-20251105-002",
+      "product_id": "PROD-AC-WFAI",
+      "complaint_type": "PRODUCT_DEFECT",
+      "current_status": "IN_PROGRESS",
+      "priority_level": "HIGH",
+      "severity_level": "SEVERE",
+      "is_escalated": false,
+      "assigned_team": "TECHNICAL",
+      "sla_hours": 24
+    },
+    "validationResults": [
+      {
+        "check": "customer_product_mapping",
+        "passed": true,
+        "customerRef": "CUST10001",
+        "customerFound": true,
+        "customerMatchSource": "customer_id",
+        "productId": "PROD-SM-S938",
+        "productOwnedByCustomer": true,
+        "ownershipSource": "registered_products",
+        "registeredProducts": [
+          "PROD-SM-S938",
+          "PROD-AC-WFAI"
+        ],
+        "registeredPurchaseDate": null,
+        "rejectReason": null,
+        "autoDecision": null,
+        "notes": "Customer 'CUST10001' verified and owns product 'PROD-SM-S938' (ownership confirmed via registered_products). Proceeding to warranty and other checks."
+      },
+      {
+        "check": "eligibility_validation",
+        "passed": true,
+        "rejectReason": null,
+        "autoDecision": null,
+        "notes": "No eligibility issues detected."
+      },
+      {
+        "check": "warranty_validation",
+        "passed": true,
+        "status": "WITHIN_WARRANTY",
+        "warrantyMonths": 12,
+        "purchaseDate": "2025-10-15",
+        "purchaseDateSource": "document:Customer Email",
+        "expiryDate": "2026-10-15",
+        "autoDecision": null,
+        "notes": "Product purchased on 2025-10-15. Warranty of 12 months expires on 2026-10-15. Product is within warranty period."
+      },
+      {
+        "check": "document_validation",
+        "passed": false,
+        "presentDocuments": [
+          "product_model"
+        ],
+        "missingDocuments": [
+          "purchase_invoice"
+        ],
+        "serialNumber": null,
+        "autoDecision": "REQUEST_DOCUMENTS",
+        "notes": "Documents present: product_model. Missing: purchase_invoice. Purchase invoice is REQUIRED \u2014 requesting documents."
+      },
+      {
+        "check": "product_validation",
+        "passed": true,
+        "productCategory": "Smartphone",
+        "matchedProductId": "PROD-SM-S938",
+        "matchedProductName": "Samsung Galaxy S26 Ultra",
+        "brandName": "Samsung",
+        "modelNumber": "SM-S938B",
+        "warrantyMonths": 12,
+        "price": 106000,
+        "categorySupported": true,
+        "authorizedSellers": [],
+        "autoDecision": null,
+        "notes": "Product matched: Samsung Galaxy S26 Ultra (Model: SM-S938B, Category: Smartphone). Category is supported."
+      }
+    ],
+    "warrantyStatus": "WITHIN_WARRANTY",
+    "productCategory": "Smartphone",
+    "matchedProduct": {
+      "productId": "PROD-SM-S938",
+      "productName": "Samsung Galaxy S26 Ultra",
+      "brandName": "Samsung",
+      "modelNumber": "SM-S938B",
+      "price": 106000
+    },
+    "autoDecision": "REQUEST_DOCUMENTS",
+    "decisionConfidence": 0.9,
+    "decisionRationale": "Required documents (e.g. purchase invoice) are missing.",
+    "recommendedNextStep": "Send REQUEST_DOCUMENTS email to customer listing missing items.",
+    "rejectReason": null,
+    "audit": [
+      {
+        "step": "Information Extraction",
+        "timestamp": "2026-04-09T18:24:39.773Z",
+        "duration": 4019,
+        "agent": "ExtractionService",
+        "status": "completed",
+        "details": {
+          "documentsProcessed": 1,
+          "errors": []
+        }
+      },
+      {
+        "step": "Validation Engine",
+        "timestamp": "2026-04-09T18:24:39.773Z",
+        "duration": 13,
+        "agent": "ValidationService",
+        "status": "completed",
+        "details": {
+          "warrantyStatus": "WITHIN_WARRANTY",
+          "allChecksPassed": false,
+          "autoDecision": "REQUEST_DOCUMENTS"
+        }
+      },
+      {
+        "step": "Customer & Product Grounding",
+        "timestamp": "2026-04-09T18:24:39.773Z",
+        "duration": 1,
+        "agent": "CustomerGroundingService",
+        "status": "completed",
+        "details": {
+          "recordsFound": 1,
+          "customerVerified": true
+        }
+      },
+      {
+        "step": "Decision Engine",
+        "timestamp": "2026-04-09T18:24:39.773Z",
+        "duration": 0,
+        "agent": "DecisionService",
+        "status": "completed",
+        "details": {
+          "autoDecision": "REQUEST_DOCUMENTS",
+          "decisionConfidence": 0.9
+        }
+      }
+    ],
+    "evidenceSummary": {
+      "totalFields": 7,
+      "highConfidenceFields": 7,
+      "lowConfidenceFields": 0,
+      "avgConfidence": 1.0
+    },
+    "documentAnalysis": {
+      "totalDocuments": 1,
+      "documentTypes": [
+        "CorrespondenceRecord"
+      ],
+      "avgDocumentConfidence": 0.95,
+      "missingDocuments": [
+        "purchase_invoice"
+      ],
+      "presentDocuments": [
+        "product_model"
+      ]
+    },
+    "resolutionAssessment": {
+      "recordsFound": 1,
+      "customerVerified": true,
+      "topMatchScore": 1.0,
+      "recommendation": "AUTO_APPROVE",
+      "autoDecision": "REQUEST_DOCUMENTS",
+      "decisionConfidence": 0.9,
+      "recommendedActions": [
+        "Send REQUEST_DOCUMENTS email to customer listing missing items."
+      ]
+    },
+    "processingSummary": {
+      "stepsCompleted": 4,
+      "stepsWithErrors": 0
+    },
+    "createdAt": "2026-04-09T18:24:39.773Z"
+  },
+  "processingMetrics": {
+    "fieldsAutoPopulated": 7,
+    "stepsCompleted": 4,
+    "stepsFailed": 0,
+    "totalProcessingTime": 8178,
+    "averageHandleTime": 8.178,
+    "extractionTime": 4019,
+    "validationTime": 13
+  },
+  "createdAt": "2026-04-09T18:24:39.773Z",
+  "status": "draft",
+  "autoEmailResponse": {
+    "sent": true,
+    "decision": "REQUEST_DOCUMENTS",
+    "to": "Shubham Sahu <shubhh2003@gmail.com>",
+    "error": null,
+    "subject": "Action Required: Documents Needed \u2014 Complaint CMP-ING-1775759036033-b65fc96",
+    "body": "Dear Shubham Sahu,\n\nThank you for getting in touch with Consumer Electronics Customer Support.\n\nWe have received your complaint (Reference: CMP-ING-1775759036033-b65fc96) regarding your Samsung Galaxy S26 Ultra and want to resolve this for you as quickly as possible.\n\nTo progress your complaint, we need the following document(s):\n\n  \u2022 Purchase Invoice\n\nThese documents help us verify your purchase and process your claim efficiently.\n\nWhat to do next:\n  \u2022 Reply to this email with the document(s) attached, or\n  \u2022 Contact us quoting your complaint reference: CMP-ING-1775759036033-b65fc96\n\nOnce we receive the required information, our team will review your case and\nrespond with an outcome within 2 business days.\n\nIf you have any difficulty locating these documents, please reply and we'll\ndo our best to assist you.\n\nWe apologise for the additional step and appreciate your cooperation.\n\nKind regards,\nCustomer Support Team\nConsumer Electronics\n  Email: support@electronics.com  |  Phone: 1-800-ELEC-HELP (Mon\u2013Fri, 9am\u20136pm)",
+    "sentFrom": "arp290825@gmail.com"
+  },
+  "messageId": "<CABs85wO=9_=Ty-SR3Fyd1=KUnMkNsY4ZEVwkWf_6Fdw6YaR9Fw@mail.gmail.com>",
+  "threadId": "<CABs85wO=9_=Ty-SR3Fyd1=KUnMkNsY4ZEVwkWf_6Fdw6YaR9Fw@mail.gmail.com>",
+  "processingTime": 8178
+}

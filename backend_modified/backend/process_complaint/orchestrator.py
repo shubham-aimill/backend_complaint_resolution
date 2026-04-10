@@ -29,22 +29,6 @@ from backend.auto_response.service import send_auto_response
 
 
 def process_complaint(ingested_complaint_id: str) -> Dict[str, Any]:
-    """
-    Process an ingested complaint end-to-end through the full electronics pipeline.
-
-    Pipeline:
-      Email Ingestion → AI Extraction → Validation Engine →
-      Decision Engine → Auto Email Response → Dashboard Save
-
-    Args:
-        ingested_complaint_id: ID of the ingested complaint email.
-
-    Returns:
-        Complete complaint data dict for the frontend.
-
-    Raises:
-        ValueError: If complaint not found.
-    """
     complaint = get_ingested_complaint_by_id(ingested_complaint_id)
     if not complaint:
         raise ValueError(f"Complaint not found: {ingested_complaint_id}")
@@ -63,7 +47,6 @@ def process_complaint(ingested_complaint_id: str) -> Dict[str, Any]:
     pipeline_start = time.time()
 
     # ── Pre-check: Verify customer exists before expensive LLM calls ───────
-    # If a CUST#### ref was regex-extracted during ingestion, check it now.
     complaint_ref_pre = str(complaint.get("complaintRef", "") or "").strip().upper()
     if re.match(r"^CUST[-]?\d+$", complaint_ref_pre) and not find_customer(complaint_ref_pre.replace("-", "")):
         from datetime import datetime, timezone
@@ -125,7 +108,7 @@ def process_complaint(ingested_complaint_id: str) -> Dict[str, Any]:
                         in_reply_to=complaint.get("messageId"),
                     )
                 except Exception:
-                    pass  # Thread recording failure must not abort the pipeline
+                    pass
         else:
             auto_email_result = {"sent": False, "skipped": True, "reason": "no_customer_email"}
         complaint_data["autoEmailResponse"] = auto_email_result
@@ -165,33 +148,72 @@ def process_complaint(ingested_complaint_id: str) -> Dict[str, Any]:
     )
 
     # ── Step 4: Auto Email Response ────────────────────────────────────────
-    # Attempt to send an automated email based on the decision.
-    # Failures are logged but do NOT abort the pipeline.
     auto_decision  = complaint_data.get("autoDecision")
-    customer_email = complaint.get("from", "")  # sender's email address
+    customer_email = complaint.get("from", "")
 
-    # Extract additional context for the email
     draft         = (complaint_data.get("decisionPack") or {}).get("complaintDraft") or {}
     customer_name = draft.get("customerName", "Valued Customer")
     product_name  = draft.get("productOrService", "your product")
     complaint_id  = complaint_data.get("complaintId", ingested_complaint_id)
+    complaint_desc = draft.get("description") or draft.get("complaintType", "")
+    subject_text   = complaint.get("subject", "")
 
-    # Gather missing docs list for REQUEST_DOCUMENTS decision
+    # ---------------------------------------------------------------------
+    # NEW AUTOMATIC RAG INJECTION LOGIC (Fetching from your existing DB)
+    # ---------------------------------------------------------------------
+    rag_troubleshooting_steps = None
+    if auto_decision in ["TROUBLESHOOTING_REQUIRED", "INVESTIGATE"]:
+        try:
+            # Import functions directly from your advanced rag/service.py
+            from backend.rag.service import semantic_search, generate_answer, match_product_from_text
+
+            query_text = f"{subject_text} {complaint_desc} {product_name}".strip()
+            
+            # 1. Use your keyword dictionary to get the exact product ID
+            prod_match = match_product_from_text(subject_text, query_text)
+            rag_product_id = prod_match.get("product_id")
+            rag_product_name = prod_match.get("product_name") or product_name
+
+            # 2. Search your ChromaDB (with your built-in product_id hard filter)
+            chunks = semantic_search(
+                query=query_text, 
+                top_k=4, 
+                product_id=rag_product_id
+            )
+
+            # 3. Generate the answer using your built-in GPT-4o prompt
+            if chunks:
+                rag_result = generate_answer(
+                    question=complaint_desc,
+                    chunks=chunks,
+                    product_id=rag_product_id,
+                    product_name=rag_product_name
+                )
+                
+                # Extract the formatted answer string
+                if rag_result and rag_result.get("answer"):
+                    rag_troubleshooting_steps = rag_result.get("answer")
+            
+            # Change the decision so it triggers the new RAG email template
+            auto_decision = "REQUEST_DOCUMENTS"
+
+        except Exception as e:
+            print(f"Auto-RAG generation failed during orchestrator pipeline: {e}", file=sys.stderr)
+            auto_decision = "REQUEST_DOCUMENTS"
+    # ---------------------------------------------------------------------
+
     doc_result = next(
         (r for r in validation.get("validationResults", []) if r.get("check") == "document_validation"),
         {}
     )
     missing_docs = doc_result.get("missingDocuments", [])
 
-    # Gather warranty dates for DESK_REJECT decision
     warranty_result = next(
         (r for r in validation.get("validationResults", []) if r.get("check") == "warranty_validation"),
         {}
     )
     warranty_expiry = warranty_result.get("expiryDate")
     purchase_date   = warranty_result.get("purchaseDate")
-
-    # Gather reject reason for DESK_REJECT (physical damage, unauthorized repair, etc.)
     reject_reason = complaint_data.get("rejectReason")
 
     auto_email_result: Dict[str, Any] = {"sent": False, "skipped": True, "reason": "no_decision"}
@@ -209,6 +231,7 @@ def process_complaint(ingested_complaint_id: str) -> Dict[str, Any]:
             reject_reason=reject_reason,
             in_reply_to=complaint.get("messageId"),
             references=complaint.get("threadId"),
+            troubleshooting_steps=rag_troubleshooting_steps, # <-- PASSING YOUR GENERATED DB RAG STEPS
         )
         if auto_email_result.get("sent"):
             try:
@@ -224,7 +247,7 @@ def process_complaint(ingested_complaint_id: str) -> Dict[str, Any]:
                     in_reply_to=complaint.get("messageId"),
                 )
             except Exception:
-                pass  # Thread recording failure must not abort the pipeline
+                pass 
     elif not customer_email:
         auto_email_result = {
             "sent": False,
@@ -233,9 +256,7 @@ def process_complaint(ingested_complaint_id: str) -> Dict[str, Any]:
             "decision": auto_decision,
         }
 
-    # Attach auto-response result to the complaint record
     complaint_data["autoEmailResponse"] = auto_email_result
-    # Propagate email thread IDs so frontend can send replies in the same thread
     if complaint.get("messageId"):
         complaint_data["messageId"] = complaint["messageId"]
     if complaint.get("threadId"):
@@ -256,14 +277,9 @@ def process_complaint(ingested_complaint_id: str) -> Dict[str, Any]:
 
 
 def main() -> int:
-    """CLI entry: process a complaint and output JSON."""
     if len(sys.argv) < 2:
-        print(
-            '{"error": "Usage: python -m backend.process_complaint <ingested_complaint_id>"}',
-            file=sys.stderr,
-        )
+        print('{"error": "Usage: python -m backend.process_complaint <ingested_complaint_id>"}', file=sys.stderr)
         return 1
-
     ingested_id = sys.argv[1]
     try:
         result = process_complaint(ingested_id)
@@ -275,7 +291,6 @@ def main() -> int:
     except Exception as e:
         print(__import__("json").dumps({"error": f"Processing failed: {e}"}), file=sys.stderr)
         return 1
-
 
 if __name__ == "__main__":
     sys.exit(main())

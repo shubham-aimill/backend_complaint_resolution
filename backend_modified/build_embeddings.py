@@ -1,201 +1,172 @@
 """
 build_embeddings.py
 ===================
-Run this ONCE to embed all Samsung manual chunks into ChromaDB.
-
-After this:
-  - 48 chunks permanently stored in data/chroma_db/
-  - Every FAQ = only 1 embedding call (the question only)
-  - Chunks NEVER re-embedded again
-
-Usage:
-    python build_embeddings.py            # build
-    python build_embeddings.py --reset    # wipe and rebuild
-    python build_embeddings.py --status   # check status
-    python build_embeddings.py --test "how to fix wifi on S26 Ultra"
+Synchronized version for Consumer Electronics RAG.
+Run this to embed pre-existing JSON chunks from data/rag_knowledge/ into ChromaDB.
 """
 
-import argparse, json, os, sys, time
+import argparse, json, os, sys, time, re
 from pathlib import Path
 
-PROJECT_ROOT  = Path(__file__).parent
-DATA_DIR      = PROJECT_ROOT / "data"
+# Path discovery
+PROJECT_ROOT  = Path(__file__).resolve().parent
+if (PROJECT_ROOT / "data").exists():
+    DATA_DIR = PROJECT_ROOT / "data"
+else:
+    DATA_DIR = PROJECT_ROOT.parent / "data"
+
 KNOWLEDGE_DIR = DATA_DIR / "rag_knowledge"
 CHROMA_DIR    = DATA_DIR / "chroma_db"
+# The aggregate file created by ingest_pdfs.py
 CHUNKS_FILE   = KNOWLEDGE_DIR / "_all_chunks.json"
+
 COLLECTION    = "samsung_manuals"
 EMBED_MODEL   = "text-embedding-3-small"
 ANSWER_MODEL  = "gpt-4o"
 
-
 def load_env():
     env_file = PROJECT_ROOT / ".env"
+    if not env_file.exists():
+        env_file = PROJECT_ROOT.parent / ".env"
+    
     if env_file.exists():
-        for line in env_file.read_text().splitlines():
+        for line in env_file.read_text(encoding="utf-8").splitlines():
             line = line.strip()
             if line and not line.startswith("#") and "=" in line:
                 k, _, v = line.partition("=")
                 os.environ.setdefault(k.strip(), v.strip().strip("'\""))
 
-
 def get_collection():
     import chromadb
+    CHROMA_DIR.mkdir(parents=True, exist_ok=True)
     client = chromadb.PersistentClient(path=str(CHROMA_DIR))
     return client.get_or_create_collection(
         name=COLLECTION,
         metadata={"hnsw:space": "cosine"}
     )
 
-
 def status():
-    print("\n" + "="*55)
-    print("  ChromaDB Embedding Status")
-    print("="*55)
+    print("\n" + "="*60)
+    print("   RAG Embedding Status")
+    print("="*60)
     try:
-        import chromadb
-        col    = get_collection()
-        chunks = json.loads(CHUNKS_FILE.read_text()) if CHUNKS_FILE.exists() else []
-        print(f"  Chunks in files    : {len(chunks)}")
-        print(f"  Chunks in ChromaDB : {col.count()}")
-        print(f"  Status             : {'✓ READY' if col.count() > 0 else '✗ NOT BUILT'}")
+        col = get_collection()
+        chunks = json.loads(CHUNKS_FILE.read_text(encoding="utf-8")) if CHUNKS_FILE.exists() else []
+        
+        print(f"   Aggregated File (_all_chunks.json): {'✓ FOUND' if CHUNKS_FILE.exists() else '✗ MISSING'}")
+        print(f"   Chunks in JSON files     : {len(chunks)}")
+        print(f"   Chunks in ChromaDB       : {col.count()}")
+        
         if col.count() > 0:
-            products = list({c['product'] for c in chunks})
-            print(f"  Products indexed   : {len(products)}")
+            # Map by product_id to match ingest_pdfs logic
+            products = list({c.get('product_name', 'Unknown') for c in chunks})
+            print(f"   Products Indexed         : {len(products)}")
             for p in sorted(products):
-                print(f"    • {p}")
-    except ImportError:
-        print("  chromadb not installed — run: pip install chromadb")
-    print()
-
+                print(f"     • {p}")
+        print(f"   Status                   : {'✓ READY' if col.count() > 0 else '✗ NEEDS BUILD'}")
+    except Exception as e:
+        print(f"   Error checking status: {e}")
+    print("="*60 + "\n")
 
 def build(reset=False):
     load_env()
     api_key = os.environ.get("OPENAI_API_KEY","")
-    if not api_key or "your-" in api_key:
-        print("ERROR: set OPENAI_API_KEY in .env"); sys.exit(1)
+    if not api_key:
+        print("ERROR: OPENAI_API_KEY not found in .env"); sys.exit(1)
+    
     if not CHUNKS_FILE.exists():
-        print(f"ERROR: {CHUNKS_FILE} not found"); sys.exit(1)
-
-    try:
-        import chromadb
-    except ImportError:
-        print("ERROR: run: pip install chromadb"); sys.exit(1)
+        print(f"ERROR: {CHUNKS_FILE} not found. Run ingest_pdfs.py first."); sys.exit(1)
 
     from openai import OpenAI
     client = OpenAI(api_key=api_key)
-    col    = get_collection()
-    chunks = json.loads(CHUNKS_FILE.read_text())
+    col = get_collection()
+    chunks = json.loads(CHUNKS_FILE.read_text(encoding="utf-8"))
 
-    print(f"\n{'='*55}")
-    print("  Building Samsung RAG Embedding Index")
-    print(f"{'='*55}")
-    print(f"  Chunks to embed : {len(chunks)}")
-    print(f"  Model           : {EMBED_MODEL}")
-    print(f"  Est. cost       : ~${len(chunks)*100*0.00002/1000:.5f}")
-    print(f"  Storage         : {CHROMA_DIR}\n")
+    print(f"\n{'='*60}")
+    print("   Building Samsung RAG Embedding Index")
+    print(f"{'='*60}")
 
     if reset and col.count() > 0:
+        print("   Wiping existing collection...", end=" ", flush=True)
         existing = col.get()
         col.delete(ids=existing["ids"])
-        print(f"  Cleared {len(existing['ids'])} old entries")
+        print("done")
 
-    if not reset and col.count() >= len(chunks):
-        print(f"  Already indexed {col.count()} chunks — nothing to do")
-        print("  Use --reset to rebuild\n"); return
+    # Prevent double indexing
+    if not reset and col.count() >= len(chunks) and col.count() > 0:
+        print(f"   Index already has {col.count()} chunks. Skipping.")
+        print("   Use --reset to force a rebuild.\n")
+        return
 
-    texts     = [c["text"]     for c in chunks]
-    ids       = [c["id"]       for c in chunks]
-    metadatas = [{"product": c["product"], "category": c["category"],
-                  "page_num": c["page_num"]} for c in chunks]
+    texts     = [c["text"] for c in chunks]
+    ids       = [c["id"] for c in chunks]
+    
+    # CRITICAL: Metadata keys must match ingest_pdfs.py exactly
+    metadatas = [{
+        "product_id": c.get("product_id", "UNKNOWN"),
+        "product_name": c.get("product_name", "Unknown"),
+        "category": c.get("category", "Unknown"),
+        "page_num": c.get("page_num", 0),
+        "page_range": c.get("page_range", ""),
+        "source_pdf": c.get("source_pdf", "")
+    } for c in chunks]
 
-    print(f"  Embedding {len(chunks)} chunks...")
-    t0 = time.time()
+    print(f"   Embedding {len(chunks)} chunks in batches...")
     all_embeddings = []
-    BATCH = 50
-    for i in range(0, len(texts), BATCH):
-        batch = texts[i:i+BATCH]
-        print(f"  Batch {i//BATCH+1}/{(len(texts)+BATCH-1)//BATCH} ({len(batch)} chunks)...", end=" ", flush=True)
+    BATCH_SIZE = 50
+    
+    for i in range(0, len(texts), BATCH_SIZE):
+        batch = texts[i:i+BATCH_SIZE]
+        print(f"   Batch {i//BATCH_SIZE + 1}/{(len(texts)+BATCH_SIZE-1)//BATCH_SIZE}...", end=" ", flush=True)
         resp = client.embeddings.create(model=EMBED_MODEL, input=batch)
         all_embeddings.extend([r.embedding for r in resp.data])
         print("done")
 
-    print("\n  Storing in ChromaDB...", end=" ", flush=True)
+    print("   Storing in ChromaDB...", end=" ", flush=True)
     col.add(ids=ids, documents=texts, embeddings=all_embeddings, metadatas=metadatas)
     print("done")
 
-    print(f"\n{'='*55}")
-    print(f"  ✓ DONE in {time.time()-t0:.1f}s")
-    print(f"  Chunks stored : {col.count()}")
-    print(f"  Vector dims   : {len(all_embeddings[0])}")
-    print(f"\n  RAG is LIVE — restart your server")
-    print(f"{'='*55}\n")
-
+    print(f"\n   ✓ SUCCESS: {col.count()} chunks are now searchable.")
+    print(f"   Restart your FastAPI server to apply changes.")
+    print("="*60 + "\n")
 
 def test_query(query):
     load_env()
-    api_key = os.environ.get("OPENAI_API_KEY","")
-    if not api_key or "your-" in api_key:
-        print("ERROR: set OPENAI_API_KEY in .env"); sys.exit(1)
-    try:
-        import chromadb
-    except ImportError:
-        print("ERROR: run: pip install chromadb"); sys.exit(1)
-
     from openai import OpenAI
-    client = OpenAI(api_key=api_key)
-    col    = get_collection()
+    client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+    col = get_collection()
 
-    if col.count() == 0:
-        print("ERROR: index not built — run: python build_embeddings.py"); sys.exit(1)
+    print(f"\n   TEST QUERY: {query}")
+    print("   " + "-"*55)
 
-    print(f"\nQuery: {query}")
-    print("-"*55)
-
-    # Embed query
+    # 1. Embed query
     q_emb = client.embeddings.create(model=EMBED_MODEL, input=[query]).data[0].embedding
 
-    # Search
+    # 2. Search
     results = col.query(
         query_embeddings=[q_emb],
         n_results=3,
-        include=["documents","metadatas","distances"]
+        include=["documents", "metadatas", "distances"]
     )
 
-    print("Top 3 matching chunks:")
-    context_parts = []
-    for i, doc_id in enumerate(results["ids"][0]):
-        meta     = results["metadatas"][0][i]
-        dist     = results["distances"][0][i]
-        relevance = round(1 - dist, 3)
-        text_preview = results["documents"][0][i][:150].replace("\n"," ")
-        print(f"\n  [{i+1}] {meta['product']} — Page {meta['page_num']} (relevance: {relevance})")
-        print(f"       {text_preview}...")
-        context_parts.append(
-            f"[{meta['product']} Manual — Page {meta['page_num']}]\n{results['documents'][0][i]}"
-        )
+    # 3. Display
+    if not results or not results["ids"][0]:
+        print("   No matches found.")
+        return
 
-    # Generate answer
-    print("\n" + "-"*55)
-    print("Generating answer from manual content...\n")
-    context = "\n\n---\n\n".join(context_parts)
-    resp = client.chat.completions.create(
-        model=ANSWER_MODEL,
-        messages=[
-            {"role":"system","content":"You are a Samsung support specialist. Answer using ONLY the manual excerpts provided. Be step-by-step and reference the product name."},
-            {"role":"user","content":f"Question: {query}\n\nManual content:\n{context}\n\nAnswer:"}
-        ],
-        max_tokens=500, temperature=0.2,
-    )
-    print("Answer:")
-    print(resp.choices[0].message.content)
+    for i in range(len(results["ids"][0])):
+        m = results["metadatas"][0][i]
+        d = results["distances"][0][i]
+        print(f"   [{i+1}] {m.get('product_name')} (ID: {m.get('product_id')})")
+        print(f"       Relevance: {round(1-d, 3)} | Page: {m.get('page_num')}")
+        print(f"       Snippet: {results['documents'][0][i][:100]}...")
     print()
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--reset",  action="store_true", help="Wipe and rebuild index")
-    parser.add_argument("--status", action="store_true", help="Show current status")
-    parser.add_argument("--test",   type=str,            help="Test a query")
+    parser.add_argument("--reset", action="store_true", help="Wipe and rebuild")
+    parser.add_argument("--status", action="store_true", help="Check index")
+    parser.add_argument("--test", type=str, help="Test a search query")
     args = parser.parse_args()
 
     if args.status:

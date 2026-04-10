@@ -14,11 +14,13 @@ import threading
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+# Ensure project root is in path
 _project_root = Path(__file__).resolve().parent.parent
 if str(_project_root) not in sys.path:
     sys.path.insert(0, str(_project_root))
 
 from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response, StreamingResponse
 
@@ -54,7 +56,7 @@ from backend.common.models import (
 
 
 def _load_env_at_startup() -> None:
-    """Load .env from repo root or backend_modified so OPENAI_API_KEY etc. are set."""
+    """Load .env from repo root so OPENAI_API_KEY etc. are set."""
     if ENV_FILE.exists():
         with open(ENV_FILE, encoding="utf-8") as f:
             for line in f:
@@ -87,10 +89,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-# ── Models imported from backend.common.models ────────────────────────────
-# ProcessComplaintRequest, SaveComplaintRequest, UpdateComplaintStatusRequest,
-# AddThreadEmailRequest, BookAppointmentRequest, SyncInboxResponse
 
 # ── Endpoints ──────────────────────────────────────────────────────────────
 
@@ -219,7 +217,7 @@ async def export_complaints_csv() -> Response:
 
 @app.get("/api/complaints/{complaint_id}")
 async def get_complaint_endpoint(complaint_id: str) -> Dict[str, Any]:
-    """Get a processed complaint by ID (includes full decisionPack, validationResults, autoDecision)."""
+    """Get a processed complaint by ID."""
     result = get_processed_complaint_by_id(complaint_id)
     if result is None:
         raise HTTPException(status_code=404, detail="Complaint not found")
@@ -228,7 +226,7 @@ async def get_complaint_endpoint(complaint_id: str) -> Dict[str, Any]:
 
 @app.patch("/api/complaints/{complaint_id}/status")
 async def update_complaint_status_endpoint(complaint_id: str, request: UpdateComplaintStatusRequest) -> Dict[str, Any]:
-    """Update the status of a processed complaint (accepted / rejected / pending)."""
+    """Update the status of a processed complaint."""
     ok = update_complaint_status(
         complaint_id=complaint_id,
         status=request.status,
@@ -242,14 +240,7 @@ async def update_complaint_status_endpoint(complaint_id: str, request: UpdateCom
 
 @app.get("/api/dashboard/kpis")
 async def get_dashboard_kpis_endpoint() -> Dict[str, Any]:
-    """
-    Get dashboard KPIs and statistics.
-
-    Includes new electronics-specific KPIs:
-    - complaintsByDecision (APPROVE_REPAIR, APPROVE_REPLACEMENT, DESK_REJECT, etc.)
-    - warrantyStatusCounts (WITHIN_WARRANTY, OUT_OF_WARRANTY, UNKNOWN)
-    - complaintsByCategory (Smartphone, Laptop, etc.)
-    """
+    """Get dashboard KPIs and statistics."""
     try:
         return get_dashboard_kpis()
     except Exception as e:
@@ -277,7 +268,7 @@ async def sync_inbox_endpoint() -> SyncInboxResponse:
 
 
 def _sync_inbox_stream_generator():
-    """Yield SSE events: progress (total/done/counts) then done (final result)."""
+    """Yield SSE events for sync progress."""
     q = queue.Queue()
 
     def on_progress(p: Dict[str, Any]) -> None:
@@ -307,7 +298,7 @@ def _sync_inbox_stream_generator():
 
 @app.get("/api/sync-inbox/stream")
 def sync_inbox_stream_endpoint():
-    """Stream sync progress (total/done/counts) then final result as SSE."""
+    """Stream sync progress as SSE."""
     return StreamingResponse(
         _sync_inbox_stream_generator(),
         media_type="text/event-stream",
@@ -321,7 +312,7 @@ def sync_inbox_stream_endpoint():
 
 @app.post("/api/appointments")
 async def book_appointment_endpoint(request: BookAppointmentRequest) -> Dict[str, Any]:
-    """Book an engineer visit appointment for a complaint."""
+    """Book an engineer visit."""
     try:
         record = book_appointment(
             complaint_id=request.complaintId,
@@ -338,7 +329,7 @@ async def book_appointment_endpoint(request: BookAppointmentRequest) -> Dict[str
 
 @app.get("/api/appointments")
 async def list_appointments_endpoint(complaintId: Optional[str] = None) -> List[Dict[str, Any]]:
-    """List all appointments, optionally filtered by complaintId."""
+    """List appointments."""
     try:
         return get_appointments(complaint_id=complaintId)
     except Exception as e:
@@ -347,7 +338,7 @@ async def list_appointments_endpoint(complaintId: Optional[str] = None) -> List[
 
 @app.get("/api/appointments/{appointment_id}")
 async def get_appointment_endpoint(appointment_id: str) -> Dict[str, Any]:
-    """Get a single appointment by ID."""
+    """Get appointment details."""
     result = get_appointment_by_id(appointment_id)
     if result is None:
         raise HTTPException(status_code=404, detail="Appointment not found")
@@ -356,7 +347,7 @@ async def get_appointment_endpoint(appointment_id: str) -> Dict[str, Any]:
 
 @app.get("/api/faq")
 async def list_faqs() -> List[Dict[str, str]]:
-    """Return all FAQ entries from FAQ.csv."""
+    """Return FAQ entries."""
     try:
         return get_all_faqs()
     except Exception as e:
@@ -365,10 +356,7 @@ async def list_faqs() -> List[Dict[str, str]]:
 
 @app.get("/api/faq/emails")
 async def get_faq_related_emails() -> List[Dict[str, Any]]:
-    """
-    Return emails stored as FAQ queries during inbox sync.
-    No LLM calls — reads from faq-emails.json directly.
-    """
+    """Return stored FAQ emails."""
     try:
         return get_all_faq_emails()
     except Exception as e:
@@ -377,7 +365,7 @@ async def get_faq_related_emails() -> List[Dict[str, Any]]:
 
 @app.post("/api/sync-faq")
 async def sync_faq_endpoint() -> Dict[str, Any]:
-    """Run an independent FAQ-only inbox scan (does not affect complaint queue)."""
+    """FAQ-only inbox scan."""
     try:
         return sync_faq_inbox()
     except Exception as e:
@@ -385,7 +373,7 @@ async def sync_faq_endpoint() -> Dict[str, Any]:
 
 
 def _sync_faq_stream_generator():
-    """Yield SSE events for a FAQ-only inbox scan."""
+    """Yield SSE events for FAQ scan."""
     q: queue.Queue = queue.Queue()
 
     def on_progress(p: Dict[str, Any]) -> None:
@@ -414,7 +402,7 @@ def _sync_faq_stream_generator():
 
 @app.get("/api/sync-faq/stream")
 def sync_faq_stream_endpoint():
-    """Stream FAQ-only inbox scan progress as SSE."""
+    """Stream FAQ scan progress."""
     return StreamingResponse(
         _sync_faq_stream_generator(),
         media_type="text/event-stream",
@@ -424,12 +412,70 @@ def sync_faq_stream_endpoint():
 
 @app.post("/api/faq/emails/clear")
 async def clear_faq_emails_endpoint() -> Dict[str, Any]:
-    """Clear all stored FAQ emails."""
+    """Clear FAQ email history."""
     try:
         clear_faq_emails()
         return {"success": True}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+class TroubleshootRequest(BaseModel):
+    product_name: str
+    complaint_description: str
+    complaint_type: str = ""
+
+
+@app.post("/api/troubleshoot")
+async def get_troubleshooting_steps(req: TroubleshootRequest) -> Dict[str, Any]:
+    """
+    RAG-powered troubleshooting steps for the dashboard.
+    Uses unified RAG logic from backend/rag/service.py.
+    """
+    try:
+        from backend.rag.service import semantic_search, generate_answer, match_product_from_text
+        
+        query_text = f"{req.complaint_type} {req.complaint_description} {req.product_name}".strip()
+        
+        # 1. Product Identification
+        pm = match_product_from_text(req.product_name, query_text)
+        p_id = pm.get("product_id")
+        p_name = pm.get("product_name") or req.product_name
+
+        # 2. Semantic Search with Metadata Filter
+        chunks = semantic_search(query_text, top_k=4, product_id=p_id)
+
+        if chunks:
+            # 3. Generate Answer using GPT-4o
+            res = generate_answer(
+                question=req.complaint_description,
+                chunks=chunks,
+                product_id=p_id,
+                product_name=p_name
+            )
+            
+            return {
+                "success": True,
+                "product": p_name,
+                "steps": res.get("answer"),
+                "sources": res.get("sources", []),
+                "rag_used": True,
+            }
+        
+        return {
+            "success": False,
+            "product": req.product_name,
+            "steps": "No specific manual instructions were found in the database for this issue.",
+            "sources": [],
+            "rag_used": False,
+        }
+
+    except Exception as e:
+        return {
+            "success": False,
+            "error": str(e),
+            "rag_used": False,
+        }
 
 
 @app.get("/")

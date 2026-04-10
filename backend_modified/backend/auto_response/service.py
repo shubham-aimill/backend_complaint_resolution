@@ -6,12 +6,13 @@ by the Validation Engine and Decision Engine. Uses the same SMTP configuration
 as the FAQ service.
 
 Supported decision codes:
-  REQUEST_DOCUMENTS  — politely ask for missing documents (invoice, etc.)
-  DESK_REJECT        — inform the customer the complaint cannot be processed
-                       (e.g. out of warranty)
-  APPROVE_REPAIR     — confirm the complaint is approved for repair
+  REQUEST_DOCUMENTS   — politely ask for missing documents (invoice, etc.)
+  DESK_REJECT         — inform the customer the complaint cannot be processed
+                        (e.g. out of warranty)
+  APPROVE_REPAIR      — confirm the complaint is approved for repair
   APPROVE_REPLACEMENT — confirm the complaint is approved for replacement
-  INVESTIGATE        — acknowledge receipt and inform of manual review
+  INVESTIGATE         — acknowledge receipt and inform of manual review
+  TROUBLESHOOTING_REQUIRED — send RAG-generated manual steps to the user
 """
 
 import os
@@ -38,6 +39,32 @@ def _load_env() -> None:
 
 
 # ── Email body builders ──────────────────────────────────────────────────────
+
+def _build_troubleshooting_body(
+    customer_name: str,
+    product_name: str,
+    complaint_id: str,
+    troubleshooting_steps: str,
+) -> str:
+    return f"""Dear {customer_name or 'Valued Customer'},
+
+Thank you for contacting Consumer Electronics Customer Support. We have received your query regarding your {product_name or 'product'} (Reference: {complaint_id}).
+
+To help resolve this issue quickly, please try the following troubleshooting steps directly from the official product manual:
+
+{troubleshooting_steps}
+
+What to do next:
+  • If these steps resolve your issue, no further action is needed.
+  • If the issue persists after trying these steps, please reply directly to this email and our technical team will arrange a further investigation or repair.
+
+We appreciate your cooperation and look forward to getting your device working perfectly again.
+
+Kind regards,
+Customer Support Team
+Consumer Electronics
+  Email: support@electronics.com  |  Phone: 1-800-ELEC-HELP (Mon–Fri, 9am–6pm)"""
+
 
 def _build_request_documents_body(
     customer_name: str,
@@ -73,8 +100,7 @@ We apologise for the additional step and appreciate your cooperation.
 
 Kind regards,
 Customer Support Team
-Consumer Electronics
-  Email: support@electronics.com  |  Phone: 1-800-ELEC-HELP (Mon–Fri, 9am–6pm)"""
+Consumer Electronics"""
 
 
 def _build_desk_reject_body(
@@ -100,22 +126,11 @@ this complaint under our warranty or guarantee scheme for the following reason:
   Reason: Physical or accidental damage caused by user misuse is not covered
   under the standard manufacturer's warranty.
 
-Our warranty covers manufacturing defects and hardware failures under normal use.
-Damage resulting from accidental drops, liquid exposure, or physical impact falls
-outside the scope of warranty coverage.
-
 Options available to you:
   1. Paid repair service — our authorised service centres can assess and repair
      your device. Please contact: repairs@electronics.com for a quote.
   2. Insurance claim — if you have device insurance, this type of damage is
      typically covered. Please contact your insurer directly.
-  3. Consumer rights — statutory rights may apply in limited circumstances.
-     Please contact your local consumer authority for guidance.
-
-If you believe this decision has been made in error, please reply within 14 days
-with any additional evidence and we will be happy to re-evaluate.
-
-We apologise for any inconvenience caused.
 
 Kind regards,
 Customer Support Team
@@ -133,24 +148,9 @@ this complaint under our warranty or guarantee scheme for the following reason:
   Reason: The manufacturer's warranty is void as the product has been repaired or
   modified by an unauthorised third party.
 
-Our warranty requires that all repairs and servicing be carried out by authorised
-service centres only. Third-party repairs or modifications to the device void the
-manufacturer's warranty.
-
 Options available to you:
   1. Authorised repair service — our service centres can still repair your device
      on a paid basis. Please contact: repairs@electronics.com for a quote.
-  2. Consumer rights — depending on your jurisdiction, statutory rights may still
-     apply in certain circumstances. Please contact your local consumer authority.
-
-For all future servicing, please use only our authorised service centres to
-preserve your warranty. A list of authorised centres is available at:
-  https://support.electronics.com/service-centres
-
-If you believe this decision has been made in error, please reply within 14 days
-with any relevant documentation and we will be happy to review.
-
-We apologise for any inconvenience caused.
 
 Kind regards,
 Customer Support Team
@@ -167,16 +167,6 @@ this complaint through our current channel for the following reason:
 
   Reason: The product described does not fall within our supported consumer
   electronics product categories.
-
-Our complaint resolution service covers smartphones, laptops, tablets, earbuds,
-smartwatches, and cameras. For other product types, please contact the relevant
-manufacturer or retailer directly.
-
-If you believe your product falls within our supported categories and this
-decision has been made in error, please reply within 14 days with your product
-model and serial number and we will be happy to re-evaluate.
-
-We apologise for any inconvenience caused.
 
 Kind regards,
 Customer Support Team
@@ -197,9 +187,6 @@ To help us proceed, please reply with one of the following:
   1. Purchase invoice showing your name and product model/serial number
   2. Proof of product registration under your account
   3. Correct customer ID if a different account was used at purchase
-
-Once these details are provided, we can re-verify and continue processing your
-complaint.
 
 Kind regards,
 Customer Support Team
@@ -227,16 +214,6 @@ this complaint under our warranty or guarantee scheme for the following reason:
 Options available to you:
   1. Out-of-warranty repair service — we can provide a paid repair quote.
      Please contact our service centre at: repairs@electronics.com
-  2. Extended warranty — if you purchased an extended warranty, please provide
-     your extended warranty certificate number.
-  3. Consumer rights — depending on your jurisdiction, statutory consumer rights
-     may still apply. Please contact your local consumer authority for guidance.
-
-If you believe this decision has been made in error, or if you have additional
-evidence (e.g. a different purchase date or extended warranty), please reply to
-this email within 14 days and we will be happy to re-evaluate your case.
-
-We apologise for any inconvenience caused.
 
 Kind regards,
 Customer Support Team
@@ -270,13 +247,6 @@ What happens next:
 Please keep this email for your records and quote your reference number
 ({complaint_id}) in any future correspondence.
 
-If you have any questions at any point during this process, our team is here to help:
-  Email: support@electronics.com
-  Phone: 1-800-ELEC-HELP  (Monday – Friday, 9am – 6pm)
-
-Thank you for bringing this to our attention. We are sorry for the inconvenience
-caused and look forward to getting this resolved for you promptly.
-
 Kind regards,
 Customer Support Team
 Consumer Electronics"""
@@ -295,13 +265,7 @@ unable to locate a matching customer account in our system.
 To process your complaint, we require a verified account with us. Please:
 
   1. Verify your customer reference number (format: CUST#####) and reply with it, or
-  2. Contact us directly so we can locate your account:
-       Email: support@electronics.com
-       Phone: 1-800-ELEC-HELP  (Monday – Friday, 9am – 6pm)
-  3. If you are a new customer, please register at our support portal before
-     submitting a complaint.
-
-We apologise for the inconvenience and look forward to resolving this for you.
+  2. Contact us directly so we can locate your account.
 
 Kind regards,
 Customer Support Team
@@ -330,16 +294,6 @@ What happens next:
   2. We may reach out if we need any additional information from you.
   3. You will receive a written outcome with our findings and proposed resolution
      within 5 business days.
-
-Your complaint reference is: {complaint_id}
-Please quote this in any future correspondence with us.
-
-If you have any questions in the meantime, please do not hesitate to contact us:
-  Email: support@electronics.com
-  Phone: 1-800-ELEC-HELP  (Monday – Friday, 9am – 6pm)
-
-We appreciate your patience and are committed to resolving this matter fairly
-and as quickly as possible.
 
 Kind regards,
 Customer Support Team
@@ -407,24 +361,10 @@ def send_auto_response(
     reject_reason: Optional[str] = None,
     in_reply_to: Optional[str] = None,
     references: Optional[str] = None,
+    troubleshooting_steps: Optional[str] = None, # <--- Added support for RAG
 ) -> Dict[str, Any]:
     """
     Send the appropriate automated email response based on the decision code.
-
-    Args:
-        to_addr:        Customer's email address.
-        customer_name:  Customer's display name.
-        complaint_id:   Complaint reference ID.
-        decision:       One of REQUEST_DOCUMENTS, DESK_REJECT, APPROVE_REPAIR,
-                        APPROVE_REPLACEMENT, INVESTIGATE.
-        product_name:   Name/model of the product.
-        missing_docs:   List of missing document labels (for REQUEST_DOCUMENTS).
-        warranty_expiry: Warranty expiry date string (for DESK_REJECT).
-        purchase_date:  Purchase date string (for DESK_REJECT).
-        next_steps:     Custom next-step instructions (for APPROVE_* decisions).
-
-    Returns:
-        {"sent": bool, "decision": str, "to": str, "error": str | None}
     """
     _load_env()
 
@@ -437,7 +377,15 @@ def send_auto_response(
         }
 
     try:
-        if decision == "REQUEST_DOCUMENTS":
+        # LOGIC: If we have RAG steps, always prioritize sending the troubleshooting guide!
+        if troubleshooting_steps:
+            subject = f"Troubleshooting Steps for your {product_name or 'device'} — {complaint_id}"
+            body = _build_troubleshooting_body(
+                customer_name, product_name or "your product", complaint_id, troubleshooting_steps
+            )
+            decision = "TROUBLESHOOTING_REQUIRED"
+
+        elif decision == "REQUEST_DOCUMENTS":
             subject = f"Action Required: Documents Needed — Complaint {complaint_id}"
             body    = _build_request_documents_body(
                 customer_name, product_name or "your product",

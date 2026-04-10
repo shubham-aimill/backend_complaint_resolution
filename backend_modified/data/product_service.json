@@ -19,7 +19,7 @@
     "brand_name": "Samsung",
     "model_number": "SM-A155F",
     "description": "Samsung Galaxy A15 5G smartphone with MediaTek Helio G99, 6.5 inch Super AMOLED, 50MP camera, 5000mAh battery, 25W fast charging",
-    "price": 199.99,
+    "price": 20000,
     "warranty_period_months": 12,
     "support_contact": "1-800-SAMSUNG",
     "common_issues": ["Slow charging", "App crashes", "Fingerprint not working", "Camera blurry", "Overheating", "Screen flickering"],
@@ -32,7 +32,7 @@
     "brand_name": "Samsung",
     "model_number": "QN65QN90DAAFXZA",
     "description": "Samsung 65 inch Neo QLED 4K Smart TV with Mini LED, Neural Quantum Processor 4K, Anti-Reflection screen, Object Tracking Sound+, Dolby Atmos",
-    "price": 1799.99,
+    "price": 151000,
     "warranty_period_months": 12,
     "support_contact": "1-800-SAMSUNG",
     "common_issues": ["Black screen", "HDMI no signal", "Remote not working", "WiFi disconnecting", "Sound issues", "Backlight bleeding"],
@@ -45,7 +45,7 @@
     "brand_name": "Samsung",
     "model_number": "QN55S85DAAFXZA",
     "description": "Samsung 55 inch OLED 4K Smart TV with Neural Quantum Processor 4K, LaserSlim design, Dolby Atmos, Object Tracking Sound, HDR10+",
-    "price": 1499.99,
+    "price": 99000,
     "warranty_period_months": 12,
     "support_contact": "1-800-SAMSUNG",
     "common_issues": ["Screen burn-in", "Picture quality issues", "Smart TV apps freezing", "No sound", "Remote unresponsive", "HDMI issues"],
@@ -58,11 +58,11 @@
     "brand_name": "Samsung",
     "model_number": "RT39CB66N8S9TL",
     "description": "Samsung 350L Bespoke AI Double Door Refrigerator with AI Energy Mode, Curd Maestro, Twin Cooling Plus, 5-star energy rating, convertible modes",
-    "price": 849.99,
+    "price": 41000,
     "warranty_period_months": 12,
     "support_contact": "1-800-SAMSUNG",
     "common_issues": ["Not cooling", "Ice formation in fridge", "Water leaking", "Unusual noise", "Door seal issue", "Temperature fluctuation"],
-    "release_year": 2024
+    "release_year": 2025
   },
   {
     "product_id": "PROD-RF653-SBS",
@@ -71,11 +71,11 @@
     "brand_name": "Samsung",
     "model_number": "RS76CB811333TL",
     "description": "Samsung 653L Bespoke Convertible 5-in-1 Side-by-Side Refrigerator with AI Energy Mode, SpaceMax technology, digital inverter compressor, 5-star rating",
-    "price": 149999,
+    "price": 77990,
     "warranty_period_months": 12,
     "support_contact": "1-800-SAMSUNG",
     "common_issues": ["Ice maker not working", "Compressor noise", "Water dispenser not working", "Temperature not maintaining", "Door not sealing", "Display panel error"],
-    "release_year": 2024
+    "release_year": 2023
   },
   {
     "product_id": "PROD-AC-WFAI",
@@ -88,7 +88,7 @@
     "warranty_period_months": 12,
     "support_contact": "1-800-SAMSUNG",
     "common_issues": ["Not cooling", "WiFi not connecting", "SmartThings not working", "Unusual noise", "Water dripping inside", "Remote not responding"],
-    "release_year": 2024
+    "release_year": 2026
   },
   {
     "product_id": "PROD-AC-WF15",
@@ -97,10 +97,10 @@
     "brand_name": "Samsung",
     "model_number": "AR18BYNZABE",
     "description": "Samsung WindFree 1.5 Ton 3-Star Inverter Split AC with WindFree Comfort technology, digital inverter compressor, auto clean, 4-way swing",
-    "price": 34999,
+    "price": 54000,
     "warranty_period_months": 12,
     "support_contact": "1-800-SAMSUNG",
     "common_issues": ["Not cooling properly", "Compressor not starting", "Remote not working", "Error codes on display", "Water leaking from indoor unit", "Bad odour"],
-    "release_year": 2023
+    "release_year": 2026
   }
 ]

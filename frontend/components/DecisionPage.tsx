@@ -632,10 +632,56 @@ export default function DecisionPage({ claimData, onNextStage, onPreviousStage }
               <p className="text-[10px] font-semibold text-[#9CA3AF] uppercase tracking-wider mb-2">Communication</p>
               <div className="space-y-1.5">
                 <button
-                  onClick={() => emailDraftHook.open('moreInfo',
-                    `Dear ${customerName},\n\nRE: Troubleshooting – Reference ${complaintRef}\n\nPlease try the following steps:\n\n  1. Power off and restart after 30 seconds.\n  2. Check all cables and connections.\n  3. Ensure firmware is up to date.\n  4. Perform a factory reset if the issue persists.\n\nPlease reply with the outcome.\n\nKind regards,\nCustomer Support Team`,
-                    recipient, `Troubleshooting Assistance – ${complaintRef}`, claimData.messageId, claimData.threadId)}
-                  className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium bg-[#F9FAFB] text-[#374151] hover:bg-[#F3F4F6] hover:text-[#374151] transition-colors"
+                  id="rag-troubleshoot-btn"
+                  onClick={async (e) => {
+                    const btn = e.currentTarget
+                    const originalHTML = btn.innerHTML
+                    btn.innerHTML = 'Loading from manual…'
+                    btn.disabled = true
+
+                    let stepsBody = ''
+                    let sourceNote = ''
+                    const description = (claimData.decisionPack as any)?.complaintDraft?.description || complaintType
+
+                    try {
+                      const res = await fetch('/api/troubleshoot', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                          product_name: product,
+                          complaint_description: description,
+                          complaint_type: complaintType,
+                        }),
+                      })
+                      const data = await res.json()
+                      if (data.success && data.steps) {
+                        stepsBody = data.steps
+                        if (data.sources?.length > 0) {
+                          const srcLines = (data.sources as Array<{product: string; page_num: number}>)
+                            .map(s => `  • ${s.product} Manual — Page ${s.page_num}`)
+                            .join('\n')
+                          sourceNote = `\n\nSource: ${product} Manual\n${srcLines}`
+                        }
+                      } else {
+                        stepsBody = `Please try the following steps for your ${product}:\n\n  1. Power off and restart after 30 seconds.\n  2. Check all cables and connections.\n  3. Ensure firmware is up to date.\n  4. Perform a factory reset if the issue persists.\n\n(Connect product manuals to the RAG system for device-specific steps.)`
+                      }
+                    } catch {
+                      stepsBody = `Please try the following steps for your ${product}:\n\n  1. Power off and restart after 30 seconds.\n  2. Check all cables and connections.\n  3. Ensure firmware is up to date.\n  4. Perform a factory reset if the issue persists.`
+                    }
+
+                    emailDraftHook.open(
+                      'moreInfo',
+                      `Dear ${customerName},\n\nRE: Troubleshooting Assistance – Reference ${complaintRef}\n\n${stepsBody}${sourceNote}\n\nPlease try these steps and reply with the outcome. If the issue persists, we will arrange the next steps.\n\nKind regards,\nCustomer Support Team`,
+                      recipient,
+                      `Troubleshooting Assistance – ${complaintRef}`,
+                      claimData.messageId,
+                      claimData.threadId
+                    )
+
+                    btn.innerHTML = originalHTML
+                    btn.disabled = false
+                  }}
+                  className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium bg-[#F9FAFB] text-[#374151] hover:bg-[#F3F4F6] hover:text-[#374151] transition-colors disabled:opacity-60"
                 >
                   <span>Troubleshooting Guide</span>
                   <Zap className="w-3.5 h-3.5 text-[#9CA3AF]" />

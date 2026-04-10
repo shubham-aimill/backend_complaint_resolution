@@ -1,0 +1,399 @@
+{
+  "complaintId": "CMP-ING-1775767440175-5b3d2c6",
+  "ingestedComplaintId": "ING-1775767440175-5b3d2c6",
+  "sourceEmailFrom": "Shubham Sahu <shubhh2003@gmail.com>",
+  "warrantyStatus": "WITHIN_WARRANTY",
+  "productCategory": "Smartphone",
+  "autoDecision": "TROUBLESHOOTING_REQUIRED",
+  "decisionConfidence": 0.9,
+  "recommendedNextStep": "Trigger RAG manual lookup. Send automated troubleshooting guide.",
+  "rejectReason": null,
+  "decisionPack": {
+    "id": "DP-1775767453688",
+    "complaintDraft": {
+      "id": "DRAFT-1775767453688",
+      "complaintRef": "CUST10001",
+      "customerName": "Shubham",
+      "customerEmail": "Not found",
+      "customerPhone": "Not found",
+      "complaintDate": "2026-04-09",
+      "complaintType": "Software / Firmware",
+      "productOrService": "Samsung Galaxy S26 Ultra",
+      "description": "The phone is physically in perfect condition, but I keep running into a frustrating software glitch. The Bluetooth sees my devices, but when I try to pair them, it hangs on the settings screen and immediately disconnects.",
+      "desiredResolution": "Please provide the official manual steps on how to reset the network settings or clear the Bluetooth cache so I can resolve this software bug myself.",
+      "estimatedAmount": 0.0,
+      "attachments": [
+        {
+          "id": "doc_0",
+          "name": "# INVOICE.txt",
+          "type": "CorrespondenceRecord",
+          "mimeType": "text/plain",
+          "confidence": 0.95
+        }
+      ],
+      "customerVerified": true,
+      "createdAt": "2026-04-09T20:44:13.688Z",
+      "source": "information_extraction",
+      "confidence": 0.9000000000000001
+    },
+    "evidence": [
+      {
+        "field": "customerName",
+        "fieldName": "Customer Name",
+        "value": "Shubham",
+        "confidence": 0.9,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "complaintRef",
+        "fieldName": "Complaint Reference",
+        "value": "CUST10001",
+        "confidence": 0.9,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "purchaseDate",
+        "fieldName": "Purchase Date",
+        "value": "2026-02-15",
+        "confidence": 0.9,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "complaintType",
+        "fieldName": "Complaint Type",
+        "value": "Software / Firmware",
+        "confidence": 0.9,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "productOrService",
+        "fieldName": "Product / Service",
+        "value": "Samsung Galaxy S26 Ultra",
+        "confidence": 0.9,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "productModel",
+        "fieldName": "Product Model Number",
+        "value": "SM-S938B",
+        "confidence": 0.9,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      },
+      {
+        "field": "description",
+        "fieldName": "Description",
+        "value": "The phone is physically in perfect condition, but I keep running into a frustrating software glitch. The Bluetooth sees my devices, but when I try to pair them, it hangs on the settings screen and immediately disconnects.",
+        "confidence": 0.9,
+        "sourceLocator": "email_content",
+        "rationale": "Extracted from customer email and attachments"
+      }
+    ],
+    "documents": [
+      {
+        "id": "doc_email",
+        "name": "Customer Email",
+        "mimeType": "text/plain",
+        "type": "CorrespondenceRecord",
+        "content": "I am filing a formal *complaint* regarding my Samsung Galaxy S26 Ultra\r\n(Model: SM-S938B).\r\n\r\nThe phone is physically in perfect condition, but I keep running into a\r\nfrustrating *software* *glitch*. The *Bluetooth* sees my devices, but when\r\nI try to *pair* them, it hangs on the *settings* screen and immediately\r\n*disconnects*.\r\n\r\nI do not want to send this in for a physical repair. Please provide the\r\nofficial manual steps on *how to* reset the network settings or clear the\r\nBluetooth cache so I can resolve this software bug myself.\r\n\r\nThank you, Shubham Customer ID: CUST10001 Purchase Date: 2026-02-15",
+        "confidence": 0.95,
+        "metadata": {
+          "source": "email_body"
+        },
+        "keyFields": {
+          "customerName": "Shubham",
+          "complaintRef": "CUST10001",
+          "purchaseDate": "2026-02-15",
+          "complaintType": "Software / Firmware",
+          "productOrService": "Samsung Galaxy S26 Ultra",
+          "productModel": "SM-S938B",
+          "description": "The phone is physically in perfect condition, but I keep running into a frustrating software glitch. The Bluetooth sees my devices, but when I try to pair them, it hangs on the settings screen and immediately disconnects.",
+          "desiredResolution": "Please provide the official manual steps on how to reset the network settings or clear the Bluetooth cache so I can resolve this software bug myself."
+        }
+      },
+      {
+        "id": "doc_0",
+        "name": "# INVOICE.txt",
+        "mimeType": "text/plain",
+        "type": "Invoice",
+        "content": "# INVOICE\r\n\r\n**Samsung Electronics Retail** 123 Tech Boulevard, Innovation City  \r\nsupport@samsung-demo.com | 1-800-SAMSUNG  \r\n\r\n---\r\n\r\n**INVOICE NUMBER:** INV-2026-0215-001  \r\n**DATE OF ISSUE:** 2026-02-15  \r\n\r\n### BILL TO:  \r\n**Customer Name:** Shubham  \r\n**Customer ID:** CUST10001  \r\n\r\n---\r\n\r\n### ORDER DETAILS:  \r\n\r\n| Description | Model Number | Quantity | Unit Price (Demo) | Total |\r\n| :--- | :--- | :--- | :--- | :--- |\r\n| Samsung Galaxy S26 Ultra (256GB) | SM-S938B | 1 | $1,199.00 | $1,199.00 |\r\n\r\n---\r\n\r\n**Subtotal:** $1,199.00  \r\n**Tax (8%):** $95.92  \r\n**TOTAL PAID:** **$1,294.92** ---\r\n*Thank you for your purchase. This document serves as your official proof of purchase for warranty and service claims.*",
+        "confidence": 1.0,
+        "metadata": {},
+        "keyFields": {
+          "invoiceNumber": "INV-2026-0215-001",
+          "vendor": "Samsung Electronics Retail",
+          "customer": "Shubham",
+          "lineItems": [
+            {
+              "description": "Samsung Galaxy S26 Ultra (256GB)",
+              "modelNumber": "SM-S938B",
+              "quantity": 1,
+              "unitPrice": 1199.0,
+              "total": 1199.0
+            }
+          ],
+          "total": 1294.92,
+          "purchaseDate": "2026-02-15",
+          "productModel": "SM-S938B",
+          "serialNumber": null
+        }
+      }
+    ],
+    "customerGrounding": [
+      {
+        "recordId": "CMP-20251101-001",
+        "title": "CONNECTIVITY_ISSUE \u2014 Samsung Galaxy S26 Ultra",
+        "snippet": "CONNECTIVITY_ISSUE \u2014 WiFi Dropout",
+        "content": "Customer: Shubham Sahu (CUST10001) | Account status: ACTIVE | Loyalty tier: GOLD | Complaint ID: CMP-20251101-001 | Type: CONNECTIVITY_ISSUE | Category: Connectivity | Sub-category: WiFi Dropout | Current status: IN_PROGRESS | Priority: HIGH | Severity: MODERATE | Escalated: No | SLA: 48h | Refund issued: $0.00 | Compensation: $0.00 | Product: Samsung Galaxy S26 Ultra (Samsung) | Warranty: 12 months | Price: $106000.00",
+        "section": "Connectivity",
+        "score": 1.0,
+        "confidence_score": 1.0,
+        "recommendation": "AUTO_APPROVE",
+        "action": "Customer and product verified \u2014 proceed with resolution per SLA",
+        "sourceDocument": "complaints.json + product_service.json (Consumer Electronics)",
+        "customer_verified": true,
+        "customer_name": "Shubham Sahu",
+        "customer_status": "ACTIVE",
+        "loyalty_tier": "GOLD",
+        "open_complaints": 1,
+        "total_complaints": 2,
+        "complaint_id": "CMP-20251101-001",
+        "complaint_type": "CONNECTIVITY_ISSUE",
+        "complaint_category": "Connectivity",
+        "current_status": "IN_PROGRESS",
+        "priority_level": "HIGH",
+        "severity_level": "MODERATE",
+        "is_escalated": false,
+        "assigned_team": "TECHNICAL",
+        "sla_hours": 48,
+        "refund_total": 0.0,
+        "compensation_total": 0.0,
+        "product_id": "PROD-SM-S938",
+        "product_name": "Samsung Galaxy S26 Ultra",
+        "product_category": "Smartphone",
+        "warranty_months": 12,
+        "actions_count": 0,
+        "latest_action": null
+      }
+    ],
+    "customerInfo": {
+      "customer_id": "CUST10001",
+      "first_name": "Shubham",
+      "last_name": "Sahu",
+      "full_name": "Shubham Sahu",
+      "email_id": "shubhh2003@gmail.com",
+      "phone_number": "+91-98765-43210",
+      "address_line1": "42 Tech Park, Sector 5",
+      "address_line2": null,
+      "city": "Dehradun",
+      "state": "Uttarakhand",
+      "postal_code": "248001",
+      "country": "India",
+      "customer_since": "2023-01-10",
+      "customer_status": "ACTIVE",
+      "loyalty_tier": "GOLD",
+      "total_complaints": 2,
+      "open_complaints": 1,
+      "preferred_contact": "EMAIL",
+      "complaint_ref": "CUST10001",
+      "complaint_id": "CMP-20251105-002",
+      "product_id": "PROD-AC-WFAI",
+      "complaint_type": "PRODUCT_DEFECT",
+      "current_status": "IN_PROGRESS",
+      "priority_level": "HIGH",
+      "severity_level": "SEVERE",
+      "is_escalated": false,
+      "assigned_team": "TECHNICAL",
+      "sla_hours": 24
+    },
+    "validationResults": [
+      {
+        "check": "customer_product_mapping",
+        "passed": true,
+        "customerRef": "CUST10001",
+        "customerFound": true,
+        "customerMatchSource": "customer_id",
+        "productId": "PROD-SM-S938",
+        "productOwnedByCustomer": true,
+        "ownershipSource": "registered_products",
+        "registeredProducts": [
+          "PROD-SM-S938",
+          "PROD-AC-WFAI"
+        ],
+        "registeredPurchaseDate": null,
+        "rejectReason": null,
+        "autoDecision": null,
+        "notes": "Customer 'CUST10001' verified and owns product 'PROD-SM-S938' (ownership confirmed via registered_products). Proceeding to warranty and other checks."
+      },
+      {
+        "check": "eligibility_validation",
+        "passed": true,
+        "rejectReason": null,
+        "autoDecision": null,
+        "notes": "No eligibility issues detected."
+      },
+      {
+        "check": "warranty_validation",
+        "passed": true,
+        "status": "WITHIN_WARRANTY",
+        "warrantyMonths": 12,
+        "purchaseDate": "2026-02-15",
+        "purchaseDateSource": "document:Customer Email",
+        "expiryDate": "2027-02-15",
+        "autoDecision": null,
+        "notes": "Product purchased on 2026-02-15. Warranty of 12 months expires on 2027-02-15. Product is within warranty period."
+      },
+      {
+        "check": "document_validation",
+        "passed": true,
+        "presentDocuments": [
+          "purchase_invoice",
+          "product_model"
+        ],
+        "missingDocuments": [],
+        "serialNumber": null,
+        "autoDecision": null,
+        "notes": "Documents present: purchase_invoice, product_model. Missing: none."
+      },
+      {
+        "check": "product_validation",
+        "passed": true,
+        "productCategory": "Smartphone",
+        "matchedProductId": "PROD-SM-S938",
+        "matchedProductName": "Samsung Galaxy S26 Ultra",
+        "brandName": "Samsung",
+        "modelNumber": "SM-S938B",
+        "warrantyMonths": 12,
+        "price": 106000,
+        "categorySupported": true,
+        "authorizedSellers": [],
+        "autoDecision": null,
+        "notes": "Product matched: Samsung Galaxy S26 Ultra (Model: SM-S938B, Category: Smartphone). Category is supported."
+      }
+    ],
+    "warrantyStatus": "WITHIN_WARRANTY",
+    "productCategory": "Smartphone",
+    "matchedProduct": {
+      "productId": "PROD-SM-S938",
+      "productName": "Samsung Galaxy S26 Ultra",
+      "brandName": "Samsung",
+      "modelNumber": "SM-S938B",
+      "price": 106000
+    },
+    "autoDecision": "TROUBLESHOOTING_REQUIRED",
+    "decisionConfidence": 0.9,
+    "decisionRationale": "Customer and product verified. Issue related to software or settings.",
+    "recommendedNextStep": "Trigger RAG manual lookup. Send automated troubleshooting guide.",
+    "rejectReason": null,
+    "audit": [
+      {
+        "step": "Information Extraction",
+        "timestamp": "2026-04-09T20:44:13.687Z",
+        "duration": 5947,
+        "agent": "ExtractionService",
+        "status": "completed",
+        "details": {
+          "documentsProcessed": 2,
+          "errors": []
+        }
+      },
+      {
+        "step": "Validation Engine",
+        "timestamp": "2026-04-09T20:44:13.687Z",
+        "duration": 10,
+        "agent": "ValidationService",
+        "status": "completed",
+        "details": {
+          "warrantyStatus": "WITHIN_WARRANTY",
+          "allChecksPassed": true,
+          "autoDecision": null
+        }
+      },
+      {
+        "step": "Customer & Product Grounding",
+        "timestamp": "2026-04-09T20:44:13.687Z",
+        "duration": 1,
+        "agent": "CustomerGroundingService",
+        "status": "completed",
+        "details": {
+          "recordsFound": 1,
+          "customerVerified": true
+        }
+      },
+      {
+        "step": "Decision Engine",
+        "timestamp": "2026-04-09T20:44:13.687Z",
+        "duration": 0,
+        "agent": "DecisionService",
+        "status": "completed",
+        "details": {
+          "autoDecision": "TROUBLESHOOTING_REQUIRED",
+          "decisionConfidence": 0.9
+        }
+      }
+    ],
+    "evidenceSummary": {
+      "totalFields": 7,
+      "highConfidenceFields": 7,
+      "lowConfidenceFields": 0,
+      "avgConfidence": 0.9000000000000001
+    },
+    "documentAnalysis": {
+      "totalDocuments": 2,
+      "documentTypes": [
+        "CorrespondenceRecord",
+        "Invoice"
+      ],
+      "avgDocumentConfidence": 0.975,
+      "missingDocuments": [],
+      "presentDocuments": [
+        "purchase_invoice",
+        "product_model"
+      ]
+    },
+    "resolutionAssessment": {
+      "recordsFound": 1,
+      "customerVerified": true,
+      "topMatchScore": 1.0,
+      "recommendation": "AUTO_APPROVE",
+      "autoDecision": "TROUBLESHOOTING_REQUIRED",
+      "decisionConfidence": 0.9,
+      "recommendedActions": [
+        "Trigger RAG manual lookup. Send automated troubleshooting guide."
+      ]
+    },
+    "processingSummary": {
+      "stepsCompleted": 4,
+      "stepsWithErrors": 0
+    },
+    "createdAt": "2026-04-09T20:44:13.687Z"
+  },
+  "processingMetrics": {
+    "fieldsAutoPopulated": 7,
+    "stepsCompleted": 4,
+    "stepsFailed": 0,
+    "totalProcessingTime": 11786,
+    "averageHandleTime": 11.786,
+    "extractionTime": 5947,
+    "validationTime": 10
+  },
+  "createdAt": "2026-04-09T20:44:13.687Z",
+  "status": "draft",
+  "autoEmailResponse": {
+    "sent": true,
+    "decision": "TROUBLESHOOTING_REQUIRED",
+    "to": "Shubham Sahu <shubhh2003@gmail.com>",
+    "error": null,
+    "subject": "Troubleshooting Steps for your Samsung Galaxy S26 Ultra \u2014 CMP-ING-1775767440175-5b3d2c6",
+    "body": "Dear Shubham,\n\nThank you for contacting Consumer Electronics Customer Support. We have received your query regarding your Samsung Galaxy S26 Ultra (Reference: CMP-ING-1775767440175-5b3d2c6).\n\nTo help resolve this issue quickly, please try the following troubleshooting steps directly from the official product manual:\n\nThis issue is not covered in the Samsung Galaxy S26 Ultra manual. Please call 1-800-SAMSUNG for assistance.\n\nWhat to do next:\n  \u2022 If these steps resolve your issue, no further action is needed.\n  \u2022 If the issue persists after trying these steps, please reply directly to this email and our technical team will arrange a further investigation or repair.\n\nWe appreciate your cooperation and look forward to getting your device working perfectly again.\n\nKind regards,\nCustomer Support Team\nConsumer Electronics\n  Email: support@electronics.com  |  Phone: 1-800-ELEC-HELP (Mon\u2013Fri, 9am\u20136pm)",
+    "sentFrom": "arp290825@gmail.com"
+  },
+  "messageId": "<CABs85wMne-a85ssP=fO1yqS92KbTx3pXTyQOzGT=P-ndKhj4hw@mail.gmail.com>",
+  "threadId": "<CABs85wMne-a85ssP=fO1yqS92KbTx3pXTyQOzGT=P-ndKhj4hw@mail.gmail.com>",
+  "processingTime": 11786
+}

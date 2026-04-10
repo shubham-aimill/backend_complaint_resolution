@@ -89,27 +89,6 @@ PRODUCT_KEYWORDS: Dict[str, List[str]] = {
         "windfree 1.5", "windfree ac", "ar18by",
         "wind free", "wf15", "inverter ac"
     ],
-    "PROD-RF350-BD": [
-    "samsung bespoke ai double door 350l",
-    "double door 350l",
-    "double door fridge",
-    "350l fridge",
-    "bespoke double door",
-    "rt39",
-    "rf350",
-    ],
-    "PROD-RF653-SBS": [
-    "samsung bespoke convertible 5in1 653l side-by-side",
-    "653l side-by-side",
-    "653l fridge",
-    "side by side fridge",
-    "side-by-side fridge",
-    "convertible fridge",
-    "bespoke 653",
-    "rs76",
-    "rf653",
-    "5in1",
-    ],
 }
 
 
@@ -288,15 +267,6 @@ def semantic_search(
 ) -> List[Dict]:
     """
     Search the manual knowledge base.
-
-    Args:
-        query:      The customer question / complaint text.
-        top_k:      Number of chunks to return.
-        product_id: If provided, HARD filters to only this product's chunks.
-
-    Returns:
-        List of chunk dicts with: text, product_id, product_name, category,
-                                  page_num, page_range, distance
     """
     _load_env()
     client = _get_openai()
@@ -327,7 +297,8 @@ def semantic_search(
                     chunks.append({
                         "text": results["documents"][0][i],
                         "product_id": meta.get("product_id", ""),
-                        "product_name": meta.get("product_name", ""),
+                        # FIX: Handle both possible metadata keys to prevent 'undefined'
+                        "product_name": meta.get("product_name") or meta.get("product") or "Samsung Product",
                         "category": meta.get("category", ""),
                         "page_num": meta.get("page_num", 0),
                         "page_range": meta.get("page_range", ""),
@@ -353,7 +324,7 @@ def semantic_search(
     return [{
         "text": all_chunks[i]["text"],
         "product_id": all_chunks[i].get("product_id", ""),
-        "product_name": all_chunks[i].get("product_name", ""),
+        "product_name": all_chunks[i].get("product_name") or all_chunks[i].get("product") or "Samsung Product",
         "category": all_chunks[i].get("category", ""),
         "page_num": all_chunks[i].get("page_num", 0),
         "page_range": all_chunks[i].get("page_range", ""),
@@ -383,7 +354,8 @@ def generate_answer(
 
     context_parts = []
     for c in chunks:
-        pname = c.get("product_name", product_name or "Samsung product")
+        # FIX: Check both product_name and product keys
+        pname = c.get("product_name") or c.get("product") or product_name or "Samsung product"
         page_ref = c.get("page_range") or f"{c.get('page_num', '?')}"
         context_parts.append(
             f"[SOURCE: {pname} Manual — Pages {page_ref}]\n{c['text']}"
@@ -392,7 +364,8 @@ def generate_answer(
 
     sources = [{
         "product_id": c.get("product_id", ""),
-        "product_name": c.get("product_name", ""),
+        # FIX: Ensure product_name is correctly set for footer
+        "product_name": c.get("product_name") or c.get("product") or product_name or "Samsung Product",
         "page_num": c.get("page_num", 0),
         "page_range": c.get("page_range", ""),
         "category": c.get("category", ""),
@@ -404,16 +377,15 @@ def generate_answer(
     pid_str = product_id or ""
 
     system_prompt = (
-        f"You are a Samsung customer support specialist for the {pname_str} ({category_str}).\n"
-        f"Product ID: {pid_str}\n\n"
+        f"You are a Samsung Senior Technical Support Specialist for the {pname_str}.\n\n"
         f"STRICT RULES:\n"
-        f"1. Answer ONLY using the {pname_str} manual excerpts provided below.\n"
-        f"2. Do NOT reference any other Samsung product.\n"
-        f"3. Give step-by-step troubleshooting instructions when relevant.\n"
-        f"4. Always cite the page number you are referencing (e.g. 'As per page 34 of the manual...').\n"
-        f"5. If the manual does not cover the issue, say: "
-        f"'This is not covered in the {pname_str} manual. Please call 1-800-SAMSUNG for assistance.'\n"
-        f"6. Be concise, helpful, and professional."
+        f"1. Use ONLY the provided manual excerpts to solve the issue.\n"
+        f"2. Provide clear, step-by-step instructions.\n"
+        f"3. DO NOT mention page numbers, manual names, or citations (e.g., avoid 'As per page 99').\n"
+        f"4. DO NOT say 'based on the manual' or 'according to the context'.\n"
+        f"5. Speak directly to the customer as an expert who knows the product by heart.\n"
+        f"6. If the manual doesn't have an exact fix for a 'glitch', provide the standard pairing/reset steps found in the text.\n"
+        f"7. Be professional, concise, and helpful."
     )
 
     user_prompt = (
@@ -542,29 +514,23 @@ def _is_faq_query(subject: str, body: str) -> bool:
 # ══════════════════════════════════════════════════════════════════════════
 # Email sender
 # ══════════════════════════════════════════════════════════════════════════
-
 def _send_faq_email(
     to_addr: str, subject: str, answer: str, sources: List[Dict]
 ) -> None:
     _load_env()
     sender = os.environ.get("SENDER_EMAIL", "")
     password = os.environ.get("EMAIL_PASSWORD", "").replace(" ", "")
+    
     if not sender or not password:
-        raise ValueError("SENDER_EMAIL and EMAIL_PASSWORD not configured in .env")
+        raise ValueError("SENDER_EMAIL and EMAIL_PASSWORD missing in .env")
 
-    src_text = ""
-    if sources:
-        src_text = "\n\nSource: Samsung Official Manual\n"
-        for s in sources:
-            page_ref = s.get("page_range") or s.get("page_num", "?")
-            src_text += f"  • {s['product_name']} — Pages {page_ref}\n"
-
+    # CLEAN VERSION: src_text is deleted. Citations are gone.
     body = (
         f"Thank you for contacting Samsung Customer Support.\n\n"
-        f"{answer}{src_text}\n\n"
+        f"{answer}\n\n"
         f"---\n"
         f"This response was generated from official Samsung product documentation.\n"
-        f"If this does not resolve your issue, reply to this email or call 1-800-SAMSUNG.\n\n"
+        f"If this does not resolve your issue, please reply to this email or call 1-800-SAMSUNG.\n\n"
         f"Samsung Customer Support | samsung.com/in/support"
     )
 
@@ -572,27 +538,21 @@ def _send_faq_email(
     msg["From"] = f"Samsung Support <{sender}>"
     msg["To"] = to_addr
     msg["Subject"] = f"Re: {subject}"
+    
     msg.attach(MIMEText(body, "plain"))
     msg.attach(MIMEText(body.replace("\n", "<br>"), "html"))
 
-    server = smtplib.SMTP(
-        os.environ.get("SMTP_HOST", "smtp.gmail.com"),
-        int(os.environ.get("SMTP_PORT", "587")),
-    )
-    server.starttls()
-    server.login(sender, password)
-    server.send_message(msg)
-    server.quit()
-
-
-# ══════════════════════════════════════════════════════════════════════════
-# Customer / product verification
-# ══════════════════════════════════════════════════════════════════════════
-
-def _extract_customer_id(subject: str, body: str) -> Optional[str]:
-    m = re.search(r"CUST\d{5}", f"{subject} {body}", re.IGNORECASE)
-    return m.group(0).upper() if m else None
-
+    try:
+        server = smtplib.SMTP(
+            os.environ.get("SMTP_HOST", "smtp.gmail.com"),
+            int(os.environ.get("SMTP_PORT", "587")),
+        )
+        server.starttls()
+        server.login(sender, password)
+        server.send_message(msg)
+        server.quit()
+    except Exception as e:
+        print(f"SMTP Error: {e}")
 
 def _verify_customer_product(
     customer_id: Optional[str], product_id: Optional[str]
@@ -733,7 +693,7 @@ def process_faq_email(
         if not _is_faq_query(subject, email_body):
             return {"is_faq": False, "answered": False, "answer": None, "error": None}
 
-        customer_id = _extract_customer_id(subject, email_body)
+        customer_id = _extract_customer_id(f"{subject} {email_body}")
 
         product_match = match_product_from_text(subject, email_body)
         product_id = product_match.get("product_id")
